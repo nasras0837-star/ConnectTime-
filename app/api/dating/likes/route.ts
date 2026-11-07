@@ -23,22 +23,62 @@ export async function GET() {
   if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
   try {
     const s = tables();
-    const [received, sent] = await Promise.all([
-      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.likesTableId, queries: [Query.equal("recipient_user_id", user.$id), Query.limit(100)] }),
-      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.likesTableId, queries: [Query.equal("sender_user_id", user.$id), Query.limit(100)] })
+    const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
+    const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
+    const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
+    const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
+    const apiKey = process.env.APPWRITE_API_KEY;
+    if (!accessDatabaseId || !accessCollectionId || !endpoint || !projectId || !apiKey) throw new Error("Member eligibility storage is not configured.");
+    const databases = new Databases(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
+    const [receivedRows, sentRows, outgoingBlocks, incomingBlocks] = await Promise.all([
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.likesTableId, queries: [Query.equal("recipient_user_id", user.$id), Query.orderDesc("created_at"), Query.limit(100)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.likesTableId, queries: [Query.equal("sender_user_id", user.$id), Query.limit(100)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", user.$id), Query.limit(500)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocked_user_id", user.$id), Query.limit(500)] })
     ]);
-    const sentUserIds = [...new Set(sent.rows.map(row => String(row.recipient_user_id)))];
-    const sentProfiles = sentUserIds.length ? await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", sentUserIds), Query.limit(100)] }) : { rows: [] };
-    return NextResponse.json({
-      received: received.rows.map(row => ({ id: String(row.$id), senderUserId: String(row.sender_user_id), createdAt: String(row.created_at || "") })),
-      sent: sentProfiles.rows.map(row => String(row.handle || "")).filter(Boolean)
-    }, { headers: { "Cache-Control": "no-store" } });
+    const blocked = new Set([
+      ...outgoingBlocks.rows.map(row => String(row.blocked_user_id || "")),
+      ...incomingBlocks.rows.map(row => String(row.blocker_user_id || ""))
+    ]);
+    const senderIds = [...new Set(receivedRows.rows.map(row => String(row.sender_user_id || "")).filter(Boolean))];
+    const sentIds = [...new Set(sentRows.rows.map(row => String(row.recipient_user_id || "")).filter(Boolean))];
+    const allIds = [...new Set([...senderIds, ...sentIds])].filter(id => !blocked.has(id));
+    const profileRows = allIds.length ? await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", allIds), Query.limit(200)] }) : { rows: [] };
+    const profiles = new Map(profileRows.rows.map(row => [String(row.user_id), row]));
+    const eligibleIds = new Set<string>();
+    await Promise.all(allIds.map(async id => {
+      try {
+        const record = await databases.getDocument(accessDatabaseId, accessCollectionId, id);
+        if (isEligible({ adult_status: record.adult_status, account_status: record.account_status })) eligibleIds.add(id);
+      } catch { /* Missing eligibility records remain hidden. */ }
+    }));
+    const visibleProfile = (id: string) => {
+      const row = profiles.get(id);
+      if (!row || !eligibleIds.has(id) || !["public", "members"].includes(String(row.visibility)) || Number(row.age || 0) < 18 || !row.gender) return null;
+      return {
+        handle: String(row.handle || ""),
+        displayName: String(row.display_name || row.handle || ""),
+        country: String(row.country || ""),
+        age: Number(row.age || 0),
+        gender: String(row.gender || ""),
+        interests: String(row.interests || "").split(",").map((item: string) => item.trim()).filter(Boolean)
+      };
+    };
+    const incoming = receivedRows.rows.flatMap(row => {
+      const senderId = String(row.sender_user_id || "");
+      const profile = visibleProfile(senderId);
+      if (!profile || !profile.handle) return [];
+      const mutual = sentIds.includes(senderId);
+      return [{ id: String(row.$id), createdAt: String(row.created_at || ""), profile, matched: mutual }];
+    });
+    const sent = sentIds.map(id => visibleProfile(id)).filter((profile): profile is NonNullable<ReturnType<typeof visibleProfile>> => !!profile);
+    const matches = incoming.filter(item => item.matched);
+    return NextResponse.json({ received: incoming, sent, matches }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Dating likes lookup failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Dating likes are not configured or are temporarily unavailable." }, { status: 503 });
   }
 }
-
 export async function POST(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
   const user = await currentCommunityMember();
