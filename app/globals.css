@@ -405,3 +405,46 @@
 .powerFeaturesFoot a{padding:10px 13px;border-radius:9px;background:#fff;color:#29498d;text-decoration:none;font-size:10px;font-weight:900}
 @media(max-width:1050px){.powerFeatureGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.powerFeatures{padding:18px 13px;border-radius:17px}.powerFeaturesHead{text-align:left;margin-bottom:18px}.powerFeaturesHead h2{font-size:29px}.powerFeatureGrid{gap:9px}.powerFeature{min-height:215px;padding:14px}.powerFeature>b{font-size:16px}.powerFeature>p{font-size:10px}.powerFeaturesFoot{align-items:flex-start;flex-direction:column}.powerFeaturesFoot span{flex:auto}}
+
+
+/* Adults-only Dating landing page and verification gate */
+.datingShell{min-height:100vh;padding:0 clamp(18px,5vw,76px);background:radial-gradient(ellipse at 7% 10%,#f3eaff 0,transparent 32%),radial-gradient(ellipse at 94% 18%,#e6efff 0,transparent 30%),#f7f8fc;color:#1b2943}
+.datingHeader{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e9f1}
+.datingBrand img{display:block;width:126px;height:auto;object-fit:contain}
+.datingHeader nav{display:flex;align-items:center;gap:24px;font-size:12px;font-weight:750;color:#61708a}
+.datingLogin{padding:10px 15px;border-radius:10px;background:#243d72;color:#fff}
+.datingHero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px;max-width:1280px;min-height:390px;margin:32px auto 26px;padding:clamp(28px,5vw,62px);overflow:hidden;border-radius:25px;background:linear-gradient(115deg,#182a50 0%,#344f91 58%,#7255b8 100%);color:#fff;box-shadow:0 18px 48px #1b2b4a22}
+.datingHeroCopy{position:relative;z-index:1;max-width:740px}
+.datingEyebrow,.datingSectionIntro>span,.datingPrivacy>span,.datingGate>div>span{font-size:9px;font-weight:900;letter-spacing:1.7px;color:#cbd8ff}
+.datingHero h1{font-size:clamp(42px,6vw,70px);line-height:1.02;letter-spacing:-3px;margin:18px 0}
+.datingHero h1 em{font-style:normal;color:#c9baff}
+.datingHeroCopy>p{max-width:670px;color:#e1e8f7;font-size:14px;line-height:1.8}
+.datingHeroActions{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-top:25px}
+.datingHeroActions>a{padding:13px 17px;border-radius:10px;background:#fff;color:#29457e;font-size:11px;font-weight:900}
+.datingHeroActions>span{font-size:10px;color:#d9e3f8}
+.datingShield{display:grid;place-items:center;flex:0 0 170px;width:170px;height:190px;clip-path:polygon(50% 0,94% 17%,88% 67%,50% 100%,12% 67%,6% 17%);background:linear-gradient(145deg,#ffffff38,#ffffff12);border:1px solid #ffffff55;text-align:center}
+.datingShield div{font-size:57px;line-height:1.1}.datingShield b{font:900 25px Manrope,sans-serif}.datingShield small{font-size:8px;letter-spacing:1.5px;color:#dce5ff}
+.datingVerify{max-width:1280px;margin:0 auto;padding:32px 0}
+.datingSectionIntro{max-width:700px;margin:0 auto 24px;text-align:center}
+.datingSectionIntro>span,.datingPrivacy>span{color:#6479bd}
+.datingSectionIntro h2,.datingPrivacy h2{font-size:clamp(27px,4vw,39px);letter-spacing:-1.5px;margin:10px 0;color:#1b2943}
+.datingSectionIntro p,.datingPrivacy p{font-size:13px;line-height:1.75;color:#73819a}
+.datingCheckGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.datingCheck{padding:21px;border:1px solid #e5eaf2;border-radius:16px;background:#fff;box-shadow:0 8px 25px #263b5b08}
+.datingCheckIcon{display:grid;place-items:center;width:45px;height:45px;border-radius:13px;background:#eef1ff;font-size:22px}
+.datingCheck>small{display:block;margin-top:16px;color:#6e7fc1;font-size:8px;font-weight:900;letter-spacing:1.4px}
+.datingCheck h3{font-size:16px;letter-spacing:-.4px;margin:8px 0}
+.datingCheck p{font-size:11px;line-height:1.7;color:#74829a;margin:0}
+.datingIdNote{margin-top:15px;padding:18px 20px;border-radius:14px;background:#edf3fc;border:1px solid #e0e9f8}
+.datingIdNote b{font-size:12px;color:#263e70}.datingIdNote p{font-size:11px;line-height:1.75;color:#667792;margin:7px 0 0}
+.datingGate{max-width:1280px;margin:12px auto 22px;padding:24px 27px;border-radius:18px;background:#fff;border:1px solid #e5eaf2;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.datingGate>div>span{color:#6479bd}.datingGate h2{font-size:23px;letter-spacing:-.8px;margin:8px 0}.datingGate p{max-width:770px;color:#73819a;font-size:11px;line-height:1.7;margin:0}
+.datingGateStatus{display:grid;gap:5px;flex:0 0 220px;padding:17px;border-radius:13px;background:#fff4e9;border:1px solid #f6e4cc}
+.datingGateStatus span{font-size:22px}.datingGateStatus b{font-size:12px;color:#8c531b}.datingGateStatus small{font-size:9px;color:#a07850}
+.datingPrivacy{max-width:1280px;margin:0 auto 24px;padding:22px 25px;border-radius:17px;background:linear-gradient(120deg,#f0f3ff,#f5f0ff);border:1px solid #e7e8f6}
+.datingPrivacy h2{font-size:22px;margin:8px 0}.datingPrivacy p{margin:0;font-size:11px}
+.datingFooter{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;gap:15px;padding:22px 0;color:#8995a8;font-size:10px;border-top:1px solid #e4e9f1}
+.datingFooter a{color:#4e67b7;font-weight:800}
+.datingPreviewNotice{max-width:1280px;margin:0 auto;padding:0 0 24px;color:#8a6c48;font-size:10px;line-height:1.6}
+@media(max-width:900px){.datingCheckGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.datingShield{flex-basis:130px;width:130px;height:155px}}
+@media(max-width:620px){.datingShell{padding:0 14px}.datingHeader{height:68px}.datingBrand img{width:105px}.datingHeader nav{gap:12px;font-size:10px}.datingHero{margin:16px auto;padding:25px 20px;min-height:0;border-radius:18px}.datingHero h1{font-size:42px;letter-spacing:-2px}.datingHeroCopy>p{font-size:12px}.datingShield{display:none}.datingHeroActions{align-items:flex-start;flex-direction:column}.datingCheckGrid{grid-template-columns:1fr 1fr;gap:8px}.datingCheck{padding:14px}.datingCheck h3{font-size:14px}.datingCheck p{font-size:10px}.datingGate{align-items:stretch;flex-direction:column;padding:18px}.datingGateStatus{flex:auto}.datingPrivacy{padding:18px}.datingFooter{flex-direction:column}}
