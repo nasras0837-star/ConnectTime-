@@ -585,3 +585,23 @@
 
 
 .freeTvWatchlistBar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0}.freeTvWatchlistBar button,.freeTvSaveButton{border:1px solid #c9dce7;border-radius:999px;padding:9px 14px;background:#fff;color:#17475e;font-weight:700;cursor:pointer}.freeTvWatchlistBar button[aria-pressed="true"]{background:#e7f4fb;border-color:#2586b5}.freeTvWatchlistBar span{font-size:12px;color:#648092}.freeTvWatchlistMessage{color:#9b4b25;font-size:13px}.freeTvSaveButton{display:block;margin:12px 0;width:100%;border-radius:10px}.freeTvSaveButton:disabled{opacity:.55;cursor:not-allowed}
+
+
+/* Verified member discovery */
+.discoverCard{max-width:1040px!important;width:min(1040px,calc(100% - 32px))!important;margin:24px auto!important}
+.discoverCard>p{color:#708196;line-height:1.7}
+.discoverFilters{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:end;margin:22px 0}
+.discoverFilters label{display:grid;gap:7px;font-size:11px;font-weight:800;color:#52677f}
+.discoverFilters input{width:100%;min-width:0;padding:12px;border:1px solid #dce6f0;border-radius:10px;background:#fff;color:#1d3654;font:inherit}
+.discoverFilters .button{white-space:nowrap;min-height:43px}
+.discoverGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+.discoverMember{min-width:0;padding:19px;border:1px solid #e3eaf2;border-radius:16px;background:linear-gradient(160deg,#fff,#f8fbff);box-shadow:0 8px 24px #1e47730b}
+.discoverAvatar{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#1e6fc4,#20a99c);color:#fff;font-size:20px;font-weight:900}
+.discoverMember h2{margin:12px 0 2px;font-size:18px;color:#1c3554}
+.discoverMember p{font-size:12px;line-height:1.6;color:#687d94;overflow-wrap:anywhere}
+.discoverMember .discoverHandle{margin:0;color:#25877f;font-weight:800}
+.discoverMember .discoverLocation{font-weight:700;color:#496782}
+.discoverTags{display:flex;gap:6px;flex-wrap:wrap}
+.discoverTags span{padding:5px 8px;border-radius:20px;background:#eaf3fb;color:#376a94;font-size:10px;font-weight:800}
+@media(max-width:850px){.discoverFilters{grid-template-columns:1fr 1fr}.discoverFilters label:first-child{grid-column:1/-1}.discoverFilters .button{grid-column:1/-1}.discoverGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.discoverFilters,.discoverGrid{grid-template-columns:1fr}.discoverFilters label:first-child{grid-column:auto}.discoverCard{padding:22px!important}.discoverMember{padding:16px}}
