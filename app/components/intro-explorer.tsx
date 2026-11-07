@@ -40,9 +40,9 @@ export function IntroExplorer() {
     <section className="featureShowcase interactiveShowcase" aria-labelledby="feature-showcase-title">
       <div className="featureShowcaseHead">
         <div>
-          <span>ONE WORLD. MANY WAYS TO CONNECT.</span>
+          <span>YOUR CONNECTIONS CAN REACH AROUND THE WORLD.</span>
           <h2 id="feature-showcase-title">What are you in the mood for?</h2>
-          <p>Pick an interest to explore. Your next favorite corner of ConnectTime might be one tap away.</p>
+          <p>Explore your interests and meet people who share them—from your neighborhood to the other side of the world.</p>
         </div>
         <button className="surpriseButton" type="button" onClick={surpriseMe}>✨ Surprise me</button>
       </div>
