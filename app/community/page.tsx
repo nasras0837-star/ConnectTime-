@@ -18,7 +18,8 @@ export default function CommunityPage() {
   const [loading, setLoading] = useState(true);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");\n  const [interactions, setInteractions] = useState<Record<string, Interaction>>({});
+  const [notice, setNotice] = useState("");
+  const [interactions, setInteractions] = useState<Record<string, Interaction>>({});
 
   async function refresh() {
     setLoading(true);
@@ -33,7 +34,8 @@ export default function CommunityPage() {
     } finally { setLoading(false); }
   }
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- Initial fetch populates the client-side feed.\n  useEffect(() => { void refresh(); }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- Initial fetch populates the client-side feed.
+  useEffect(() => { void refresh(); }, []);
 
   async function publish(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
