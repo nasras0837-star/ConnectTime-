@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 
 const experiences = [
-  { icon: "💖", title: "Match Maker & dating", description: "Explore dating and discover people with shared interests.", group: "Connect", color: "showcasePink", detail: "A dedicated adults-only dating space for different relationship goals, meaningful connections, and shared interests." },
+  { icon: "💖", title: "Match Maker & dating", description: "Adults 18+ only · government ID age and identity checks required.", group: "Connect", color: "showcasePink", detail: "Dating is adults-only. Members must pass government-ID date-of-birth validation and identity/liveness checks with a trusted provider before dating discovery or messaging is unlocked.", href: "/dating" },
   { icon: "🛍️", title: "Marketplace", description: "Discover local finds, independent sellers, and new products.", group: "Discover", color: "showcaseGold", detail: "Explore a marketplace concept for local and international listings, seller discovery, and future buyer and seller tools." },
   { icon: "✍️", title: "Forums, posts & blogs", description: "Share your voice, ask questions, and exchange ideas.", group: "Create", color: "showcaseBlue", detail: "Create posts and longer stories, comment, and take part in interest-based forums and community discussions." },
   { icon: "▶️", title: "ConnectTime Video Tube & media", description: "Discover videos, creators, channels, and shows.", group: "Watch", color: "showcaseCoral", detail: "Explore creator-led entertainment, video channels, and media from around the world.", href: "/videos" },
@@ -65,7 +65,7 @@ export function IntroExplorer() {
       <div className="experienceDetail" aria-live="polite">
         <div className="detailIcon">{active.icon}</div>
         <div><span>YOUR NEXT DISCOVERY</span><b>{active.title}</b><p>{active.detail}</p></div>
-        <Link href={active.href ?? "/signup"}>{active.href ? "Explore Video Tube" : "Join the community"} ↗</Link>
+        <Link href={active.href ?? "/signup"}>{active.href === "/videos" ? "Explore Video Tube" : active.href === "/dating" ? "Review Dating verification" : "Join the community"} ↗</Link>
       </div>
       <p className="showcaseNote">ConnectTime is being built in stages. Some experiences shown here are previews and are not yet available. Membership is for adults 18+.</p>
     </section>
