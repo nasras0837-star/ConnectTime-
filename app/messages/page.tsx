@@ -61,6 +61,30 @@ export default function MessagesPage() {
     return () => { cancelled = true; };
   }, [openConversation]);
 
+  useEffect(() => {
+    const poll = async () => {
+      if (document.visibilityState !== "visible") return;
+      try {
+        await loadInbox();
+        if (peer) {
+          const response = await fetch("/api/messages?with=" + encodeURIComponent(peer.handle), { cache: "no-store" });
+          const result = await response.json();
+          if (response.ok && result.peer?.handle === peer.handle) setMessages(result.messages || []);
+        }
+      } catch {
+        // Keep the current conversation visible during temporary network interruptions.
+      }
+    };
+    const interval = window.setInterval(() => { void poll(); }, 8000);
+    window.addEventListener("focus", poll);
+    document.addEventListener("visibilitychange", poll);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", poll);
+      document.removeEventListener("visibilitychange", poll);
+    };
+  }, [peer, loadInbox]);
+
   async function reportMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!reportTarget || reportDetails.trim().length < 10) return;
