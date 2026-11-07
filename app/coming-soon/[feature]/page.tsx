@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 type FeaturePage = {
   title: string;
@@ -107,6 +107,14 @@ const pages: Record<string, FeaturePage> = {
 
 export default async function PlannedFeaturePage({ params }: { params: Promise<{ feature: string }> }) {
   const { feature } = await params;
+  const activeRoutes: Record<string, string> = {
+    friends: "/friends",
+    requests: "/friends",
+    messages: "/messages",
+  };
+  const activeRoute = activeRoutes[feature.toLowerCase()];
+  if (activeRoute) redirect(activeRoute);
+
   const page = pages[feature.toLowerCase()];
   if (!page) notFound();
 
