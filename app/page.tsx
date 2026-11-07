@@ -86,7 +86,7 @@ export default function FreeTvPage() {
     return matchesRegion && matchesCountry && matchesCategory && matchesQuery;
   }),[region,country,category,query]);
   return <main className="freeTvPage">
-    <header className="freeTvHeader"><Link href="/" className="freeTvBrand"><span>◉</span> ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/news">News</Link><Link href="/videos">Video Tube</Link><Link className="freeTvJoin" href="/register">Register Now</Link></nav></header>
+    <header className="freeTvHeader"><Link href="/" className="freeTvBrand"><span>◉</span> ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/community">Community</Link><Link href="/news">News</Link><Link href="/videos">Video Tube</Link><Link className="freeTvJoin" href="/register">Register Now</Link></nav></header>
     <LiveInterestFeed />
     <section className="freeTvHero"><span className="freeTvEyebrow">CONNECTTIME · FREE TV</span><h1>Local voices.<br/><em>World-wide viewing.</em></h1><p>Discover free official news and entertainment channels from participating broadcasters around the world. Choose a region, find a channel, and watch on the broadcaster&apos;s own service.</p><div className="freeTvHeroStats"><span>🌍 Regional discovery</span><span>📰 Local & world news</span><span>🎭 Free entertainment</span><span>🔗 Official broadcaster links</span></div></section>
     <section className="freeTvDirectory">
