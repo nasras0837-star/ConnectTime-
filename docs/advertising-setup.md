@@ -15,7 +15,7 @@ Create the following columns on each table. Use the column types shown; make col
 
 | Column ID | Type | Size / setting | Required |
 |---|---|---:|---|
-| ad_company | Varchar | 160 | Yes |
+| advertiser_user_id | Varchar | 64 | No (new submissions populate it) |\n| ad_company | Varchar | 160 | Yes |
 | campaign_name | Varchar | 160 | Yes |
 | ad_headline | Varchar | 200 | No |
 | ad_body | Varchar | 2000 | No |
