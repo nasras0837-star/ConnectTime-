@@ -175,6 +175,17 @@ export async function POST(request: Request) {
     const notificationsTableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
     if (notificationsTableId) {
       try {
+        const settingsTableId = process.env.APPWRITE_MEMBER_SETTINGS_TABLE_ID;
+        if (settingsTableId) {
+          try {
+            const preferences = await s.tablesDB.getRow({ databaseId: s.databaseId, tableId: settingsTableId, rowId: peer.userId });
+            if (preferences.user_id === peer.userId && (preferences.private_messages === false || preferences.private_messages === "false")) {
+              return NextResponse.json({ sent: true, message: messageView(row, user.$id), notificationSuppressed: true }, { status: 201, headers: { "Cache-Control": "no-store" } });
+            }
+          } catch (error) {
+            if (!(typeof error === "object" && error !== null && "code" in error && error.code === 404)) throw error;
+          }
+        }
         await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: notificationsTableId, rowId: ID.unique(), data: {
           recipient_user_id: peer.userId,
           actor_user_id: user.$id,
