@@ -52,7 +52,7 @@ The Act also restricts use and retention of personal data collected for age assu
 
 ## Minimum operational launch gates
 
-1. Confirm the legal operator's name, physical notice address, support/privacy contacts, governing law, and official launch domains.
+1. Legal operator confirmed as Techcyber LLC, a New Jersey, United States limited liability company. Still obtain and verify its physical notice address, support/privacy contacts, governing law, and official launch domains.
 2. Inventory every data element, purpose, collection point, retention period, recipient, SDK, cookie, processor, and international transfer.
 3. Obtain legal review of the policies against actual operations. Replace every draft marker with accurate final language and version the policies.
 4. Implement privacy request, appeal, consent, and revocation handling, with verification, deadline tracking, and audit logs.
