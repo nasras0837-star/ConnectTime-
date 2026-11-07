@@ -25,12 +25,7 @@ export default function LiveNewsWidget() {
   const [geoMessage, setGeoMessage] = useState("");
 
   useEffect(() => {
-    if (topic === "Nearby" && !geo) {
-      setArticles([]);
-      setBusy(false);
-      setError("");
-      return;
-    }
+    if (topic === "Nearby" && !geo) return;
     const controller = new AbortController();
     setBusy(true);
     setError("");
