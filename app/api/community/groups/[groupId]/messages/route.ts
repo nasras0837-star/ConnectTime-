@@ -97,8 +97,17 @@ export async function POST(request: Request, context: { params: Promise<{ groupI
     const notificationsTable = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
     if (notificationsTable) {
       try {
-        const memberRows = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.members, queries: [Query.equal("group_id", groupId), Query.equal("status", "active"), Query.limit(100)] });
-        await Promise.all(memberRows.rows.filter(item => item.user_id !== user.$id).map(item => s.tablesDB.createRow({ databaseId: s.databaseId, tableId: notificationsTable, rowId: ID.unique(), data: { recipient_user_id: String(item.user_id), actor_user_id: user.$id, type: "group_message", message: "A new message was posted in a community group.", reference_id: groupId, is_read: false, created_at: now } })));
+        const [memberRows, outgoingBlocks, incomingBlocks] = await Promise.all([
+          s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.members, queries: [Query.equal("group_id", groupId), Query.equal("status", "active"), Query.limit(100)] }),
+          s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocks, queries: [Query.equal("blocker_user_id", user.$id), Query.limit(500)] }),
+          s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocks, queries: [Query.equal("blocked_user_id", user.$id), Query.limit(500)] })
+        ]);
+        const blockedUsers = new Set([
+          ...outgoingBlocks.rows.map(item => String(item.blocked_user_id)),
+          ...incomingBlocks.rows.map(item => String(item.blocker_user_id))
+        ]);
+        const recipients = memberRows.rows.filter(item => item.user_id !== user.$id && !blockedUsers.has(String(item.user_id)));
+        await Promise.all(recipients.map(item => s.tablesDB.createRow({ databaseId: s.databaseId, tableId: notificationsTable, rowId: ID.unique(), data: { recipient_user_id: String(item.user_id), actor_user_id: user.$id, type: "group_message", message: "A new message was posted in a community group.", reference_id: groupId, is_read: false, created_at: now } })));
       } catch (error) { console.error("Group chat notifications could not be saved", error instanceof Error ? error.message : "unknown"); }
     }
     return NextResponse.json({ sent: true, message: { id: String(row.$id), body: message, createdAt: now, author: { handle: String(profile?.handle || "you"), displayName: String(profile?.display_name || "You") }, mine: true } }, { status: 201, headers: { "Cache-Control": "no-store" } });
