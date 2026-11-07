@@ -30,7 +30,7 @@ async function blockedSet(s: ReturnType<typeof config>, userId: string) {
   return new Set([...outgoing.rows.map(row => String(row.blocked_user_id)), ...incoming.rows.map(row => String(row.blocker_user_id))]);
 }
 
-async function decorate(s: ReturnType<typeof config>, row: Record<string, unknown>, blocked: Set<string>) {
+async function decorate(s: ReturnType<typeof config>, row: Record<string, unknown>, blocked: Set<string>, viewerId: string) {
   const authorId = String(row.author_user_id || "");
   if (blocked.has(authorId)) return null;
   const result = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profiles, queries: [Query.equal("user_id", authorId), Query.limit(1)] });
@@ -40,7 +40,7 @@ async function decorate(s: ReturnType<typeof config>, row: Record<string, unknow
     body: String(row.body || ""),
     createdAt: String(row.created_at || ""),
     author: { handle: String(profile?.handle || "member"), displayName: String(profile?.display_name || "Member") },
-    mine: authorId === String(row.author_user_id)
+    mine: authorId === viewerId
   };
 }
 
@@ -62,7 +62,7 @@ export async function GET(_request: Request, context: { params: Promise<{ groupI
       blockedSet(s, user.$id)
     ]);
     const rows = result.rows.slice().reverse();
-    const messages = (await Promise.all(rows.map(row => decorate(s, row, blocked)))).filter(Boolean);
+    const messages = (await Promise.all(rows.map(row => decorate(s, row, blocked, user.$id)))).filter(Boolean);
     return NextResponse.json({ messages }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Group chat lookup failed", error instanceof Error ? error.message : "unknown");
