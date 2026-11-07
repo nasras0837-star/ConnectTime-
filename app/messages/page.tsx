@@ -16,6 +16,9 @@ export default function MessagesPage() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [reportTarget, setReportTarget] = useState("");
+  const [reportDetails, setReportDetails] = useState("");
+  const [reportStatus, setReportStatus] = useState("");
 
   const loadInbox = useCallback(async () => {
     const response = await fetch("/api/messages", { cache: "no-store" });
@@ -58,6 +61,26 @@ export default function MessagesPage() {
     return () => { cancelled = true; };
   }, [openConversation]);
 
+  async function reportMessage(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!reportTarget || reportDetails.trim().length < 10) return;
+    setReportStatus("Submitting report…");
+    try {
+      const response = await fetch("/api/community/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: "harassment", targetType: "message", contentReference: reportTarget, details: reportDetails.trim() })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Report could not be submitted.");
+      setReportStatus(result.message || "Report submitted.");
+      setReportTarget("");
+      setReportDetails("");
+    } catch (e) {
+      setReportStatus(e instanceof Error ? e.message : "Report service unavailable.");
+    }
+  }
+
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!peer || !draft.trim() || sending) return;
@@ -78,7 +101,7 @@ export default function MessagesPage() {
     <section className="authCard messagesCard"><div className="eyebrow">YOUR PRIVATE CIRCLE</div><h1>Messages</h1><p>Private one-to-one messages are available between eligible members who are already connected.</p>
       {error && <p className="message" role="alert">{error}</p>}{notice && <p className="message" role="status">{notice}</p>}
       <div className="messagesLayout"><aside className="messageInbox"><h2>Inbox</h2>{loading ? <p>Loading conversations…</p> : conversations.length ? conversations.map(item => <button key={item.peer.handle} className={peer?.handle === item.peer.handle ? "conversationChoice selected" : "conversationChoice"} onClick={() => void openConversation(item.peer)}><strong>{item.peer.displayName}</strong><span>@{item.peer.handle}</span><small>{item.preview}</small>{item.unreadCount > 0 && <em>{item.unreadCount} new</em>}</button>) : <p className="friendEmpty">No conversations yet. Connect with a member to start a private conversation.</p>}</aside>
-        <section className="messageThread">{peer ? <><header><strong>{peer.displayName}</strong><span>@{peer.handle}{peer.country ? " · " + peer.country : ""}</span></header><div className="messageHistory" aria-live="polite">{messages.length ? messages.map(item => <article key={item.id} className={item.mine ? "messageBubble mine" : "messageBubble"}><p>{item.body}</p><time>{new Date(item.createdAt).toLocaleString()}</time></article>) : <p className="friendEmpty">This is the beginning of your conversation.</p>}</div><form onSubmit={sendMessage}><label htmlFor="messageDraft">Message</label><textarea id="messageDraft" value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} rows={3} placeholder="Write a respectful message…" required/><div><small>{draft.length}/2000</small><button type="submit" disabled={sending || !draft.trim()}>{sending ? "Sending…" : "Send message"}</button></div></form></> : <div className="messageThreadEmpty"><h2>Select a conversation</h2><p>Choose a connection from your inbox to view your messages.</p><Link href="/discover">Discover members</Link></div>}</section></div>
+        <section className="messageThread">{peer ? <><header><strong>{peer.displayName}</strong><span>@{peer.handle}{peer.country ? " · " + peer.country : ""}</span></header><div className="messageHistory" aria-live="polite">{messages.length ? messages.map(item => <article key={item.id} className={item.mine ? "messageBubble mine" : "messageBubble"}><p>{item.body}</p><time>{new Date(item.createdAt).toLocaleString()}</time>{!item.mine && <button type="button" className="messageReportButton" onClick={() => { setReportTarget(item.id); setReportStatus(""); }}>Report message</button>}</article>) : <p className="friendEmpty">This is the beginning of your conversation.</p>}</div>{reportTarget && <form className="messageReportForm" onSubmit={reportMessage}><strong>Report this message</strong><p>Tell our safety team what is concerning. Reports are private.</p><textarea value={reportDetails} onChange={event => setReportDetails(event.target.value)} minLength={10} maxLength={3000} rows={3} placeholder="Describe the concern (at least 10 characters)." required/><div><button type="submit" disabled={reportDetails.trim().length < 10}>Submit report</button><button type="button" className="secondary" onClick={() => setReportTarget("")}>Cancel</button></div>{reportStatus && <p role="status">{reportStatus}</p>}</form>}<form onSubmit={sendMessage}><label htmlFor="messageDraft">Message</label><textarea id="messageDraft" value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} rows={3} placeholder="Write a respectful message…" required/><div><small>{draft.length}/2000</small><button type="submit" disabled={sending || !draft.trim()}>{sending ? "Sending…" : "Send message"}</button></div></form></> : <div className="messageThreadEmpty"><h2>Select a conversation</h2><p>Choose a connection from your inbox to view your messages.</p><Link href="/discover">Discover members</Link></div>}</section></div>
       <p className="switch"><Link href="/account">Back to account</Link> · <Link href="/safety">Safety Center</Link></p>
     </section><footer className="plannedFeatureFooter">ConnectTime · Your people. Your passions. Your ConnectTime.</footer>
   </main>;
