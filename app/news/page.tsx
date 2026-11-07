@@ -5,6 +5,7 @@ const categories=[{id:"For You",icon:"✨",description:"Live headlines from arou
 type Article={id:string;title:string;link:string;description:string;publishedAt:string;source:string;category:string;image?:string};
 export default function NewsPage(){
  const [active,setActive]=useState("For You"),[query,setQuery]=useState(""),[articles,setArticles]=useState<Article[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState(""),[updatedAt,setUpdatedAt]=useState("");
+ // eslint-disable-next-line react-hooks/set-state-in-effect
  useEffect(()=>{const c=new AbortController();setLoading(true);setError("");fetch("/api/news?category="+encodeURIComponent(active),{signal:c.signal}).then(r=>{if(!r.ok)throw new Error("News feed temporarily unavailable.");return r.json()}).then(d=>{setArticles(d.articles||[]);setUpdatedAt(d.updatedAt||"")}).catch(e=>{if(e.name!=="AbortError")setError(e.message||"Could not load news.")}).finally(()=>{if(!c.signal.aborted)setLoading(false)});return()=>c.abort()},[active]);
  const filtered=articles.filter(a=>!query||(a.title+" "+a.description+" "+a.source).toLowerCase().includes(query.toLowerCase()));
  const dateLabel=(v:string)=>{const d=new Date(v);return Number.isNaN(d.getTime())?"Recently":d.toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"})};
