@@ -605,3 +605,27 @@
 .discoverTags span{padding:5px 8px;border-radius:20px;background:#eaf3fb;color:#376a94;font-size:10px;font-weight:800}
 @media(max-width:850px){.discoverFilters{grid-template-columns:1fr 1fr}.discoverFilters label:first-child{grid-column:1/-1}.discoverFilters .button{grid-column:1/-1}.discoverGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.discoverFilters,.discoverGrid{grid-template-columns:1fr}.discoverFilters label:first-child{grid-column:auto}.discoverCard{padding:22px!important}.discoverMember{padding:16px}}
+
+
+/* Friend requests and connections */
+.discoverConnectButton{width:100%;margin-top:14px;padding:10px 14px;border:0;border-radius:10px;background:linear-gradient(110deg,#176bc0,#168f91);color:white;font-size:12px;font-weight:900;cursor:pointer}
+.discoverConnectButton:disabled{opacity:.55;cursor:wait}
+.friendsCard{max-width:850px!important;width:min(850px,calc(100% - 32px))!important;margin:24px auto!important}
+.friendSection{margin:24px 0;border-top:1px solid #e8edf4;padding-top:18px}
+.friendSectionHead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.friendSectionHead h2{margin:0;color:#203a58;font-size:18px}
+.friendSectionHead>span{display:grid;place-items:center;min-width:27px;height:27px;padding:0 7px;border-radius:20px;background:#eaf3fb;color:#2b6c9d;font-size:11px;font-weight:900}
+.friendEntry{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid #edf1f6}
+.friendEntry .discoverAvatar{flex:0 0 42px;width:42px;height:42px}
+.friendEntryCopy{display:grid;gap:4px;min-width:0;flex:1}
+.friendEntryCopy strong{color:#1e3653;font-size:13px}
+.friendEntryCopy span{color:#7b8da2;font-size:11px;overflow-wrap:anywhere}
+.friendEntryActions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.friendEntryActions button{border:0;border-radius:8px;padding:8px 11px;background:#176fc1;color:#fff;font-size:11px;font-weight:800;cursor:pointer}
+.friendEntryActions button.secondary{border:1px solid #dce5ef;background:#fff;color:#526981}
+.friendEntryActions button:disabled{opacity:.5;cursor:wait}
+.friendEntryActions>span,.friendConnected{font-size:11px;font-weight:800;color:#9a7931}
+.friendConnected{padding:7px 10px;border-radius:20px;background:#eaf6f1;color:#19836b}
+.friendEmpty{padding:14px 0;color:#8291a4;font-size:12px}
+.friendRefresh{border:0;background:none;color:#286bb2;font:inherit;font-weight:800;cursor:pointer}
+@media(max-width:600px){.friendEntry{align-items:flex-start;flex-wrap:wrap}.friendEntryActions{width:100%;padding-left:55px}.friendEntryActions button{flex:1}.friendsCard{padding:22px!important}}
