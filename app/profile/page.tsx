@@ -17,7 +17,9 @@ export default function ProfilePage() {
       .then(async response => {
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Could not load profile.");
-        setProfile(data.profile || {});
+        const savedProfile = data.profile || {};
+        const signupCountry = new URLSearchParams(window.location.search).get("country") || "";
+        setProfile({ ...savedProfile, country: savedProfile.country || signupCountry });
       })
       .catch(e => setError(e instanceof Error ? e.message : "Could not load profile."))
       .finally(() => setLoading(false));
