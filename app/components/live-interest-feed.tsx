@@ -66,21 +66,19 @@ export default function LiveInterestFeed() {
   const visible = useMemo(() => feeds.filter(feed => selected.includes(feed.topic)), [selected]);
 
   function toggle(topic: Topic) {
-    setSelected(current => {
-      const next = current.includes(topic) ? current.filter(item => item !== topic) : [...current, topic];
-      localStorage.setItem(storageKey, JSON.stringify(next));
-      setSyncStatus("Saving to your account…");
-      void fetch("/api/live-feed/preferences", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topics: next })
-      }).then(async response => {
-        if (response.ok) setSyncStatus("Synced to your ConnectTime account");
-        else if (response.status === 401) setSyncStatus("Saved on this device · sign in to sync");
-        else setSyncStatus("Saved on this device · account sync unavailable");
-      }).catch(() => setSyncStatus("Saved on this device · account sync unavailable"));
-      return next;
-    });
+    const next = selected.includes(topic) ? selected.filter(item => item !== topic) : [...selected, topic];
+    setSelected(next);
+    localStorage.setItem(storageKey, JSON.stringify(next));
+    setSyncStatus("Saving to your account…");
+    void fetch("/api/live-feed/preferences", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ topics: next })
+    }).then(response => {
+      if (response.ok) setSyncStatus("Synced to your ConnectTime account");
+      else if (response.status === 401) setSyncStatus("Saved on this device · sign in to sync");
+      else setSyncStatus("Saved on this device · account sync unavailable");
+    }).catch(() => setSyncStatus("Saved on this device · account sync unavailable"));
   }
 
   return <section className="ctLiveInterest" aria-labelledby="ct-live-interest-title">
