@@ -42,11 +42,17 @@ export default function MessagesPage() {
     fetch("/api/messages", { cache: "no-store" }).then(async response => {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Inbox is unavailable.");
-      if (!cancelled) setConversations(result.conversations || []);
+      const items: Conversation[] = result.conversations || [];
+      if (!cancelled) {
+        setConversations(items);
+        const requestedHandle = new URLSearchParams(window.location.search).get("with")?.toLowerCase();
+        const requested = items.find(item => item.peer.handle === requestedHandle);
+        if (requested) void openConversation(requested.peer);
+      }
     }).catch(e => { if (!cancelled) setError(e instanceof Error ? e.message : "Inbox is unavailable."); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [openConversation]);
 
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
