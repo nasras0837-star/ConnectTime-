@@ -65,7 +65,7 @@ export function IntroExplorer() {
       <div className="experienceDetail" aria-live="polite">
         <div className="detailIcon">{active.icon}</div>
         <div><span>YOUR NEXT DISCOVERY</span><b>{active.title}</b><p>{active.detail}</p></div>
-        <Link href={active.href ?? "/signup"}>{active.href?.startsWith("/coming-soon/") ? "View feature status" : active.href ? "Explore this feature" : "Join the community"} ↗</Link>
+        <Link href={active.href ?? "/register"}>{active.href?.startsWith("/coming-soon/") ? "View feature status" : active.href ? "Explore this feature" : "Register now"} ↗</Link>
       </div>
       <p className="showcaseNote">ConnectTime is being built in stages. Some experiences shown here are previews and are not yet available. Membership is for adults 18+.</p>
     </section>
