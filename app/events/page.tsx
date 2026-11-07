@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 
 type EventItem = { title: string; category: string; date: string; time: string; city: string; country: string; venue: string; description: string; price: string; host: string; emoji: string };
@@ -29,7 +29,7 @@ export default function EventsPage() {
   }), [events, category, query]);
 
   function update(field: keyof typeof form, value: string) { setForm((current) => ({ ...current, [field]: value })); }
-  function addPreview(event: React.FormEvent<HTMLFormElement>) {
+  function addPreview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const next = { ...form, emoji: "📅" };
     setEvents((current) => [next, ...current]);
