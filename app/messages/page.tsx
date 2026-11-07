@@ -31,6 +31,7 @@ export default function MessagesPage() {
       const response = await fetch("/api/messages?with=" + encodeURIComponent(selected.handle), { cache: "no-store" });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Conversation is unavailable.");
+      setPeer(result.peer || selected);
       setMessages(result.messages || []);
       await fetch("/api/messages", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ peerHandle: selected.handle }) });
       await loadInbox();
@@ -48,6 +49,9 @@ export default function MessagesPage() {
         const requestedHandle = new URLSearchParams(window.location.search).get("with")?.toLowerCase();
         const requested = items.find(item => item.peer.handle === requestedHandle);
         if (requested) void openConversation(requested.peer);
+        else if (requestedHandle && /^[a-z0-9_]{3,24}$/.test(requestedHandle)) {
+          void openConversation({ handle: requestedHandle, displayName: requestedHandle, country: "" });
+        }
       }
     }).catch(e => { if (!cancelled) setError(e instanceof Error ? e.message : "Inbox is unavailable."); })
       .finally(() => { if (!cancelled) setLoading(false); });
