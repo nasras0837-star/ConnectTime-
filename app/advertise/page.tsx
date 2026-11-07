@@ -36,7 +36,7 @@ export default function AdvertisePage() {
   const totalBudget = Math.max(0, Number(budget) || 0);
   const dailyBudget = startDate && endDate && new Date(endDate) >= new Date(startDate)
     ? totalBudget / (Math.floor((new Date(endDate).getTime() - new Date(startDate).getTime()) / 86400000) + 1) : null;
-  const objective = goal.replaceAll("-", " ").replace(/\\b\\w/g, (letter) => letter.toUpperCase());
+  const objective = goal.replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 
   return (
     <main className="adMarketplace">
