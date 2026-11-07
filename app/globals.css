@@ -451,3 +451,39 @@
 @media(max-width:850px){.newsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.newsHeroArt{width:190px;height:190px;flex-basis:190px}.newsHeroArt>span{font-size:90px}}
 @media(max-width:600px){.newsHeader{height:65px}.newsHeader nav{gap:11px;font-size:10px}.newsBrand img{width:94px}.newsJoin{padding:9px}.newsHero{min-height:0;padding:42px 20px}.newsHeroArt{display:none}.newsHero h1{font-size:48px}.newsContent{padding:28px 14px 42px}.newsHeading{align-items:stretch;flex-direction:column}.newsSearch{width:100%}.newsGrid{grid-template-columns:1fr}.newsCardBody>p{min-height:0}.newsCardFoot{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.newsPage *, .newsPage *:before,.newsPage *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Main-page vibrant atmosphere: layered color, playful shapes, and soft motion */
+.socialHome{position:relative;isolation:isolate;overflow-x:clip;background:radial-gradient(ellipse at 8% 8%,#c8efff 0,transparent 24%),radial-gradient(ellipse at 91% 15%,#ffe0f1 0,transparent 25%),radial-gradient(ellipse at 78% 72%,#d9f6e9 0,transparent 24%),radial-gradient(ellipse at 12% 86%,#e8ddff 0,transparent 27%),linear-gradient(135deg,#f7fbff 0%,#f8f5ff 48%,#fff8fb 100%)}
+.socialHome:before,.socialHome:after{content:"";position:fixed;pointer-events:none;z-index:-1;border-radius:50%;filter:blur(1px);opacity:.7;animation:ctAmbientFloat 18s ease-in-out infinite alternate}
+.socialHome:before{width:360px;height:360px;left:-190px;top:24%;background:radial-gradient(circle at 60% 40%,#9de8e2aa 0,#b9e9ff66 48%,transparent 72%)}
+.socialHome:after{width:430px;height:430px;right:-230px;top:48%;background:radial-gradient(circle at 40% 45%,#ffc8e6aa 0,#d8c9ff66 50%,transparent 72%);animation-delay:-8s}
+@keyframes ctAmbientFloat{from{transform:translate3d(0,-16px,0) scale(.96)}to{transform:translate3d(18px,24px,0) scale(1.08)}}
+.socialHome .vHeader{background:#ffffffd9;box-shadow:0 5px 24px #35627a0a;backdrop-filter:blur(20px)}
+.socialLayout{position:relative}
+.socialLayout:before{content:"✦   ·     ✧       ·       ✦";position:absolute;z-index:-1;right:5%;top:8px;color:#70b8c5;font-size:25px;letter-spacing:18px;opacity:.35;pointer-events:none}
+.socialProfile,.rightCard,.socialComposer,.socialPost{box-shadow:0 9px 28px #3b6c8010,0 2px 7px #3b6c8008;border-color:#e2edf1}
+.socialProfile{background:linear-gradient(155deg,#fff 0%,#f8fdff 100%)}
+.profileCover{position:relative;overflow:hidden;background:linear-gradient(115deg,#1a7ca5,#34b7a0 55%,#9bdcc9)}
+.profileCover:after{content:"";position:absolute;width:150px;height:150px;border:1px solid #ffffff55;border-radius:50%;right:-25px;top:-85px;box-shadow:0 0 0 18px #ffffff12,0 0 0 38px #ffffff0b}
+.socialNav a{transition:transform .2s,background .2s,color .2s}
+.socialNav a:hover{transform:translateX(3px);background:#e5f4fa;color:#176d88}
+.socialCover{box-shadow:0 18px 38px #24617b22;background:linear-gradient(120deg,#174c68,#277f91 58%,#42a98d)}
+.coverPhoto{filter:saturate(1.13) contrast(1.02)}
+.coverShade{background:radial-gradient(circle at 83% 20%,#ffdcf333 0 9%,transparent 10%),radial-gradient(circle at 92% 72%,#b4f5e933 0 12%,transparent 13%),linear-gradient(95deg,#103d58f2 0%,#14536bc9 48%,#176c6970 100%)}
+.socialCover:after{content:"";position:absolute;z-index:0;pointer-events:none;right:-48px;top:-78px;width:260px;height:260px;border:1px solid #ffffff45;border-radius:50%;box-shadow:0 0 0 22px #ffffff10,0 0 0 48px #ffffff0b,0 0 0 76px #ffffff08}
+.coverCopy{position:relative;z-index:2}
+.coverCopy h1 em{color:#aaf2df;font-style:normal}
+.coverCopy .introEyebrow{display:inline-block;padding:7px 11px;border:1px solid #ffffff45;border-radius:30px;background:#ffffff18;backdrop-filter:blur(8px)}
+.introPeople{filter:drop-shadow(0 12px 20px #0b344b35)}
+.peopleBubble{border:3px solid #ffffffd9;box-shadow:0 8px 24px #092d4440;animation:ctAmbientFloat 5s ease-in-out infinite alternate}
+.peopleBubble:nth-child(2){animation-delay:-1.2s}.peopleBubble:nth-child(3){animation-delay:-2.3s}.peopleBubble:nth-child(4){animation-delay:-3.1s}
+.peopleCaption{border:1px solid #ffffff55;background:#ffffffec;box-shadow:0 12px 28px #0b344b35}
+.socialComposer{background:linear-gradient(120deg,#fff 0%,#f5fcff 55%,#fff7fc 100%)}
+.socialPost{transition:transform .22s,box-shadow .22s}
+.socialPost:hover{transform:translateY(-2px);box-shadow:0 15px 34px #3b6c8018}
+.postTag{background:#e7f4fa;color:#277b91}
+.rightCard{background:linear-gradient(155deg,#fff,#fbfdff)}
+.adultCard{background:linear-gradient(120deg,#e4f5ee,#e5f2fb)}
+.socialNotice{border:1px solid #dcebf0;background:linear-gradient(110deg,#edf8fb,#f5f0ff);border-radius:14px}
+@media(prefers-reduced-motion:reduce){.socialHome:before,.socialHome:after,.peopleBubble{animation:none!important}}
