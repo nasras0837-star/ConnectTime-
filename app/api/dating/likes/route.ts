@@ -27,9 +27,11 @@ export async function GET() {
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.likesTableId, queries: [Query.equal("recipient_user_id", user.$id), Query.limit(100)] }),
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.likesTableId, queries: [Query.equal("sender_user_id", user.$id), Query.limit(100)] })
     ]);
+    const sentUserIds = [...new Set(sent.rows.map(row => String(row.recipient_user_id)))];
+    const sentProfiles = sentUserIds.length ? await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", sentUserIds), Query.limit(100)] }) : { rows: [] };
     return NextResponse.json({
       received: received.rows.map(row => ({ id: String(row.$id), senderUserId: String(row.sender_user_id), createdAt: String(row.created_at || "") })),
-      sent: sent.rows.map(row => String(row.recipient_user_id))
+      sent: sentProfiles.rows.map(row => String(row.handle || "")).filter(Boolean)
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Dating likes lookup failed", error instanceof Error ? error.message : "unknown");
