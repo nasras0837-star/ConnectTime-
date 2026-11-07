@@ -60,7 +60,7 @@ The Appwrite API key must be created in the same Appwrite project. Do not paste 
 
 ## Staff review
 
-Open `/advertising-review` after setting `AD_REVIEW_ADMIN_TOKEN`. Enter the token to load the queue. Keep it private and use a secure staff device. The current simple token gate is a bootstrap control, not a replacement for staff accounts, MFA, role-based access, audit logs, or session management. Those are required before public commercial launch.
+Open `/advertising-review` after setting `AD_REVIEW_ADMIN_TOKEN`. Enter the token to load ad submissions, campaign budget/targeting drafts, and complaints. The reviewer must assess the ad creative and advertiser rights, then separately approve/reject/pause the campaign record. Keep it private and use a secure staff device. The current simple token gate is a bootstrap control, not a replacement for staff accounts, MFA, role-based access, audit logs, or session management. Those are required before public commercial launch.
 
 ## Copyright / trademark notices
 
