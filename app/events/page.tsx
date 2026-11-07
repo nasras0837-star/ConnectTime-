@@ -17,6 +17,8 @@ const categories = ["All events", "Community & social", "Music & nightlife", "Sp
 
 export default function EventsPage() {
   const [events, setEvents] = useState(sampleEvents);
+  const today = new Date();
+  const minimumEventDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
   const [category, setCategory] = useState("All events");
   const [query, setQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -25,8 +27,9 @@ export default function EventsPage() {
 
   const visible = useMemo(() => events.filter((event) => {
     const matchesCategory = category === "All events" || event.category === category;
+    const isUpcoming = event.date >= minimumEventDate;
     const haystack = [event.title, event.city, event.country, event.venue, event.description, event.host].join(" ").toLowerCase();
-    return matchesCategory && haystack.includes(query.toLowerCase());
+    return isUpcoming && matchesCategory && haystack.includes(query.toLowerCase());
   }), [events, category, query]);
 
   function update(field: keyof typeof form, value: string) { setForm((current) => ({ ...current, [field]: value })); }
@@ -52,6 +55,7 @@ export default function EventsPage() {
         <div className="eventsPills"><span>📍 Local meetups</span><span>🎵 Music & culture</span><span>🤝 Community gatherings</span><span>🌎 Across the globe</span></div>
       </section>
       <section className="eventsMain" id="discover-events">
+        <p className="eventsPreviewNotice" role="note">Preview directory: sample listings are illustrative and are not verified or confirmed events. Event submissions are temporary page previews and are not published publicly.</p>
         <div className="eventsSectionHead"><div><span>FIND YOUR NEXT EXPERIENCE</span><h2>Events around the world</h2><p>Search by event, city, country, or venue.</p></div><button type="button" onClick={() => { setShowForm(true); setSubmitted(false); }}>＋ Add your event</button></div>
         <div className="eventsSearch"><span>⌕</span><input aria-label="Search events or places" placeholder="Try “live music”, “Miami”, or “London”…" value={query} onChange={(e) => setQuery(e.target.value)}/></div>
         <div className="eventsCategories" role="group" aria-label="Filter events by category">{categories.map((item) => <button type="button" key={item} className={category === item ? "active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div>
@@ -61,7 +65,7 @@ export default function EventsPage() {
           <form onSubmit={addPreview} className="eventForm">
             <label>Event name<input required maxLength={90} value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="e.g. Community food festival"/></label>
             <label>Category<select value={form.category} onChange={(e) => update("category", e.target.value)}>{categories.slice(1).map((item) => <option key={item}>{item}</option>)}</select></label>
-            <label>Date<input required type="date" min="2026-11-07" value={form.date} onChange={(e) => update("date", e.target.value)}/></label>
+            <label>Date<input required type="date" min={minimumEventDate} value={form.date} onChange={(e) => update("date", e.target.value)}/></label>
             <label>Start time<input required type="time" value={form.time} onChange={(e) => update("time", e.target.value)}/></label>
             <label>City<input required maxLength={70} value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="City"/></label>
             <label>Country<input required maxLength={70} value={form.country} onChange={(e) => update("country", e.target.value)} placeholder="Country"/></label>
