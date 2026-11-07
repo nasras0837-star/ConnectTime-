@@ -3,6 +3,10 @@ import { Client, Databases } from "node-appwrite";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 
 import type { AdultStatus, AccountStatus, MemberAccess } from "./access-policy";
+
+type AccessDecision =
+  | { allowed: true; access: MemberAccess }
+  | { allowed: false; status: 401 | 403 | 503; reason: "unauthenticated" | "not_eligible" | "not_configured" | "access_unavailable" };
 import { isEligible } from "./access-policy";
 
 export async function checkMemberAccess(): Promise<AccessDecision> {
