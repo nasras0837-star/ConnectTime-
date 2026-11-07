@@ -52,3 +52,6 @@ This repository is a staged prototype, not a production-ready social network. Do
 5. Run `npm run dev` and open `http://localhost:3000`.
 
 Never commit real environment secrets.
+
+
+The homepage live-interest feed now syncs topic preferences to the signed-in, verified adult member's private Appwrite settings row. Configure the optional `live_feed_topics` string column as described in `docs/APPWRITE_ACCOUNT_SETTINGS_SETUP.md`; signed-out visitors retain device-local preferences.
