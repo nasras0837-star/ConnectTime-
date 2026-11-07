@@ -45,11 +45,19 @@ export async function PUT(request: Request) {
   const region = typeof body.region === "string" ? body.region.trim() : "";
   const interests = typeof body.interests === "string" ? body.interests.split(",").map(v => v.trim()).filter(Boolean).slice(0, 12) : [];
   const visibility = typeof body.visibility === "string" ? body.visibility : "members";
+  const age = Number(body.age);
+  const gender = typeof body.gender === "string" ? body.gender.trim() : "";
+  const interestedIn = typeof body.interestedIn === "string" ? body.interestedIn.trim() : "everyone";
+  const relationshipGoal = typeof body.relationshipGoal === "string" ? body.relationshipGoal.trim() : "friendship";
 
   if (!/^[a-z0-9_]{3,24}$/.test(handle)) return NextResponse.json({ error: "Handle must be 3–24 characters using lowercase letters, numbers, or underscores." }, { status: 400 });
   if (!displayName || displayName.length > 80) return NextResponse.json({ error: "Display name is required and must be 80 characters or fewer." }, { status: 400 });
   if (bio.length > 500 || region.length > 100 || !country || country.length > 80) return NextResponse.json({ error: "Check your bio, country, or region fields." }, { status: 400 });
   if (interests.some(v => v.length > 32) || interests.join(",").length > 384) return NextResponse.json({ error: "Each interest must be 32 characters or fewer." }, { status: 400 });
+  if (!Number.isInteger(age) || age < 18 || age > 110) return NextResponse.json({ error: "Dating profiles require an age between 18 and 110." }, { status: 400 });
+  if (!["woman", "man", "nonbinary", "prefer_not_to_say"].includes(gender)) return NextResponse.json({ error: "Choose a valid gender option." }, { status: 400 });
+  if (!["everyone", "women", "men", "nonbinary"].includes(interestedIn)) return NextResponse.json({ error: "Choose a valid partner preference." }, { status: 400 });
+  if (!["serious_relationship", "dating", "friendship"].includes(relationshipGoal)) return NextResponse.json({ error: "Choose a valid relationship goal." }, { status: 400 });
   if (!["public", "members", "friends", "private"].includes(visibility)) return NextResponse.json({ error: "Choose a valid profile visibility setting." }, { status: 400 });
 
   try {
@@ -72,6 +80,10 @@ export async function PUT(request: Request) {
       country,
       region,
       interests: interests.join(", "),
+      age,
+      gender,
+      interested_in: interestedIn,
+      relationship_goal: relationshipGoal,
       visibility,
       updated_at: new Date().toISOString(),
     };
