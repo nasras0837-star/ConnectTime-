@@ -17,6 +17,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
   const [messageDraft, setMessageDraft] = useState("");
   const [chatBusy, setChatBusy] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [isMember, setIsMember] = useState(false);
   const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
   const [groupInvitations, setGroupInvitations] = useState<JoinRequest[]>([]);
   const [inviteHandle, setInviteHandle] = useState("");
@@ -38,7 +39,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       const response = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/posts`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not load group discussion.");
-      setGroup(data.group); setPosts(data.posts || []);
+      setGroup(data.group); setPosts(data.posts || []); setIsMember(Boolean(data.member));
       const chatResponse = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/messages`, { cache: "no-store" });
       if (chatResponse.ok) { const chatData = await chatResponse.json(); setMessages(chatData.messages || []); }
       const membersResponse = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/members`, { cache: "no-store" });
@@ -124,11 +125,13 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
           </div>}
         </article>)}
       </section>}
+      {isMember && (
       <section className="groupOwnerRequests">
         <div className="communityFeedHead"><div><span>MEMBERS ONLY</span><h2>Group chat</h2><p>Talk with verified members of this community. Messages refresh when you open or refresh the discussion.</p></div><button type="button" onClick={() => void refresh()}>Refresh chat</button></div>
         <div className="communityPosts" aria-live="polite">{messages.length ? messages.map(message => <article className="communityPost" key={message.id}><div className="communityPostHead"><div className="communityAvatar">{(message.author.displayName || "M").slice(0,1).toUpperCase()}</div><div><b>{message.author.displayName}{message.mine ? " · You" : ""}</b><span>@{message.author.handle} · {new Date(message.createdAt).toLocaleString()}</span></div></div><p>{message.body}</p></article>) : <p className="communityEmpty">No group messages yet. Say hello to your community.</p>}</div>
         <form className="communityComposer" onSubmit={sendGroupMessage}><div className="communityComposerTitle"><div><span>GROUP CHAT</span><h3>Send a message</h3></div><small>{messageDraft.length}/2000</small></div><textarea value={messageDraft} onChange={e => setMessageDraft(e.target.value.slice(0,2000))} maxLength={2000} rows={3} required placeholder="Write a message to your group…" /><div className="communityComposerFoot"><span>Keep it respectful. 20 messages per minute maximum.</span><button type="submit" disabled={chatBusy || !messageDraft.trim()}>{chatBusy ? "Sending…" : "Send message"}</button></div></form>
       </section>
+      )}
       <form className="communityComposer" onSubmit={publish}><div className="communityComposerTitle"><div><span>SHARE WITH THIS GROUP</span><h2>Start a discussion</h2></div><small>{draft.length}/1500</small></div><textarea value={draft} onChange={e => setDraft(e.target.value.slice(0,1500))} maxLength={1500} rows={4} required placeholder="Share an idea or ask the group a question…" /><div className="communityComposerFoot"><span>Respectful discussion is encouraged. Text only for now.</span><button type="submit" disabled={busy || !draft.trim()}>{busy ? "Publishing…" : "Publish"}</button></div></form>
       <div className="communityFeedHead"><div><span>GROUP CONVERSATION</span><h2>Recent discussions</h2></div><button type="button" onClick={() => void refresh()}>Refresh</button></div>
       {loading ? <p className="communityEmpty">Loading discussion…</p> : posts.length ? <div className="communityPosts">{posts.map(post => <article className="communityPost" key={post.id}><div className="communityPostHead"><div className="communityAvatar">{(post.author.displayName || "M").slice(0,1).toUpperCase()}</div><div><b>{post.author.displayName}</b><span>@{post.author.handle} · {new Date(post.createdAt).toLocaleString()}</span></div></div><p>{post.body}</p></article>)}</div> : <div className="communityEmpty">No discussions yet. Start the conversation.</div>}
