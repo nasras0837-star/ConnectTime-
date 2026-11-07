@@ -20,7 +20,18 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     intro:"Meet people across countries and cultures, explore dating, shop the marketplace, join forums, and enjoy videos and creator media. Share your passions, discover new perspectives, and find your people—wherever in the world they may be.",
     freeProfile:"Create your free profile ↗", exploreVideo:"Explore ConnectTime Video Tube", community:"YOUR COMMUNITY",
     latestConversations:"Latest conversations", forYou:"For you", sampleNotice:"You’re viewing a design preview with sample community posts. Accounts, posting, messaging, marketplace transactions, and live features will be enabled as the platform’s backend and safety systems are completed.",
-    language:"Language", languageSaved:"Your language choice is saved on this device."
+    language:"Language", languageSaved:"Your language choice is saved on this device.",
+    createAccount:"Create your account",
+    adultsOnly:"ConnectTime is for adults aged 18 and over.",
+    displayName:"Display name",
+    emailAddress:"Email address",
+    countryWhereLive:"Country where you live",
+    password:"Password",
+    confirm18:"I confirm that I am at least 18 years old.",
+    createAccountButton:"Create account",
+    alreadyRegistered:"Already registered?",
+    newToConnectTime:"New to ConnectTime?",
+    ageVerificationNote:"Age confirmation is not identity verification. Full platform access remains locked until a trusted verification provider independently confirms adult eligibility."
   },
   es: {
     home:"Inicio", friends:"Amigos", requests:"Solicitudes de amistad", messages:"Mensajes", videoChat:"Videollamada",
@@ -32,7 +43,18 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     intro:"Conoce personas de distintos países y culturas, explora citas, compra en el mercado, únete a foros y disfruta de videos y contenido de creadores. Comparte tus pasiones y encuentra a tu gente en cualquier parte del mundo.",
     freeProfile:"Crea tu perfil gratis ↗", exploreVideo:"Explorar ConnectTime Video Tube", community:"TU COMUNIDAD",
     latestConversations:"Conversaciones recientes", forYou:"Para ti", sampleNotice:"Estás viendo una vista previa con publicaciones de ejemplo. Las cuentas, publicaciones, mensajes, compras y funciones en vivo se habilitarán cuando estén listos los sistemas de backend y seguridad.",
-    language:"Idioma", languageSaved:"Tu idioma se guarda en este dispositivo."
+    language:"Idioma", languageSaved:"Tu idioma se guarda en este dispositivo.",
+    createAccount:"Crea tu cuenta",
+    adultsOnly:"ConnectTime es para adultos mayores de 18 años.",
+    displayName:"Nombre para mostrar",
+    emailAddress:"Correo electrónico",
+    countryWhereLive:"País donde vives",
+    password:"Contraseña",
+    confirm18:"Confirmo que tengo al menos 18 años.",
+    createAccountButton:"Crear cuenta",
+    alreadyRegistered:"¿Ya tienes una cuenta?",
+    newToConnectTime:"¿Nuevo en ConnectTime?",
+    ageVerificationNote:"La confirmación de edad no verifica tu identidad. El acceso completo requiere verificación independiente de edad adulta."
   },
   fr: {
     home:"Accueil", friends:"Amis", requests:"Demandes d’amis", messages:"Messages", videoChat:"Appel vidéo",
@@ -44,7 +66,18 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     intro:"Rencontrez des personnes de différents pays et cultures, découvrez les rencontres, le marketplace, les forums, les vidéos et les créateurs. Partagez vos passions et trouvez votre communauté partout dans le monde.",
     freeProfile:"Créer votre profil gratuitement ↗", exploreVideo:"Découvrir ConnectTime Video Tube", community:"VOTRE COMMUNAUTÉ",
     latestConversations:"Dernières conversations", forYou:"Pour vous", sampleNotice:"Vous consultez un aperçu avec des publications fictives. Les comptes, publications, messages, achats et fonctions en direct seront activés lorsque le backend et les systèmes de sécurité seront prêts.",
-    language:"Langue", languageSaved:"Votre langue est enregistrée sur cet appareil."
+    language:"Langue", languageSaved:"Votre langue est enregistrée sur cet appareil.",
+    createAccount:"Créer votre compte",
+    adultsOnly:"ConnectTime est réservé aux adultes de 18 ans et plus.",
+    displayName:"Nom affiché",
+    emailAddress:"Adresse e-mail",
+    countryWhereLive:"Pays de résidence",
+    password:"Mot de passe",
+    confirm18:"Je confirme avoir au moins 18 ans.",
+    createAccountButton:"Créer un compte",
+    alreadyRegistered:"Déjà inscrit ?",
+    newToConnectTime:"Nouveau sur ConnectTime ?",
+    ageVerificationNote:"La confirmation de l’âge ne vérifie pas votre identité. L’accès complet nécessite une vérification indépendante de l’âge adulte."
   },
   ar: {
     home:"الرئيسية", friends:"الأصدقاء", requests:"طلبات الصداقة", messages:"الرسائل", videoChat:"محادثة فيديو",
@@ -56,7 +89,18 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     intro:"تعرّف على أشخاص من بلدان وثقافات مختلفة، واكتشف المواعدة والسوق والمنتديات ومقاطع الفيديو ومحتوى المبدعين. شارك شغفك واعثر على مجتمعك في أي مكان حول العالم.",
     freeProfile:"أنشئ ملفك مجانًا ↗", exploreVideo:"استكشف ConnectTime Video Tube", community:"مجتمعك",
     latestConversations:"أحدث المحادثات", forYou:"لك", sampleNotice:"أنت تشاهد معاينة تصميم تحتوي على منشورات تجريبية. سيتم تفعيل الحسابات والمنشورات والرسائل والمشتريات والميزات المباشرة بعد اكتمال الأنظمة الخلفية وأنظمة السلامة.",
-    language:"اللغة", languageSaved:"يتم حفظ اختيار اللغة على هذا الجهاز."
+    language:"اللغة", languageSaved:"يتم حفظ اختيار اللغة على هذا الجهاز.",
+    createAccount:"إنشاء حسابك",
+    adultsOnly:"ConnectTime مخصص للبالغين من عمر 18 عامًا فأكثر.",
+    displayName:"اسم العرض",
+    emailAddress:"البريد الإلكتروني",
+    countryWhereLive:"بلد الإقامة",
+    password:"كلمة المرور",
+    confirm18:"أؤكد أن عمري 18 عامًا على الأقل.",
+    createAccountButton:"إنشاء حساب",
+    alreadyRegistered:"هل لديك حساب بالفعل؟",
+    newToConnectTime:"هل أنت جديد في ConnectTime؟",
+    ageVerificationNote:"تأكيد العمر لا يعني التحقق من الهوية. يتطلب الوصول الكامل تحققًا مستقلًا من الأهلية للبالغين."
   },
   pt: {
     home:"Início", friends:"Amigos", requests:"Solicitações de amizade", messages:"Mensagens", videoChat:"Videochamada",
@@ -68,7 +112,18 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     intro:"Conheça pessoas de diferentes países e culturas, explore relacionamentos, compre no marketplace, participe de fóruns e aproveite vídeos e conteúdo de criadores. Compartilhe suas paixões e encontre sua comunidade no mundo todo.",
     freeProfile:"Crie seu perfil grátis ↗", exploreVideo:"Explore o ConnectTime Video Tube", community:"SUA COMUNIDADE",
     latestConversations:"Conversas recentes", forYou:"Para você", sampleNotice:"Você está vendo uma prévia com publicações de exemplo. Contas, publicações, mensagens, compras e recursos ao vivo serão ativados quando o backend e os sistemas de segurança estiverem prontos.",
-    language:"Idioma", languageSaved:"Sua escolha de idioma fica salva neste dispositivo."
+    language:"Idioma", languageSaved:"Sua escolha de idioma fica salva neste dispositivo.",
+    createAccount:"Crie sua conta",
+    adultsOnly:"O ConnectTime é destinado a adultos com 18 anos ou mais.",
+    displayName:"Nome de exibição",
+    emailAddress:"Endereço de e-mail",
+    countryWhereLive:"País onde você mora",
+    password:"Senha",
+    confirm18:"Confirmo que tenho pelo menos 18 anos.",
+    createAccountButton:"Criar conta",
+    alreadyRegistered:"Já tem uma conta?",
+    newToConnectTime:"Novo no ConnectTime?",
+    ageVerificationNote:"A confirmação de idade não verifica sua identidade. O acesso completo exige verificação independente de idade adulta."
   },
   hi: {
     home:"होम", friends:"दोस्त", requests:"दोस्ती के अनुरोध", messages:"संदेश", videoChat:"वीडियो चैट",
@@ -80,6 +135,17 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     intro:"अलग-अलग देशों और संस्कृतियों के लोगों से मिलें, डेटिंग देखें, मार्केटप्लेस में खरीदारी करें, फ़ोरम से जुड़ें और वीडियो व क्रिएटर सामग्री का आनंद लें। अपने शौक साझा करें और दुनिया में कहीं भी अपने लोग खोजें।",
     freeProfile:"अपनी मुफ़्त प्रोफ़ाइल बनाएँ ↗", exploreVideo:"ConnectTime Video Tube देखें", community:"आपका समुदाय",
     latestConversations:"हाल की बातचीत", forYou:"आपके लिए", sampleNotice:"आप उदाहरण पोस्ट वाला डिज़ाइन प्रीव्यू देख रहे हैं। अकाउंट, पोस्ट, संदेश, खरीदारी और लाइव सुविधाएँ बैकएंड और सुरक्षा प्रणालियाँ पूरी होने पर चालू होंगी।",
-    language:"भाषा", languageSaved:"आपकी भाषा इस डिवाइस पर सहेजी जाती है।"
+    language:"भाषा", languageSaved:"आपकी भाषा इस डिवाइस पर सहेजी जाती है।",
+    createAccount:"अपना खाता बनाएँ",
+    adultsOnly:"ConnectTime 18 वर्ष और उससे अधिक आयु के वयस्कों के लिए है।",
+    displayName:"प्रदर्शित नाम",
+    emailAddress:"ईमेल पता",
+    countryWhereLive:"आपका निवास देश",
+    password:"पासवर्ड",
+    confirm18:"मैं पुष्टि करता/करती हूँ कि मेरी आयु कम से कम 18 वर्ष है।",
+    createAccountButton:"खाता बनाएँ",
+    alreadyRegistered:"क्या आपका पहले से खाता है?",
+    newToConnectTime:"ConnectTime पर नए हैं?",
+    ageVerificationNote:"आयु की पुष्टि पहचान सत्यापन नहीं है। पूर्ण पहुँच के लिए स्वतंत्र वयस्क आयु सत्यापन आवश्यक है।"
   },
 };
