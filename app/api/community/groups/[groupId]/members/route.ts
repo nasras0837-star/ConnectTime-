@@ -17,7 +17,7 @@ async function contextFor(groupId: string, userId: string) {
     tablesDB.getRow({ databaseId, tableId: groups, rowId: groupId }),
     tablesDB.listRows({ databaseId, tableId: members, queries: [Query.equal("group_id", groupId), Query.equal("user_id", userId), Query.equal("status", "active"), Query.limit(1)] })
   ]);
-  return { tablesDB, databaseId, members, profiles, group, ownMembership: ownRows.rows[0] || null };
+  return { tablesDB, databaseId, groups, members, profiles, group, ownMembership: ownRows.rows[0] || null };
 }
 
 async function eligibleTarget(userId: string) {
