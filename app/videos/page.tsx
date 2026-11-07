@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
 type Video = { id: string; title: string; creator: string; category: string; views: string; duration: string; description: string };
@@ -68,7 +69,7 @@ export default function VideosPage() {
     return list;
   }, [active, interests, query, signals]);
   return <main className="videoShell">
-    <header className="videoHeader"><Link className="videoBrand" href="/">Connect<span>Time</span></Link><nav><Link href="/">Home</Link><Link href="/account">My account</Link></nav></header>
+    <header className="videoHeader"><Link className="videoBrand" href="/" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={112} height={73} priority className="ctVideoLogo"/></Link><nav><Link href="/">Home</Link><Link href="/account">My account</Link></nav></header>
     <section className="videoIntro"><div className="videoEyebrow">CONNECTTIME TV</div><h1>Watch what<br/><span>moves you.</span></h1><p>A video feed shaped by the topics you explore and the videos you enjoy.</p>
       <form className="videoSearch" onSubmit={(event) => {event.preventDefault(); submitSearch();}}><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search videos, creators, or interests…" aria-label="Search videos"/><button type="submit">Search</button></form>
       {history.length > 0 && <div className="searchHistory"><span>Recent searches</span>{history.slice(0,4).map((item) => <button key={item} onClick={() => {setQuery(item); submitSearch(item);}}>{item}</button>)}</div>}
