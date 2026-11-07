@@ -16,6 +16,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
   const [messages, setMessages] = useState<GroupMessage[]>([]);
   const [messageDraft, setMessageDraft] = useState("");
   const [chatBusy, setChatBusy] = useState(false);
+  const [chatUpdatedAt, setChatUpdatedAt] = useState("");
   const [isOwner, setIsOwner] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
@@ -41,7 +42,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       if (!response.ok) throw new Error(data.error || "Could not load group discussion.");
       setGroup(data.group); setPosts(data.posts || []); setIsMember(Boolean(data.member));
       const chatResponse = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/messages`, { cache: "no-store" });
-      if (chatResponse.ok) { const chatData = await chatResponse.json(); setMessages(chatData.messages || []); }
+      if (chatResponse.ok) { const chatData = await chatResponse.json(); setMessages(chatData.messages || []); setChatUpdatedAt(new Date().toISOString()); }
       const membersResponse = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/members`, { cache: "no-store" });
       if (membersResponse.ok) { const membersData = await membersResponse.json(); setIsOwner(Boolean(membersData.isOwner)); setJoinRequests(membersData.requests || []); setGroupInvitations(membersData.invitations || []); setMembers(membersData.members || []); }
     } catch (e) { setError(e instanceof Error ? e.message : "Could not load group discussion."); }
@@ -50,6 +51,41 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
 
   // eslint-disable-next-line react-hooks/set-state-in-effect -- Load discussion when route parameter resolves.
   useEffect(() => { if (groupId) void refresh(); }, [groupId]);
+
+  // Poll only while this member's group chat is visible; this is near-real-time
+  // refresh over HTTP, not a persistent WebSocket connection.
+  useEffect(() => {
+    if (!groupId || !isMember) return;
+    let active = true;
+    let inFlight = false;
+    const loadLatestMessages = async () => {
+      if (!active || inFlight || document.visibilityState !== "visible") return;
+      inFlight = true;
+      try {
+        const response = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/messages`, { cache: "no-store" });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (active && Array.isArray(data.messages)) {
+          setMessages(data.messages);
+          setChatUpdatedAt(new Date().toISOString());
+        }
+      } catch {
+        // Keep the current conversation visible; the next poll can retry.
+      } finally {
+        inFlight = false;
+      }
+    };
+    const interval = window.setInterval(() => { void loadLatestMessages(); }, 8000);
+    const refreshWhenVisible = () => { if (document.visibilityState === "visible") void loadLatestMessages(); };
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    window.addEventListener("focus", refreshWhenVisible);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+      window.removeEventListener("focus", refreshWhenVisible);
+    };
+  }, [groupId, isMember]);
 
   async function decideJoinRequest(membershipId: string, action: "approve" | "decline" | "remove" | "transfer") {
     setDecisionBusy(membershipId); setError(""); setNotice("");
@@ -80,7 +116,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       const response = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/messages`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ body: messageDraft }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not send group message.");
-      setMessages(current => [...current, data.message].slice(-100)); setMessageDraft("");
+      setMessages(current => [...current.filter(item => item.id !== data.message.id, data.message)].slice(-100)); setChatUpdatedAt(new Date().toISOString()); setMessageDraft("");
     } catch (e) { setError(e instanceof Error ? e.message : "Could not send group message."); }
     finally { setChatBusy(false); }
   }
@@ -127,7 +163,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       </section>}
       {isMember && (
       <section className="groupOwnerRequests">
-        <div className="communityFeedHead"><div><span>MEMBERS ONLY</span><h2>Group chat</h2><p>Talk with verified members of this community. Messages refresh when you open or refresh the discussion.</p></div><button type="button" onClick={() => void refresh()}>Refresh chat</button></div>
+        <div className="communityFeedHead"><div><span>MEMBERS ONLY</span><h2>Group chat</h2><p>Talk with verified members of this community. New messages appear automatically while this chat is open.</p></div><div className="groupChatLiveStatus"><span className="groupChatLiveDot" aria-hidden="true"/> Auto-updating · every 8 seconds{chatUpdatedAt ? <small>Updated {new Date(chatUpdatedAt).toLocaleTimeString()}</small> : null}<button type="button" onClick={() => void refresh()}>Refresh</button></div></div>
         <div className="communityPosts" aria-live="polite">{messages.length ? messages.map(message => <article className="communityPost" key={message.id}><div className="communityPostHead"><div className="communityAvatar">{(message.author.displayName || "M").slice(0,1).toUpperCase()}</div><div><b>{message.author.displayName}{message.mine ? " · You" : ""}</b><span>@{message.author.handle} · {new Date(message.createdAt).toLocaleString()}</span></div></div><p>{message.body}</p></article>) : <p className="communityEmpty">No group messages yet. Say hello to your community.</p>}</div>
         <form className="communityComposer" onSubmit={sendGroupMessage}><div className="communityComposerTitle"><div><span>GROUP CHAT</span><h3>Send a message</h3></div><small>{messageDraft.length}/2000</small></div><textarea value={messageDraft} onChange={e => setMessageDraft(e.target.value.slice(0,2000))} maxLength={2000} rows={3} required placeholder="Write a message to your group…" /><div className="communityComposerFoot"><span>Keep it respectful. 20 messages per minute maximum.</span><button type="submit" disabled={chatBusy || !messageDraft.trim()}>{chatBusy ? "Sending…" : "Send message"}</button></div></form>
       </section>
