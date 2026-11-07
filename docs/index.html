@@ -48,5 +48,71 @@ section{padding:34px 0 48px}.head{text-align:center;max-width:720px;margin:0 aut
 <div class="join"><div><h2>Your people. Your passions. Your ConnectTime. 🌐</h2><p>Explore the project as the platform continues to take shape.</p></div><a class="btn pink" href="https://github.com/nasras0837-star/ConnectTime-">View ConnectTime on GitHub ↗</a></div>
 <div class="notice"><b>Preview only:</b> This GitHub Pages site is a static design preview. Sign-up, accounts, posts, uploads, chat, calls, marketplace transactions, live video, and dating are not active here. The dating area is intended for adults 18+ and must require reliable government-ID age and identity verification before access. Do not submit personal or identity documents through this preview.</div>
 </main>
+
+<style>
+.aiPreview{position:fixed;right:22px;bottom:22px;z-index:30;font-family:inherit}
+.aiPreviewLauncher{display:flex;align-items:center;gap:10px;border:0;border-radius:99px;padding:13px 18px;color:#fff;font-weight:850;background:linear-gradient(110deg,#087eae,#16a99b 58%,#8b5ce8);box-shadow:0 12px 32px #174d6b55;cursor:pointer;transition:transform .2s}
+.aiPreviewLauncher:hover{transform:translateY(-3px)}
+.aiPreviewLauncher span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#ffffff2b;font-size:18px}
+.aiPreviewPanel{position:absolute;right:0;bottom:65px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100dvh - 105px));display:none;flex-direction:column;overflow:hidden;border:1px solid #dceaf0;border-radius:22px;background:#fff;box-shadow:0 24px 75px #183d5b40}
+.aiPreviewPanel.open{display:flex;animation:aiPreviewIn .2s ease-out}
+@keyframes aiPreviewIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.aiPreviewHead{display:flex;align-items:center;gap:11px;padding:15px 16px;color:#fff;background:linear-gradient(110deg,#0b729b,#159d99 58%,#805bd8)}
+.aiPreviewMark{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;background:#ffffff29;font-size:22px}
+.aiPreviewHead strong{display:block;font-size:13px}.aiPreviewHead small{display:block;margin-top:3px;color:#e0f8f5;font-size:10px}
+.aiPreviewClose{margin-left:auto;border:0;border-radius:50%;width:31px;height:31px;color:#fff;background:#ffffff25;font-size:21px;cursor:pointer}
+.aiPreviewMsgs{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:11px;background:radial-gradient(ellipse at 100% 0,#eef9ff,transparent 45%),#fbfdff}
+.aiPreviewBubble{align-self:flex-start;max-width:91%;padding:11px 13px;border-radius:15px 15px 15px 5px;background:#eef4f8;color:#344f61;font-size:12px;line-height:1.6;white-space:pre-wrap}
+.aiPreviewBubble.user{align-self:flex-end;border-radius:15px 15px 5px 15px;background:linear-gradient(110deg,#087eae,#159f9c);color:white}
+.aiPreviewQuick{display:grid;gap:7px}.aiPreviewQuick small{font-size:9px;font-weight:900;letter-spacing:1px;color:#8a9ba7}
+.aiPreviewQuick button{display:flex;justify-content:space-between;gap:8px;text-align:left;border:1px solid #dcecf2;border-radius:11px;padding:10px;background:#fff;color:#376579;font:inherit;font-size:11px;cursor:pointer}
+.aiPreviewForm{display:flex;gap:8px;padding:11px;border-top:1px solid #e7eef2}
+.aiPreviewForm input{flex:1;min-width:0;border:1px solid #dce8ee;border-radius:12px;padding:11px;font:12px inherit}
+.aiPreviewForm button{width:42px;border:0;border-radius:12px;background:linear-gradient(120deg,#087eae,#16a99b);color:#fff;font-size:18px;cursor:pointer}
+.aiPreviewDisclaimer{margin:0;padding:0 12px 11px;color:#94a0aa;font-size:9px;line-height:1.5}
+@media(max-width:600px){.aiPreview{right:13px;bottom:13px}.aiPreviewLauncher{padding:11px 15px}.aiPreviewPanel{bottom:60px;height:min(550px,calc(100dvh - 90px))}}
+@media(prefers-reduced-motion:reduce){.aiPreviewPanel.open,.aiPreviewLauncher{animation:none;transition:none}}
+</style>
+<div class="aiPreview">
+ <section class="aiPreviewPanel" id="aiPreviewPanel" aria-label="ConnectTime AI Guide">
+  <header class="aiPreviewHead"><div class="aiPreviewMark">✦</div><div><strong>ConnectTime AI Guide</strong><small>Website help & general questions · demo</small></div><button class="aiPreviewClose" id="aiPreviewClose" aria-label="Close">×</button></header>
+  <div class="aiPreviewMsgs" id="aiPreviewMsgs" aria-live="polite">
+   <div class="aiPreviewBubble">Hi! I’m the ConnectTime AI Guide preview. Ask me about website features, Chat Rooms, Video Tube, news, or getting around ConnectTime.</div>
+   <div class="aiPreviewQuick"><small>QUICK QUESTIONS</small>
+    <button data-question="What can I do on ConnectTime?">What can I do on ConnectTime? <b>↗</b></button>
+    <button data-question="How do Chat Rooms work?">How do Chat Rooms work? <b>↗</b></button>
+    <button data-question="What is ConnectTime Video Tube?">What is ConnectTime Video Tube? <b>↗</b></button>
+    <button data-question="How does adult dating verification work?">How does adult dating verification work? <b>↗</b></button>
+   </div>
+  </div>
+  <form class="aiPreviewForm" id="aiPreviewForm"><input id="aiPreviewInput" maxlength="500" placeholder="Ask about ConnectTime…" aria-label="Ask about ConnectTime"><button aria-label="Send">➤</button></form>
+  <p class="aiPreviewDisclaimer">Static preview with sample answers only — this is not connected to a live AI service. Don’t share passwords, payment details, or identity documents.</p>
+ </section>
+ <button class="aiPreviewLauncher" id="aiPreviewLauncher" aria-expanded="false"><span>✦</span> Ask ConnectTime</button>
+</div>
+<script>
+(()=>{
+ const panel=document.getElementById('aiPreviewPanel'),launch=document.getElementById('aiPreviewLauncher'),close=document.getElementById('aiPreviewClose'),msgs=document.getElementById('aiPreviewMsgs'),form=document.getElementById('aiPreviewForm'),input=document.getElementById('aiPreviewInput');
+ const answers=[
+  [/what can i do|features|connecttime about/i,"ConnectTime brings social features together: friend requests, messaging and video chat, photo and video posts, blogs, Marketplace, ConnectTime Video Tube, forums, public and private Chat Rooms, events, news topics, creator spaces, and an adults-only dating area. Some areas are still previews while the platform is being built."],
+  [/chat room|group|private room|public room/i,"Chat Rooms are designed for people to discover interest-based groups, search by topic, join public rooms, or request access to private rooms. The current website preview demonstrates the idea; shared room membership, messages, and secure invitations still need the production backend."],
+  [/video tube|creator|video post/i,"ConnectTime Video Tube is the planned video-post destination where members can discover creator videos and share their own content. Publishing, uploads, and creator tools may not yet be active in this preview."],
+  [/dating|verify|identity|age/i,"ConnectTime Dating is intended for adults 18+ only. Access must require reliable government-issued ID checks for age and identity. Never send an ID document or ID number through this chat preview."],
+  [/news|politic|sport|entertain/i,"The ConnectTime News area is planned to include Politics, Sports, Entertainment, and other topic categories. The current page shows category concepts rather than live headlines or a licensed news feed."],
+  [/marketplace|buy|sell/i,"Marketplace is intended to help community members discover listings, products, and services. Transactions and payments are not enabled in this static preview."],
+  [/friend|request/i,"Friend Requests are designed to help members connect, accept or decline invitations, and build their community. Account actions are not active on this static preview."],
+  [/blog|post|photo|picture/i,"ConnectTime is designed for sharing photos, videos, short updates, and longer blog-style stories. The visible feed is sample content; posting and media uploads are not active here."],
+  [/help|navigate|find|where/i,"Use the feature cards and sections on this page to explore the ConnectTime concept. This GitHub Pages version is a visual preview, so interactive account features are not connected yet."]
+ ];
+ function add(text,kind){const el=document.createElement('div');el.className='aiPreviewBubble'+(kind?' '+kind:'');el.textContent=text;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight}
+ function answer(q){const match=answers.find(([pattern])=>pattern.test(q));return match?match[1]:"I can help explain ConnectTime’s planned features, including Friends, Chat Rooms, Video Tube, Marketplace, Blogs, News, and adult-only Dating. This preview only contains sample answers; the live AI assistant will be available through the full Next.js application once its server-side AI configuration is complete."}
+ function ask(q){q=q.trim();if(!q)return;add(q,'user');setTimeout(()=>add(answer(q)),220)}
+ launch.addEventListener('click',()=>{panel.classList.toggle('open');launch.setAttribute('aria-expanded',String(panel.classList.contains('open')));if(panel.classList.contains('open'))input.focus()});
+ close.addEventListener('click',()=>{panel.classList.remove('open');launch.setAttribute('aria-expanded','false')});
+ form.addEventListener('submit',e=>{e.preventDefault();ask(input.value);input.value=''});
+ panel.querySelectorAll('[data-question]').forEach(button=>button.addEventListener('click',()=>ask(button.dataset.question)));
+})();
+</script>
+
 <footer><span>© 2026 ConnectTime · Discover • Create • Share • Connect · Adults 18+</span><span>Visual preview — not a live social service.</span></footer>
 </div></body></html>
