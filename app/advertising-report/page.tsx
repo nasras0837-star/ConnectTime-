@@ -14,7 +14,7 @@ export default function AdvertisingReportPage() {
       const response = await fetch("/api/advertising/complaints", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
       const result = await response.json();
       setMessage(response.ok ? `Report received. Reference: ${result.reference}` : result.error || "Unable to submit report.");
-      if (response.ok) setForm({ type: "copyright", adReference: "", workDescription: "", details: "", claimantName: "", claimantEmail: "", goodFaith: false });
+      if (response.ok) setForm({ type: "copyright", adReference: "", workDescription: "", details: "", claimantName: "", claimantEmail: "", claimantAddress: "", electronicSignature: "", goodFaith: false });
     } catch { setMessage("Reporting is temporarily unavailable. Please contact ConnectTime support."); }
     finally { setBusy(false); }
   }
