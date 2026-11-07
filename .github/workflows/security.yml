@@ -1,0 +1,25 @@
+name: ConnectTime security checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  security-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for accidentally committed environment files
+        shell: bash
+        run: |
+          if git ls-files | grep -E '(^|/)\.env($|\.)' | grep -v -E '(^|/)\.env\.example$'; then
+            echo 'Unexpected tracked .env file detected.'
+            exit 1
+          fi
+      - name: Dependency vulnerability audit
+        run: npm audit --audit-level=high
