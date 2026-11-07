@@ -23,14 +23,14 @@ export async function GET() {
     const s = store();
     const [groups, memberships] = await Promise.all([
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.groupsTableId, queries: [Query.equal("status", "active"), Query.orderDesc("created_at"), Query.limit(100)] }),
-      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.membersTableId, queries: [Query.equal("user_id", user.$id), Query.equal("status", "active"), Query.limit(100)] })
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.membersTableId, queries: [Query.equal("user_id", user.$id), Query.equal("status", ["active", "pending"]), Query.limit(100)] })
     ]);
-    const mine = new Set(memberships.rows.map(row => String(row.group_id)));
+    const membershipByGroup = new Map(memberships.rows.map(row => [String(row.group_id), String(row.status)]));
     const visible = groups.rows.filter(row => {
       const privacy = String(row.privacy || "public");
-      return privacy === "public" || privacy === "members" || (privacy === "private" && mine.has(String(row.$id)));
+      return privacy === "public" || privacy === "members" || (privacy === "private" && membershipByGroup.get(String(row.$id)) === "active");
     });
-    return NextResponse.json({ groups: visible.map(row => ({ id: String(row.$id), name: String(row.name), description: String(row.description || ""), privacy: String(row.privacy), membership: String(row.membership || "open"), member: mine.has(String(row.$id)), createdAt: String(row.created_at || "") })) }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ groups: visible.map(row => ({ id: String(row.$id), name: String(row.name), description: String(row.description || ""), privacy: String(row.privacy), membership: String(row.membership || "open"), member: membershipByGroup.get(String(row.$id)) === "active", requestPending: membershipByGroup.get(String(row.$id)) === "pending", createdAt: String(row.created_at || "") })) }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Community groups lookup failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Community groups are not configured or are temporarily unavailable." }, { status: 503 });
