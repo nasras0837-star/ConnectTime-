@@ -13,7 +13,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
   const [group, setGroup] = useState<Group | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isOwner, setIsOwner] = useState(false);
-  const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
+  const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);\n  const [groupInvitations, setGroupInvitations] = useState<JoinRequest[]>([]);\n  const [inviteHandle, setInviteHandle] = useState("");\n  const [inviteBusy, setInviteBusy] = useState(false);
   const [members, setMembers] = useState<GroupMember[]>([]);
   const [decisionBusy, setDecisionBusy] = useState("");
   const [draft, setDraft] = useState("");
@@ -33,7 +33,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       if (!response.ok) throw new Error(data.error || "Could not load group discussion.");
       setGroup(data.group); setPosts(data.posts || []);
       const membersResponse = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/members`, { cache: "no-store" });
-      if (membersResponse.ok) { const membersData = await membersResponse.json(); setIsOwner(Boolean(membersData.isOwner)); setJoinRequests(membersData.requests || []); setMembers(membersData.members || []); }
+      if (membersResponse.ok) { const membersData = await membersResponse.json(); setIsOwner(Boolean(membersData.isOwner)); setJoinRequests(membersData.requests || []); setGroupInvitations(membersData.invitations || []); setMembers(membersData.members || []); }
     } catch (e) { setError(e instanceof Error ? e.message : "Could not load group discussion."); }
     finally { setLoading(false); }
   }
@@ -53,6 +53,17 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
     finally { setDecisionBusy(""); }
   }
 
+  async function inviteMember(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setInviteBusy(true); setError(""); setNotice("");
+    try {
+      const response = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/members`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ handle: inviteHandle }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not send invitation.");
+      setInviteHandle(""); setNotice(data.alreadyMember ? "That member is already in this group." : "Group invitation sent.");
+      await refresh();
+    } catch (e) { setError(e instanceof Error ? e.message : "Could not send invitation."); }
+    finally { setInviteBusy(false); }
+  }
   async function publish(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setBusy(true); setError(""); setNotice("");
     try {
@@ -76,6 +87,12 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
           <div className="friendEntryCopy"><strong>{request.displayName}</strong><span>@{request.handle}{request.country ? " · " + request.country : ""}</span></div>
           <div className="friendEntryActions"><button type="button" disabled={decisionBusy === request.id} onClick={() => void decideJoinRequest(request.id, "approve")}>Approve</button><button type="button" className="secondary" disabled={decisionBusy === request.id} onClick={() => void decideJoinRequest(request.id, "decline")}>Decline</button></div>
         </article>) : <p className="communityEmpty">No membership requests are waiting for approval.</p>}
+      </section>}
+      {isOwner && <section className="groupOwnerRequests">
+        <div className="communityFeedHead"><div><span>GROUP ADMINISTRATION</span><h2>Invite a member</h2></div></div>
+        <form className="communityComposer" onSubmit={inviteMember}><label>Member handle<input value={inviteHandle} onChange={e => setInviteHandle(e.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required placeholder="Enter their ConnectTime handle" /></label><div className="communityComposerFoot"><span>Invitations are limited to discoverable, verified adult members.</span><button type="submit" disabled={inviteBusy}>{inviteBusy ? "Sending…" : "Send invitation"}</button></div></form>
+        <h3>Pending invitations ({groupInvitations.length})</h3>
+        {groupInvitations.length ? groupInvitations.map(invitation => <article className="friendEntry" key={invitation.id}><div className="friendEntryCopy"><strong>{invitation.displayName}</strong><span>@{invitation.handle} · Awaiting response</span></div></article>) : <p className="communityEmpty">No outstanding invitations.</p>
       </section>}
       {isOwner && <section className="groupOwnerRequests">
         <div className="communityFeedHead"><div><span>GROUP ADMINISTRATION</span><h2>Current members</h2></div><strong>{members.length}</strong></div>
