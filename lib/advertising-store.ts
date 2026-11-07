@@ -1,4 +1,5 @@
 import { Client, Databases, ID, Query } from "node-appwrite";
+import { timingSafeEqual } from "node:crypto";
 
 export function advertisingStore() {
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
@@ -14,10 +15,11 @@ export function advertisingStore() {
 
 export function requireReviewAdmin(request: Request) {
   const expected = process.env.AD_REVIEW_ADMIN_TOKEN;
-  const supplied = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
-  return Boolean(expected && supplied && supplied.length === expected.length &&
-    // Constant-time comparison without relying on request-controlled lengths.
-    Buffer.from(supplied).equals(Buffer.from(expected)));
+  const supplied = request.headers.get("authorization")?.replace(/^Bearer\\s+/i, "") || "";
+  if (!expected || !supplied) return false;
+  const a = Buffer.from(supplied);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
 }
 
 export { ID, Query };
