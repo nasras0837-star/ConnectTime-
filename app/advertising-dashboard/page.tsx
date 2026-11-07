@@ -102,7 +102,7 @@ export default function AdvertisingDashboardPage() {
     ] as const;
     const safeCell = (value: unknown) => {
       let text = value == null ? "" : String(value);
-      if (/^[=+\\-@\\t\\r]/.test(text)) text = "'" + text;
+      if (text.length > 0 && "=+-@\t\r".includes(text[0])) text = "'" + text;
       return '"' + text.replaceAll('"', '""') + '"';
     };
     const rows = [
@@ -115,7 +115,7 @@ export default function AdvertisingDashboardPage() {
         return safeCell(value);
       }).join(",")),
     ];
-    const csv = "\\uFEFF" + rows.join("\\r\\n");
+    const csv = "\uFEFF" + rows.join("\r\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
