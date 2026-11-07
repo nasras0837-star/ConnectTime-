@@ -38,6 +38,7 @@ export default function AdvertisingDashboardPage() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [scheduleFilter, setScheduleFilter] = useState("all");
   const [refreshing, setRefreshing] = useState(false);
 
   const loadCampaigns = async () => {
@@ -68,8 +69,17 @@ export default function AdvertisingDashboardPage() {
     const query = search.trim().toLowerCase();
     const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region].some(value => (value || "").toLowerCase().includes(query));
     const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
-    return matchesText && matchesStatus;
-  }), [campaigns, search, statusFilter]);
+    const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
+    const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
+    const now = Date.now();
+    const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
+    const matchesSchedule = scheduleFilter === "all" ||
+      (scheduleFilter === "unscheduled" && !hasSchedule) ||
+      (scheduleFilter === "upcoming" && hasSchedule && start > now) ||
+      (scheduleFilter === "current" && hasSchedule && start <= now && end >= now) ||
+      (scheduleFilter === "ended" && hasSchedule && end < now);
+    return matchesText && matchesStatus && matchesSchedule;
+  }), [campaigns, search, statusFilter, scheduleFilter]);
 
   const totals = useMemo(() => campaigns.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
@@ -95,8 +105,10 @@ export default function AdvertisingDashboardPage() {
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
+        <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
+      {!loading && !error && campaigns.length > 0 && <p className="ctCampaignResultCount" aria-live="polite">Showing {filtered.length} of {campaigns.length} campaigns</p>}
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status.</div> : <div className="ctCampaignList">{filtered.map(campaign => {
         const impressions = Number(campaign.impressions_count) || 0;
         const clicks = Number(campaign.clicks_count) || 0;
