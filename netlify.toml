@@ -1,6 +1,10 @@
 [build]
   command = "npm run build"
-  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Ensure Netlify runs the Next.js runtime adapter so App Router routes
+# such as /signup are served as application pages rather than static files.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
