@@ -156,6 +156,12 @@ export async function POST(request: Request) {
   if (!/^[a-z0-9_]{3,24}$/.test(recipientHandle) || !message || message.length > 2000) return NextResponse.json({ error: "Enter a valid recipient and a message of 1–2,000 characters." }, { status: 400 });
   try {
     const s = await services();
+    const recent = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.messagesTableId, queries: [
+      Query.equal("sender_user_id", user.$id),
+      Query.greaterThanEqual("created_at", new Date(Date.now() - 60_000).toISOString()),
+      Query.limit(21)
+    ] });
+    if (recent.rows.length >= 20) return NextResponse.json({ error: "You are sending messages too quickly. Please wait a minute and try again." }, { status: 429 });
     const peer = await profileByHandle(s, recipientHandle);
     if (!peer || !await peerAccess(s, user.$id, peer.userId)) return NextResponse.json({ error: "You can message only eligible members in your connections." }, { status: 403 });
     const now = new Date().toISOString();
