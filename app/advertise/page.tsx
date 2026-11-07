@@ -39,6 +39,7 @@ export default function AdvertisePage() {
   const [adCopy, setAdCopy] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [rightsConfirmed, setRightsConfirmed] = useState(false);
+  const [refundPolicyAccepted, setRefundPolicyAccepted] = useState(false);
   const [reviewing, setReviewing] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
   const [reviewStatus, setReviewStatus] = useState("");
@@ -51,6 +52,7 @@ export default function AdvertisePage() {
       setReviewMessage("Enter a daily budget of at least $1, a valid total campaign cap, and valid start/end dates.");
       return;
     }
+    if (!refundPolicyAccepted) { setReviewStatus("invalid"); setReviewMessage("Please acknowledge the advertising no-refund policy before submitting your campaign."); return; }
     setReviewing(true);
     try {
       const response = await fetch("/api/advertising/moderate", {
@@ -69,6 +71,7 @@ export default function AdvertisePage() {
             placement: format, region: selectedRegion, country: selectedCountry, geoTargets: locations,
             dailyBudgetMinor: Math.round(Number(dailyBudget) * 100),
             lifetimeCapMinor: Math.round(Number(campaignBudget) * 100), bidStrategy,
+            refundPolicyAccepted: true,
             startAt: new Date(startDate + "T00:00:00.000Z").toISOString(),
             endAt: new Date(endDate + "T23:59:59.999Z").toISOString(),
           }),
@@ -138,7 +141,8 @@ export default function AdvertisePage() {
             <div className="adSecureNote">🚫 No nudity, pornography, sexual services, exploitative content, hate, harassment, graphic violence, illegal products, scams, or deceptive ads. Suspected copyright/trademark violations require human review. AI screening does not prove ownership.</div>
             <p className="adBudgetNote" role="status">{reviewMessage || "AI screening must complete before review. A clean AI result is not final campaign approval."}</p>
           </section>
-          <div className="adSubmitArea"><button type="button" className="adSaveButton" onClick={submitForReview} disabled={reviewing || !budgetValid || !company.trim() || !campaign.trim() || (!headline.trim() && !adCopy.trim() && !imageUrl.trim()) || !rightsConfirmed}>{reviewing ? "Screening ad…" : "Submit ad for AI screening ↗"}</button><p>{reviewStatus === "rejected" ? "Rejected: payment and publication are blocked." : reviewStatus === "manual_review_required" ? "AI screen passed. Human copyright, trademark, identity, and policy review is still required. Payment and publication remain blocked." : "No payment is collected and no ad is published through this preview."} <Link href="/advertising-dashboard">View campaign drafts ↗</Link></p></div>
+          <section className="adRefundPolicy"><h3>Advertising payment and refund policy</h3><p>Once an advertising campaign is approved, payment is authorized, and the advertising service has been delivered, advertising fees are non-refundable, except where a refund is required by applicable law, a duplicate or erroneous charge is confirmed, or ConnectTime fails to provide the paid advertising service. Unused budget is not automatically charged. Cancelling a campaign stops future delivery when cancellation is available; it does not reverse valid charges for advertising already delivered. Any statutory consumer rights remain unaffected.</p><label className="adRightsCheck"><input type="checkbox" checked={refundPolicyAccepted} onChange={(e) => setRefundPolicyAccepted(e.target.checked)} /> I have read and agree to the advertising payment and refund policy. I understand that valid charges for advertising already delivered are non-refundable except as stated above or required by law.</label></section>
+          <div className="adSubmitArea"><button type="button" className="adSaveButton" onClick={submitForReview} disabled={reviewing || !budgetValid || !company.trim() || !campaign.trim() || (!headline.trim() && !adCopy.trim() && !imageUrl.trim()) || !rightsConfirmed || !refundPolicyAccepted}>{reviewing ? "Screening ad…" : "Submit ad for AI screening ↗"}</button><p>{reviewStatus === "rejected" ? "Rejected: payment and publication are blocked." : reviewStatus === "manual_review_required" ? "AI screen passed. Human copyright, trademark, identity, and policy review is still required. Payment and publication remain blocked." : "No payment is collected and no ad is published through this preview. Refund policy acknowledgment is required for campaign submission."} <Link href="/advertising-dashboard">View campaign drafts ↗</Link></p></div>
         </div>
         <aside className="adSummary"><div className="adSummaryHead"><span>LIVE CAMPAIGN SUMMARY</span><b>✦</b></div>
           <div className="adPreviewCard"><div className="adPreviewLabel">SPONSORED PREVIEW</div><div className="adPreviewVisual"><span>YOUR BRAND</span><b>Make your next move memorable.</b><small>Your campaign creative will appear here.</small></div><div className="adPreviewMeta"><b>{campaign || "Your campaign name"}</b><span>Sponsored · ConnectTime</span></div></div>
