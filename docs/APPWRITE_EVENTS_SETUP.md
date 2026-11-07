@@ -28,7 +28,8 @@ Indexes:
 
 - `GET /api/events`: signed-in, independently verified active adult members only; returns published upcoming events.
 - `POST /api/events`: same-origin, verified active member only; validates fields/date/category; maximum 3 submissions per member per 24 hours; creates `pending_review` events (not public).
-- Public publication requires a moderator review/approval workflow. That workflow is not implemented yet; do not manually set unreviewed submissions to published.
-- The events UI still uses sample preview data until it is connected to this API. No event listing is currently being published or persisted from the page.
+- Pending submissions are visible in the restricted staff review page at `/advertising-review`, protected by the server-side `AD_REVIEW_ADMIN_TOKEN`.
+- Staff can approve an event for publication or reject it. Only approved events with `status=published` appear in the member directory.
+- The review queue reads pending events from this same private table; it does not require a second database or a public table permission.
 
 This API is a staging foundation, not a complete event product. Attendee RSVP, organizer management, cancellation/editing, location safety, moderation queue, notification delivery, ticket checkout, and calendar integrations remain future work.
