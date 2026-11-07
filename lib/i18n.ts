@@ -150,4 +150,38 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     newToConnectTime:"ConnectTime पर नए हैं?",
     ageVerificationNote:"आयु की पुष्टि पहचान सत्यापन नहीं है। पूर्ण पहुँच के लिए स्वतंत्र वयस्क आयु सत्यापन आवश्यक है।"
   },
+  zh: {
+    home:"首页", friends:"好友", requests:"好友请求", messages:"消息", videoChat:"视频聊天",
+    dating:"交友 · 18+", marketplace:"商城", forums:"论坛", chatRooms:"聊天室", blogs:"博客",
+    videoTube:"ConnectTime 视频频道", news:"新闻与故事", events:"活动", createPost:"发布动态", live:"直播",
+    advertise:"广告投放", login:"登录", joinFree:"免费加入 ↗", search:"搜索用户、动态和群组…",
+    welcome:"欢迎来到 ConnectTime", communityStarts:"你的社区从这里开始", createProfile:"创建个人资料 →",
+    oneWorld:"一个世界，无限可能。", heroLine1:"无论你热爱什么，", heroLine2:"这里都有你的位置。",
+    intro:"认识来自不同国家和文化的人，探索交友、浏览商城、加入论坛，并观看视频和创作者内容。分享你的热情，在世界任何地方找到志同道合的人。",
+    freeProfile:"免费创建个人资料 ↗", exploreVideo:"探索 ConnectTime 视频频道", community:"你的社区",
+    latestConversations:"最新对话", forYou:"为你推荐", sampleNotice:"你正在查看包含示例社区动态的设计预览。账户、发布内容、消息、商城交易和直播功能将在平台后台及安全系统完成后启用。",
+    language:"语言", languageSaved:"你的语言选择已保存在此设备上。",
+    createAccount:"创建账户", adultsOnly:"ConnectTime 仅面向年满 18 周岁的成年人。",
+    displayName:"显示名称", emailAddress:"电子邮箱", countryWhereLive:"居住国家", password:"密码",
+    confirm18:"我确认自己已年满 18 周岁。", createAccountButton:"创建账户",
+    alreadyRegistered:"已经注册？", newToConnectTime:"刚加入 ConnectTime？",
+    ageVerificationNote:"年龄声明不等于身份验证。只有可信的验证服务独立确认用户符合成年人资格后，才会开放完整平台访问权限。"
+  },
+  ur: {
+    home:"ہوم", friends:"دوست", requests:"دوستی کی درخواستیں", messages:"پیغامات", videoChat:"ویڈیو چیٹ",
+    dating:"ڈیٹنگ · 18+", marketplace:"مارکیٹ پلیس", forums:"فورمز", chatRooms:"چیٹ رومز", blogs:"بلاگز",
+    videoTube:"ConnectTime ویڈیو ٹیوب", news:"خبریں اور کہانیاں", events:"تقریبات", createPost:"پوسٹ بنائیں", live:"لائیو",
+    advertise:"اشتہار دیں", login:"لاگ اِن", joinFree:"مفت شامل ہوں ↗", search:"لوگ، پوسٹس اور گروپس تلاش کریں…",
+    welcome:"ConnectTime میں خوش آمدید", communityStarts:"آپ کی کمیونٹی یہاں سے شروع ہوتی ہے", createProfile:"اپنی پروفائل بنائیں →",
+    oneWorld:"ایک دنیا، لاکھوں امکانات۔", heroLine1:"آپ کی دلچسپی کچھ بھی ہو،", heroLine2:"یہاں آپ کے لیے جگہ ہے۔",
+    intro:"مختلف ممالک اور ثقافتوں کے لوگوں سے ملیں، ڈیٹنگ دریافت کریں، مارکیٹ پلیس میں خریداری کریں، فورمز میں شامل ہوں اور ویڈیوز اور تخلیق کاروں کا مواد دیکھیں۔ اپنے شوق بانٹیں اور دنیا میں کہیں بھی اپنے ہم خیال لوگوں کو تلاش کریں۔",
+    freeProfile:"اپنی مفت پروفائل بنائیں ↗", exploreVideo:"ConnectTime ویڈیو ٹیوب دیکھیں", community:"آپ کی کمیونٹی",
+    latestConversations:"تازہ ترین گفتگو", forYou:"آپ کے لیے", sampleNotice:"آپ نمونہ کمیونٹی پوسٹس کے ساتھ ڈیزائن کا پیش منظر دیکھ رہے ہیں۔ اکاؤنٹس، پوسٹنگ، پیغامات، مارکیٹ پلیس کے لین دین اور لائیو فیچرز پلیٹ فارم کے بیک اینڈ اور حفاظتی نظام مکمل ہونے کے بعد فعال ہوں گے۔",
+    language:"زبان", languageSaved:"آپ کی زبان کا انتخاب اس ڈیوائس پر محفوظ ہے۔",
+    createAccount:"اپنا اکاؤنٹ بنائیں", adultsOnly:"ConnectTime صرف 18 سال یا اس سے زیادہ عمر کے بالغ افراد کے لیے ہے۔",
+    displayName:"ظاہری نام", emailAddress:"ای میل ایڈریس", countryWhereLive:"رہائش کا ملک", password:"پاس ورڈ",
+    confirm18:"میں تصدیق کرتا/کرتی ہوں کہ میری عمر کم از کم 18 سال ہے۔", createAccountButton:"اکاؤنٹ بنائیں",
+    alreadyRegistered:"کیا آپ پہلے سے رجسٹرڈ ہیں؟", newToConnectTime:"کیا آپ ConnectTime پر نئے ہیں؟",
+    ageVerificationNote:"عمر کی تصدیق شناخت کی تصدیق نہیں ہے۔ مکمل رسائی اس وقت تک بند رہے گی جب تک کوئی قابلِ اعتماد تصدیقی سروس آزادانہ طور پر بالغ ہونے کی تصدیق نہ کر دے۔"
+  },
 };
