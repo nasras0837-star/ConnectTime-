@@ -1,23 +1,37 @@
-# Deploy the current ConnectTime application preview
+# Deploy ConnectTime to Netlify
 
-The current application lives in the repository root under `app/` and is a Next.js 16 application. The old GitHub Pages workflow publishes only `docs/`, which is a separate static prototype. It does not publish the current Next.js app.
+The current ConnectTime application is the Next.js 16 app in the repository root. Use Netlify for the full application. The GitHub Pages workflow publishes only `docs/`, which is a separate static visual preview.
 
-## Recommended preview host: Vercel
+## 1. Connect the GitHub repository
 
-1. Sign in to [Vercel](https://vercel.com/) using the GitHub account that can access `nasras0837-star/ConnectTime-`.
-2. Choose **Add New → Project** and import **ConnectTime-**.
-3. Keep the project root directory as `./` (repository root).
-4. Confirm the framework is **Next.js**. Keep the detected build command `npm run build` and output settings at their defaults.
-5. For a visual-only preview, Appwrite environment variables can be left unset. The site will show the current UI, but authentication and server-backed features will remain unavailable.
-6. Select **Deploy**. Vercel will build the current `main` branch and provide a preview URL. Future pushes to `main` will trigger new deployments automatically.
+1. Open the [ConnectTime Netlify deploy dashboard](https://app.netlify.com/projects/connecttime-sm/deploys).
+2. If the site is not linked to GitHub yet, choose **Add new project** / **Import an existing project** and select `nasras0837-star/ConnectTime-`.
+3. Select `main` as the production branch.
+4. Set the base directory to the repository root (leave it blank).
+5. Use these build settings:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+   - Node version: `22`
+6. Save the settings and start the first production deploy.
 
-## Appwrite configuration (later)
+The repository's `netlify.toml` supplies the build command, publish directory, and Node version. Netlify supports Next.js 16 through its automatically managed OpenNext adapter; do not install or pin a separate adapter unless troubleshooting specifically requires it.
 
-When the dedicated ConnectTime Appwrite project is ready, add the variables from `.env.example` in Vercel → Project → Settings → Environment Variables. Never add `APPWRITE_API_KEY`, verification secrets, or other server secrets to a `NEXT_PUBLIC_*` variable or commit them to Git.
+## 2. Configure environment variables
 
-## What this preview is and is not
+For a visual-only preview, Appwrite variables may be left unset; account features will remain unavailable. For live AI responses, add `OPENAI_API_KEY` as a server-side environment variable in Netlify. Never paste the key into chat, source files, or GitHub.
 
-- It previews the current Next.js interface, not the old `docs/index.html` static demo.
-- A successful Vercel deployment does not mean Appwrite is configured.
-- User accounts, age verification, persistent posts/events, uploads, moderation, messaging, calls, and payments must not be treated as production-ready until their backend services and safeguards are implemented and tested.
-- The existing GitHub Pages URL may continue to show the old static prototype. Use the Vercel URL for the current Next.js preview.
+When the dedicated ConnectTime Appwrite project is ready, add the variables from `.env.example` in Netlify → Site configuration → Environment variables. Keep `APPWRITE_API_KEY` and all verification secrets server-only. Do not prefix them with `NEXT_PUBLIC_`.
+
+Any environment-variable change requires a new deploy before it reaches the live site and its functions.
+
+## 3. Confirm deployment
+
+Open the deploy dashboard and wait for the production deploy to show **Published**. If it fails, open that deploy and copy the first actual error from the Deploy log (do not share secret values). A Netlify site URL can return a 404 until a successful deploy has been published.
+
+## 4. What the preview does not mean
+
+A successful website deploy does not mean Appwrite is configured or that the platform is production-ready. Signup/login, independent adult verification, persistent social data, uploads, moderation, messaging, calls, creator publishing, marketplace payments, advertising billing, and analytics need their respective secure backend implementations and tests before launch.
+
+## 5. GitHub Pages is a separate static preview
+
+The Pages workflow publishes only `docs/` and does not deploy the Next.js application. Expected URL: https://nasras0837-star.github.io/ConnectTime-/
