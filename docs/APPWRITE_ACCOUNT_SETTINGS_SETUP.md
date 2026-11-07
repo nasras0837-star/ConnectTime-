@@ -15,6 +15,7 @@ Required columns:
 | friend_acceptances | boolean | yes | in-app notification preference |
 | private_messages | boolean | yes | in-app notification preference |
 | product_updates | boolean | yes | in-app notification preference |
+| live_feed_topics | varchar/string | no | 500; JSON array of selected live-feed topics |
 | created_at | varchar/string | yes | ISO timestamp |
 | updated_at | varchar/string | yes | ISO timestamp |
 
@@ -23,3 +24,6 @@ Add a unique index on `user_id`. The API allows each signed-in, independently ve
 The settings page stores preference choices. Existing friend/message notification producers must consult these settings before creating notifications; until that integration is deployed, do not promise that every toggle suppresses every notification. No email or push notifications are sent.
 
 Profile visibility remains on the profile record and is edited at `/profile`. Photo uploads remain disabled pending a tested quarantine/moderation pipeline. Self-service account deactivation is not implemented; support-assisted closure is the current path. Account deactivation must not be simulated by deleting a profile or changing an unverified client-side flag.
+
+
+The personalized main-page live feed stores topic selections in `live_feed_topics` on the same private member-settings row. Add this optional string column (500 characters). The `/api/live-feed/preferences` endpoint requires a signed-in member with verified adult eligibility, validates topic names, and updates only the current member's row. When a member has no settings row yet, it creates one with the notification defaults and their selected topics. Local browser preferences remain a fallback when the account is signed out or the table is not configured.
