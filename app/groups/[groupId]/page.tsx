@@ -116,7 +116,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       const response = await fetch(`/api/community/groups/${encodeURIComponent(groupId)}/messages`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ body: messageDraft }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not send group message.");
-      setMessages(current => [...current.filter(item => item.id !== data.message.id, data.message)].slice(-100)); setChatUpdatedAt(new Date().toISOString()); setMessageDraft("");
+      setMessages(current => [...current.filter(item => item.id !== data.message.id), data.message].slice(-100)); setChatUpdatedAt(new Date().toISOString()); setMessageDraft("");
     } catch (e) { setError(e instanceof Error ? e.message : "Could not send group message."); }
     finally { setChatBusy(false); }
   }
