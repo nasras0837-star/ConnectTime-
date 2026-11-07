@@ -50,6 +50,8 @@ export async function POST(request: Request) {
   const region = text("region", 80);
   const country = text("country", 100);
   const bidStrategy = text("bidStrategy", 24);
+  const adSubmissionId = text("adSubmissionId", 64);
+  const geoTargets = text("geoTargets", 2000);
   const currency = "USD";
   const dailyBudget = Number(input.dailyBudgetMinor);
   const lifetimeCap = Number(input.lifetimeCapMinor);
@@ -59,7 +61,7 @@ export async function POST(request: Request) {
   const allowedPlacements = ["feed", "banner", "video", "event"];
   const allowedStrategies = ["lowest-cost", "cost-cap", "bid-cap"];
   if (!company || !name || !allowedObjectives.includes(objective) || !allowedPlacements.includes(placement) ||
-      !region || !country || !allowedStrategies.includes(bidStrategy) ||
+      !region || !country || !adSubmissionId || !allowedStrategies.includes(bidStrategy) ||
       !Number.isSafeInteger(dailyBudget) || !Number.isSafeInteger(lifetimeCap) ||
       dailyBudget < 100 || lifetimeCap < dailyBudget || lifetimeCap > 100000000 ||
       !startAt || !endAt || !Number.isFinite(Date.parse(startAt)) || !Number.isFinite(Date.parse(endAt)) ||
@@ -73,7 +75,7 @@ export async function POST(request: Request) {
     const row = await tablesDB.createRow({
       databaseId, tableId, rowId: ID.unique(),
       data: {
-        advertiser_user_id: user.$id, company, campaign_name: name, objective, placement, region, country,
+        advertiser_user_id: user.$id, ad_submission_id: adSubmissionId, company, campaign_name: name, objective, placement, region, country, geo_targets: geoTargets,
         daily_budget_minor: dailyBudget, lifetime_cap_minor: lifetimeCap, currency,
         bid_strategy: bidStrategy, status: "draft", moderation_status: "pending",
         human_review_status: "not_started", payment_status: "not_started",
