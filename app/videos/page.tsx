@@ -46,7 +46,7 @@ export default function VideosPage() {
     if (matched) {
       const nextInterests = [matched, ...interests.filter((item) => item !== matched)].slice(0, 8);
       setInterests(nextInterests); localStorage.setItem("ct-video-interests", JSON.stringify(nextInterests));
-      saveSignals({ ...signals, categoryScores: { ...signals.categoryScores, [matched]: (signals.categoryScores[matched] || 0) + 2 });
+      saveSignals({ ...signals, categoryScores: { ...signals.categoryScores, [matched]: (signals.categoryScores[matched] || 0) + 2 } });
     }
   };
   const markWatched = (video: Video) => {
@@ -57,7 +57,7 @@ export default function VideosPage() {
     const liked = signals.likes.includes(video.id);
     saveSignals({ ...signals, likes: liked ? signals.likes.filter((id) => id !== video.id) : [video.id, ...signals.likes], categoryScores: { ...signals.categoryScores, [video.category]: Math.max(0, (signals.categoryScores[video.category] || 0) + (liked ? -3 : 3)) });
   };
-  const hideVideo = (video: Video) => saveSignals({ ...signals, hidden: [...signals.hidden, video.id], categoryScores: { ...signals.categoryScores, [video.category]: Math.max(0, (signals.categoryScores[video.category] || 0) - 3) });
+  const hideVideo = (video: Video) => saveSignals({ ...signals, hidden: [...signals.hidden, video.id], categoryScores: { ...signals.categoryScores, [video.category]: Math.max(0, (signals.categoryScores[video.category] || 0) - 3) } });
   const feed = useMemo(() => {
     let list = videos.filter((video) => !signals.hidden.includes(video.id));
     if (active !== "For you" && active !== "Trending") list = list.filter((video) => video.category === active);
