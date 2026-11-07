@@ -326,9 +326,9 @@
 .socialNav a:hover{background:#f0e8ff;color:#7137bb;transform:translateX(2px)}
 .socialNav a.socialNavActive{background:linear-gradient(110deg,#754fe5,#d94ba8);color:#fff;box-shadow:0 7px 18px #9d5ac52b}
 .socialNav a.socialNavActive span{background:#ffffff28}
-.socialNav a[href=\"/videos\"]{background:#fff0f8;color:#b72c87;border:1px solid #f4c9e3}
-.socialNav a[href=\"/videos\"] span{background:#fbd9ee}
-.socialNav a[href=\"/videos\"]:hover{background:#f8dff0}
+.socialNav a[href="/videos"]{background:#fff0f8;color:#b72c87;border:1px solid #f4c9e3}
+.socialNav a[href="/videos"] span{background:#fbd9ee}
+.socialNav a[href="/videos"]:hover{background:#f8dff0}
 @media(max-width:900px){.socialLeft{position:static;max-height:none;overflow:visible}.socialNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.socialNav a{min-width:0;font-size:11px;padding:9px 10px}.socialNav a span{flex-basis:22px;width:22px;height:22px}}
 @media(max-width:520px){.socialNav{grid-template-columns:repeat(2,minmax(0,1fr))}.socialNav a{font-size:10px;gap:8px;padding:8px}.socialNav a span{flex-basis:20px;width:20px;height:20px}}
 
