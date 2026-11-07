@@ -43,8 +43,8 @@ export default function SettingsPage() {
     <div className="eyebrow">ACCOUNT CONTROL</div><h1>Account settings</h1><p>Manage your in-app notification preferences and profile privacy.</p>
     <h2>Notifications</h2>
     {loading ? <p role="status">Loading settings…</p> : <div className="settingsChoices">{choices.map(([key, title, description]) => <label className="settingsChoice" key={key}><span><strong>{title}</strong><small>{description}</small></span><input type="checkbox" checked={settings[key]} onChange={e => setSettings(current => ({ ...current, [key]: e.target.checked }))}/></label>)}</div>}
-    <button className="button" onClick={save} disabled={loading || saving}>{saving ? "Saving…" : "Save preferences"}</button>
-    {message && <p role="status" className="message">{message}</p>}{error && <p role="alert" className="message">{error}</p>}
+    <button className="button" onClick={save} disabled={loading || saving || Boolean(error)}>{saving ? "Saving…" : "Save preferences"}</button>
+    {message && <p role="status" className="message">{message}</p>}{error && <div role="alert" className="message"><p>{error}</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div>}
     <div className="settingsSection"><h2>Profile privacy</h2><p>Choose who can discover your profile from <Link href="/profile">Edit your profile</Link>. Existing discovery rules only expose public/member profiles; friends-only and private visibility are not listed publicly.</p></div>
     <div className="settingsSection"><h2>Profile photos</h2><p>Photo uploads are not available yet. They will remain disabled until private quarantine storage, moderation checks, and age-safety controls are tested.</p></div>
     <div className="settingsSection"><h2>Account deactivation</h2><p>Self-service deactivation is not enabled yet. Contact ConnectTime support to request account closure; do not assume deleting the app or signing out deactivates your account.</p></div>
