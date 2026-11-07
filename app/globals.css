@@ -645,3 +645,11 @@
 .notificationItem button:disabled{opacity:.5;cursor:wait}
 .notificationEmpty{padding:28px 0;text-align:center;color:#7b8da2;font-size:13px}
 @media(max-width:560px){.notificationsCard{padding:22px!important}.notificationItem{align-items:flex-start;flex-wrap:wrap}.notificationItem button{margin-left:22px}}
+
+
+.adRefundPolicy{margin:22px 0;padding:18px 20px;border:1px solid #e7d7a8;border-radius:14px;background:#fffaf0;color:#59451d}
+.adRefundPolicy h3{margin:0 0 8px;font-size:17px;letter-spacing:-.4px}
+.adRefundPolicy p{font-size:12px;line-height:1.7;color:#705d36;margin:0 0 13px}
+.adRefundPolicy .adRightsCheck{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.6;font-weight:700}
+.adRefundPolicy input[type=checkbox]{margin-top:3px;flex:0 0 auto}
+.ctCampaignMetrics{grid-template-columns:repeat(auto-fit,minmax(125px,1fr))}
