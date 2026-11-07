@@ -35,7 +35,6 @@ export default function AdvertisePage() {
   const [bidStrategy, setBidStrategy] = useState("lowest-cost");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [saved, setSaved] = useState(false);
   const [headline, setHeadline] = useState("");
   const [adCopy, setAdCopy] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -111,7 +110,7 @@ export default function AdvertisePage() {
         <div className="adBuilderIntro"><span className="adEyebrow">CAMPAIGN PLANNER</span><h2>Build your advertising campaign</h2><p>Choose your objective, audience, schedule, and maximum spend. Eligible ads compete in a real-time auction when delivery is enabled.</p></div>
         <div className="adBuilderGrid"><div className="adForm">
           <section className="adFormSection"><div className="adStep"><span>01</span><div><h3>Business details</h3><p>Who is advertising on ConnectTime?</p></div></div>
-            <label>Company or agency name<input value={company} onChange={(e) => { setCompany(e.target.value); setSaved(false); }} placeholder="Your company name" /></label>
+            <label>Company or agency name<input value={company} onChange={(e) => { setCompany(e.target.value); }} placeholder="Your company name" /></label>
             <label>Company website <span className="adOptional">Optional</span><input value={website} onChange={(e) => { setWebsite(e.target.value); setSaved(false); }} placeholder="https://yourcompany.com" /></label>
             <label>Campaign name<input value={campaign} onChange={(e) => { setCampaign(e.target.value); setSaved(false); }} placeholder="Spring launch campaign" /></label>
             <label>Campaign objective<select value={goal} onChange={(e) => setGoal(e.target.value)}><option value="brand-awareness">Brand awareness</option><option value="website-visits">Website visits</option><option value="sales-leads">Sales and leads</option><option value="event-attendance">Event attendance</option><option value="app-installs">App promotion</option></select></label>
