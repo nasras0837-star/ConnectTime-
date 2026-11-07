@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
-type Notification = { id: string; type: string; message: string; createdAt: string; read: boolean };
+type Notification = { id: string; type: string; message: string; createdAt: string; read: boolean; referenceId?: string };
 
-function destination(type: string) {
+function destination(type: string, referenceId?: string) {
   if (type === "dating_like" || type === "dating_match") return { href: "/dating/likes", label: "View dating activity" };
   if (type === "new_message") return { href: "/messages", label: "Open messages" };
+  if (type === "group_message") return { href: referenceId ? `/groups/${encodeURIComponent(referenceId)}` : "/groups", label: "Open group chat" };
   if (type === "friend_request" || type === "friend_accepted" || type === "friend_acceptance") return { href: "/friends", label: "View friends" };
   return { href: "/account", label: "View account" };
 }
@@ -15,6 +16,7 @@ function destination(type: string) {
 function category(type: string) {
   if (type === "dating_like" || type === "dating_match") return "Dating";
   if (type === "new_message") return "Private message";
+  if (type === "group_message") return "Community group chat";
   if (type === "friend_request") return "Friend request";
   if (type === "friend_accepted" || type === "friend_acceptance") return "Connection update";
   return "Account activity";
@@ -85,12 +87,12 @@ export default function NotificationsPage() {
     <section className="authCard notificationsCard">
       <div className="eyebrow">YOUR CONNECTTIME UPDATES</div>
       <h1>Notifications</h1>
-      <p>Dating likes, mutual matches, friend requests, connection updates, and private messages appear here. {unread} unread.</p>
+      <p>Dating likes, mutual matches, friend requests, connection updates, private messages and community group chat activity appear here. {unread} unread.</p>
       {error && <p className="message" role="alert">{error}</p>}
       {loading ? <p role="status">Loading notifications…</p> : items.length === 0 ? <p className="notificationEmpty">You’re all caught up. New activity will appear here.</p> :
         <div className="notificationList" aria-live="polite">
           {items.map(item => {
-            const target = destination(item.type);
+            const target = destination(item.type, item.referenceId);
             return <article className={item.read ? "notificationItem isRead" : "notificationItem"} key={item.id}>
               <span className="notificationDot" aria-hidden="true"/>
               <div className="notificationCopy">
