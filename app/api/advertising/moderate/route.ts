@@ -86,11 +86,12 @@ export async function POST(request: Request) {
       .map(([name]) => name);
     const status = moderation.flagged ? "rejected" : "manual_review_required";
 
+    let adSubmissionId = "";
     try {
       const { tablesDB, databaseId } = advertisingStore();
       const tableId = process.env.APPWRITE_ADS_TABLE_ID;
       if (!tableId) throw new Error("Ad submissions table is not configured.");
-      await tablesDB.createRow({
+      const storedAd = await tablesDB.createRow({
         databaseId,
         tableId,
         rowId: ID.unique(),
@@ -99,6 +100,7 @@ export async function POST(request: Request) {
           status, flagged_categories: flaggedCategories.join(","), created_at: new Date().toISOString(),
         },
       });
+      adSubmissionId = storedAd.$id;
     } catch (error) {
       console.error("Advertising submission could not be stored", error instanceof Error ? error.message : "unknown");
       return NextResponse.json({ status: "unavailable", paymentAllowed: false, publicationAllowed: false, error: "The review queue is not configured. The ad was not accepted, charged, or published." }, { status: 503 });
@@ -107,6 +109,7 @@ export async function POST(request: Request) {
     if (moderation.flagged) {
       return NextResponse.json({
         status: "rejected",
+        adSubmissionId,
         paymentAllowed: false,
         publicationAllowed: false,
         message: "The AI safety screen flagged this ad. It cannot proceed to payment or publication.",
@@ -116,6 +119,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       status: "manual_review_required",
+      adSubmissionId,
       paymentAllowed: false,
       publicationAllowed: false,
       message: "The AI safety screen did not flag the submitted text/image. This is not final approval. Copyright, trademark, advertiser identity, claims, and policy compliance still require human review before payment or publication.",
