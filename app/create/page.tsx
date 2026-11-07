@@ -12,7 +12,7 @@ export default function CreatePage() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!file) { setPreviewUrl(""); return; }
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = () => setPreviewUrl(typeof reader.result === "string" ? reader.result : "");
     reader.readAsDataURL(file);
@@ -22,18 +22,18 @@ export default function CreatePage() {
   function chooseFile(event: ChangeEvent<HTMLInputElement>) {
     const selected = event.target.files?.[0] ?? null;
     setNotice("");
-    if (!selected) { setFile(null); return; }
+    if (!selected) { setFile(null); setPreviewUrl(""); return; }
     const isImage = selected.type.startsWith("image/");
     const isVideo = selected.type.startsWith("video/");
-    if (!isImage && !isVideo) { setFile(null); setNotice("Choose an image or video file."); event.target.value = ""; return; }
-    if (selected.size > 100 * 1024 * 1024) { setFile(null); setNotice("Files must be 100 MB or smaller in this preview."); event.target.value = ""; return; }
+    if (!isImage && !isVideo) { setFile(null); setPreviewUrl(""); setNotice("Choose an image or video file."); event.target.value = ""; return; }
+    if (selected.size > 100 * 1024 * 1024) { setFile(null); setPreviewUrl(""); setNotice("Files must be 100 MB or smaller in this preview."); event.target.value = ""; return; }
     setFile(selected);
   }
 
   function previewPost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!file || !accepted) return;
-    setNotice("Your content preview is ready. Public publishing is currently locked until ConnectTime's server-side media moderation and storage are connected.");
+    setNotice("Your content preview is ready. Public publishing is currently locked until ConnectTime&apos;s server-side media moderation and storage are connected.");
   }
 
   return (
@@ -43,7 +43,7 @@ export default function CreatePage() {
       <section className="createWorkspace">
         <form className="createCard" onSubmit={previewPost}>
           <div className="createCardHead"><div><span>NEW COMMUNITY POST</span><h2>Create a post</h2></div><span className="createAdult">18+ community</span></div>
-          <label className="createCaption">What's happening?<textarea rows={4} maxLength={1500} value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Share a moment, a thought, or something you made…"/></label>
+          <label className="createCaption">What&apos;s happening?<textarea rows={4} maxLength={1500} value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Share a moment, a thought, or something you made…"/></label>
           <input ref={inputRef} className="createFileInput" type="file" accept="image/*,video/*" onChange={chooseFile} aria-label="Choose a photo or video"/>
           <button type="button" className="createUploadArea" onClick={() => inputRef.current?.click()}>
             <span className="createUploadIcon">{file?.type.startsWith("video/") ? "🎥" : "📷"}</span>
@@ -52,7 +52,7 @@ export default function CreatePage() {
             <span className="createChoose">Choose media</span>
           </button>
           {previewUrl && <div className="createPreview">{file?.type.startsWith("video/") ? <video src={previewUrl} controls playsInline /> : <img src={previewUrl} alt="Selected media preview"/>}<div><b>{file?.name}</b><small>{file ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : ""}</small></div></div>}
-          <div className="contentRules"><b>Community content rules</b><ul><li>No nudity, sexually explicit images, or pornographic content.</li><li>No sexual exploitation, non-consensual intimate imagery, or content involving minors.</li><li>No graphic abuse, threats, harassment, or illegal content.</li><li>Only share media you have the rights and permission to post.</li></ul><label className="createConsent"><input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)}/> I confirm this content follows ConnectTime's rules and contains no nudity or sexually explicit material.</label></div>
+          <div className="contentRules"><b>Community content rules</b><ul><li>No nudity, sexually explicit images, or pornographic content.</li><li>No sexual exploitation, non-consensual intimate imagery, or content involving minors.</li><li>No graphic abuse, threats, harassment, or illegal content.</li><li>Only share media you have the rights and permission to post.</li></ul><label className="createConsent"><input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)}/> I confirm this content follows ConnectTime&apos;s rules and contains no nudity or sexually explicit material.</label></div>
           <button className="createSubmit" type="submit" disabled={!file || !accepted}>Prepare post preview</button>
           {notice && <p className="createNotice" role="status">{notice}</p>}
           <p className="createDisclaimer">Preview only. Media is not uploaded, stored, or published. Public posting will remain disabled until server-side file validation, nudity/sexual-content moderation, reporting, and secure media storage are tested.</p>
