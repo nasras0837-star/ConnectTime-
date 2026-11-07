@@ -15,7 +15,7 @@ export default function CommunityGuidelinesPage() {
     <article className="authCard" style={{ maxWidth: 820 }}>
       <div className="eyebrow">CONNECTTIME · COMMUNITY STANDARDS</div>
       <h1>Speak freely. Treat people with respect.</h1>
-      <p>ConnectTime is built for open conversation across backgrounds and viewpoints. We do not remove content simply because it is controversial, unpopular, critical, or disagrees with someone else's opinion. The boundary is harassment, intimidation, threats, privacy violations, and other harmful conduct.</p>
+      <p>ConnectTime is built for open conversation across backgrounds and viewpoints. We do not remove content simply because it is controversial, unpopular, critical, or disagrees with someone else&apos;s opinion. The boundary is harassment, intimidation, threats, privacy violations, and other harmful conduct.</p>
       {sections.map(section => <section key={section.title} style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 20, letterSpacing: "-.4px", marginBottom: 8 }}>{section.title}</h2>
         <p style={{ lineHeight: 1.7 }}>{section.body}</p>
