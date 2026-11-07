@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { TablesDB } from "node-appwrite";
 import { ID } from "node-appwrite";
 import { currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 import { communitySafetyStore } from "@/lib/community-safety";
