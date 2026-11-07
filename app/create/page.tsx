@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CreatePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -38,7 +39,7 @@ export default function CreatePage() {
 
   return (
     <main className="createPage">
-      <header className="createHeader"><Link href="/" className="createBrand">🌍 ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/events">Events</Link></nav></header>
+      <header className="createHeader"><Link href="/" className="createBrand" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/events">Events</Link></nav></header>
       <section className="createHero"><span>CREATE · SHARE · CONNECT</span><h1>Your moment deserves<br/><em>to be seen.</em></h1><p>Share photos and videos, tell your story, and connect with people who love what you love—wherever they are in the world.</p></section>
       <section className="createWorkspace">
         <form className="createCard" onSubmit={previewPost}>
