@@ -13,7 +13,10 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
   const [group, setGroup] = useState<Group | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isOwner, setIsOwner] = useState(false);
-  const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);\n  const [groupInvitations, setGroupInvitations] = useState<JoinRequest[]>([]);\n  const [inviteHandle, setInviteHandle] = useState("");\n  const [inviteBusy, setInviteBusy] = useState(false);
+  const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
+  const [groupInvitations, setGroupInvitations] = useState<JoinRequest[]>([]);
+  const [inviteHandle, setInviteHandle] = useState("");
+  const [inviteBusy, setInviteBusy] = useState(false);
   const [members, setMembers] = useState<GroupMember[]>([]);
   const [decisionBusy, setDecisionBusy] = useState("");
   const [draft, setDraft] = useState("");
