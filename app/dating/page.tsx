@@ -17,6 +17,8 @@ export default function DatingPage() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState("");
   const [liked, setLiked] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
+  const [bulkSending, setBulkSending] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -44,9 +46,39 @@ export default function DatingPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not send like.");
       setLiked(current => current.includes(profile.handle) ? current : [...current, profile.handle]);
-      setMessage(data.matched ? "It's a match! You both liked each other." : "Like sent. If they like you back, it's a match!");
+      setSelected(current => current.filter(handle => handle !== profile.handle));
+      setMessage(data.matched ? "It's a match with " + profile.displayName + "!" : "Like sent to " + profile.displayName + ".");
     } catch (e) { setError(e instanceof Error ? e.message : "Could not send like."); }
     finally { setSending(""); }
+  }
+
+  function toggleSelected(handle: string) {
+    setSelected(current => current.includes(handle) ? current.filter(item => item !== handle) : [...current, handle]);
+  }
+
+  function selectAllMatching() {
+    setSelected(results.filter(profile => !liked.includes(profile.handle)).map(profile => profile.handle));
+    setMessage("");
+  }
+
+  async function likeSelected() {
+    const targets = results.filter(profile => selected.includes(profile.handle) && !liked.includes(profile.handle));
+    if (!targets.length) return;
+    setBulkSending(true); setMessage(""); setError("");
+    let sent = 0; let matches = 0; const failed: string[] = [];
+    for (const profile of targets) {
+      try {
+        const response = await fetch("/api/dating/likes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recipientHandle: profile.handle }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Could not send like.");
+        sent++; if (data.matched) matches++;
+        setLiked(current => current.includes(profile.handle) ? current : [...current, profile.handle]);
+      } catch { failed.push(profile.displayName); }
+    }
+    setSelected(current => current.filter(handle => !targets.some(profile => profile.handle === handle)));
+    setMessage(sent + " like(s) sent" + (matches ? " · " + matches + " mutual match(es)!" : "") + (failed.length ? " · " + failed.length + " could not be sent" : ""));
+    if (failed.length) setError("Please retry for: " + failed.join(", ") + ".");
+    setBulkSending(false);
   }
 
   return <main className="authShell">
@@ -66,12 +98,19 @@ export default function DatingPage() {
       <p className="switch"><Link href="/profile">Complete your dating profile and interests</Link> · <Link href="/friends">Your friends</Link></p>
       {error && <p className="message" role="alert">{error}</p>}{message && <p className="message" role="status">{message}</p>}
       <div className="communityFeedHead"><div><span>YOUR DISCOVERY</span><h2>{results.length} potential connections</h2></div><span>18+ only</span></div>
+      {!loading && results.length > 0 && <div className="datingSelectionBar">
+        <span>{selected.filter(handle => results.some(profile => profile.handle === handle)).length} selected</span>
+        <button type="button" onClick={selectAllMatching} disabled={bulkSending}>Select all matching</button>
+        <button type="button" onClick={() => setSelected([])} disabled={bulkSending || selected.length === 0}>Clear selection</button>
+        <button type="button" className="discoverConnectButton" onClick={() => void likeSelected()} disabled={bulkSending || selected.length === 0}>{bulkSending ? "Sending likes…" : "♡ Send likes (" + selected.filter(handle => results.some(profile => profile.handle === handle) && !liked.includes(handle)).length + ")"}</button>
+      </div>}
       {loading ? <p role="status">Finding people…</p> : results.length ? <div className="discoverGrid">{results.map(profile => <article className="discoverMember" key={profile.handle}>
         <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div>
         <h2>{profile.displayName}, {profile.age}</h2><p className="discoverHandle">@{profile.handle}</p>
         <p>{profile.bio || "Ready to meet new people."}</p><p className="discoverLocation">{[profile.region, profile.country].filter(Boolean).join(", ")}</p>
         <p><strong>{goalLabels[profile.relationshipGoal] || "Open to meeting"}</strong></p>
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
+        {!liked.includes(profile.handle) && <label className="datingSelectMember"><input type="checkbox" checked={selected.includes(profile.handle)} onChange={() => toggleSelected(profile.handle)} disabled={bulkSending}/> Select this person</label>}
         <button className="discoverConnectButton" disabled={!!sending || liked.includes(profile.handle)} onClick={() => void like(profile)}>{sending === profile.handle ? "Sending…" : liked.includes(profile.handle) ? "♥ Like sent" : "♡ Send a like"}</button>
       </article>)}</div> : <p>No dating profiles match these filters yet. Try widening your age range or changing your interests.</p>}
       <p className="switch"><Link href="/safety">Safety Center</Link> · <Link href="/profile">Edit dating profile</Link></p>
