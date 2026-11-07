@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 type DatingProfile = { handle: string; displayName: string; country: string; age: number; gender: string; interests: string[] };
 type IncomingLike = { id: string; createdAt: string; profile: DatingProfile; matched: boolean };
 type InboxData = { received: IncomingLike[]; sent: DatingProfile[]; matches: IncomingLike[] };
+type FriendRequestData = { incoming: { id: string; profile: { handle: string } }[]; outgoing: { profile: { handle: string } }[]; connections: { profile: { handle: string } }[] };
 
 export default function DatingLikesPage() {
   const [data, setData] = useState<InboxData>({ received: [], sent: [], matches: [] });
@@ -14,6 +15,7 @@ export default function DatingLikesPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [tab, setTab] = useState<"received" | "matches" | "sent">("received");
+  const [friendState, setFriendState] = useState<FriendRequestData>({ incoming: [], outgoing: [], connections: [] });
 
   const refresh = useCallback(async () => {
     try {
@@ -21,6 +23,11 @@ export default function DatingLikesPage() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Your dating inbox is unavailable.");
       setData({ received: result.received || [], sent: result.sent || [], matches: result.matches || [] });
+      try {
+        const friendsResponse = await fetch("/api/friends/requests", { cache: "no-store" });
+        const friendsResult = await friendsResponse.json();
+        if (friendsResponse.ok) setFriendState({ incoming: friendsResult.incoming || [], outgoing: friendsResult.outgoing || [], connections: friendsResult.connections || [] });
+      } catch { /* Dating likes remain available if the optional friends service is offline. */ }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Your dating inbox is unavailable.");
     } finally { setLoading(false); }
@@ -59,7 +66,20 @@ export default function DatingLikesPage() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not send a friend request.");
       setNotice(result.alreadyPending ? "A friend request is already pending." : "Friend request sent. Once accepted, you can message each other.");
+      await refresh();
     } catch (e) { setError(e instanceof Error ? e.message : "Could not send a friend request."); }
+    finally { setBusy(""); }
+  }
+
+  async function acceptFriendRequest(requestId: string) {
+    setBusy(requestId); setError(""); setNotice("");
+    try {
+      const response = await fetch("/api/friends/requests", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId, action: "accept" }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not accept this friend request.");
+      setNotice("You are now connected. Private messaging is available.");
+      await refresh();
+    } catch (e) { setError(e instanceof Error ? e.message : "Could not accept this friend request."); }
     finally { setBusy(""); }
   }
 
@@ -97,7 +117,10 @@ export default function DatingLikesPage() {
             <button type="button" className="secondary" disabled={busy === item.id || !!busy} onClick={() => void dismiss(item.id)}>Dismiss</button>
           </> : tab === "matches" || (tab === "received" && item.matched) ? <>
             <span className="datingMatchBadge">♥ Mutual match</span>
-            <button type="button" disabled={!!busy} onClick={() => void addFriend(item.profile)}>Add to friends</button>
+            {friendState.connections.some(entry => entry.profile.handle === item.profile.handle) ? <Link className="friendMessageLink" href={"/messages?with=" + encodeURIComponent(item.profile.handle)}>Message</Link> :
+              friendState.incoming.find(entry => entry.profile.handle === item.profile.handle) ? <button type="button" disabled={!!busy} onClick={() => void acceptFriendRequest(friendState.incoming.find(entry => entry.profile.handle === item.profile.handle)!.id)}>Accept friend request</button> :
+              friendState.outgoing.some(entry => entry.profile.handle === item.profile.handle) ? <span className="datingSentBadge">Friend request pending</span> :
+              <button type="button" disabled={!!busy} onClick={() => void addFriend(item.profile)}>Add to friends</button>}
           </> : <span className="datingSentBadge">Like sent</span>,
           item.id
         ))}
