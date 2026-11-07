@@ -6,7 +6,7 @@ import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const defaults = { friend_requests: true, friend_acceptances: true, private_messages: true, product_updates: false };
+const defaults = { friend_requests: true, friend_acceptances: true, private_messages: true, dating_likes: true, product_updates: false };
 
 function settingsTable() {
   const tableId = process.env.APPWRITE_MEMBER_SETTINGS_TABLE_ID;
