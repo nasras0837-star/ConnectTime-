@@ -28,14 +28,16 @@ export default function VideosPage() {
   const [history, setHistory] = useState<string[]>([]);
   const [signals, setSignals] = useState<Signals>(blankSignals);
   const [ready, setReady] = useState(false);
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    try {
-      setInterests(JSON.parse(localStorage.getItem("ct-video-interests") || "[]"));
-      setHistory(JSON.parse(localStorage.getItem("ct-video-searches") || "[]"));
-      setSignals(readSignals());
-    } catch { /* Ignore malformed local preferences. */ }
-    setReady(true);
+    // Defer browser-only preference hydration until after the initial render.
+    queueMicrotask(() => {
+      try {
+        setInterests(JSON.parse(localStorage.getItem("ct-video-interests") || "[]"));
+        setHistory(JSON.parse(localStorage.getItem("ct-video-searches") || "[]"));
+        setSignals(readSignals());
+      } catch { /* Ignore malformed local preferences. */ }
+      setReady(true);
+    });
   }, []);
   const saveSignals = (next: Signals) => { setSignals(next); localStorage.setItem("ct-video-signals", JSON.stringify(next)); };
   const submitSearch = (term = query) => {
