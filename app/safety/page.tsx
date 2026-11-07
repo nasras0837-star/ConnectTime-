@@ -19,7 +19,6 @@ export default function SafetyCenterPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to load your block list.");
       setBlocked(data.blocks || []);
-      setBlockStatus("");
     } catch (error) {
       setBlockStatus(error instanceof Error ? error.message : "Block list unavailable.");
     } finally { setLoadingBlocks(false); }
