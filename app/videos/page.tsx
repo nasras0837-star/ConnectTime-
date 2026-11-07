@@ -55,7 +55,7 @@ export default function VideosPage() {
   };
   const toggleLike = (video: Video) => {
     const liked = signals.likes.includes(video.id);
-    saveSignals({ ...signals, likes: liked ? signals.likes.filter((id) => id !== video.id) : [video.id, ...signals.likes], categoryScores: { ...signals.categoryScores, [video.category]: Math.max(0, (signals.categoryScores[video.category] || 0) + (liked ? -3 : 3)) });
+    saveSignals({ ...signals, likes: liked ? signals.likes.filter((id) => id !== video.id) : [video.id, ...signals.likes], categoryScores: { ...signals.categoryScores, [video.category]: Math.max(0, (signals.categoryScores[video.category] || 0) + (liked ? -3 : 3)) } });
   };
   const hideVideo = (video: Video) => saveSignals({ ...signals, hidden: [...signals.hidden, video.id], categoryScores: { ...signals.categoryScores, [video.category]: Math.max(0, (signals.categoryScores[video.category] || 0) - 3) } });
   const feed = useMemo(() => {
