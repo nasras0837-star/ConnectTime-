@@ -127,3 +127,39 @@ Before a campaign draft can be saved, the advertiser must actively acknowledge t
 ## Campaign performance metrics
 
 The advertiser dashboard displays `impressions_count` (ad views) and `clicks_count` for each campaign. Create both integer columns as required, defaulting to zero. The current code initializes these counters to zero when a draft is created. **Live ad delivery and authoritative impression/click event collection are not yet enabled**, so draft campaigns must show zero and must not present these counters as measured audience reach. Before launch, connect the counters to a verified ad-serving/impression pipeline with invalid-traffic filtering, replay protection, audit records, and reconciliation tests. Never let advertisers or public clients directly increment their own counters.
+
+
+## Signed ad delivery measurement (backend foundation)
+
+Create a fourth Appwrite TablesDB table named `advertising_delivery_events` and set `APPWRITE_AD_DELIVERY_EVENTS_TABLE_ID` in Netlify. Keep it private with no public row permissions. Add these columns:
+
+| Column ID | Type | Size / setting | Required |
+|---|---|---:|---:|
+| campaign_id | Varchar | 128 | Yes |
+| advertiser_user_id | Varchar | 128 | Yes |
+| event_type | Varchar | 16 | Yes |
+| placement | Varchar | 40 | Yes |
+| occurred_at | Varchar | 40 | Yes |
+| validity_status | Varchar | 20 | Yes |
+| deduplication_key | Varchar | 64 | Yes |
+| measurement_version | Varchar | 32 | Yes |
+
+The event row ID is the unique event ID, so a retry with the same ID cannot count twice. Add indexes on `campaign_id + event_type + validity_status` and `advertiser_user_id`.
+
+Set `AD_DELIVERY_EVENT_SECRET` to a high-entropy server-only secret (at least 32 random bytes). Never expose it in browser code, `NEXT_PUBLIC_*` variables, logs, or the repository.
+
+### Trusted delivery service request contract
+
+The private server endpoint is `POST /api/advertising/delivery-events`. It verifies an HMAC-SHA256 signature over the exact raw request body, prefixed by the Unix timestamp and a dot:
+
+`HMAC_SHA256(secret, timestamp + "." + rawBody)`
+
+Send headers:
+- `x-ct-ad-event-timestamp`: current Unix timestamp in seconds (maximum five-minute clock skew).
+- `x-ct-ad-event-signature`: lowercase hex digest, optionally prefixed by `sha256=`.
+
+The signed JSON body must include `campaignId`, unique `eventId` (16–64 letters, digits, underscore or hyphen), `eventType` (`impression` or `click`), and `placement`. An optional `measurementVersion` identifies the viewability/measurement standard. The endpoint rechecks campaign approval, human-review approval, payment authorization, and campaign schedule before recording the event. It ignores browser-originated unsigned events.
+
+Advertiser dashboard counts are derived from the private event table's valid rows, not client-supplied counters. The event ID is the idempotency key. The delivery service must create an impression only after the published viewability threshold is met; a page render, ad request, or preview is not automatically an impression.
+
+**Important: this is a secure event-ingestion foundation, not a live ad network.** ConnectTime does not yet have an ad-serving placement, a trusted delivery worker that signs these events, payment authorization, atomic budget reservations, or an invalid-traffic detection pipeline. No current campaign is payment-authorized, and the review API does not enable payment. Therefore no real impressions/clicks are expected yet and campaign drafts remain ineligible for delivery. Do not set a campaign's payment status to authorized manually just to test this endpoint. Build and sandbox-test the ad-serving and billing systems before activating it.
