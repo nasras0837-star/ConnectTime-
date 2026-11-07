@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 
 type BlockRow = { $id: string; blocked_user_id: string; created_at?: string };
 
@@ -24,7 +24,6 @@ export default function SafetyCenterPage() {
     } finally { setLoadingBlocks(false); }
   }
 
-  useEffect(() => { void loadBlocks(); }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>, endpoint: string, setStatus: (value: string) => void) {
     event.preventDefault();
@@ -94,7 +93,7 @@ export default function SafetyCenterPage() {
         <form onSubmit={event => submit(event, "/api/community/reports", setReportStatus)}>
           <label style={fieldStyle}>Report category<select name="category" required style={inputStyle}><option value="">Choose a reason</option><option value="harassment">Harassment or bullying</option><option value="intimidation">Intimidation or stalking</option><option value="threats">Threats or encouragement of violence</option><option value="hate">Hateful or dehumanizing attack</option><option value="privacy">Privacy violation or doxxing</option><option value="sexual-content">Non-consensual or prohibited sexual content</option><option value="spam">Spam or scams</option><option value="other">Other safety concern</option></select></label>
           <label style={fieldStyle}>What are you reporting?<select name="targetType" required style={inputStyle}><option value="member">A member</option><option value="post">A post</option><option value="message">A message</option><option value="other">Other</option></select></label>
-          <label style={fieldStyle}>Reported member's user ID (if applicable)<input name="targetUserId" maxLength={128} style={inputStyle} placeholder="Member ID" /></label>
+          <label style={fieldStyle}>Reported member&apos;s user ID (if applicable)<input name="targetUserId" maxLength={128} style={inputStyle} placeholder="Member ID" /></label>
           <label style={fieldStyle}>Content reference or link (if applicable)<input name="contentReference" maxLength={180} style={inputStyle} placeholder="Post or message reference" /></label>
           <label style={fieldStyle}>What happened?<textarea name="details" required minLength={10} maxLength={3000} rows={5} style={inputStyle} placeholder="Describe what happened, including relevant context." /></label>
           <button style={buttonStyle} type="submit">Submit report</button>
@@ -106,7 +105,7 @@ export default function SafetyCenterPage() {
         <h2>Block a member</h2>
         <p>Blocking is personal: it records your choice to block that account. ConnectTime must also enforce block relationships in messaging, profile discovery, and content interactions before those features launch.</p>
         <form onSubmit={addBlock}>
-          <label style={fieldStyle}>Member user ID<input name="blockedUserId" required maxLength={128} style={inputStyle} placeholder="Enter the member's user ID" /></label>
+          <label style={fieldStyle}>Member user ID<input name="blockedUserId" required maxLength={128} style={inputStyle} placeholder="Enter the member&apos;s user ID" /></label>
           <button style={buttonStyle} type="submit">Block member</button>
         </form>
         {blockStatus && <p role="status" aria-live="polite">{blockStatus}</p>}
