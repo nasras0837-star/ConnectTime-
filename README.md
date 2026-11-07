@@ -72,3 +72,8 @@ Community posts now support text comments and Like reactions through private App
 **ConnectTime is an all-in-one media and community platform** — bringing social connection, member discovery, community discussions and groups, news, video discovery, official TV destinations, events, and advertising tools into one web experience. Brand promise: **Your people. Your passions. Your ConnectTime.**
 
 The public homepage at `/` introduces this platform vision and directs visitors to the existing product areas. The dedicated official broadcaster directory remains at `/free-tv`. Some areas are prototypes or require Appwrite/Netlify configuration; do not advertise unfinished features as operational or promise universal free access to third-party streams.
+
+
+## Member feedback survey
+
+The private member feedback survey is available at `/feedback`. Signed-in users can submit a 1–5 rating, describe their experience, and suggest new features or improvements. Configure the private Appwrite table using [`docs/APPWRITE_USER_FEEDBACK_SETUP.md`](docs/APPWRITE_USER_FEEDBACK_SETUP.md) and set `APPWRITE_USER_FEEDBACK_TABLE_ID` in the server environment. Submissions are not public; a role-protected review dashboard is not yet implemented.
