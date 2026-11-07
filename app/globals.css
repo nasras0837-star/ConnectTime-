@@ -686,3 +686,11 @@
  .messageHistory { max-height: 380px; }
  .messageBubble { max-width: 92%; }
 }
+
+.messageReportButton { display: block; margin-top: 8px; border: 0; padding: 0; background: transparent; color: #c6d9f5; text-decoration: underline; font: inherit; font-size: .72rem; cursor: pointer; }
+.messageReportForm { display: grid; gap: 9px; border: 1px solid rgba(255,255,255,.18); border-radius: 12px; padding: 13px; margin: 0 0 12px; background: rgba(120,45,45,.12); }
+.messageReportForm p { margin: 0; color: #c7d4e8; font-size: .85rem; }
+.messageReportForm textarea { width: 100%; border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 10px; color: inherit; background: rgba(0,0,0,.2); font: inherit; }
+.messageReportForm > div { display: flex; gap: 8px; }
+.messageReportForm button { border: 0; border-radius: 999px; padding: 8px 13px; background: #2d70cd; color: white; cursor: pointer; }
+.messageReportForm button.secondary { background: rgba(255,255,255,.13); }
