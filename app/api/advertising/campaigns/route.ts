@@ -51,8 +51,8 @@ export async function POST(request: Request) {
   const country = text("country", 100);
   const bidStrategy = text("bidStrategy", 24);
   const currency = "USD";
-  const dailyBudget = Number(input.dailyBudget);
-  const lifetimeCap = Number(input.lifetimeCap);
+  const dailyBudget = Number(input.dailyBudgetMinor);
+  const lifetimeCap = Number(input.lifetimeCapMinor);
   const startAt = text("startAt", 40);
   const endAt = text("endAt", 40);
   const allowedObjectives = ["brand-awareness", "website-visits", "sales-leads", "event-attendance", "app-installs"];
