@@ -85,7 +85,7 @@ export default function LiveNewsWidget() {
       </div>
       <div className="homeLiveTabs" role="tablist" aria-label="News topics">
         {topics.map((item) => (
-          <button key={item} type="button" role="tab" aria-selected={topic === item} className={topic === item ? "active" : ""} onClick={() => item === "Nearby" ? (setTopic("Nearby"), geo ? undefined : enableNearby()) : setTopic(item)}>
+          <button key={item} type="button" role="tab" aria-selected={topic === item} className={topic === item ? "active" : ""} onClick={() => item === "Nearby" ? (geo ? setTopic("Nearby") : enableNearby()) : setTopic(item)}>
             {item === "Nearby" ? "📍 " : ""}{item}
           </button>
         ))}
