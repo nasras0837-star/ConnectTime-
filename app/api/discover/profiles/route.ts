@@ -51,7 +51,7 @@ export async function GET(request: Request) {
           bio: String(row.bio || ""),
           country: String(row.country || ""),
           region: String(row.region || ""),
-          interests: String(row.interests || "").split(",").map((item: string) => item.trim()).filter(Boolean),
+          interests: String(row.interests || "").split(",").map((item: string) => item.trim()).filter(Boolean), age: Number(row.age || 0), gender: String(row.gender || ""), relationshipGoal: String(row.relationship_goal || ""),
         };
         if (!publicProfile.handle || !publicProfile.displayName) return null;
         if (country && !publicProfile.country.toLowerCase().includes(country)) return null;
