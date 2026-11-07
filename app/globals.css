@@ -799,3 +799,38 @@
 .groupChatLiveStatus button{border:1px solid #cfe0e9;background:#fff;color:#28617e;border-radius:999px;padding:8px 12px;font-size:10px;font-weight:800;cursor:pointer}
 .groupChatLiveDot{width:8px;height:8px;border-radius:50%;background:#20b486;box-shadow:0 0 0 4px #20b48620}
 @media(max-width:600px){.groupChatLiveStatus{justify-content:flex-start}.groupChatLiveStatus small{text-align:left}}
+
+
+/* Smart advertising campaign dashboard */
+.ctCampaignDashboard{width:min(1180px,calc(100% - 32px));margin:42px auto 80px;color:#173b56}
+.ctAdDashboardTop{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:22px}
+.ctAdDashboardTop h1{font-size:clamp(34px,5vw,52px);letter-spacing:-2px;margin:8px 0}
+.ctAdDashboardTop p{color:#71879a;font-size:13px;line-height:1.7;margin:0;max-width:680px}
+.ctAdDashboardTop .ctCampaignCreate{white-space:nowrap}
+.ctAdKpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.ctAdKpis article{padding:19px;border:1px solid #e0eaf1;border-radius:16px;background:#fff;display:grid;gap:7px;box-shadow:0 8px 22px #173b5608}
+.ctAdKpis article>span,.ctAdCampaignTools label,.ctAdAudience small{font-size:9px;letter-spacing:1px;font-weight:900;color:#7b91a3}
+.ctAdKpis strong{font-size:clamp(22px,3vw,30px);letter-spacing:-1px;color:#173b56}
+.ctAdKpis small{font-size:10px;color:#8a9cac}
+.ctAdCampaignTools{display:grid;grid-template-columns:minmax(220px,1fr) 220px auto;gap:12px;align-items:end;padding:16px;border:1px solid #e1eaf1;border-radius:16px;background:#f7fbfe;margin:22px 0}
+.ctAdCampaignTools label{display:grid;gap:7px}
+.ctAdCampaignTools input,.ctAdCampaignTools select{width:100%;padding:11px 12px;border:1px solid #d8e5ed;border-radius:10px;background:#fff;color:#23465f;font:inherit;font-size:12px}
+.ctAdCampaignTools button{border:0;border-radius:10px;padding:12px 17px;background:#0a79ad;color:#fff;font-size:11px;font-weight:850;cursor:pointer}
+.ctAdCampaignTools button:disabled{opacity:.55;cursor:wait}
+.ctAdStatus{display:inline-flex;align-items:center;border-radius:99px;padding:8px 12px;background:#fff1dc;color:#9b6416;font-size:10px;font-weight:900;white-space:nowrap}
+.ctAdStatus.positive{background:#e4f7ef;color:#16805b}
+.ctAdSpendTrack{height:7px;border-radius:99px;background:#e8eff4;overflow:hidden;margin-top:18px}
+.ctAdSpendTrack span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#128ec0,#26b7a0)}
+.ctAdSpendCaption{display:flex;justify-content:space-between;gap:12px;margin-top:6px;color:#8497a7;font-size:9px}
+.ctAdAudience{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:16px;padding:17px 0;border-top:1px solid #edf1f4;margin-top:16px}
+.ctAdAudience>div{display:grid;align-content:start;gap:6px;min-width:0}
+.ctAdAudience strong{font-size:11px;color:#35546b;line-height:1.5}
+.ctAdAudience span{font-size:10px;color:#8294a3;line-height:1.5;overflow-wrap:anywhere}
+.ctAdDashboardFoot{font-size:10px;line-height:1.7;color:#8193a2;margin-top:20px}
+.ctAdInterestField{border:1px solid #dce8ef;border-radius:13px;padding:15px;margin:15px 0 0}
+.ctAdInterestField legend{font-size:12px;font-weight:850;color:#23445d;padding:0 5px}
+.ctAdInterestField>p{font-size:10px;line-height:1.6;color:#8194a4;margin:0 0 12px}
+.ctAdInterestField>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.ctAdInterestField label{display:flex;align-items:center;gap:7px;font-size:10px;color:#456176}
+.ctAdInterestField input{accent-color:#087eb9}
+@media(max-width:760px){.ctAdDashboardTop{align-items:flex-start;flex-direction:column}.ctAdKpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ctAdCampaignTools{grid-template-columns:1fr}.ctAdAudience{grid-template-columns:1fr}.ctAdInterestField>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
