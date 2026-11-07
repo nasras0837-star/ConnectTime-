@@ -28,6 +28,3 @@ The repository contains a Next.js App Router foundation, Appwrite SSR authentica
 4. Add private media buckets, upload validation, moderation, and retention controls.
 5. Build marketplace, Match Maker, news, video/live, and monetization after compliance and safety controls are designed.
 6. Add integration tests, dependency auditing, deployment configuration, backups, and incident response.
-
-## Legacy material
-`supabase/schema.sql` belongs to the earlier prototype and is not active migration input. Never apply it to Flirt or Pleasure or treat it as an Appwrite schema.
