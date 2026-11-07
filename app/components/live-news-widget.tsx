@@ -27,6 +27,7 @@ export default function LiveNewsWidget() {
   useEffect(() => {
     if (topic === "Nearby" && !geo) return;
     const controller = new AbortController();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading state tracks the active external fetch.
     setBusy(true);
     setError("");
     const location = topic === "Nearby" && geo ? `&lat=${geo.lat}&lon=${geo.lon}` : "";
