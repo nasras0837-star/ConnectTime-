@@ -58,3 +58,6 @@ The homepage live-interest feed now syncs topic preferences to the signed-in, ve
 
 
 The first persistent community feed is available at `/community` for text-only posts. It requires a private Appwrite `community_posts` table and the server environment variable `APPWRITE_COMMUNITY_POSTS_TABLE_ID`; see `docs/APPWRITE_COMMUNITY_POSTS_SETUP.md`. Posting and viewing are restricted to independently verified, active adult members. Photo/video publishing remains disabled pending a tested moderation pipeline.
+
+
+Community posts now support text comments and Like reactions through private Appwrite tables. Configure `APPWRITE_COMMUNITY_COMMENTS_TABLE_ID` and `APPWRITE_COMMUNITY_REACTIONS_TABLE_ID` using `docs/APPWRITE_COMMUNITY_POSTS_SETUP.md` before live testing.
