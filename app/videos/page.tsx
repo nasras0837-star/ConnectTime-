@@ -71,7 +71,7 @@ export default function VideosPage() {
   }, [active, interests, query, signals]);
   return <main className="videoShell">
     <header className="videoHeader"><Link className="videoBrand" href="/" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={112} height={73} priority className="ctVideoLogo"/></Link><nav><Link href="/">Home</Link><Link href="/account">My account</Link></nav></header>
-    <section className="videoIntro"><div className="videoEyebrow">CONNECTTIME TV</div><h1>Watch what<br/><span>moves you.</span></h1><p>A video feed shaped by the topics you explore and the videos you enjoy.</p>
+    <section className="videoIntro"><div className="videoEyebrow">CONNECTTIME VIDEO TUBE</div><h1>Your world.<br/><span>On screen.</span></h1><p>Discover creators, culture, ideas, and entertainment from across the ConnectTime community.</p>
       <form className="videoSearch" onSubmit={(event) => {event.preventDefault(); submitSearch();}}><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search videos, creators, or interests…" aria-label="Search videos"/><button type="submit">Search</button></form>
       {history.length > 0 && <div className="searchHistory"><span>Recent searches</span>{history.slice(0,4).map((item) => <button key={item} onClick={() => {setQuery(item); submitSearch(item);}}>{item}</button>)}</div>}
     </section>
@@ -81,6 +81,6 @@ export default function VideosPage() {
       {feed.length === 0 && <div className="emptyVideos">No videos match. Try another topic or reset recommendations.</div>}
       <div className="recommendationInfo"><strong>How your feed learns</strong><p>Searches add interest signals, likes boost similar topics, video opens add watch signals, and “Not interested” lowers a topic and hides that video. Signals are saved on this device for this prototype.</p><button onClick={() => {saveSignals(blankSignals);setInterests([]);setHistory([]);localStorage.removeItem("ct-video-interests");localStorage.removeItem("ct-video-searches");}}>Reset my recommendations</button></div>
       <p className="feedDisclaimer">Sample YouTube embeds only. This prototype does not measure actual watch duration or sync preferences across devices; account-based recommendations require authenticated backend storage.</p>
-    </section><footer className="videoFooter">© {new Date().getFullYear()} ConnectTime · Adults 18+</footer>
+    </section><footer className="videoFooter">© {new Date().getFullYear()} ConnectTime Video Tube · Part of ConnectTime · Adults 18+</footer>
   </main>;
 }
