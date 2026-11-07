@@ -1,0 +1,92 @@
+# ConnectTime backend setup and release checklist
+
+This checklist consolidates the Appwrite setup for the existing ConnectTime Next.js application. It is a configuration guide, not proof that the production backend is connected.
+
+## Important project boundaries
+
+- Use the existing ConnectTime Appwrite project and database. Do not create another database just to satisfy an optional feature.
+- Deploy the Next.js application to Netlify for server-rendered pages and API routes. GitHub Pages publishes only the static `docs/` preview and cannot run authentication, API routes, or Appwrite server code.
+- The current public preview URLs are `https://connecttime-sm.netlify.app` (Netlify) and `https://nasras0837-star.github.io/ConnectTime-/` (static Pages preview). A configured URL is not evidence that the latest code is deployed.
+- Keep `APPWRITE_API_KEY` and all provider secrets server-only. Never use a `NEXT_PUBLIC_` prefix for secrets.
+- Tables must remain private. The browser must not receive Appwrite server credentials or be granted broad access to member data.
+
+## Step 1 — Configure Appwrite authentication
+
+1. In the existing Appwrite project, add a Web platform for the exact Netlify production hostname and any staging hostname used for testing.
+2. Configure the project endpoint and project ID in Netlify environment variables:
+   - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
+   - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
+3. Verify Appwrite email/password signup, login, logout, session cookie handling, and redirects on the deployed Next.js site.
+4. Do not treat the signup 18+ checkbox as age verification.
+
+## Step 2 — Configure server access and adult eligibility
+
+Set:
+- `APPWRITE_API_KEY`
+- `APPWRITE_ACCESS_DATABASE_ID`
+- `APPWRITE_MEMBER_ACCESS_COLLECTION_ID`
+
+Create a private member-access collection as described in `APPWRITE_AUTHORIZATION.md`. Document IDs must equal the Appwrite user ID. Only trusted server-side code and the eventual verified provider webhook may change eligibility or account status. A missing record or unavailable service must deny protected access.
+
+**Important:** an age-verification provider is not yet selected/configured. The verification session endpoint intentionally remains unavailable until a real provider and signed webhook workflow are implemented. Do not manually mark real members verified as a shortcut.
+
+## Step 3 — Create private tables in the existing Appwrite database
+
+Set `APPWRITE_DATABASE_ID` to the existing database. Create only the tables needed for features you intend to test, then set their actual table IDs in Netlify:
+
+| Table purpose | Environment variable | Setup guide |
+|---|---|---|
+| Profiles | `APPWRITE_PROFILES_TABLE_ID` | `APPWRITE_PROFILE_TABLE_SETUP.md` |
+| Member settings | `APPWRITE_MEMBER_SETTINGS_TABLE_ID` | `APPWRITE_ACCOUNT_SETTINGS_SETUP.md` |
+| Friend requests | `APPWRITE_FRIEND_REQUESTS_TABLE_ID` | `APPWRITE_FRIEND_REQUESTS_SETUP.md` |
+| Notifications | `APPWRITE_NOTIFICATIONS_TABLE_ID` | `APPWRITE_NOTIFICATIONS_SETUP.md` |
+| Private messages | `APPWRITE_MESSAGES_TABLE_ID` | `APPWRITE_MESSAGES_SETUP.md` |
+| Community posts/comments/reactions | `APPWRITE_COMMUNITY_POSTS_TABLE_ID`, `APPWRITE_COMMUNITY_COMMENTS_TABLE_ID`, `APPWRITE_COMMUNITY_REACTIONS_TABLE_ID` | `APPWRITE_COMMUNITY_POSTS_SETUP.md` |
+| Community blocks/reports/appeals | `APPWRITE_COMMUNITY_BLOCKS_TABLE_ID`, `APPWRITE_COMMUNITY_REPORTS_TABLE_ID`, `APPWRITE_COMMUNITY_APPEALS_TABLE_ID` | `community-safety-backend-setup.md` |
+| Groups/members/posts | `APPWRITE_COMMUNITY_GROUPS_TABLE_ID`, `APPWRITE_COMMUNITY_GROUP_MEMBERS_TABLE_ID`, `APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID` | `APPWRITE_COMMUNITY_GROUPS_SETUP.md` |
+| Free TV watchlist | `APPWRITE_FREE_TV_WATCHLIST_TABLE_ID` | `APPWRITE_FREE_TV_WATCHLIST_SETUP.md` |
+
+Use the exact column IDs, types, sizes, required flags, and indexes in each guide. Do not guess a schema from the UI. Keep all tables private and access them through server-side APIs.
+
+## Step 4 — Configure hosting
+
+In Netlify, connect the GitHub repository `nasras0837-star/ConnectTime-`:
+- Production branch: `main`
+- Base directory: repository root
+- Build command: `npm run build`
+- Publish directory: `.next`
+- Node.js: 22
+- Next.js runtime plugin: `@netlify/plugin-nextjs` (already declared in `netlify.toml`)
+
+Add environment variables in the Netlify site settings, then trigger a new deploy. Do not add a static SPA rewrite for the Next.js app.
+
+## Step 5 — Verify one feature at a time
+
+Use two separate test accounts and confirm both expected and denied behavior:
+- Signup/login/logout and session persistence.
+- Profile create/read/update and unique handle collision.
+- Friend request send/accept/decline/cancel.
+- Notifications private to the recipient.
+- Messages only between accepted connections; block in either direction denies sending/reading.
+- Community feed, comments, and reactions enforce member eligibility and block rules.
+- Group privacy and membership rules.
+- Settings and live-feed preference isolation.
+- Storage outage, missing table, missing access record, unauthenticated requests, cross-user IDs, and malformed inputs all fail safely.
+
+A passing build or security workflow does not prove that Appwrite tables, secrets, domains, or production data are configured correctly.
+
+## Current known limitations — do not advertise as finished
+
+- Independent age verification provider and signed webhook integration are not implemented.
+- Backend environment variables and table IDs have not been confirmed configured in Netlify.
+- Group owner approval, invitations, and group moderation are incomplete.
+- Messaging is request/refresh based, not real-time; no attachments or group chats.
+- Notifications are in-app only; no email, push, or real-time delivery.
+- Photo/video uploads and public publishing remain disabled pending a tested quarantine/moderation pipeline.
+- Advertising payment, ad delivery, and verified impression counting are not confirmed operational.
+- Event submissions are local previews, not public persistent listings.
+- The static GitHub Pages preview cannot exercise any server-side feature.
+
+## Release gate
+
+Do not open public registration for full social access until the age-verification workflow, member-access provisioning, privacy/security review, moderation and incident-response process, backup/retention rules, and end-to-end tests have been completed.
