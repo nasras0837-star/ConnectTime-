@@ -331,3 +331,42 @@
 .socialNav a[href=\"/videos\"]:hover{background:#f8dff0}
 @media(max-width:900px){.socialLeft{position:static;max-height:none;overflow:visible}.socialNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.socialNav a{min-width:0;font-size:11px;padding:9px 10px}.socialNav a span{flex-basis:22px;width:22px;height:22px}}
 @media(max-width:520px){.socialNav{grid-template-columns:repeat(2,minmax(0,1fr))}.socialNav a{font-size:10px;gap:8px;padding:8px}.socialNav a span{flex-basis:20px;width:20px;height:20px}}
+
+
+/* ConnectTime playful motion pass — polished, accessible micro-interactions */
+@keyframes ctFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ctFloat{0%,100%{transform:translate3d(0,0,0) rotate(-4deg)}50%{transform:translate3d(0,-13px,0) rotate(3deg)}}
+@keyframes ctBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(5deg)}}
+@keyframes ctGlow{0%,100%{box-shadow:0 12px 30px #9d5ac522}50%{box-shadow:0 16px 42px #d94ba855}}
+@keyframes ctShimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes ctOrbit{from{transform:rotate(0deg) translateX(9px) rotate(0deg)}to{transform:rotate(360deg) translateX(9px) rotate(-360deg)}}
+.vibrantHome .socialCenter>*{animation:ctFadeUp .65s both}
+.vibrantHome .socialCenter>*:nth-child(2){animation-delay:.08s}
+.vibrantHome .socialCenter>*:nth-child(3){animation-delay:.15s}
+.vibrantHome .socialCenter>*:nth-child(4){animation-delay:.22s}
+.vibrantHome .socialCover{isolation:isolate}
+.vibrantHome .socialCover:after{content:"";position:absolute;z-index:0;inset:-45%;pointer-events:none;background:linear-gradient(110deg,transparent 38%,#ffffff20 48%,transparent 58%);background-size:200% 100%;animation:ctShimmer 9s linear infinite}
+.vibrantHome .coverCopy,.vibrantHome .introPeople,.vibrantHome .introScroll{z-index:1}
+.vibrantHome .peopleBubble{animation:ctBob 4.2s ease-in-out infinite}
+.vibrantHome .bubbleB{animation-delay:.6s}.vibrantHome .bubbleC{animation-delay:1.2s}.vibrantHome .bubbleD{animation-delay:1.8s}
+.vibrantHome .peopleCaption{animation:ctFloat 6s ease-in-out infinite}
+.vibrantHome .vHeader{transition:box-shadow .25s,background .25s}
+.vibrantHome .vHeader:hover{box-shadow:0 8px 30px #7043a51a}
+.vibrantHome .vJoin{background-size:180% 100%;animation:ctShimmer 5s ease-in-out infinite}
+.vibrantHome .socialNav a,.vibrantHome .composerActions a,.vibrantHome .postActions a{transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.vibrantHome .socialNav a:hover{transform:translateX(5px) scale(1.015)}
+.vibrantHome .socialComposer,.vibrantHome .socialPost,.vibrantHome .rightCard,.vibrantHome .socialProfile{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.vibrantHome .socialComposer:hover,.vibrantHome .socialPost:hover,.vibrantHome .rightCard:hover{transform:translateY(-4px);box-shadow:0 16px 38px #54318b18}
+.vibrantHome .composerActions a:hover,.vibrantHome .postActions a:hover{transform:translateY(-2px);box-shadow:0 7px 16px #8c5bc322}
+.vibrantHome .postImage{transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s}
+.vibrantHome .socialPost:hover .postImage{transform:scale(1.018);filter:saturate(1.08)}
+.vibrantHome .socialPost{overflow:hidden}
+.vibrantHome .introActions a:first-child{transition:transform .2s,box-shadow .2s}
+.vibrantHome .introActions a:first-child:hover{transform:translateY(-3px) scale(1.025);box-shadow:0 12px 25px #ec49b64a}
+.vibrantHome .introHighlights span{transition:transform .2s,background .2s}
+.vibrantHome .introHighlights span:hover{transform:translateY(-3px);background:#ffffff30}
+.vibrantHome .adultCard{transition:transform .25s,box-shadow .25s}
+.vibrantHome .adultCard:hover{transform:translateY(-3px);box-shadow:0 12px 24px #6541a51a}
+.vibrantHome a:focus-visible,.vibrantHome button:focus-visible{outline:3px solid #f05db8;outline-offset:3px}
+@media(hover:none){.vibrantHome .socialPost:hover .postImage{transform:none}}
+@media(prefers-reduced-motion:reduce){.vibrantHome *, .vibrantHome *:before, .vibrantHome *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
