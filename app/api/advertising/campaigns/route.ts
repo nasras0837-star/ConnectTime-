@@ -145,7 +145,7 @@ export async function PATCH(request: Request) {
     }
     await tablesDB.updateRow({
       databaseId, tableId, rowId: campaignId,
-      data: { status: "cancelled", advertiser_cancelled_at: new Date().toISOString() },
+      data: { status: "cancelled" },
     });
     return NextResponse.json({
       updated: true, status: "cancelled",
