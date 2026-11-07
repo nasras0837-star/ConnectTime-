@@ -28,6 +28,7 @@ export default function VideosPage() {
   const [history, setHistory] = useState<string[]>([]);
   const [signals, setSignals] = useState<Signals>(blankSignals);
   const [ready, setReady] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     try {
       setInterests(JSON.parse(localStorage.getItem("ct-video-interests") || "[]"));
