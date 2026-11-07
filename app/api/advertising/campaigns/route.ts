@@ -66,6 +66,8 @@ export async function POST(request: Request) {
   const adSubmissionId = text("adSubmissionId", 64);
   const refundPolicyAccepted = input.refundPolicyAccepted === true;
   const geoTargets = text("geoTargets", 2000);
+  const allowedInterests = ["Arts & entertainment", "Business", "Education", "Family & parenting", "Food & dining", "Gaming", "Health & fitness", "Lifestyle", "Music", "News & politics", "Shopping", "Sports", "Technology", "Travel"];
+  const audienceInterests = Array.isArray(input.audienceInterests) ? input.audienceInterests.filter((value): value is string => typeof value === "string" && allowedInterests.includes(value)).slice(0, allowedInterests.length) : [];
   const currency = "USD";
   const dailyBudget = Number(input.dailyBudgetMinor);
   const lifetimeCap = Number(input.lifetimeCapMinor);
@@ -95,7 +97,7 @@ export async function POST(request: Request) {
     const row = await tablesDB.createRow({
       databaseId, tableId, rowId: ID.unique(),
       data: {
-        advertiser_user_id: user.$id, ad_submission_id: adSubmissionId, company, campaign_name: name, objective, placement, region, country, geo_targets: geoTargets,
+        advertiser_user_id: user.$id, ad_submission_id: adSubmissionId, company, campaign_name: name, objective, placement, region, country, geo_targets: geoTargets, audience_interests: audienceInterests.join(","),
         daily_budget_minor: dailyBudget, lifetime_cap_minor: lifetimeCap, currency,
         bid_strategy: bidStrategy, status: "pending_review", moderation_status: "passed_initial_screen",
         human_review_status: "pending", payment_status: "not_started",
