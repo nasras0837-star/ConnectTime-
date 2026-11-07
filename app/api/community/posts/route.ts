@@ -44,7 +44,7 @@ export async function GET() {
   if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
   try {
     const s = services();
-    const result = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.postsTableId, queries: [Query.orderDesc("created_at"), Query.limit(60)] });
+    const result = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.postsTableId, queries: [Query.equal("status", "published"), Query.orderDesc("created_at"), Query.limit(60)] });
     const posts = [];
     for (const row of result.rows) {
       const authorId = String(row.author_user_id || "");
