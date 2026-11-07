@@ -791,3 +791,11 @@
 .ctHomeAdPills b{padding:7px 10px;border-radius:99px;background:#e0f3fb;color:#28607e;font-size:9px}
 .ctHomeSmartAds>a{white-space:nowrap;padding:13px 17px;border-radius:99px;background:#087eb9;color:white;font-size:11px;font-weight:900}
 @media(max-width:760px){.ctHomeSmartAds{grid-template-columns:46px minmax(0,1fr);padding:23px 19px;gap:13px;margin:-12px auto 48px}.ctHomeAdIcon{width:43px;height:43px;font-size:24px}.ctHomeSmartAds>a{grid-column:1/-1;text-align:center}.ctHomeHero:before{background-image:linear-gradient(90deg,#e5f5fcf2 0%,#f6faffdf 48%,#e6f2fb88 100%),url("https://images.unsplash.com/photo-1790749870936-07546fb6c68e?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=1600");background-position:center;background-size:cover}.ctHomeHero h1{font-size:clamp(40px,10vw,54px);letter-spacing:-2px}}
+
+
+/* Group chat auto-update status */
+.groupChatLiveStatus{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;color:#668095;font-size:10px;font-weight:800}
+.groupChatLiveStatus small{width:100%;text-align:right;color:#8b9eac;font-size:9px;font-weight:500}
+.groupChatLiveStatus button{border:1px solid #cfe0e9;background:#fff;color:#28617e;border-radius:999px;padding:8px 12px;font-size:10px;font-weight:800;cursor:pointer}
+.groupChatLiveDot{width:8px;height:8px;border-radius:50%;background:#20b486;box-shadow:0 0 0 4px #20b48620}
+@media(max-width:600px){.groupChatLiveStatus{justify-content:flex-start}.groupChatLiveStatus small{text-align:left}}
