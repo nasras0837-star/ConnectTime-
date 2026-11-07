@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 900;
+export const revalidate = 300;
 export const runtime = "nodejs";
 
 const FEEDS: Record<string, { label: string; urls: string[] }> = {
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   const feeds = keys.flatMap((key) => FEEDS[key] ? FEEDS[key].urls.map((url) => ({ key, label: FEEDS[key].label, url })) : []);
   if (!feeds.length) return NextResponse.json({ articles: [], error: "Unknown news category" }, { status: 400 });
   const results = await Promise.allSettled(feeds.map(async (feed) => {
-    const response = await fetch(feed.url, { headers: { "User-Agent": "ConnectTimeNews/1.0 (RSS reader)" }, signal: AbortSignal.timeout(8000), next: { revalidate: 900 } });
+    const response = await fetch(feed.url, { headers: { "User-Agent": "ConnectTimeNews/1.0 (RSS reader)" }, signal: AbortSignal.timeout(8000), next: { revalidate: 300 } });
     if (!response.ok) throw new Error("Feed unavailable");
     const xml = await response.text();
     return [...xml.matchAll(/<item\b[\s\S]*?<\/item>/gi)].map((match) => {
