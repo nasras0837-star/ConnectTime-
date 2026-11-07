@@ -30,7 +30,8 @@ export default function SafetyCenterPage() {
   async function submit(event: FormEvent<HTMLFormElement>, endpoint: string, setStatus: (value: string) => void) {
     event.preventDefault();
     setStatus("Submitting…");
-    const formElement = event.currentTarget;\n    const form = new FormData(formElement);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     try {
       const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -46,7 +47,8 @@ export default function SafetyCenterPage() {
   async function addBlock(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBlockStatus("Blocking…");
-    const formElement = event.currentTarget;\n    const form = new FormData(formElement);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/community/blocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ blockedUserId: form.get("blockedUserId") }) });
       const data = await response.json();
