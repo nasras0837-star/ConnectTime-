@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { createNextServerHelpers } from "@appwrite.io/react/server/next";
+import { checkMemberAccess } from "@/lib/member-access";
 import { advertisingStore, ID } from "@/lib/advertising-store";
 
 export const runtime = "nodejs";
@@ -13,6 +15,13 @@ type ReviewBody = {
 };
 
 export async function POST(request: Request) {
+  const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
+  const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
+  if (!endpoint || !projectId) return NextResponse.json({ status: "unavailable", error: "Account verification is not configured. Ad submissions are blocked." }, { status: 503 });
+  const user = await createNextServerHelpers({ endpoint, projectId }).getLoggedInUser();
+  if (!user) return NextResponse.json({ status: "unauthenticated", error: "Sign in before submitting an advertisement." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ status: "not_verified", error: "Verified adult member access is required to submit an advertisement." }, { status: access.status });
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
@@ -96,7 +105,7 @@ export async function POST(request: Request) {
         tableId,
         rowId: ID.unique(),
         data: {
-          ad_company: company, campaign_name: campaign, ad_headline: headline, ad_body: body, image_url: imageUrl, rights_confirmed: true,
+          advertiser_user_id: user.$id, ad_company: company, campaign_name: campaign, ad_headline: headline, ad_body: body, image_url: imageUrl, rights_confirmed: true,
           status, flagged_categories: flaggedCategories.join(","), created_at: new Date().toISOString(),
         },
       });
