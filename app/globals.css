@@ -565,3 +565,6 @@
 .homeNewsStatus button{border:0;background:none;color:#2469d9;font-weight:800;cursor:pointer}
 .homeNewsFoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;font-size:10px;color:#8b9aac}
 @media(max-width:650px){.homeLiveNews{padding:16px;margin:18px 0}.homeLiveNewsTop{align-items:flex-start;flex-direction:column;gap:12px}.homeLiveGrid{grid-template-columns:1fr}.homeLiveCard{padding:14px}.homeLiveCard h3{font-size:14px}}
+
+
+.adFixedPrice{padding:22px;border:1px solid rgba(99,102,241,.25);border-radius:16px;background:linear-gradient(135deg,rgba(99,102,241,.10),rgba(14,165,233,.08));display:grid;gap:8px;margin:14px 0}.adFixedPrice>span{font-size:11px;letter-spacing:.12em;font-weight:800;color:var(--muted,#64748b)}.adFixedPrice strong{font-size:32px;line-height:1.2}.adFixedPrice strong small{font-size:14px;font-weight:600}.adFixedPrice p{margin:0;color:var(--muted,#64748b);font-size:13px;line-height:1.5}
