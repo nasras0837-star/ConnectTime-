@@ -4,7 +4,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 import "./auth.css";
 
-export const metadata: Metadata = { title: "ConnectTime — Your world, connected", description: "An international community for adults to connect, share, discover and create.", applicationName: "ConnectTime" };
+export const metadata: Metadata = { title: "ConnectTime — Your world, connected", description: "An international community for adults to connect, share, discover and create.", applicationName: "ConnectTime", icons: { icon: "/icon.svg", apple: "/icon.svg" } };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const configured = Boolean(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT && process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
