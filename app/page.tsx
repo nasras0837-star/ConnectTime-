@@ -1,28 +1,21 @@
 import Link from "next/link";
 
-const tiles = [
-  { icon: "▶", title: "ConnectTime TV", desc: "Discover videos picked for you", href: "/videos", color: "pink" },
-  { icon: "♧", title: "Friends", desc: "Connect with people around the world", href: "/signup", color: "blue" },
-  { icon: "✧", title: "Match Maker", desc: "Meet people with shared interests", href: "/signup", color: "teal" },
-  { icon: "▣", title: "Marketplace", desc: "Explore community finds", href: "/signup", color: "gold" },
-  { icon: "✦", title: "News & Stories", desc: "See what's happening", href: "/signup", color: "violet" },
-  { icon: "◉", title: "Live", desc: "Join conversations in real time", href: "/signup", color: "mint" },
+const posts = [
+  {name:"Maya Chen",handle:"@mayacreates",time:"18 min ago",avatar:"MC",tone:"avatarTeal",location:"Vancouver, Canada",text:"A little weekend reminder to get outside, meet someone new, and enjoy the small things. Found this beautiful spot on my morning walk 🌿",image:"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=85",likes:"128",comments:"24",tag:"Travel & nature"},
+  {name:"Jordan Williams",handle:"@jordansounds",time:"1 hr ago",avatar:"JW",tone:"avatarBlue",location:"Atlanta, USA",text:"Putting together a community playlist for the weekend. What song always puts you in a good mood? 🎧",image:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=85",likes:"86",comments:"39",tag:"Music"},
+  {name:"Aisha Rahman",handle:"@aishalearns",time:"3 hrs ago",avatar:"AR",tone:"avatarGold",location:"London, UK",text:"Just finished a creative workshop and came away with so many ideas. Sharing a few moments from today with the community ✨",image:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85",likes:"204",comments:"31",tag:"Community"},
 ];
-const picks = [
-  { emoji: "🌴", label: "Nature & travel", color: "tileMint" },
-  { emoji: "🎵", label: "Music", color: "tilePink" },
-  { emoji: "🎮", label: "Gaming", color: "tileBlue" },
-  { emoji: "🧠", label: "Learning", color: "tileGold" },
-  { emoji: "✨", label: "Creative", color: "tileLavender" },
-];
-
-export default function HomePage() {
-  return <main className="vibrantHome">
-    <header className="vHeader"><Link className="vLogo" href="/">🌐 Connect<span>Time</span></Link><div className="vSearch">⌕ <span>Search people, videos, topics…</span></div><nav><Link href="/login">Log in</Link><Link className="vJoin" href="/signup">Join free ↗</Link></nav></header>
-    <div className="vLayout"><aside className="vSidebar"><Link className="vSideActive" href="/">⌂ <span>Home</span></Link><Link href="/videos">▶ <span>ConnectTime TV</span></Link><Link href="/signup">♧ <span>Friends</span></Link><Link href="/signup">▣ <span>Messages</span></Link><Link href="/signup">♡ <span>Match Maker</span></Link><Link href="/signup">▤ <span>Marketplace</span></Link><Link href="/signup">✦ <span>News</span></Link><Link href="/signup">◉ <span>Live</span></Link><div className="vAge"><span>🛡️</span><strong>18+ community</strong><small>Age eligibility required for full access.</small></div></aside>
-    <section className="vMain"><div className="vHero"><div className="vHeroText"><span className="vPill">YOUR WORLD, YOUR PEOPLE</span><h1>Find your people.<br/><em>Share what you love.</em></h1><p>Build friendships, share interests, and discover communities from around the world.</p><div className="vHeroButtons"><Link href="/signup" className="vPrimary">✨ Get started free</Link><Link href="/videos" className="vSecondary">▶ Watch ConnectTime TV</Link></div></div><div className="vHeroArt"><div className="vOrb orbOne"/><div className="vOrb orbTwo"/><div className="vFloating">🌎</div><div className="vFloatText">A place to belong</div><div className="vMiniCard">🤝 <b>Shared interests.<br/>Real community.</b></div></div></div>
-    <div className="vSectionHead"><div><span className="vEyebrow">EXPLORE WHAT YOU LOVE</span><h2>Explore your interests</h2></div><Link href="/videos">See all →</Link></div><div className="vInterestRow">{picks.map((x)=><Link href="/videos" className={`vInterest ${x.color}`} key={x.label}><span>{x.emoji}</span><b>{x.label}</b></Link>)}</div>
-    <div className="vSectionHead"><div><span className="vEyebrow">ONE APP, MANY POSSIBILITIES</span><h2>Your ConnectTime shortcuts</h2></div></div><div className="vShortcutGrid">{tiles.map((x)=><Link href={x.href} className={`vShortcut ${x.color}`} key={x.title}><span className="vShortcutIcon">{x.icon}</span><div><h3>{x.title}</h3><p>{x.desc}</p></div><span className="vArrow">↗</span></Link>)}</div>
-    <div className="vBottomCall"><div><strong>Ready to make your world bigger?</strong><p>Join the community and start exploring.</p></div><Link href="/signup">Create your account →</Link></div><footer className="vFooter">© {new Date().getFullYear()} ConnectTime · Watch • Chat • Connect · Adults 18+</footer></section></div>
-  </main>;
-}
+const links=[["⌂","Home","/"],["♧","Friends","/signup"],["▣","Messages","/signup"],["▶","ConnectTime TV","/videos"],["✧","Match Maker","/signup"],["▤","Marketplace","/signup"],["✦","News & Stories","/signup"],["◉","Live","/signup"]];
+const groups=[["🌱","Outdoor explorers","12.4K members"],["🎨","Creative corner","8.2K members"],["🎮","Gaming lounge","21K members"]];
+export default function HomePage(){return <main className="vibrantHome socialHome">
+<header className="vHeader"><Link className="vLogo" href="/">🌐 Connect<span>Time</span></Link><div className="vSearch">⌕ <span>Search people, posts, groups…</span></div><nav><Link href="/login">Log in</Link><Link className="vJoin" href="/signup">Join free ↗</Link></nav></header>
+<div className="socialLayout"><aside className="socialLeft"><div className="socialProfile"><div className="profileCover"/><div className="profileAvatar">🌐</div><strong>Welcome to ConnectTime</strong><small>Your community starts here</small><Link href="/signup">Create your profile →</Link></div><nav className="socialNav">{links.map(([icon,label,href],i)=><Link className={i===0?"socialNavActive":""} href={href} key={label}><span>{icon}</span>{label}</Link>)}</nav><div className="adultCard">🛡️ <b>18+ community</b><small>Respectful connections. Safer spaces.</small></div></aside>
+<section className="socialCenter">
+<div className="socialCover"><div className="coverPhoto"/><div className="coverShade"/><div className="coverCopy"><span>WELCOME TO YOUR COMMUNITY</span><h1>Good people.<br/>Great conversations.</h1><p>Share your world, discover new interests, and connect with people everywhere.</p><Link href="/signup">Join the community ↗</Link></div></div>
+<div className="socialComposer"><div className="composerTop"><div className="userAvatar avatarTeal">Y</div><Link href="/signup">What would you like to share with the community?</Link></div><div className="composerActions"><span>📷 Photo</span><span>🎥 Video</span><span>📍 Check in</span><Link href="/signup">Create a post</Link></div></div>
+<div className="feedHeading"><div><span>YOUR COMMUNITY</span><h2>Latest conversations</h2></div><button type="button">For you⌄</button></div>
+{posts.map(post=><article className="socialPost" key={post.name}><div className="postHead"><div className={`userAvatar ${post.tone}`}>{post.avatar}</div><div className="postIdentity"><b>{post.name}</b><small>{post.handle} · {post.time} · {post.location}</small></div><button aria-label="More post options">•••</button></div><p className="postText">{post.text}</p><div className="postTag">{post.tag}</div><img className="postImage" src={post.image} alt={`Community post shared by ${post.name}`} loading="lazy"/><div className="postStats"><span>💙 {post.likes} likes</span><span>{post.comments} comments</span></div><div className="postActions"><Link href="/login">♡ Like</Link><Link href="/login">◯ Comment</Link><Link href="/login">↗ Share</Link></div></article>)}
+<div className="socialNotice">This is a design preview with sample community posts. Sign-in, posting, likes, and comments will become active after the backend is configured.</div>
+</section>
+<aside className="socialRight"><div className="rightCard"><div className="rightTitle">Trending topics <span>•••</span></div>{[["#WeekendOutdoors","Travel · 2.4K posts"],["#CreativeMinds","Art · 1.8K posts"],["#GoodReads","Books · 940 posts"]].map(([tag,meta])=><div className="trend" key={tag}><b>{tag}</b><small>{meta}</small></div>)}<Link href="/videos">Explore topics →</Link></div><div className="rightCard"><div className="rightTitle">Groups to explore</div>{groups.map(([emoji,name,count])=><div className="groupSuggest" key={name}><span>{emoji}</span><div><b>{name}</b><small>{count}</small></div></div>)}<Link href="/signup">Discover groups →</Link></div><div className="rightCard communityNote"><b>Make this a good space</b><p>Be kind, respect boundaries, and help everyone feel welcome.</p><small>Adults 18+ · Community guidelines</small></div></aside>
+</div><footer className="vFooter socialFooter">© {new Date().getFullYear()} ConnectTime · Watch • Chat • Connect · Adults 18+</footer></main>}
