@@ -51,7 +51,7 @@ export async function GET(_request: Request, context: { params: Promise<{ postId
     ]);
     if (viewerBlock.rows.length || authorBlock.rows.length) return NextResponse.json({ error: "Post not found." }, { status: 404 });
     const [comments, reactions] = await Promise.all([
-      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.commentsTableId, queries: [Query.equal("post_id", postId), Query.orderAsc("created_at"), Query.limit(50)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.commentsTableId, queries: [Query.equal("post_id", postId), Query.equal("status", "published"), Query.orderAsc("created_at"), Query.limit(50)] }),
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.reactionsTableId, queries: [Query.equal("post_id", postId), Query.limit(100)] })
     ]);
     const visible = [];
@@ -96,6 +96,8 @@ export async function POST(request: Request, context: { params: Promise<{ postId
     ]);
     if (blockedByViewer.rows.length || blockedByAuthor.rows.length) return NextResponse.json({ error: "You cannot interact with this post." }, { status: 403 });
     if (type === "comment") {
+      const ownProfile = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", user.$id), Query.limit(1)] });
+      if (!ownProfile.rows[0] || !["public", "members"].includes(String(ownProfile.rows[0].visibility || ""))) return NextResponse.json({ error: "Set your profile visibility to Public or Signed-in members before commenting." }, { status: 403 });
       const recent = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.commentsTableId, queries: [Query.equal("user_id", user.$id), Query.greaterThanEqual("created_at", new Date(Date.now() - 10 * 60_000).toISOString()), Query.limit(21)] });
       if (recent.rows.length >= 20) return NextResponse.json({ error: "You have reached the comment limit. Please wait before commenting again." }, { status: 429 });
       const row = await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.commentsTableId, rowId: ID.unique(), data: { post_id: postId, user_id: user.$id, body: content, created_at: new Date().toISOString(), status: "published" } });
