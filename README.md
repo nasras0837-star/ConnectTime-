@@ -43,6 +43,10 @@ This repository is a staged prototype, not a production-ready social network. Do
 - Real-time messaging delivery, calls, creator/video publishing, marketplace transactions, advertising delivery/billing, and verified impression analytics have secure backend services. The initial private messaging API is request/refresh based and requires Appwrite setup; it is not real-time.
 - Security, integration, accessibility, and deployment tests pass.
 
+## Backend configuration checklist
+
+Use [`docs/APPWRITE_GO_LIVE_CHECKLIST.md`](docs/APPWRITE_GO_LIVE_CHECKLIST.md) for the ordered Appwrite, Netlify environment, private-table, and release-readiness steps. The complete variable-name template is in [`.env.example`](.env.example). These files contain placeholders only; they do not configure your hosted services.
+
 ## Local development
 
 1. Install Node.js 22.
