@@ -92,6 +92,7 @@ Create these columns (use the exact IDs; make optional unless required):
 | region | Varchar | 80 | Yes |
 | country | Varchar | 100 | Yes |
 | geo_targets | Varchar | 2000 | No |
+| audience_interests | Varchar | 1000 | No |
 | daily_budget_minor | Integer | — | Yes |
 | lifetime_cap_minor | Integer | — | Yes |
 | currency | Varchar | 3 | Yes |
@@ -163,3 +164,12 @@ The signed JSON body must include `campaignId`, unique `eventId` (16–64 letter
 Advertiser dashboard counts are derived from the private event table's valid rows, not client-supplied counters. The event ID is the idempotency key. The delivery service must create an impression only after the published viewability threshold is met; a page render, ad request, or preview is not automatically an impression.
 
 **Important: this is a secure event-ingestion foundation, not a live ad network.** ConnectTime does not yet have an ad-serving placement, a trusted delivery worker that signs these events, payment authorization, atomic budget reservations, or an invalid-traffic detection pipeline. No current campaign is payment-authorized, and the review API does not enable payment. Therefore no real impressions/clicks are expected yet and campaign drafts remain ineligible for delivery. Do not set a campaign's payment status to authorized manually just to test this endpoint. Build and sandbox-test the ad-serving and billing systems before activating it.
+
+
+## Smart audience planning and advertiser dashboard
+
+The campaign builder supports optional broad interest categories (arts & entertainment, business, education, family & parenting, food & dining, gaming, health & fitness, lifestyle, music, news & politics, shopping, sports, technology, and travel). The API validates these values against a fixed allowlist and stores the selected categories as a comma-separated string in `audience_interests`. Add the optional Varchar column above to the existing `advertising_campaigns` table before enabling campaign draft creation with interest selections.
+
+The advertiser dashboard now includes campaign search and status filters, aggregate campaign/spend/impression/click/CTR summaries, per-campaign spend-cap progress, target region/country/city text, selected interests, placement/objective, and campaign schedule. CTR is calculated as verified clicks divided by verified impressions; spend progress uses recorded spend against the advertiser's campaign cap. Empty/unconfigured metrics remain zero and are explicitly labeled as inactive or unverified.
+
+**Targeting limitation:** these interest selections are planning metadata only. ConnectTime does not yet use them to select or personalize ad delivery. Geographic city/radius fields are also saved as advertiser targeting instructions, not proof of geofenced delivery. Do not market these options as active targeting until a privacy-reviewed audience eligibility and ad-serving system enforces them.
