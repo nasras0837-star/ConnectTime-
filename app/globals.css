@@ -629,3 +629,19 @@
 .friendEmpty{padding:14px 0;color:#8291a4;font-size:12px}
 .friendRefresh{border:0;background:none;color:#286bb2;font:inherit;font-weight:800;cursor:pointer}
 @media(max-width:600px){.friendEntry{align-items:flex-start;flex-wrap:wrap}.friendEntryActions{width:100%;padding-left:55px}.friendEntryActions button{flex:1}.friendsCard{padding:22px!important}}
+
+
+/* In-app notifications */
+.notificationsCard{max-width:850px!important;width:min(850px,calc(100% - 32px))!important;margin:24px auto!important}
+.notificationList{display:grid;gap:10px;margin:22px 0}
+.notificationItem{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid #dce9f4;border-radius:13px;background:#f4f9ff}
+.notificationItem.isRead{background:#fff;border-color:#e8edf3}
+.notificationDot{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:#1d9b92}
+.notificationItem.isRead .notificationDot{background:#cbd5df}
+.notificationCopy{display:grid;gap:5px;min-width:0;flex:1}
+.notificationCopy strong{font-size:13px;color:#233d5b}
+.notificationCopy span{font-size:11px;color:#7c8ea3;line-height:1.5}
+.notificationItem button{border:1px solid #d8e4ef;border-radius:8px;padding:8px 10px;background:#fff;color:#286ca9;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap}
+.notificationItem button:disabled{opacity:.5;cursor:wait}
+.notificationEmpty{padding:28px 0;text-align:center;color:#7b8da2;font-size:13px}
+@media(max-width:560px){.notificationsCard{padding:22px!important}.notificationItem{align-items:flex-start;flex-wrap:wrap}.notificationItem button{margin-left:22px}}
