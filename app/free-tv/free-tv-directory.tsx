@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Channel = {
   id: string;
@@ -76,6 +76,32 @@ export default function FreeTvPage() {
   const [country,setCountry] = useState("All countries");
   const [category,setCategory] = useState("All");
   const [query,setQuery] = useState("");
+  const [watchlist,setWatchlist] = useState<string[]>([]);
+  const [watchlistReady,setWatchlistReady] = useState(false);
+  const [watchlistError,setWatchlistError] = useState("");
+  const [watchlistBusy,setWatchlistBusy] = useState<string | null>(null);
+  const [showSavedOnly,setShowSavedOnly] = useState(false);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/free-tv/watchlist", { cache: "no-store" }).then(async response => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Watchlist is unavailable.");
+      if (active) setWatchlist(Array.isArray(data.watchlist) ? data.watchlist : []);
+    }).catch(error => { if (active) setWatchlistError(error instanceof Error ? error.message : "Watchlist is unavailable."); })
+      .finally(() => { if (active) setWatchlistReady(true); });
+    return () => { active = false; };
+  }, []);
+  async function toggleSaved(channelId: string) {
+    setWatchlistBusy(channelId); setWatchlistError("");
+    const saved = watchlist.includes(channelId);
+    try {
+      const response = await fetch("/api/free-tv/watchlist", { method: saved ? "DELETE" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ channelId }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Watchlist update failed.");
+      setWatchlist(current => saved ? current.filter(id => id !== channelId) : [...current, channelId]);
+    } catch (error) { setWatchlistError(error instanceof Error ? error.message : "Watchlist update failed."); }
+    finally { setWatchlistBusy(null); }
+  }
   const filtered = useMemo(() => channels.filter((channel) => {
     const matchesRegion = region === "All regions" || channel.region === region || channel.region === "Global";
     const matchesCountry = country === "All countries" || channel.country === country || channel.country === "Global";
@@ -89,9 +115,9 @@ export default function FreeTvPage() {
     <section className="freeTvHero"><span className="freeTvEyebrow">CONNECTTIME · FREE TV</span><h1>Local voices.<br/><em>World-wide viewing.</em></h1><p>Discover free official news and entertainment channels from participating broadcasters around the world. Choose a region, find a channel, and watch on the broadcaster&apos;s own service.</p><div className="freeTvHeroStats"><span>🌍 Regional discovery</span><span>📰 Local & world news</span><span>🎭 Free entertainment</span><span>🔗 Official broadcaster links</span></div></section>
     <section className="freeTvDirectory">
       <div className="freeTvSectionHead"><div><span>CHANNEL GUIDE</span><h2>Find something to watch</h2><p>ConnectTime links to the broadcaster. It does not host, record or rebroadcast TV streams. Official destination links receive a scheduled technical check; regional rights and actual live playback still require broadcaster confirmation.</p></div><span className="freeTvCount">{filtered.length} channels</span></div>
-      <div className="freeTvControls"><label>Search channels<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search by channel, country or language"/></label><label>Region<select value={region} onChange={e=>setRegion(e.target.value)}>{regions.map(v=><option key={v}>{v}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}>{countries.map(v=><option key={v}>{v}</option>)}</select></label></div>
+      <div className="freeTvWatchlistBar"><button type="button" onClick={() => setShowSavedOnly(false)} aria-pressed={!showSavedOnly}>All channels</button><button type="button" onClick={() => setShowSavedOnly(true)} aria-pressed={showSavedOnly}>★ My watchlist ({watchlist.length})</button><span>{watchlistReady ? "Personal watchlist" : "Loading saved channels…"}</span></div>{watchlistError && <p className="freeTvWatchlistMessage" role="status">{watchlistError} You can still browse the directory.</p>}<div className="freeTvControls"><label>Search channels<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search by channel, country or language"/></label><label>Region<select value={region} onChange={e=>setRegion(e.target.value)}>{regions.map(v=><option key={v}>{v}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}>{countries.map(v=><option key={v}>{v}</option>)}</select></label></div>
       <div className="freeTvTabs" role="group" aria-label="Filter by channel type">{["All","News","Entertainment"].map(v=><button key={v} className={category===v?"active":""} onClick={()=>setCategory(v)} aria-pressed={category===v}>{v==="All"?"🌐":v==="News"?"📰":"🎬"} {v}</button>)}</div>
-      <div className="freeTvGrid">{filtered.map(channel=><article className="freeTvCard" key={channel.id}><div className="freeTvCardTop"><span className={channel.category==="News"?"newsType":"entertainmentType"}>{channel.category==="News"?"📰 News":"🎭 Entertainment"}</span><span>{channel.region}</span></div><h3>{channel.name}</h3><div className="freeTvMeta">{channel.country} · {channel.language}</div><p>{channel.description}</p><div className="freeTvAccess">✓ {channel.access}</div><a href={channel.url} target="_blank" rel="noopener noreferrer">Watch / visit official service ↗</a></article>)}</div>
+      <div className="freeTvGrid">{filtered.map(channel=><article className="freeTvCard" key={channel.id}><div className="freeTvCardTop"><span className={channel.category==="News"?"newsType":"entertainmentType"}>{channel.category==="News"?"📰 News":"🎭 Entertainment"}</span><span>{channel.region}</span></div><h3>{channel.name}</h3><div className="freeTvMeta">{channel.country} · {channel.language}</div><p>{channel.description}</p><div className="freeTvAccess">✓ {channel.access}</div><button type="button" className="freeTvSaveButton" onClick={() => toggleSaved(channel.id)} disabled={!watchlistReady || watchlistBusy === channel.id}>{watchlistBusy === channel.id ? "Saving…" : watchlist.includes(channel.id) ? "★ Saved · Remove" : "☆ Save to watchlist"}</button><a href={channel.url} target="_blank" rel="noopener noreferrer">Watch / visit official service ↗</a></article>)}</div>
       {filtered.length===0&&<div className="freeTvEmpty">No channels match those filters. Try a wider region or another search.</div>}
     </section>
     <section className="freeTvLocal"><div><span>YOUR LOCAL PUBLIC TV</span><h2>Start with your own region</h2><p>Some public broadcasters restrict live television to their local service area or country. Use the official station finder or broadcaster website to see what is available where you live.</p></div><a href="https://www.pbs.org/stations/" target="_blank" rel="noopener noreferrer">Find a US PBS station ↗</a></section>
