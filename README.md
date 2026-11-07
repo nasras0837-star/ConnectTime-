@@ -1,26 +1,28 @@
-# ConnectTime — Web Starter
+# ConnectTime
 
-ConnectTime is an early visual prototype for an international, adults-only social network.
+ConnectTime is an international, adults-only social platform being built as a web application.
+
+## Repository contents
+- `app/`, `lib/`, `proxy.ts`: Next.js App Router application foundation with Supabase SSR authentication.
+- `supabase/schema.sql`: initial database schema reference with row-level security and restricted adult eligibility fields.
+- `index.html`, `styles.css`, `app.js`: original standalone visual prototype.
+
+## Current status
+The Next.js foundation includes a landing page, email/password signup and login, a restricted account status page, Supabase browser/server clients, and a session-refresh proxy. Accounts remain pending until a trusted age-verification provider confirms adult eligibility. A self-declared birth date or checkbox is not sufficient verification.
+
+The database schema is a reference only; it has not been applied to a ConnectTime Supabase project. Do not apply it to Flirt or Pleasure.
 
 ## Run locally
-Open `index.html` in a modern browser. This static prototype does not require Node.js.
+1. Install Node.js LTS.
+2. Run `npm install`.
+3. Copy `.env.example` to `.env.local`.
+4. Add the dedicated ConnectTime Supabase project URL and publishable key.
+5. Run `npm run dev` and open `http://localhost:3000`.
 
-## Included
-- Responsive social feed and post composer
-- Navigation concepts for Friends, Messages, Marketplace, Match Maker, News, ConnectTime TV and Live
-- Demo signup dialog with a date-of-birth check
-- Demo people-discovery and community panels
+## Security notes
+- Never commit real environment secrets.
+- Never expose a Supabase secret/service-role key in browser code or `NEXT_PUBLIC_*` variables.
+- Only trusted server-side verification can change adult/account eligibility.
+- Production access stays disabled until age verification, abuse controls, privacy/legal review, and security testing are complete.
 
-## Important: prototype only
-This repository currently contains a front-end demonstration, not a production social network. It has no real accounts, server-side age/identity verification, persistent database, messaging, calls, marketplace payments, dating matching, licensed news feed, video hosting, livestreaming, creator payouts, or production moderation. The browser-only date-of-birth check is not a secure age gate and must not be used to grant access to real users.
-
-## Planned production direction
-- Next.js + TypeScript web application
-- Supabase for authentication, database and realtime features
-- Server-side adult eligibility verification
-- Controlled media storage, moderation and access policies
-- Dedicated calling/live-streaming provider
-- International payments, creator payout compliance and localization
-- Licensed or authorized news sources
-
-Build and security milestones must be completed before public launch.
+See [docs/PRODUCTION_FOUNDATION.md](docs/PRODUCTION_FOUNDATION.md) for the roadmap.
