@@ -32,7 +32,7 @@ export default function ComingSoonPage() {
         <p className="message" role="status">Preview only · No account action, payment, or publication is being processed here.</p>
         <div className="introActions">
           <Link href="/news">Explore community news</Link>
-          <Link className="introExplore" href="/signup">Create a free profile</Link>
+          <Link className="introExplore" href="/register">Create a free profile</Link>
         </div>
         <p className="switch"><Link href="/">← Back to ConnectTime home</Link></p>
       </section>
