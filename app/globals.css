@@ -191,3 +191,73 @@
 .experienceDetail>a{white-space:nowrap;padding:10px 13px;border-radius:20px;background:#fff;color:#503177;font-size:10px;font-weight:850}
 .interactiveShowcase .showcaseNote{position:relative;z-index:1}
 @media(max-width:600px){.interactiveShowcase .featureShowcaseHead{gap:12px}.surpriseButton{align-self:flex-start}.experienceFilters{gap:6px}.experienceFilters button{padding:8px 10px;font-size:10px}.experienceDetail{align-items:flex-start;flex-wrap:wrap;padding:14px}.experienceDetail>div:nth-child(2){flex-basis:calc(100% - 65px)}.experienceDetail>a{margin-left:61px}.interactiveFeatureGrid .showcaseCard{min-height:82px}}
+
+
+
+/* ConnectTime Events discovery and promotion */
+.eventsPage{min-height:100vh;background:linear-gradient(145deg,#f7f3ff,#f2f8ff 52%,#fff5f8);color:#292044}
+.eventsHeader{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,70px);background:#ffffffd9;border-bottom:1px solid #e9e1f5;position:sticky;top:0;z-index:10;backdrop-filter:blur(16px)}
+.eventsBrand{font:900 21px Manrope,sans-serif;color:#573a9c;letter-spacing:-.8px}
+.eventsHeader nav{display:flex;align-items:center;gap:22px;font-size:12px;font-weight:800;color:#675d7b}
+.eventsJoin{padding:10px 15px;border-radius:22px;background:linear-gradient(110deg,#7953e8,#e84aa5);color:white}
+.eventsHero{padding:76px clamp(20px,8vw,115px) 55px;color:#fff;background:radial-gradient(circle at 85% 20%,#f58ac8 0,transparent 26%),radial-gradient(circle at 72% 85%,#7654e8 0,transparent 36%),linear-gradient(115deg,#21174d,#4d328a 60%,#813f91);position:relative;overflow:hidden}
+.eventsHero:after{content:"🌍";position:absolute;right:9%;top:48px;font-size:clamp(100px,18vw,210px);opacity:.13;transform:rotate(-12deg);pointer-events:none}
+.eventsEyebrow,.eventsSectionHead>div>span,.eventFormHeading span,.eventsHostCta span{font-size:9px;font-weight:900;letter-spacing:1.7px;color:#f7c5ee}
+.eventsHero h1{font:900 clamp(48px,7vw,82px)/.99 Manrope,sans-serif;letter-spacing:-3.5px;margin:18px 0}
+.eventsHero h1 em{font-style:normal;color:#ffb5df}
+.eventsHero>p{max-width:610px;color:#f0e9ff;font-size:15px;line-height:1.8}
+.eventsHeroActions{display:flex;align-items:center;gap:20px;margin-top:25px}
+.eventsHeroActions button,.eventsSectionHead>button,.eventsHostCta>button{border:0;border-radius:12px;background:linear-gradient(110deg,#ff5cad,#ff916f);color:#fff;padding:14px 18px;font:850 12px 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 9px 24px #1b0f3d30}
+.eventsHeroActions a{font-size:12px;font-weight:800;color:#fff}
+.eventsPills{display:flex;flex-wrap:wrap;gap:9px;margin-top:30px}
+.eventsPills span{padding:8px 12px;border-radius:24px;background:#ffffff1b;border:1px solid #ffffff38;color:#fff;font-size:10px;font-weight:750}
+.eventsMain{max-width:1220px;margin:0 auto;padding:48px 25px 65px}
+.eventsSectionHead{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}
+.eventsSectionHead>div>span{color:#9b50bd}
+.eventsSectionHead h2,.eventFormHeading h2,.eventsHostCta h2{font:850 clamp(25px,3vw,35px) Manrope,sans-serif;letter-spacing:-1.3px;margin:7px 0;color:#30224f}
+.eventsSectionHead p,.eventFormHeading p{font-size:12px;color:#817790;margin:0}
+.eventsSearch{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e8e0f1;border-radius:13px;padding:4px 15px;box-shadow:0 7px 20px #3620520a}
+.eventsSearch>span{font-size:23px;color:#9575bd}
+.eventsSearch input{width:100%;min-width:0;border:0;outline:0;padding:13px 0;background:transparent;font:13px 'DM Sans',sans-serif;color:#30224f}
+.eventsCategories{display:flex;gap:8px;overflow-x:auto;padding:16px 0 23px}
+.eventsCategories button{flex:0 0 auto;border:1px solid #e7dff0;border-radius:22px;background:#fff;color:#6d627e;padding:9px 13px;font:700 10px 'DM Sans',sans-serif;cursor:pointer}
+.eventsCategories button.active{background:#332052;color:white;border-color:#332052}
+.eventGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.eventCard{overflow:hidden;border:1px solid #e9e1f1;border-radius:18px;background:#fff;box-shadow:0 9px 25px #3820540a;transition:transform .2s,box-shadow .2s}
+.eventCard:hover{transform:translateY(-4px);box-shadow:0 15px 32px #38205416}
+.eventArtwork{height:125px;display:flex;align-items:center;justify-content:space-between;padding:20px;background:radial-gradient(circle at 80% 10%,#ffffff9c,transparent 27%),linear-gradient(120deg,#d9eaff,#f8dff0 60%,#fce9d7)}
+.eventArtwork>span{font-size:48px;filter:drop-shadow(0 5px 7px #49306020)}
+.eventArtwork small{padding:7px 10px;border-radius:20px;background:#ffffffc9;color:#5c477a;font-size:9px;font-weight:850}
+.eventCardBody{padding:17px 18px 18px}
+.eventDate{font-size:10px;font-weight:850;letter-spacing:.4px;color:#a14bb4}
+.eventCard h3{font:850 19px Manrope,sans-serif;letter-spacing:-.6px;color:#30224f;margin:7px 0}
+.eventCardBody>p{min-height:42px;font-size:11px;line-height:1.65;color:#7a7187}
+.eventPlace{font-size:10px;color:#5e617b;line-height:1.5}
+.eventCardFoot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0;border-top:1px solid #f0ebf4;padding-top:12px}
+.eventCardFoot>span{padding:6px 9px;border-radius:20px;background:#e9f8ef;color:#357b58;font-size:9px;font-weight:850}
+.eventCardFoot small{font-size:9px;color:#91879c;text-align:right}
+.eventCardBody>a{display:inline-flex;padding:9px 12px;border-radius:9px;background:#f1eaff;color:#6844a4;font-size:10px;font-weight:850}
+.eventsEmpty{text-align:center;padding:40px 20px;border-radius:15px;background:#fff;color:#7b718b;font-size:13px}
+.eventFormPanel{margin:20px 0 26px;padding:23px;border-radius:19px;background:#fff;border:1px solid #e6d9f4;box-shadow:0 12px 30px #43265d12}
+.eventFormHeading{display:flex;justify-content:space-between;gap:15px;margin-bottom:19px}
+.eventFormHeading span{color:#a34cb9}
+.eventFormHeading h2{font-size:25px}
+.eventFormHeading>button{align-self:flex-start;border:0;border-radius:50%;width:32px;height:32px;background:#f3edf9;color:#60467d;font-size:21px;cursor:pointer}
+.eventForm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.eventForm label{display:grid;gap:6px;font-size:10px;font-weight:850;color:#5d5270}
+.eventForm input,.eventForm select,.eventForm textarea{width:100%;border:1px solid #e6deed;border-radius:9px;padding:11px 12px;background:#fcfbfe;color:#30224f;font:12px 'DM Sans',sans-serif;outline-color:#a77bd5}
+.eventForm textarea{resize:vertical}
+.eventWide{grid-column:1/-1}
+.eventFormFoot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:5px}
+.eventFormFoot small{max-width:520px;color:#93899e;font-size:9px;line-height:1.6}
+.eventFormFoot button{border:0;border-radius:10px;padding:12px 16px;background:linear-gradient(110deg,#7653e5,#d64ba8);color:#fff;font-size:11px;font-weight:850;cursor:pointer}
+.eventSuccess{margin:0 0 18px;padding:13px 15px;border-radius:11px;background:#e7f8ee;color:#28684a;font-size:11px;line-height:1.6}
+.eventsHostCta{max-width:1170px;margin:0 auto 55px;padding:28px 32px;border-radius:20px;background:linear-gradient(115deg,#302052,#6844a0 68%,#a44791);display:flex;align-items:center;justify-content:space-between;gap:20px;color:white}
+.eventsHostCta h2{color:#fff;margin:8px 0}
+.eventsHostCta p{max-width:620px;color:#e8dff4;font-size:11px;line-height:1.7}
+.eventsHostCta>button{flex:0 0 auto;background:#fff;color:#603b94}
+.eventsFooter{text-align:center;border-top:1px solid #e8dfef;padding:22px;color:#8c8297;font-size:10px}
+.eventsSideCard{background:linear-gradient(145deg,#fff0f8,#f0eaff)!important}
+.eventsSideCard p{font-size:10px;line-height:1.6;color:#756a86}
+.eventsSideCard .rightTitle{color:#553a82}
+@media(max-width:760px){.eventsHeader{height:66px}.eventsHeader nav{gap:12px;font-size:10px}.eventsHero{padding:55px 22px 42px}.eventsHero:after{right:-5%;top:70px}.eventsHero h1{font-size:53px}.eventsHero>p{font-size:13px}.eventsMain{padding:35px 15px 45px}.eventsSectionHead{align-items:flex-start;flex-direction:column}.eventGrid{grid-template-columns:1fr}.eventForm{grid-template-columns:1fr}.eventWide,.eventFormFoot{grid-column:auto}.eventFormFoot{align-items:flex-start;flex-direction:column}.eventsHostCta{margin:0 15px 35px;padding:22px;align-items:flex-start;flex-direction:column}.eventsHostCta>button{width:100%}}
