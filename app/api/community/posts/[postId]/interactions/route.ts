@@ -24,7 +24,11 @@ function config() {
   return { tablesDB, databaseId, commentsTableId, reactionsTableId, postsTableId, profilesTableId, blocksTableId, databases, accessDatabaseId, accessCollectionId };
 }
 
-async function eligible(s: ReturnType<typeof config>, userId: string) {\n  try { const row = await s.databases.getDocument(s.accessDatabaseId, s.accessCollectionId, userId); return isEligible({ adult_status: row.adult_status, account_status: row.account_status }); } catch { return false; }\n}\n\nasync function verifyPost(s: ReturnType<typeof config>, postId: string) {
+async function eligible(s: ReturnType<typeof config>, userId: string) {
+  try { const row = await s.databases.getDocument(s.accessDatabaseId, s.accessCollectionId, userId); return isEligible({ adult_status: row.adult_status, account_status: row.account_status }); } catch { return false; }
+}
+
+async function verifyPost(s: ReturnType<typeof config>, postId: string) {
   try {
     const post = await s.tablesDB.getRow({ databaseId: s.databaseId, tableId: s.postsTableId, rowId: postId });
     return post.status === "published" ? post : null;
