@@ -30,7 +30,7 @@ const money = (minor?: number) => new Intl.NumberFormat(undefined, { style: "cur
 const number = (value?: number) => (Number(value) || 0).toLocaleString();
 const pct = (value: number) => `${value.toFixed(2)}%`;
 const date = (value?: string) => value ? new Date(value).toLocaleDateString() : "Not scheduled";
-const label = (value?: string) => (value || "draft").replaceAll("_", " ").replaceAll("-", " ").replace(/\\b\\w/g, (letter) => letter.toUpperCase());
+const label = (value?: string) => (value || "draft").replaceAll("_", " ").replaceAll("-", " ").split(" ").map(word => word ? word[0].toUpperCase() + word.slice(1) : word).join(" ");
 
 export default function AdvertisingDashboardPage() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
