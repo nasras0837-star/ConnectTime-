@@ -12,6 +12,7 @@ type Campaign = {
   region?: string;
   country?: string;
   geo_targets?: string;
+  audience_interests?: string;
   daily_budget_minor?: number;
   lifetime_cap_minor?: number;
   spend_minor?: number;
@@ -107,7 +108,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignTitle"><div><span>{campaign.company || "Advertiser"}</span><h2>{campaign.campaign_name || "Untitled campaign"}</h2></div><b className={campaign.status === "approved" || campaign.status === "active" ? "ctAdStatus positive" : "ctAdStatus"}>{label(campaign.status)}</b></div>
           <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>RECORDED SPEND</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>IMPRESSIONS</small><strong>{number(impressions)}</strong></div><div><small>CLICKS</small><strong>{number(clicks)}</strong></div><div><small>CTR</small><strong>{pct(campaignCtr)}</strong></div></div>
           <div className="ctAdSpendTrack" aria-label={`Spend cap used: ${spendPercent.toFixed(1)} percent`}><span style={{ width: `${spendPercent}%` }} /></div><div className="ctAdSpendCaption"><span>{money(spend)} recorded</span><span>{money(Math.max(0, cap - spend))} remaining of cap</span></div>
-          <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}</div><div><small>SCHEDULE</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
+          <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}{campaign.audience_interests && <span>Interests: {campaign.audience_interests.split(",").filter(Boolean).join(" · ")}</span>}</div><div><small>SCHEDULE</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
           <div className="ctCampaignMeta"><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
