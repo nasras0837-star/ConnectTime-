@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { advertisingStore, ID } from "@/lib/advertising-store";
 
 export const runtime = "nodejs";
 
@@ -83,6 +84,20 @@ export async function POST(request: Request) {
     const flaggedCategories = Object.entries(moderation.categories || {})
       .filter(([, flagged]) => flagged === true)
       .map(([name]) => name);
+
+    const status = moderation.flagged ? "rejected" : "manual_review_required";
+    try {
+      const { databases, databaseId } = advertisingStore();
+      const collectionId = process.env.APPWRITE_ADS_COLLECTION_ID;
+      if (!collectionId) throw new Error("Ad submissions collection is not configured.");
+      await databases.createDocument(databaseId, collectionId, ID.unique(), {
+        company, campaign, headline, body, imageUrl, rightsConfirmed: true,
+        status, flaggedCategories, createdAt: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error("Advertising submission could not be stored", error instanceof Error ? error.message : "unknown");
+      return NextResponse.json({ status: "unavailable", paymentAllowed: false, publicationAllowed: false, error: "The review queue is not configured. The ad was not accepted, charged, or published." }, { status: 503 });
+    }
 
     if (moderation.flagged) {
       return NextResponse.json({
