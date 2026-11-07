@@ -32,7 +32,7 @@ export default function ProfilePage() {
     try {
       const response = await fetch("/api/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         handle: profile.handle || "", displayName: profile.display_name || "", bio: profile.bio || "",
-        country: profile.country || "", region: profile.region || "", interests: profile.interests || "", visibility: profile.visibility || "members", age: Number(profile.age || 18), gender: profile.gender || "", interestedIn: profile.interested_in || "everyone", relationshipGoal: profile.relationship_goal || "friendship",
+        country: profile.country || "", region: profile.region || "", interests: profile.interests || "", visibility: profile.visibility || "members", age: profile.age ? Number(profile.age) : undefined, gender: profile.gender || "", interestedIn: profile.interested_in || "everyone", relationshipGoal: profile.relationship_goal || "friendship",
       }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Profile could not be saved.");
@@ -53,7 +53,7 @@ export default function ProfilePage() {
       <label>Interests <span>(comma separated)</span><input value={profile.interests || ""} onChange={e => update("interests", e.target.value)} placeholder="Music, travel, technology" maxLength={384}/></label>
 
       <div className="eyebrow">DATING PROFILE · 18+ MEMBERS</div>
-      <label>Age<input type="number" min={18} max={110} value={profile.age ?? ""} onChange={e => setProfile(current => ({ ...current, age: e.target.value === "" ? undefined : Number(e.target.value) }))} required/><small>Your age is shown on your dating card. Your birth date and ID are never displayed.</small></label>
+      <label>Age<input type="number" min={18} max={110} value={profile.age ?? ""} onChange={e => setProfile(current => ({ ...current, age: e.target.value === "" ? undefined : Number(e.target.value) }))}/><small>Your age is shown on your dating card. Your birth date and ID are never displayed.</small></label>
       <label>Gender<select value={profile.gender || ""} onChange={e => update("gender", e.target.value)}><option value="">Choose gender</option><option value="woman">Woman</option><option value="man">Man</option><option value="nonbinary">Non-binary</option><option value="prefer_not_to_say">Prefer not to say</option></select></label>
       <label>Interested in<select value={profile.interested_in || "everyone"} onChange={e => update("interested_in", e.target.value)}><option value="everyone">Everyone</option><option value="women">Women</option><option value="men">Men</option><option value="nonbinary">Non-binary people</option></select></label>
       <label>What are you looking for?<select value={profile.relationship_goal || "friendship"} onChange={e => update("relationship_goal", e.target.value)}><option value="serious_relationship">A serious relationship</option><option value="dating">Dating</option><option value="friendship">Friendship first</option></select></label>
