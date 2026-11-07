@@ -2,6 +2,14 @@
 
 ConnectTime is an international, adults-only social platform being built as a web application.
 
+## View the preview
+
+**[Open the ConnectTime visual preview](https://htmlpreview.github.io/?https://github.com/nasras0837-star/ConnectTime-/blob/main/docs/index.html)**
+
+This link opens the standalone visual prototype in your browser. It is a design preview with sample content; account creation, messaging, marketplace transactions, uploads, live features, and other backend services are not active in this static preview.
+
+> The current application in `app/` is a Next.js website. To preview that current application, deploy this repository through Vercel using [the preview deployment guide](docs/PREVIEW_DEPLOYMENT.md). The static preview link above is not a live deployment of the Next.js application.
+
 ## Repository contents
 - `app/`: Next.js App Router application with Appwrite SSR authentication.
 - `app/api/appwrite/`: Appwrite's server-side authentication handlers.
