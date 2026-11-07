@@ -16,7 +16,6 @@ export default function DatingLikesPage() {
   const [tab, setTab] = useState<"received" | "matches" | "sent">("received");
 
   const refresh = useCallback(async () => {
-    setError("");
     try {
       const response = await fetch("/api/dating/likes", { cache: "no-store" });
       const result = await response.json();
