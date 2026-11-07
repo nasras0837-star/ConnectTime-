@@ -21,7 +21,8 @@ export async function GET() {
       type: String(row.type || "activity"),
       message: String(row.message || "You have a new notification."),
       createdAt: String(row.created_at || ""),
-      read: row.is_read === true || row.is_read === "true"
+      read: row.is_read === true || row.is_read === "true",
+      referenceId: String(row.reference_id || "")
     }));
     return NextResponse.json({ notifications, unreadCount: notifications.filter(item => !item.read).length }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
