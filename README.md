@@ -31,7 +31,7 @@ Expected static preview URL: https://nasras0837-star.github.io/ConnectTime-/
 
 The Next.js foundation includes the landing page, sample feed, Chat Rooms prototype, News page, ConnectTime Video Tube page, advertising campaign planner, and a floating AI assistant interface. The AI assistant needs a server-side `OPENAI_API_KEY` in Netlify before it can return live AI responses.
 
-The authentication foundation uses Appwrite SSR handlers and a restricted account page. Appwrite project configuration is still required before signup/login can work in deployment. Configure the variables in `.env.example` in Netlify's environment-variable settings; keep server secrets private and never expose them through `NEXT_PUBLIC_*` variables.
+The authentication foundation uses Appwrite SSR handlers and a restricted account page. Appwrite project configuration is still required before signup/login can work in deployment. Initial friend-request, notification, and private one-to-one messaging APIs and pages are now in the repository. They require the corresponding private Appwrite tables and server environment variables described in `docs/APPWRITE_FRIEND_REQUESTS_SETUP.md`, `docs/APPWRITE_NOTIFICATIONS_SETUP.md`, and `docs/APPWRITE_MESSAGES_SETUP.md`. Configure the variables in `.env.example` in Netlify's environment-variable settings; keep server secrets private and never expose them through `NEXT_PUBLIC_*` variables.
 
 ## Safety and production readiness
 
@@ -40,7 +40,7 @@ This repository is a staged prototype, not a production-ready social network. Do
 - Adult eligibility is independently verified by a trusted age/identity provider; a self-declared birth date or checkbox is not sufficient.
 - Server-controlled account activation and permissions are enforced.
 - Media uploads, content moderation, abuse reporting, rate limits, privacy controls, and retention policies are implemented and tested.
-- Messaging, calls, creator/video publishing, marketplace transactions, advertising billing, and analytics have secure backend services.
+- Real-time messaging delivery, calls, creator/video publishing, marketplace transactions, advertising delivery/billing, and verified impression analytics have secure backend services. The initial private messaging API is request/refresh based and requires Appwrite setup; it is not real-time.
 - Security, integration, accessibility, and deployment tests pass.
 
 ## Local development
