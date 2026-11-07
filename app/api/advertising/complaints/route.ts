@@ -14,6 +14,8 @@ export async function POST(request: Request) {
   const details = typeof body.details === "string" ? body.details.trim().slice(0, 4000) : "";
   const claimantName = typeof body.claimantName === "string" ? body.claimantName.trim().slice(0, 160) : "";
   const claimantEmail = typeof body.claimantEmail === "string" ? body.claimantEmail.trim().slice(0, 254) : "";
+  const claimantAddress = typeof body.claimantAddress === "string" ? body.claimantAddress.trim().slice(0, 1000) : "";
+  const electronicSignature = typeof body.electronicSignature === "string" ? body.electronicSignature.trim().slice(0, 160) : "";
   const goodFaith = body.goodFaith === true;
   if (!["copyright", "trademark", "nudity", "sexual", "misleading", "other"].includes(type) ||
       !adReference || !details || !claimantName || !/^\S+@\S+\.\S+$/.test(claimantEmail) || !goodFaith) {
