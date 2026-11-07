@@ -1,0 +1,75 @@
+"use client";
+
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+
+type Message = { id: string; body: string; createdAt: string; mine: boolean; read: boolean };
+type Peer = { handle: string; displayName: string; country: string };
+type Conversation = { peer: Peer; preview: string; updatedAt: string; unreadCount: number };
+
+export default function MessagesPage() {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [peer, setPeer] = useState<Peer | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [draft, setDraft] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+
+  const loadInbox = useCallback(async () => {
+    const response = await fetch("/api/messages", { cache: "no-store" });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Inbox is unavailable.");
+    setConversations(result.conversations || []);
+  }, []);
+
+  const openConversation = useCallback(async (selected: Peer) => {
+    setPeer(selected);
+    setError("");
+    try {
+      const response = await fetch("/api/messages?with=" + encodeURIComponent(selected.handle), { cache: "no-store" });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Conversation is unavailable.");
+      setMessages(result.messages || []);
+      await fetch("/api/messages", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ peerHandle: selected.handle }) });
+      await loadInbox();
+    } catch (e) { setError(e instanceof Error ? e.message : "Conversation is unavailable."); }
+  }, [loadInbox]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/messages", { cache: "no-store" }).then(async response => {
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Inbox is unavailable.");
+      if (!cancelled) setConversations(result.conversations || []);
+    }).catch(e => { if (!cancelled) setError(e instanceof Error ? e.message : "Inbox is unavailable."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!peer || !draft.trim() || sending) return;
+    setSending(true); setError(""); setNotice("");
+    try {
+      const response = await fetch("/api/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ recipientHandle: peer.handle, body: draft.trim() }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Message could not be sent.");
+      setMessages(current => [...current, result.message]);
+      setDraft("");
+      await loadInbox();
+      setNotice("Message sent.");
+    } catch (e) { setError(e instanceof Error ? e.message : "Message could not be sent."); }
+    finally { setSending(false); }
+  }
+
+  return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/friends">Friends</Link><Link href="/account">Account</Link></nav></header>
+    <section className="authCard messagesCard"><div className="eyebrow">YOUR PRIVATE CIRCLE</div><h1>Messages</h1><p>Private one-to-one messages are available between eligible members who are already connected.</p>
+      {error && <p className="message" role="alert">{error}</p>}{notice && <p className="message" role="status">{notice}</p>}
+      <div className="messagesLayout"><aside className="messageInbox"><h2>Inbox</h2>{loading ? <p>Loading conversations…</p> : conversations.length ? conversations.map(item => <button key={item.peer.handle} className={peer?.handle === item.peer.handle ? "conversationChoice selected" : "conversationChoice"} onClick={() => void openConversation(item.peer)}><strong>{item.peer.displayName}</strong><span>@{item.peer.handle}</span><small>{item.preview}</small>{item.unreadCount > 0 && <em>{item.unreadCount} new</em>}</button>) : <p className="friendEmpty">No conversations yet. Connect with a member to start a private conversation.</p>}</aside>
+        <section className="messageThread">{peer ? <><header><strong>{peer.displayName}</strong><span>@{peer.handle}{peer.country ? " · " + peer.country : ""}</span></header><div className="messageHistory" aria-live="polite">{messages.length ? messages.map(item => <article key={item.id} className={item.mine ? "messageBubble mine" : "messageBubble"}><p>{item.body}</p><time>{new Date(item.createdAt).toLocaleString()}</time></article>) : <p className="friendEmpty">This is the beginning of your conversation.</p>}</div><form onSubmit={sendMessage}><label htmlFor="messageDraft">Message</label><textarea id="messageDraft" value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} rows={3} placeholder="Write a respectful message…" required/><div><small>{draft.length}/2000</small><button type="submit" disabled={sending || !draft.trim()}>{sending ? "Sending…" : "Send message"}</button></div></form></> : <div className="messageThreadEmpty"><h2>Select a conversation</h2><p>Choose a connection from your inbox to view your messages.</p><Link href="/discover">Discover members</Link></div>}</section></div>
+      <p className="switch"><Link href="/account">Back to account</Link> · <Link href="/safety">Safety Center</Link></p>
+    </section><footer className="plannedFeatureFooter">ConnectTime · Your people. Your passions. Your ConnectTime.</footer>
+  </main>;
+}
