@@ -750,3 +750,28 @@
 .datingSelectMember{display:flex!important;align-items:center;gap:8px;margin-top:12px;padding:9px 10px;border:1px solid #dce8f3;border-radius:9px;background:#f6faff;color:#315675!important;font-size:11px!important;font-weight:800}
 .datingSelectMember input{width:17px;height:17px;accent-color:#168f91}
 @media(max-width:560px){.datingSelectionBar{align-items:stretch}.datingSelectionBar>span{width:100%}.datingSelectionBar button{flex:1}.datingSelectionBar button.discoverConnectButton{width:100%}}
+
+/* Dating likes and mutual matches inbox */
+.datingInboxPage{max-width:960px!important;width:min(960px,calc(100% - 32px))!important}
+.datingInboxTabs{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 18px;border-bottom:1px solid #e5edf4;padding-bottom:12px}
+.datingInboxTabs button{display:flex;align-items:center;gap:9px;border:1px solid #dbe7f0;border-radius:999px;padding:10px 14px;background:#fff;color:#45647d;font-size:11px;font-weight:850;cursor:pointer}
+.datingInboxTabs button[aria-selected=true]{background:#e8f6fb;border-color:#83cce1;color:#086d91}
+.datingInboxTabs button span{display:grid;place-items:center;min-width:21px;height:21px;padding:0 5px;border-radius:50%;background:#fff;font-size:10px}
+.datingInboxList{display:grid;gap:11px}
+.datingInboxCard{display:flex;align-items:center;gap:14px;padding:15px;border:1px solid #e1eaf1;border-radius:15px;background:#fff}
+.datingInboxCard>.discoverAvatar{flex:0 0 44px}
+.datingInboxCopy{flex:1;min-width:0}
+.datingInboxCopy h3{font-size:16px;letter-spacing:-.4px;margin:0 0 3px;color:#1d3b56}
+.datingInboxCopy>span{font-size:10px;color:#7890a3;overflow-wrap:anywhere}
+.datingInboxCopy .discoverTags{margin-top:8px}
+.datingInboxActions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+.datingInboxActions button{border:0;border-radius:9px;padding:9px 12px;background:linear-gradient(110deg,#176bc0,#168f91);color:#fff;font-size:10px;font-weight:850;cursor:pointer}
+.datingInboxActions button.secondary{background:#eef3f7;color:#526c81}
+.datingInboxActions button:disabled{opacity:.5;cursor:wait}
+.datingMatchBadge,.datingSentBadge{font-size:10px;font-weight:900;color:#16816e;white-space:nowrap}
+.datingInboxEmpty{padding:36px 22px;text-align:center;border:1px dashed #cbdce8;border-radius:16px;background:#f8fbfd}
+.datingInboxEmpty strong{color:#254964;font-size:15px}
+.datingInboxEmpty p{color:#71889b;font-size:12px;line-height:1.7}
+.datingInboxEmpty a{display:inline-block;margin-top:8px;padding:10px 16px;border-radius:99px;background:#087eb9;color:#fff;font-size:11px;font-weight:850}
+.datingInboxFootnote{font-size:10px!important;color:#8295a5!important;line-height:1.7}
+@media(max-width:620px){.datingInboxCard{align-items:flex-start;flex-wrap:wrap}.datingInboxCopy{min-width:calc(100% - 65px)}.datingInboxActions{width:100%;justify-content:flex-start;padding-left:58px}.datingInboxTabs{gap:6px}.datingInboxTabs button{flex:1;justify-content:center;padding:9px 8px;font-size:10px}}
