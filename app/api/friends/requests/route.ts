@@ -28,6 +28,19 @@ async function getServices() {
 async function notifyUser(tablesDB: TablesDB, databaseId: string, recipientId: string, actorId: string, type: string, message: string, referenceId: string) {
   const tableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
   if (!tableId) return;
+  const settingsTableId = process.env.APPWRITE_MEMBER_SETTINGS_TABLE_ID;
+  if (settingsTableId) {
+    try {
+      const preferences = await tablesDB.getRow({ databaseId, tableId: settingsTableId, rowId: recipientId });
+      const preferenceKey = type === "friend_request" ? "friend_requests" : "friend_acceptances";
+      if (preferences.user_id === recipientId && (preferences[preferenceKey] === false || preferences[preferenceKey] === "false")) return;
+    } catch (error) {
+      if (!(typeof error === "object" && error !== null && "code" in error && error.code === 404)) {
+        console.error("Notification preferences could not be checked", error instanceof Error ? error.message : "unknown");
+        return;
+      }
+    }
+  }
   try {
     await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
       recipient_user_id: recipientId,
