@@ -15,16 +15,16 @@ Create the following columns on each table. Use the column types shown; make col
 
 | Column ID | Type | Size / setting | Required |
 |---|---|---:|---|
-| company | Varchar | 160 | Yes |
-| campaign | Varchar | 160 | Yes |
-| headline | Varchar | 200 | No |
-| body | Varchar | 2000 | No |
-| imageUrl | Varchar | 2048 | No |
-| rightsConfirmed | Boolean | — | Yes |
+| ad_company | Varchar | 160 | Yes |
+| campaign_name | Varchar | 160 | Yes |
+| ad_headline | Varchar | 200 | No |
+| ad_body | Varchar | 2000 | No |
+| image_url | Varchar | 2048 | No |
+| rights_confirmed | Boolean | — | Yes |
 | status | Varchar | 40 | Yes |
-| flaggedCategories | Varchar | 1000 | No |
-| createdAt | Varchar | 40 | Yes |
-| reviewedAt | Varchar | 40 | No |
+| flagged_categories | Varchar | 1000 | No |
+| created_at | Varchar | 40 | Yes |
+| reviewed_at | Varchar | 40 | No |
 
 ### `advertising_complaints` columns
 
