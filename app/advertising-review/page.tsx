@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-type ReviewItem = Record<string, unknown> & { $id: string; status?: string; type?: string; title?: string; category?: string; date?: string; time?: string; city?: string; country?: string; venue?: string; description?: string; host?: string; ad_company?: string; company?: string; campaign_name?: string; objective?: string; country?: string; daily_budget_minor?: number; lifetime_cap_minor?: number; adReference?: string; details?: string; ad_headline?: string; ad_body?: string; claimantName?: string; claimantEmail?: string; createdAt?: string };
+type ReviewItem = Record<string, unknown> & { $id: string; status?: string; type?: string; title?: string; category?: string; date?: string; time?: string; city?: string; country?: string; venue?: string; description?: string; host?: string; ad_company?: string; company?: string; campaign_name?: string; objective?: string; daily_budget_minor?: number; lifetime_cap_minor?: number; adReference?: string; details?: string; ad_headline?: string; ad_body?: string; claimantName?: string; claimantEmail?: string; createdAt?: string };
 
 export default function AdvertisingReviewPage() {
   const [token, setToken] = useState("");
