@@ -46,13 +46,13 @@ export default function SafetyCenterPage() {
   async function addBlock(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBlockStatus("Blocking…");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;\n    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/community/blocks", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ blockedUserId: form.get("blockedUserId") }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not block this member.");
       setBlockStatus(data.alreadyBlocked ? "This member was already blocked." : "Member blocked.");
-      event.currentTarget.reset();
+      formElement.reset();
       await loadBlocks();
     } catch (error) {
       setBlockStatus(error instanceof Error ? error.message : "Block service unavailable. The member was not blocked.");
