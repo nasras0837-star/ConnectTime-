@@ -316,3 +316,68 @@
 .eventsBrand,.createBrand{display:inline-flex;align-items:center;line-height:0}
 .eventsBrand .ctLogoImage,.createBrand .ctLogoImage{width:112px;height:auto;object-fit:contain}
 @media(max-width:640px){.vHeader .ctLogoImage{width:104px}.eventsBrand .ctLogoImage,.createBrand .ctLogoImage{width:96px}}
+
+
+/* Modern editorial social experience refresh */
+.socialHome{background:#f4f6fb!important;color:#17223b!important;background-image:radial-gradient(ellipse at 10% 0%,#e3edff 0,transparent 30%),radial-gradient(ellipse at 95% 12%,#fce8f1 0,transparent 25%)!important}
+.vHeader{height:76px!important;padding-inline:clamp(18px,5vw,76px)!important;background:rgba(255,255,255,.88)!important;border-bottom:1px solid #e7eaf2!important;box-shadow:0 8px 28px #1b2b4a08!important}
+.vSearch{background:#f3f5f9!important;color:#63718b!important;border:1px solid #e7ebf3!important;border-radius:13px!important;font-size:19px!important;max-width:600px!important;padding:11px 16px!important}
+.vSearch span{color:#8490a5!important}
+.vJoin{background:linear-gradient(110deg,#315ee8,#6d4ce8)!important;border-radius:11px!important;box-shadow:0 8px 20px #315ee82b!important}
+.socialLayout{max-width:1510px!important;grid-template-columns:236px minmax(0,1fr) 286px!important;gap:22px!important;padding:24px 22px 35px!important}
+.socialLeft,.socialRight{padding:0!important}
+.socialProfile,.rightCard,.socialComposer,.socialPost,.featureShowcase{border:1px solid #e6eaf2!important;border-radius:18px!important;box-shadow:0 8px 28px #263b5b0b!important;background:#fff!important}
+.socialProfile{overflow:hidden!important;padding-bottom:17px!important}
+.profileCover{height:78px!important;background:linear-gradient(115deg,#203d73,#426be3 60%,#ad79e8)!important}
+.profileAvatar{margin-top:-30px!important}
+.profileAvatar img{border:4px solid white!important;box-shadow:0 5px 16px #1b2b4a22!important}
+.socialProfile strong{color:#17223b!important;font-size:14px!important}
+.socialProfile small{color:#8290a5!important}
+.socialProfile>a{color:#315ee8!important;font-weight:800!important}
+.socialNav{gap:5px!important;margin:14px 0!important}
+.socialNav a{border-radius:11px!important;padding:12px 13px!important;color:#61708a!important;font-weight:650!important;transition:background .18s,color .18s!important}
+.socialNav a:hover{background:#eef2ff!important;color:#315ee8!important}
+.socialNav a.socialNavActive{background:#eaf0ff!important;color:#315ee8!important;box-shadow:inset 3px 0 #4169e8!important}
+.adultCard{border-radius:14px!important;background:#edf7f4!important;color:#23705f!important;padding:14px!important}
+.adultCard small{color:#5d857b!important}
+.socialCover{border-radius:22px!important;min-height:510px!important;box-shadow:0 18px 42px #17223b22!important}
+.coverShade{background:linear-gradient(90deg,rgba(12,24,48,.92) 0%,rgba(18,35,68,.76) 56%,rgba(18,35,68,.12) 100%)!important}
+.coverCopy{padding:clamp(28px,4vw,54px)!important}
+.introEyebrow{font-size:9px!important;letter-spacing:1.7px!important;color:#c8d8ff!important}
+.coverCopy h1{font-size:clamp(42px,5vw,66px)!important;letter-spacing:-2.8px!important;line-height:1.04!important}
+.coverCopy h1 em{color:#a9c5ff!important}
+.coverCopy>p{font-size:14px!important;line-height:1.8!important;color:#e1e8f6!important}
+.introActions>a:first-child{background:linear-gradient(110deg,#3868ee,#7656e8)!important;border-radius:11px!important;box-shadow:0 10px 24px #172e7c55!important}
+.introActions .introExplore{border-radius:11px!important;border-color:#ffffff66!important;background:#ffffff15!important}
+.introProof span,.introHighlights span{border-radius:9px!important;background:#ffffff16!important;border-color:#ffffff2c!important}
+.introPeople{opacity:.88!important}
+.featureShowcase{margin-top:18px!important;padding:25px!important;background:linear-gradient(145deg,#fff,#f7f8ff)!important}
+.featureShowcaseHead h2{color:#17223b!important;letter-spacing:-1.2px!important}
+.featureShowcaseHead p{color:#71809a!important}
+.showcaseCard{border-radius:13px!important;border-color:#e7ebf3!important;box-shadow:0 4px 14px #25395b08!important}
+.experienceDetail{border-radius:14px!important;background:linear-gradient(110deg,#1d3158,#3156a3 65%,#7658ba)!important}
+.socialComposer{padding:17px!important;margin-top:18px!important}
+.composerTop a{color:#75839a!important;background:#f4f6fa!important;border-radius:12px!important;padding:13px 15px!important}
+.composerActions a{color:#5b6c87!important;font-weight:700!important}
+.feedHeading{margin:28px 2px 14px!important}
+.feedHeading h2{color:#17223b!important;letter-spacing:-.8px!important}
+.feedHeading button{border:1px solid #e4e9f1!important;border-radius:10px!important;background:#fff!important;color:#64728a!important;padding:9px 13px!important}
+.socialPost{padding:18px!important;margin-bottom:15px!important}
+.postIdentity b{color:#1b2942!important}
+.postIdentity small,.postText{color:#66758e!important}
+.postTag{display:inline-flex!important;border-radius:7px!important;background:#edf2ff!important;color:#4162bd!important;padding:6px 9px!important;font-size:10px!important;font-weight:800!important}
+.postImage{border-radius:13px!important;max-height:430px!important;object-fit:cover!important}
+.postActions{border-top:1px solid #edf0f5!important;padding-top:12px!important}
+.postActions a{color:#5b6f91!important;font-weight:700!important}
+.rightCard{padding:18px!important;margin-bottom:14px!important}
+.rightTitle{color:#1c2b46!important;font-size:13px!important}
+.trend,.groupSuggest{border-color:#edf0f5!important}
+.trend b{color:#3c5fc0!important}
+.trend small,.groupSuggest small,.communityNote small{color:#8591a5!important}
+.groupSuggest>span{border-radius:11px!important;background:#f0f3fb!important}
+.rightCard>a{color:#4165d6!important;font-weight:800!important}
+.communityNote{background:linear-gradient(145deg,#f1f5ff,#f8f1ff)!important}
+.socialNotice{border:1px solid #e2e8f2!important;border-radius:13px!important;background:#eef2f8!important;color:#66758c!important;padding:15px!important;font-size:11px!important;line-height:1.7!important}
+.socialFooter{color:#8995a8!important;border-color:#e5e9f0!important}
+@media(max-width:1100px){.socialLayout{grid-template-columns:205px minmax(0,1fr)!important}.socialRight{display:none!important}}
+@media(max-width:700px){.vHeader{height:68px!important;gap:10px!important}.vSearch{display:none!important}.vHeader nav{gap:12px!important;font-size:11px!important}.socialLayout{display:block!important;padding:13px 12px 25px!important}.socialLeft{display:none!important}.socialCover{min-height:570px!important;border-radius:17px!important}.coverCopy{padding:25px!important}.coverCopy h1{font-size:clamp(39px,10vw,51px)!important}.coverCopy>p{font-size:13px!important}.introPeople{display:none!important}.featureShowcase{padding:17px!important}.socialPost{padding:13px!important}.postImage{max-height:330px!important}.socialComposer{padding:13px!important}}
