@@ -20,8 +20,8 @@ export default function CommunityGuidelinesPage() {
         <h2 style={{ fontSize: 20, letterSpacing: "-.4px", marginBottom: 8 }}>{section.title}</h2>
         <p style={{ lineHeight: 1.7 }}>{section.body}</p>
       </section>)}
-      <p className="message" role="note">Product status: these guidelines define the intended standard. In-app reporting, blocking, moderation review, and appeals must be implemented and tested before the community opens fully.</p>
-      <p className="switch"><Link href="/">← Back to ConnectTime</Link> · <Link href="/signup">Create a profile</Link></p>
+      <p className="message" role="note">The Safety Center now provides report, block, and appeal forms. These tools require Appwrite safety tables to be configured; moderator review, enforcement integrations, and end-to-end testing remain required before full community launch.</p>
+      <p className="switch"><Link href="/">← Back to ConnectTime</Link> · <Link href="/safety">Open Safety Center</Link> · <Link href="/signup">Create a profile</Link></p>
     </article>
   </main>;
 }
