@@ -16,12 +16,14 @@ export async function GET(request: Request) {
     const { tablesDB, databaseId } = advertisingStore();
     const adsTable = process.env.APPWRITE_ADS_TABLE_ID;
     const complaintsTable = process.env.APPWRITE_AD_COMPLAINTS_TABLE_ID;
-    if (!adsTable || !complaintsTable) throw new Error("Advertising tables are not configured.");
-    const [ads, complaints] = await Promise.all([
+    const campaignsTable = process.env.APPWRITE_AD_CAMPAIGNS_TABLE_ID;
+    if (!adsTable || !complaintsTable || !campaignsTable) throw new Error("Advertising tables are not configured.");
+    const [ads, complaints, campaigns] = await Promise.all([
       tablesDB.listRows({ databaseId, tableId: adsTable, queries: [Query.orderDesc("$createdAt"), Query.limit(100)] }),
       tablesDB.listRows({ databaseId, tableId: complaintsTable, queries: [Query.orderDesc("$createdAt"), Query.limit(100)] }),
+      tablesDB.listRows({ databaseId, tableId: campaignsTable, queries: [Query.orderDesc("$createdAt"), Query.limit(100)] }),
     ]);
-    return NextResponse.json({ ads: ads.rows, complaints: complaints.rows });
+    return NextResponse.json({ ads: ads.rows, complaints: complaints.rows, campaigns: campaigns.rows });
   } catch (error) {
     console.error("Advertising review queue failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Review storage is unavailable or not configured." }, { status: 503 });
@@ -34,13 +36,13 @@ export async function PATCH(request: Request) {
   let body: Record<string, unknown>;
   try { body = await request.json() as Record<string, unknown>; }
   catch { return NextResponse.json({ error: "Invalid review action." }, { status: 400 }); }
-  const kind = body.kind === "complaint" ? "complaint" : body.kind === "ad" ? "ad" : "";
-  const tableId = kind === "complaint" ? process.env.APPWRITE_AD_COMPLAINTS_TABLE_ID : kind === "ad" ? process.env.APPWRITE_ADS_TABLE_ID : undefined;
+  const kind = body.kind === "complaint" ? "complaint" : body.kind === "campaign" ? "campaign" : body.kind === "ad" ? "ad" : "";
+  const tableId = kind === "complaint" ? process.env.APPWRITE_AD_COMPLAINTS_TABLE_ID : kind === "campaign" ? process.env.APPWRITE_AD_CAMPAIGNS_TABLE_ID : kind === "ad" ? process.env.APPWRITE_ADS_TABLE_ID : undefined;
   const id = typeof body.id === "string" ? body.id : "";
   const action = typeof body.action === "string" ? body.action : "";
   const allowed = kind === "complaint"
     ? ["under_review", "resolved", "dismissed", "takedown_requested"]
-    : ["approved", "rejected", "paused", "takedown"];
+    : kind === "campaign" ? ["approved", "rejected", "paused"] : ["approved", "rejected", "paused", "takedown"];
   if (!tableId || !id || !allowed.includes(action)) return NextResponse.json({ error: "Invalid item or review action." }, { status: 400 });
   try {
     const { tablesDB, databaseId } = advertisingStore();
@@ -48,7 +50,7 @@ export async function PATCH(request: Request) {
       databaseId,
       tableId,
       rowId: id,
-      data: { status: action, reviewedAt: new Date().toISOString() },
+      data: kind === "campaign" ? { status: action, human_review_status: action, reviewed_at: new Date().toISOString() } : { status: action, reviewedAt: new Date().toISOString() },
     });
     return NextResponse.json({ updated: true, id: updated.$id, status: action });
   } catch (error) {
