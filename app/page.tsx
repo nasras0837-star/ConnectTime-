@@ -2,6 +2,7 @@ import Link from "next/link";
 import LiveInterestFeed from "./components/live-interest-feed";
 
 const destinations = [
+  { icon: "❤️", title: "Dating & mutual likes", description: "Find compatible adults by age, interests, location and relationship goals. Like someone and connect when the interest is mutual.", href: "/dating", action: "Explore dating" },
   { icon: "🌐", title: "Connect with people", description: "Meet members, discover shared interests, build friendships and grow your community.", href: "/discover", action: "Discover members" },
   { icon: "💬", title: "Join the conversation", description: "Share updates, react, comment and take part in community discussions.", href: "/community", action: "Explore community" },
   { icon: "👥", title: "Build your communities", description: "Discover interest-based groups, meet members and join focused discussions.", href: "/groups", action: "Explore groups" },
@@ -19,7 +20,7 @@ export default function HomePage() {
   return <main className="ctHome">
     <header className="ctHomeHeader">
       <Link href="/" className="ctHomeBrand"><span className="ctHomeMark">◉</span><span>ConnectTime<small>Your people. Your passions. Your ConnectTime.</small></span></Link>
-      <nav aria-label="Main navigation"><Link href="/community">Community</Link><Link href="/news">News</Link><Link href="/free-tv">TV & Video</Link><Link href="/radio">Music & Radio</Link><Link href="/groups">Groups</Link><Link href="/meetings">Group Meetings</Link><Link href="/advertise">Advertise</Link><Link href="/feedback">Feedback</Link><Link href="/login">Log in</Link><Link className="ctHomeRegister" href="/register">Register Now</Link></nav>
+      <nav aria-label="Main navigation"><Link href="/community">Community</Link><Link href="/news">News</Link><Link href="/free-tv">TV & Video</Link><Link href="/radio">Music & Radio</Link><Link href="/groups">Groups</Link><Link href="/dating">Dating</Link><Link href="/meetings">Group Meetings</Link><Link href="/advertise">Advertise</Link><Link href="/feedback">Feedback</Link><Link href="/login">Log in</Link><Link className="ctHomeRegister" href="/register">Register Now</Link></nav>
     </header>
     <section className="ctHomeHero">
       <div className="ctHomeHeroCopy"><span className="ctHomeEyebrow">THE ALL-IN-ONE MEDIA APPLICATION</span><h1>Your world.<br/><em>All in one place.</em></h1><p>ConnectTime is an all-in-one media application bringing social networking, private messaging, communities, news, live-interest video feeds, entertainment, TV discovery and events together in one place.</p><div className="ctHomeActions"><Link href="/register" className="ctHomePrimary">Join ConnectTime <span>→</span></Link><Link href="/community" className="ctHomeSecondary">Explore the platform</Link></div><div className="ctHomeTrust"><span>🌍 Global perspectives</span><span>💬 Private text chat</span><span>🎥 Group video chat</span><span>🎬 Media discovery</span></div></div>
