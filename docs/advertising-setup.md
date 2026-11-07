@@ -103,6 +103,10 @@ Create these columns (use the exact IDs; make optional unless required):
 | starts_at | Varchar | 40 | Yes |
 | ends_at | Varchar | 40 | Yes |
 | spend_minor | Integer | — | Yes |
+| impressions_count | Integer | — | Yes |
+| clicks_count | Integer | — | Yes |
+| refund_policy_accepted | Boolean | — | Yes |
+| refund_policy_accepted_at | Varchar | 40 | Yes |
 | created_at | Varchar | 40 | Yes |
 
 Store monetary values as integer USD cents (for example, $5.00 is 500). Keep advertiser data private; do not grant public read or write access. The API uses server-side Appwrite credentials and filters campaign reads to the signed-in advertiser's user ID.
@@ -114,3 +118,12 @@ Add this Netlify environment variable:
 The campaign API also depends on the existing member-access environment variables (`APPWRITE_ACCESS_DATABASE_ID` and `APPWRITE_MEMBER_ACCESS_COLLECTION_ID`) and a valid verified-adult access record for the signed-in advertiser. If these are absent, draft creation fails closed.
 
 **Not implemented yet:** live auction selection, atomic budget reservations, authoritative impression/click measurement, payment authorization/capture, invoicing, refunds, and spend ledger reconciliation. The current campaign API only stores private drafts with advertiser-selected budget limits. Do not enable public paid delivery until those systems and concurrency/accounting tests are complete.
+
+
+## Advertiser refund policy and campaign acknowledgement
+
+Before a campaign draft can be saved, the advertiser must actively acknowledge the advertising payment and refund policy. The server independently enforces the acknowledgement and records `refund_policy_accepted` and `refund_policy_accepted_at`. The policy applies to valid advertising charges for service already delivered; it does not waive refunds required by applicable law, confirmed duplicate/erroneous charges, or cases where ConnectTime fails to provide the paid service. This is a proposed operational policy and must be reviewed by counsel for each launch market before any payment collection begins.
+
+## Campaign performance metrics
+
+The advertiser dashboard displays `impressions_count` (ad views) and `clicks_count` for each campaign. Create both integer columns as required, defaulting to zero. The current code initializes these counters to zero when a draft is created. **Live ad delivery and authoritative impression/click event collection are not yet enabled**, so draft campaigns must show zero and must not present these counters as measured audience reach. Before launch, connect the counters to a verified ad-serving/impression pipeline with invalid-traffic filtering, replay protection, audit records, and reconciliation tests. Never let advertisers or public clients directly increment their own counters.
