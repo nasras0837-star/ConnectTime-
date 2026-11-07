@@ -31,7 +31,7 @@ export default function CommunityPage() {
     } finally { setLoading(false); }
   }
 
-  useEffect(() => { void refresh(); }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- Initial fetch populates the client-side feed.\n  useEffect(() => { void refresh(); }, []);
 
   async function publish(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
