@@ -16,6 +16,24 @@ function tables() {
   return { tablesDB, databaseId, likesTableId, profilesTableId, blocksTableId };
 }
 
+async function notifyDatingUser(tablesDB: ReturnType<typeof communitySafetyStore>["tablesDB"], databaseId: string, recipientId: string, actorId: string, message: string, referenceId: string) {
+  const tableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
+  if (!tableId) return;
+  try {
+    await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
+      recipient_user_id: recipientId,
+      actor_user_id: actorId,
+      type: "dating_like",
+      message: message.slice(0, 180),
+      reference_id: referenceId.slice(0, 128),
+      is_read: false,
+      created_at: new Date().toISOString()
+    }});
+  } catch (error) {
+    console.error("Dating notification could not be saved", error instanceof Error ? error.message : "unknown");
+  }
+}
+
 export async function GET() {
   const user = await currentCommunityMember();
   if (!user) return NextResponse.json({ error: "Sign in to view dating likes." }, { status: 401 });
@@ -111,8 +129,17 @@ export async function POST(request: Request) {
     ]);
     if (outgoingBlock.rows.length || incomingBlock.rows.length) return NextResponse.json({ error: "This profile is unavailable." }, { status: 403 });
     if (existing.rows.length) return NextResponse.json({ liked: true, alreadyLiked: true, matched: reciprocal.rows.length > 0 });
-    await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.likesTableId, rowId: ID.unique(), data: { sender_user_id: user.$id, recipient_user_id: String(target.user_id), created_at: new Date().toISOString() } });
-    return NextResponse.json({ liked: true, matched: reciprocal.rows.length > 0 }, { status: 201, headers: { "Cache-Control": "no-store" } });
+    const created = await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.likesTableId, rowId: ID.unique(), data: { sender_user_id: user.$id, recipient_user_id: String(target.user_id), created_at: new Date().toISOString() } });
+    const matched = reciprocal.rows.length > 0;
+    if (matched) {
+      await Promise.all([
+        notifyDatingUser(s.tablesDB, s.databaseId, String(target.user_id), user.$id, "You have a new mutual dating match!", String(created.$id)),
+        notifyDatingUser(s.tablesDB, s.databaseId, user.$id, String(target.user_id), "You have a new mutual dating match!", String(created.$id))
+      ]);
+    } else {
+      await notifyDatingUser(s.tablesDB, s.databaseId, String(target.user_id), user.$id, "Someone liked your dating profile.", String(created.$id));
+    }
+    return NextResponse.json({ liked: true, matched }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Dating like failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "The like could not be sent. Dating storage may need configuration." }, { status: 503 });
