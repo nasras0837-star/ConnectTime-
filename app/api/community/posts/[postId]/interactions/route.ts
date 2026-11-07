@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { ID, Query } from "node-appwrite";
+import { ID, Query, Client, Databases } from "node-appwrite";
+import { isEligible } from "@/lib/access-policy";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 
@@ -10,12 +11,20 @@ function config() {
   const commentsTableId = process.env.APPWRITE_COMMUNITY_COMMENTS_TABLE_ID;
   const reactionsTableId = process.env.APPWRITE_COMMUNITY_REACTIONS_TABLE_ID;
   const postsTableId = process.env.APPWRITE_COMMUNITY_POSTS_TABLE_ID;
-  if (!commentsTableId || !reactionsTableId || !postsTableId) throw new Error("Community interactions are not configured.");
+  const profilesTableId = process.env.APPWRITE_PROFILES_TABLE_ID;
+  const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
+  const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
+  const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
+  const apiKey = process.env.APPWRITE_API_KEY;
+  const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
+  const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
+  if (!commentsTableId || !reactionsTableId || !postsTableId || !profilesTableId || !blocksTableId || !endpoint || !projectId || !apiKey || !accessDatabaseId || !accessCollectionId) throw new Error("Community interactions are not configured.");
   const { tablesDB, databaseId } = communitySafetyStore();
-  return { tablesDB, databaseId, commentsTableId, reactionsTableId, postsTableId };
+  const databases = new Databases(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
+  return { tablesDB, databaseId, commentsTableId, reactionsTableId, postsTableId, profilesTableId, blocksTableId, databases, accessDatabaseId, accessCollectionId };
 }
 
-async function verifyPost(s: ReturnType<typeof config>, postId: string) {
+async function eligible(s: ReturnType<typeof config>, userId: string) {\n  try { const row = await s.databases.getDocument(s.accessDatabaseId, s.accessCollectionId, userId); return isEligible({ adult_status: row.adult_status, account_status: row.account_status }); } catch { return false; }\n}\n\nasync function verifyPost(s: ReturnType<typeof config>, postId: string) {
   try {
     const post = await s.tablesDB.getRow({ databaseId: s.databaseId, tableId: s.postsTableId, rowId: postId });
     return post.status === "published" ? post : null;
@@ -30,7 +39,13 @@ export async function GET(_request: Request, context: { params: Promise<{ postId
   try {
     const { postId } = await context.params;
     const s = config();
-    if (!await verifyPost(s, postId)) return NextResponse.json({ error: "Post not found." }, { status: 404 });
+    const post = await verifyPost(s, postId);
+    if (!post || !await eligible(s, String(post.author_user_id || ""))) return NextResponse.json({ error: "Post not found." }, { status: 404 });
+    const [viewerBlock, authorBlock] = await Promise.all([
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", user.$id), Query.equal("blocked_user_id", String(post.author_user_id)), Query.limit(1)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", String(post.author_user_id)), Query.equal("blocked_user_id", user.$id), Query.limit(1)] })
+    ]);
+    if (viewerBlock.rows.length || authorBlock.rows.length) return NextResponse.json({ error: "Post not found." }, { status: 404 });
     const [comments, reactions] = await Promise.all([
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.commentsTableId, queries: [Query.equal("post_id", postId), Query.orderAsc("created_at"), Query.limit(50)] }),
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.reactionsTableId, queries: [Query.equal("post_id", postId), Query.limit(100)] })
@@ -40,11 +55,11 @@ export async function GET(_request: Request, context: { params: Promise<{ postId
       const authorId = String(row.user_id || "");
       if (!authorId) continue;
       const [profile, blockedA, blockedB] = await Promise.all([
-        s.tablesDB.listRows({ databaseId: s.databaseId, tableId: process.env.APPWRITE_PROFILES_TABLE_ID || "", queries: [Query.equal("user_id", authorId), Query.limit(1)] }),
-        s.tablesDB.listRows({ databaseId: s.databaseId, tableId: process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID || "", queries: [Query.equal("blocker_user_id", user.$id), Query.equal("blocked_user_id", authorId), Query.limit(1)] }),
+        s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", authorId), Query.limit(1)] }),
+        s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", user.$id), Query.equal("blocked_user_id", authorId), Query.limit(1)] }),
         s.tablesDB.listRows({ databaseId: s.databaseId, tableId: process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID || "", queries: [Query.equal("blocker_user_id", authorId), Query.equal("blocked_user_id", user.$id), Query.limit(1)] })
       ]);
-      if (blockedA.rows.length || blockedB.rows.length || !profile.rows[0] || !["public", "members"].includes(String(profile.rows[0].visibility || ""))) continue;
+      if (blockedA.rows.length || blockedB.rows.length || !profile.rows[0] || !["public", "members"].includes(String(profile.rows[0].visibility || "")) || !await eligible(s, authorId)) continue;
       visible.push({ id: String(row.$id), body: String(row.body || ""), createdAt: String(row.created_at || ""), author: { handle: String(profile.rows[0].handle || ""), displayName: String(profile.rows[0].display_name || profile.rows[0].handle || "") }, mine: authorId === user.$id });
     }
     return NextResponse.json({ comments: visible, reactionCount: reactions.rows.length, reacted: reactions.rows.some(row => row.user_id === user.$id) }, { headers: { "Cache-Control": "no-store" } });
@@ -71,10 +86,9 @@ export async function POST(request: Request, context: { params: Promise<{ postId
     const s = config();
     const post = await verifyPost(s, postId);
     if (!post) return NextResponse.json({ error: "Post not found." }, { status: 404 });
-    const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
     const [blockedByViewer, blockedByAuthor] = await Promise.all([
-      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: blocksTableId || "", queries: [Query.equal("blocker_user_id", user.$id), Query.equal("blocked_user_id", String(post.author_user_id)), Query.limit(1)] }),
-      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: blocksTableId || "", queries: [Query.equal("blocker_user_id", String(post.author_user_id)), Query.equal("blocked_user_id", user.$id), Query.limit(1)] })
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", user.$id), Query.equal("blocked_user_id", String(post.author_user_id)), Query.limit(1)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", String(post.author_user_id)), Query.equal("blocked_user_id", user.$id), Query.limit(1)] })
     ]);
     if (blockedByViewer.rows.length || blockedByAuthor.rows.length) return NextResponse.json({ error: "You cannot interact with this post." }, { status: 403 });
     if (type === "comment") {
