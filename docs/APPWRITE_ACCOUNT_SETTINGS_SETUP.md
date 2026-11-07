@@ -14,6 +14,7 @@ Required columns:
 | friend_requests | boolean | yes | in-app notification preference |
 | friend_acceptances | boolean | yes | in-app notification preference |
 | private_messages | boolean | yes | in-app notification preference |
+| dating_likes | boolean | yes | in-app dating like and match notifications |
 | product_updates | boolean | yes | in-app notification preference |
 | live_feed_topics | varchar/string | no | 500; JSON array of selected live-feed topics |
 | created_at | varchar/string | yes | ISO timestamp |
@@ -21,7 +22,7 @@ Required columns:
 
 Add a unique index on `user_id`. The API allows each signed-in, independently verified active adult to read and update only their own row.
 
-The settings page stores preference choices. Existing friend/message notification producers must consult these settings before creating notifications; until that integration is deployed, do not promise that every toggle suppresses every notification. No email or push notifications are sent.
+The settings page stores preference choices. Friend-request, friend-acceptance, private-message, and dating-like notification producers consult these settings before creating notifications. Product updates are reserved for future platform announcements. No email or push notifications are sent.
 
 Profile visibility remains on the profile record and is edited at `/profile`. Photo uploads remain disabled pending a tested quarantine/moderation pipeline. Self-service account deactivation is not implemented; support-assisted closure is the current path. Account deactivation must not be simulated by deleting a profile or changing an unverified client-side flag.
 
