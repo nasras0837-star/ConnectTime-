@@ -310,3 +310,9 @@
 .createSafety>a{display:inline-block;margin-top:15px;color:#137e83;font-size:11px;font-weight:900}
 .createFooter{text-align:center;padding:22px;color:#81949e;font-size:10px;border-top:1px solid #dfebef}
 @media(max-width:760px){.createHeader{height:65px}.createHeader nav{gap:12px;font-size:10px}.createHero{padding:43px 20px 30px}.createWorkspace{grid-template-columns:1fr;padding:0 14px;margin-top:20px}.createCard{padding:17px}.createSafety{position:static}.createCardHead h2{font-size:22px}}
+
+/* Keep the full ConnectTime logo proportional in compact page headers. */
+.vHeader .ctLogoImage{width:118px;height:auto}
+.eventsBrand,.createBrand{display:inline-flex;align-items:center;line-height:0}
+.eventsBrand .ctLogoImage,.createBrand .ctLogoImage{width:112px;height:auto;object-fit:contain}
+@media(max-width:640px){.vHeader .ctLogoImage{width:104px}.eventsBrand .ctLogoImage,.createBrand .ctLogoImage{width:96px}}
