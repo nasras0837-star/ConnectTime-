@@ -7,6 +7,7 @@ const destinations = [
   { icon: "👥", title: "Build your communities", description: "Discover interest-based groups, meet members and join focused discussions.", href: "/groups", action: "Explore groups" },
   { icon: "✉️", title: "Stay connected", description: "Manage friend requests and continue private conversations with your connections.", href: "/messages", action: "Open messages" },
   { icon: "📺", title: "Watch and explore", description: "Find news, entertainment and official broadcaster streams, plus video discovery.", href: "/free-tv", action: "Explore TV & video" },
+  { icon: "🎵", title: "Free music & radio", description: "Tune into local radio and free music streams from countries and cultures around the world.", href: "/radio", action: "Listen worldwide" },
   { icon: "🎯", title: "Your personalized live feed", description: "Choose interests across news, sports, entertainment, music, business and science.", href: "#live-interest", action: "Explore live feeds" },
   { icon: "📰", title: "Stay informed", description: "Browse current affairs and news topics from a range of publishers.", href: "/news", action: "Read the news" },
   { icon: "🎉", title: "Discover what's happening", description: "Explore community events and find activities and conversations to join.", href: "/events", action: "Explore events" },
