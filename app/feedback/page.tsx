@@ -20,13 +20,14 @@ export default function FeedbackPage() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formElement = event.currentTarget;
     if (rating < 1 || rating > 5) {
       setStatus("Please select a rating from 1 to 5.");
       return;
     }
     setBusy(true);
     setStatus("Submitting your feedback…");
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     const payload = {
       rating,
       category: String(form.get("category") || ""),
@@ -43,7 +44,7 @@ export default function FeedbackPage() {
       if (!response.ok) throw new Error(data.error || "Feedback could not be submitted.");
       setStatus("Thank you! Your feedback and ideas have been submitted.");
       setRating(0);
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "The feedback service is unavailable. Your response was not submitted.");
     } finally {
