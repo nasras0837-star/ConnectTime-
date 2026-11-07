@@ -13,6 +13,7 @@ const regions = [
   { name: "Asia", countries: ["India", "China", "Japan", "South Korea", "Indonesia", "Pakistan", "Bangladesh", "Vietnam", "Thailand", "Malaysia", "Singapore", "Philippines", "Taiwan", "Sri Lanka", "Nepal", "Cambodia"] },
   { name: "Oceania", countries: ["Australia", "New Zealand", "Fiji", "Papua New Guinea"] },
 ];
+const audienceInterests = ["Arts & entertainment", "Business", "Education", "Family & parenting", "Food & dining", "Gaming", "Health & fitness", "Lifestyle", "Music", "News & politics", "Shopping", "Sports", "Technology", "Travel"];
 const formats = [
   { id: "feed", title: "Sponsored feed post", description: "Native-style promotion in community feeds", icon: "▤" },
   { id: "banner", title: "Display banner", description: "Brand awareness across selected pages", icon: "▰" },
@@ -29,6 +30,7 @@ export default function AdvertisePage() {
   const [selectedRegion, setSelectedRegion] = useState("North America");
   const [selectedCountry, setSelectedCountry] = useState("United States");
   const [locations, setLocations] = useState("");
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [radius, setRadius] = useState("25");
   const [dailyBudget, setDailyBudget] = useState("5");
   const [campaignBudget, setCampaignBudget] = useState("150");
@@ -68,7 +70,7 @@ export default function AdvertisePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             adSubmissionId: result.adSubmissionId, company, campaignName: campaign, objective: goal,
-            placement: format, region: selectedRegion, country: selectedCountry, geoTargets: locations,
+            placement: format, region: selectedRegion, country: selectedCountry, geoTargets: locations, audienceInterests: selectedInterests,
             dailyBudgetMinor: Math.round(Number(dailyBudget) * 100),
             lifetimeCapMinor: Math.round(Number(campaignBudget) * 100), bidStrategy,
             refundPolicyAccepted: true,
@@ -126,6 +128,7 @@ export default function AdvertisePage() {
             <label>Country<select value={selectedCountry} onChange={(e) => { setSelectedCountry(e.target.value); }}>{countries.map((country) => <option key={country}>{country}</option>)}</select></label>
             <label>Specific cities, states, postal codes or neighborhoods <span className="adOptional">Optional</span><textarea value={locations} onChange={(e) => { setLocations(e.target.value); }} placeholder={"Example: New York, NY; Newark, NJ; 10001\nEnter multiple locations separated by commas."} rows={3} /></label>
             <div className="adLocationHint">🎯 Ads are randomly shown to eligible ConnectTime users in your selected region and country. Optional city/radius settings can narrow the eligible audience where supported</div>
+            <fieldset className="ctAdInterestField"><legend>Audience interests <span className="adOptional">Optional</span></legend><p>Choose broad topics to help guide campaign planning. This preview stores your selections; interest-based ad delivery is not active.</p><div>{audienceInterests.map(interest => <label key={interest}><input type="checkbox" checked={selectedInterests.includes(interest)} onChange={event => setSelectedInterests(current => event.target.checked ? [...current, interest] : current.filter(item => item !== interest))} />{interest}</label>)}</div></fieldset>
             <label>Target radius<select value={radius} onChange={(e) => setRadius(e.target.value)}><option value="5">5 miles / 8 km</option><option value="10">10 miles / 16 km</option><option value="25">25 miles / 40 km</option><option value="50">50 miles / 80 km</option><option value="100">100 miles / 160 km</option><option value="all">Entire selected country</option></select></label>
           </section>
           <section className="adFormSection"><div className="adStep"><span>04</span><div><h3>Set your budget and dates</h3><p>Choose what you can afford. Your campaign cannot exceed your total budget cap.</p></div></div>
