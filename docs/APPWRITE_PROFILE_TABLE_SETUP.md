@@ -4,6 +4,7 @@ Create this table in the existing Appwrite database (do not create a second data
 
 - Table ID: choose a stable ID such as `profiles`
 - Set `APPWRITE_PROFILES_TABLE_ID` to the actual table ID in the deployment environment.
+- The unique index on `handle` is required, not optional. The API checks for an existing owner before saving, and the unique index closes the race between simultaneous signups.
 - Keep the table private. Do not grant public create/update/delete access. The Next.js server uses the server-only Appwrite API key.
 
 Required columns:
