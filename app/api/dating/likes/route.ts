@@ -19,6 +19,18 @@ function tables() {
 async function notifyDatingUser(tablesDB: ReturnType<typeof communitySafetyStore>["tablesDB"], databaseId: string, recipientId: string, actorId: string, message: string, referenceId: string) {
   const tableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
   if (!tableId) return;
+  const settingsTableId = process.env.APPWRITE_MEMBER_SETTINGS_TABLE_ID;
+  if (settingsTableId) {
+    try {
+      const preferences = await tablesDB.getRow({ databaseId, tableId: settingsTableId, rowId: recipientId });
+      if (preferences.user_id === recipientId && (preferences.dating_likes === false || preferences.dating_likes === "false")) return;
+    } catch (error) {
+      if (!(typeof error === "object" && error !== null && "code" in error && error.code === 404)) {
+        console.error("Dating notification preferences could not be checked", error instanceof Error ? error.message : "unknown");
+        return;
+      }
+    }
+  }
   try {
     await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
       recipient_user_id: recipientId,
