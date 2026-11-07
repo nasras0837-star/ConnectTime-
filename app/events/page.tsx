@@ -23,6 +23,7 @@ export default function EventsPage() {
   const minimumEventDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   const loadEvents = useCallback(async () => {
+    await Promise.resolve();
     setLoading(true); setError("");
     try {
       const params = new URLSearchParams();
