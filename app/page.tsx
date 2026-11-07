@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import LiveInterestFeed from "./components/live-interest-feed";
 
 type Channel = {
   id: string;
@@ -86,6 +87,7 @@ export default function FreeTvPage() {
   }),[region,country,category,query]);
   return <main className="freeTvPage">
     <header className="freeTvHeader"><Link href="/" className="freeTvBrand"><span>◉</span> ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/news">News</Link><Link href="/videos">Video Tube</Link><Link className="freeTvJoin" href="/register">Register Now</Link></nav></header>
+    <LiveInterestFeed />
     <section className="freeTvHero"><span className="freeTvEyebrow">CONNECTTIME · FREE TV</span><h1>Local voices.<br/><em>World-wide viewing.</em></h1><p>Discover free official news and entertainment channels from participating broadcasters around the world. Choose a region, find a channel, and watch on the broadcaster&apos;s own service.</p><div className="freeTvHeroStats"><span>🌍 Regional discovery</span><span>📰 Local & world news</span><span>🎭 Free entertainment</span><span>🔗 Official broadcaster links</span></div></section>
     <section className="freeTvDirectory">
       <div className="freeTvSectionHead"><div><span>CHANNEL GUIDE</span><h2>Find something to watch</h2><p>ConnectTime links to the broadcaster. It does not host, record or rebroadcast TV streams.</p></div><span className="freeTvCount">{filtered.length} channels</span></div>
