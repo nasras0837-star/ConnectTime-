@@ -95,8 +95,8 @@ export async function POST(request: Request) {
         tableId,
         rowId: ID.unique(),
         data: {
-          company, campaign, headline, body, imageUrl, rightsConfirmed: true,
-          status, flaggedCategories: flaggedCategories.join(","), createdAt: new Date().toISOString(),
+          ad_company: company, campaign_name: campaign, ad_headline: headline, ad_body: body, image_url: imageUrl, rights_confirmed: true,
+          status, flagged_categories: flaggedCategories.join(","), created_at: new Date().toISOString(),
         },
       });
     } catch (error) {
