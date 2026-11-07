@@ -28,7 +28,18 @@ export default function DiscoverPage() {
     finally { setLoading(false); }
   }
 
-  useEffect(() => { void loadProfiles(); }, []);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/discover/profiles", { cache: "no-store" })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Member discovery is unavailable.");
+        if (!cancelled) setProfiles(data.profiles || []);
+      })
+      .catch(e => { if (!cancelled) setError(e instanceof Error ? e.message : "Member discovery is unavailable."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
 
   return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/safety">Safety</Link></nav></header>
     <section className="authCard discoverCard"><div className="eyebrow">CONNECT · FIND YOUR COMMUNITY</div><h1>Discover members</h1><p>Explore profiles shared by verified adult members. People who have blocked you or whom you have blocked are hidden.</p>
