@@ -158,3 +158,7 @@
 .showcaseCard b{font-size:13px}
 .showcaseCard small{font-size:11px}
 @media(max-width:600px){.socialCover{min-height:630px!important}.coverCopy h1{font-size:clamp(39px,11vw,51px)!important}.introHighlights{gap:6px}.introHighlights span{font-size:9px}.featureShowcaseGrid{grid-template-columns:1fr}}
+
+
+/* Official ConnectTime logo */
+.ctLogoImage{display:block;width:164px;height:auto;object-fit:contain}.vHeader .vLogo{display:flex;align-items:center;min-width:0}.ctProfileLogo{display:block;width:58px;height:58px;object-fit:cover;object-position:center;border-radius:50%}@media(max-width:640px){.ctLogoImage{width:132px}}
