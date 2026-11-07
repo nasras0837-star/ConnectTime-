@@ -13,9 +13,10 @@ export default function CreatePage() {
 
   useEffect(() => {
     if (!file) { setPreviewUrl(""); return; }
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
+    const reader = new FileReader();
+    reader.onload = () => setPreviewUrl(typeof reader.result === "string" ? reader.result : "");
+    reader.readAsDataURL(file);
+    return () => reader.abort();
   }, [file]);
 
   function chooseFile(event: ChangeEvent<HTMLInputElement>) {
