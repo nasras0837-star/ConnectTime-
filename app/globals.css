@@ -487,3 +487,40 @@
 .adultCard{background:linear-gradient(120deg,#e4f5ee,#e5f2fb)}
 .socialNotice{border:1px solid #dcebf0;background:linear-gradient(110deg,#edf8fb,#f5f0ff);border-radius:14px}
 @media(prefers-reduced-motion:reduce){.socialHome:before,.socialHome:after,.peopleBubble{animation:none!important}}
+
+
+/* Floating ConnectTime AI help assistant */
+.ctAssistant{position:fixed;right:24px;bottom:22px;z-index:1000;font-family:'DM Sans',sans-serif}
+.ctAssistantLauncher{display:flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:13px 19px;background:linear-gradient(115deg,#087eae,#16a99b 58%,#8b5ce8);color:#fff;box-shadow:0 12px 32px #135c8050;cursor:pointer;font:800 13px 'DM Sans',sans-serif;transition:transform .2s,box-shadow .2s}
+.ctAssistantLauncher:hover{transform:translateY(-3px);box-shadow:0 17px 36px #135c8060}
+.ctAssistantLauncher>span{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#ffffff2b;font-size:19px}
+.ctAssistantPanel{position:absolute;right:0;bottom:66px;width:min(390px,calc(100vw - 28px));height:min(590px,calc(100dvh - 115px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #dceaf0;border-radius:22px;background:#fff;box-shadow:0 24px 75px #183d5b35;animation:ctAssistantIn .2s ease-out}
+@keyframes ctAssistantIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ctAssistantHeader{display:flex;align-items:center;gap:11px;padding:16px;background:linear-gradient(110deg,#0b729b,#159d99 58%,#805bd8);color:#fff}
+.ctAssistantAvatar{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;background:#ffffff29;font-size:22px}
+.ctAssistantHeader strong{display:block;font-size:13px}
+.ctAssistantHeader small{display:block;margin-top:3px;color:#e0f8f5;font-size:10px}
+.ctAssistantClose{margin-left:auto;border:0;background:#ffffff20;color:white;width:31px;height:31px;border-radius:50%;font-size:22px;cursor:pointer}
+.ctAssistantMessages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:radial-gradient(ellipse at 100% 0,#eef9ff 0,transparent 42%),#fbfdff}
+.ctAssistantMessage{display:flex;max-width:90%}
+.ctAssistantMessage span{padding:11px 13px;border-radius:15px;background:#eef4f8;color:#344f61;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.ctAssistantMessage.user{align-self:flex-end}
+.ctAssistantMessage.user span{background:linear-gradient(110deg,#087eae,#159f9c);color:white;border-bottom-right-radius:5px}
+.ctAssistantMessage.assistant{align-self:flex-start}
+.ctAssistantMessage.assistant span{border-bottom-left-radius:5px}
+.ctTyping{color:#6e8290;font-style:italic}
+.ctAssistantSuggestions{display:grid;gap:7px;margin-top:3px}
+.ctAssistantSuggestions>small{font-size:9px;font-weight:900;letter-spacing:1px;color:#8a9ba7}
+.ctAssistantSuggestions button{display:flex;justify-content:space-between;gap:8px;text-align:left;border:1px solid #dcecf2;border-radius:11px;padding:10px 11px;background:#fff;color:#376579;font-size:11px;cursor:pointer}
+.ctAssistantSuggestions button:hover{border-color:#8dcbd2;background:#f3fbfc}
+.ctAssistantSuggestions button b{color:#159b9b}
+.ctAssistantError{margin:0;color:#b33d5b;font-size:11px;line-height:1.5}
+.ctAssistantForm{display:flex;gap:8px;padding:12px;border-top:1px solid #e7eef2;background:#fff}
+.ctAssistantForm input{flex:1;min-width:0;border:1px solid #dce8ee;border-radius:12px;padding:12px;font:12px 'DM Sans',sans-serif;outline:none}
+.ctAssistantForm input:focus{border-color:#49aeb5;box-shadow:0 0 0 3px #49aeb51b}
+.ctAssistantForm button{width:42px;border:0;border-radius:12px;background:linear-gradient(120deg,#087eae,#16a99b);color:white;font-size:18px;cursor:pointer}
+.ctAssistantForm button:disabled{opacity:.45;cursor:not-allowed}
+.ctAssistantPrivacy{margin:0;padding:0 13px 12px;background:#fff;color:#94a0aa;font-size:9px;line-height:1.5}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:600px){.ctAssistant{right:13px;bottom:13px}.ctAssistantLauncher{padding:11px 15px}.ctAssistantPanel{bottom:59px;height:min(570px,calc(100dvh - 92px));right:0}}
+@media(prefers-reduced-motion:reduce){.ctAssistantPanel{animation:none}.ctAssistantLauncher{transition:none}}
