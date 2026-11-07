@@ -25,6 +25,8 @@ type Campaign = {
   metrics_status?: string;
   starts_at?: string;
   ends_at?: string;
+  $createdAt?: string;
+  created_at?: string;
 };
 const money = (minor?: number) => new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format((Number(minor) || 0) / 100);
 const number = (value?: number) => (Number(value) || 0).toLocaleString();
@@ -38,6 +40,7 @@ export default function AdvertisingDashboardPage() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
   const [refreshing, setRefreshing] = useState(false);
   const [cancellingId, setCancellingId] = useState("");
   const [actionMessage, setActionMessage] = useState("");
@@ -127,12 +130,26 @@ export default function AdvertisingDashboardPage() {
     URL.revokeObjectURL(url);
   };
 
-  const filtered = useMemo(() => campaigns.filter(campaign => {
-    const query = search.trim().toLowerCase();
-    const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region].some(value => (value || "").toLowerCase().includes(query));
-    const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
-    return matchesText && matchesStatus;
-  }), [campaigns, search, statusFilter]);
+  const filtered = useMemo(() => {
+    const matches = campaigns.filter(campaign => {
+      const query = search.trim().toLowerCase();
+      const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region].some(value => (value || "").toLowerCase().includes(query));
+      const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
+      return matchesText && matchesStatus;
+    });
+    const createdTime = (campaign: Campaign) => Date.parse(campaign.$createdAt || campaign.created_at || campaign.starts_at || "") || 0;
+    return [...matches].sort((a, b) => {
+      if (sortBy === "oldest") return createdTime(a) - createdTime(b);
+      if (sortBy === "spend") return (Number(b.spend_minor) || 0) - (Number(a.spend_minor) || 0);
+      if (sortBy === "clicks") return (Number(b.clicks_count) || 0) - (Number(a.clicks_count) || 0);
+      if (sortBy === "ctr") {
+        const ctrA = Number(a.impressions_count) > 0 ? Number(a.clicks_count || 0) / Number(a.impressions_count) : 0;
+        const ctrB = Number(b.impressions_count) > 0 ? Number(b.clicks_count || 0) / Number(b.impressions_count) : 0;
+        return ctrB - ctrA;
+      }
+      return createdTime(b) - createdTime(a);
+    });
+  }, [campaigns, search, statusFilter, sortBy]);
 
   const totals = useMemo(() => campaigns.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
@@ -159,7 +176,9 @@ export default function AdvertisingDashboardPage() {
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
-        <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>\n        <button type="button" onClick={exportCampaignReport} disabled={loading || filtered.length === 0}>↓ Export CSV</button>
+        <label>Sort campaigns<select value={sortBy} onChange={event => setSortBy(event.target.value)}><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="spend">Highest spend</option><option value="clicks">Most clicks</option><option value="ctr">Highest CTR</option></select></label>
+        <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
+        <button type="button" onClick={exportCampaignReport} disabled={loading || filtered.length === 0}>↓ Export CSV</button>
       </section>
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status.</div> : <div className="ctCampaignList">{filtered.map(campaign => {
         const impressions = Number(campaign.impressions_count) || 0;
