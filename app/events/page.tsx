@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 type EventItem = { title: string; category: string; date: string; time: string; city: string; country: string; venue: string; description: string; price: string; host: string; emoji: string };
 
@@ -42,7 +43,7 @@ export default function EventsPage() {
 
   return (
     <main className="eventsPage">
-      <header className="eventsHeader"><Link href="/" className="eventsBrand">🌍 ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/signup" className="eventsJoin">Join free ↗</Link></nav></header>
+      <header className="eventsHeader"><Link href="/" className="eventsBrand" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/signup" className="eventsJoin">Join free ↗</Link></nav></header>
       <section className="eventsHero">
         <span className="eventsEyebrow">YOUR CITY. YOUR COMMUNITY. YOUR MOMENT.</span>
         <h1>Make plans.<br/><em>Meet the world.</em></h1>
