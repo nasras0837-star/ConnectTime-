@@ -29,9 +29,13 @@ Expected static preview URL: https://nasras0837-star.github.io/ConnectTime-/
 
 ## Current implementation status
 
-The Next.js foundation includes the landing page, member discovery and profiles, friend requests, private messaging, notifications, community feed, groups, News, ConnectTime Video Tube, official broadcaster directory, advertising campaign planner, events interface, and floating AI assistant. These features depend on Appwrite tables and server environment configuration described in `.env.example` and `docs/`. The AI assistant needs a server-side `OPENAI_API_KEY` in Netlify before it can return live AI responses.
+The Next.js foundation includes the landing page, member discovery and profiles, friend requests, private messaging, notifications, community feed, groups, News, ConnectTime Video Tube, official broadcaster directory, advertising campaign planner, events interface, group video meeting entry point, and floating AI assistant. These features depend on Appwrite tables and server environment configuration described in `.env.example` and `docs/`. The AI assistant needs a server-side `OPENAI_API_KEY` in Netlify before it can return live AI responses.
 
 Authentication uses Appwrite SSR handlers. Member-facing social functions require independently verified adult eligibility and an active server-side account. Do not treat self-declared age or a checkbox as verification.
+
+### Group video meetings
+
+The `/meetings` page creates private, unguessable LiveKit room invitations and issues short-lived room-scoped tokens only to signed-in, independently verified adult members with active accounts. The browser joins through LiveKit Meet. Configure `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET` using [`docs/LIVEKIT_MEETINGS_SETUP.md`](docs/LIVEKIT_MEETINGS_SETUP.md). This requires the full Next.js deployment; GitHub Pages cannot run the token API. Friend-only invite enforcement, persistent scheduling, waiting rooms, host moderation, and recording are not implemented.
 
 ### Events
 
