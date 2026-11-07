@@ -166,3 +166,28 @@
 /* Use the same ConnectTime brand mark in the TV header. */
 .videoBrand{display:inline-flex;align-items:center;line-height:0}.ctVideoLogo{display:block;width:112px;height:auto;object-fit:contain}
 @media(max-width:600px){.ctVideoLogo{width:94px}}
+
+
+/* Interactive introduction explorer */
+.interactiveShowcase{position:relative;overflow:hidden}
+.interactiveShowcase:before{content:"";position:absolute;width:220px;height:220px;right:-100px;top:-100px;border-radius:50%;background:#d9c8ff66;pointer-events:none}
+.interactiveShowcase .featureShowcaseHead{position:relative;z-index:1}
+.surpriseButton{border:0;border-radius:24px;padding:12px 16px;background:linear-gradient(110deg,#754fe5,#e84aa5);color:#fff;font:800 11px 'DM Sans',sans-serif;white-space:nowrap;cursor:pointer;box-shadow:0 8px 18px #a44cbd30;transition:transform .18s,box-shadow .18s}
+.surpriseButton:hover{transform:translateY(-3px);box-shadow:0 12px 24px #a44cbd45}
+.experienceFilters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 15px}
+.experienceFilters button{border:1px solid #e8def6;background:#ffffffd9;color:#655b7b;border-radius:22px;padding:9px 13px;font:700 11px 'DM Sans',sans-serif;cursor:pointer;transition:all .18s}
+.experienceFilters button:hover{border-color:#bd9de9;transform:translateY(-1px)}
+.experienceFilters button.active{background:#302153;color:#fff;border-color:#302153;box-shadow:0 5px 14px #30215325}
+.interactiveFeatureGrid .showcaseCard{width:100%;text-align:left;cursor:pointer;font:inherit;position:relative;padding-right:34px}
+.interactiveFeatureGrid .showcaseCard>i{position:absolute;right:13px;top:13px;font-style:normal;font-size:15px;color:#9b83bd;opacity:0;transform:translate(-3px,3px);transition:all .18s}
+.interactiveFeatureGrid .showcaseCard:hover>i,.interactiveFeatureGrid .showcaseCard.isSelected>i{opacity:1;transform:none}
+.interactiveFeatureGrid .showcaseCard.isSelected{border-color:#a985e7;box-shadow:0 0 0 2px #b28be933,0 10px 24px #6b39a51a;background:#fff}
+.experienceDetail{display:flex;align-items:center;gap:14px;margin-top:17px;padding:17px;border-radius:17px;background:linear-gradient(110deg,#302153,#593b88 62%,#8b438e);color:#fff;box-shadow:0 12px 25px #30215320}
+.detailIcon{width:47px;height:47px;flex:0 0 47px;display:grid;place-items:center;border-radius:14px;background:#ffffff20;font-size:23px}
+.experienceDetail>div:nth-child(2){min-width:0;flex:1}
+.experienceDetail>div:nth-child(2)>span{display:block;color:#e5c9ff;font-size:8px;font-weight:900;letter-spacing:1.3px}
+.experienceDetail>div:nth-child(2)>b{display:block;margin-top:4px;font:800 14px Manrope,sans-serif}
+.experienceDetail p{margin:5px 0 0;color:#eee4f7;font-size:10px;line-height:1.55}
+.experienceDetail>a{white-space:nowrap;padding:10px 13px;border-radius:20px;background:#fff;color:#503177;font-size:10px;font-weight:850}
+.interactiveShowcase .showcaseNote{position:relative;z-index:1}
+@media(max-width:600px){.interactiveShowcase .featureShowcaseHead{gap:12px}.surpriseButton{align-self:flex-start}.experienceFilters{gap:6px}.experienceFilters button{padding:8px 10px;font-size:10px}.experienceDetail{align-items:flex-start;flex-wrap:wrap;padding:14px}.experienceDetail>div:nth-child(2){flex-basis:calc(100% - 65px)}.experienceDetail>a{margin-left:61px}.interactiveFeatureGrid .showcaseCard{min-height:82px}}
