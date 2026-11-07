@@ -1,28 +1,33 @@
 # ConnectTime production foundation
 
+## Backend decision
+ConnectTime is migrating to Appwrite Cloud. Supabase is no longer the planned backend for this project. Do not apply the legacy Supabase SQL reference or configure Flirt/Pleasure projects for ConnectTime.
+
 ## Current milestone
-The repository now includes a Next.js App Router foundation, Supabase SSR client utilities, email/password signup and login pages, a restricted account status page, a server-side sign-out route, a database schema reference, and baseline response security headers.
+The repository contains a Next.js App Router foundation, Appwrite SSR authentication handlers, Appwrite React provider, email/password signup and login, and a restricted account page. This is an integration scaffold, not a production-ready social network.
 
-## Environment
-Copy `.env.example` to `.env.local` and fill in the URL and publishable key from the dedicated ConnectTime Supabase project. Never commit real credentials. Never expose a Supabase secret/service-role key in browser code or a `NEXT_PUBLIC_*` variable.
+## Appwrite project setup
+1. Create a dedicated Appwrite Cloud project named ConnectTime in the Appwrite Console.
+2. Add a Web platform with hostname `localhost`; add the production domain only after it is selected.
+3. Create a server API key with scopes `users.read`, `users.write`, and `sessions.write`. Keep it server-side.
+4. Copy `.env.example` to `.env.local` and set the endpoint, project ID, and API key.
+5. Run `npm install`, `npm run typecheck`, `npm run lint`, and `npm run build`.
 
-## Database
-`supabase/schema.sql` is a reviewed starting schema. Apply it only to a new, dedicated ConnectTime Supabase project after review. It must not be applied to Flirt or Pleasure. The schema deliberately leaves new accounts pending. Clients cannot write adult verification or account status fields. A trusted server-side identity/age verification integration must update those fields after provider verification.
+## Security and age gating
+- A self-declared age, date of birth, or checkbox is not age verification.
+- New accounts must remain pending and must not access discovery, messaging, uploads, Match Maker, marketplace, video, or live features until an approved provider independently verifies adult eligibility.
+- Verification and account activation must be stored in server-controlled records. Never trust client-writable preferences or profile fields.
+- Never expose an Appwrite API key in browser code. Use user-session scoped access for normal requests.
+- Configure table, row, bucket, and file permissions explicitly; default-deny sensitive resources.
+- Add rate limiting, abuse detection, audit events, account recovery, and privacy/data-retention policies before production.
 
-## Important access rule
-An email address, self-declared date of birth, checkbox, or client-side value is not proof of age. The account remains restricted until an approved provider verifies that the user is an adult. The current scaffold does not yet integrate a verification vendor and must not be represented as production age verification.
+## Next milestones
+1. Complete Appwrite project setup and verify SSR auth locally.
+2. Design TablesDB tables and permissions for server-controlled profiles, friend graph, posts, comments, reactions, and messaging.
+3. Integrate a trusted age/identity provider with server-only status updates.
+4. Add private media buckets, upload validation, moderation, and retention controls.
+5. Build marketplace, Match Maker, news, video/live, and monetization after compliance and safety controls are designed.
+6. Add integration tests, dependency auditing, deployment configuration, backups, and incident response.
 
-## Run locally
-1. Install Node.js LTS.
-2. Run `npm install`.
-3. Copy `.env.example` to `.env.local` and add the dedicated Supabase URL and publishable key.
-4. Run `npm run dev`.
-5. Open `http://localhost:3000`.
-
-## Next engineering milestones
-1. Create a dedicated Supabase project and apply the schema through a migration.
-2. Implement provider-backed adult eligibility verification and server-only status updates.
-3. Add account recovery, email verification UX, rate limiting, abuse prevention and audit events.
-4. Build the social graph, posts, comments, reactions and messaging.
-5. Add marketplace, Match Maker, news licensing, video/live infrastructure and monetization only after their compliance and safety controls are designed.
-6. Add CI, tests, dependency auditing, CSP and deployment configuration before production.
+## Legacy material
+`supabase/schema.sql` belongs to the earlier prototype and is not active migration input. Never apply it to Flirt or Pleasure or treat it as an Appwrite schema.
