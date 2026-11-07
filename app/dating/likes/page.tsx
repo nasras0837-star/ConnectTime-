@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 
 type DatingProfile = { handle: string; displayName: string; country: string; age: number; gender: string; interests: string[] };
 type IncomingLike = { id: string; createdAt: string; profile: DatingProfile; matched: boolean };
@@ -64,7 +64,7 @@ export default function DatingLikesPage() {
     finally { setBusy(""); }
   }
 
-  const profileCard = (profile: DatingProfile, actions: React.ReactNode, key: string) => (
+  const profileCard = (profile: DatingProfile, actions: ReactNode, key: string) => (
     <article className="datingInboxCard" key={key}>
       <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0, 1).toUpperCase()}</div>
       <div className="datingInboxCopy">
