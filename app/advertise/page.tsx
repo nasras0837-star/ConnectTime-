@@ -45,9 +45,14 @@ export default function AdvertisePage() {
   const [reviewStatus, setReviewStatus] = useState("");
 
   const submitForReview = async () => {
-    setReviewing(true);
     setReviewMessage("");
     setReviewStatus("");
+    if (!budgetValid || !startDate || !endDate || new Date(endDate) < new Date(startDate)) {
+      setReviewStatus("invalid");
+      setReviewMessage("Enter a daily budget of at least $1, a valid total campaign cap, and valid start/end dates.");
+      return;
+    }
+    setReviewing(true);
     try {
       const response = await fetch("/api/advertising/moderate", {
         method: "POST",
@@ -56,10 +61,31 @@ export default function AdvertisePage() {
       });
       const result = await response.json();
       setReviewStatus(result.status || "error");
-      setReviewMessage(result.message || result.error || "Ad review could not be completed.");
+      if (result.status === "manual_review_required" && result.adSubmissionId) {
+        const campaignResponse = await fetch("/api/advertising/campaigns", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            adSubmissionId: result.adSubmissionId, company, campaignName: campaign, objective: goal,
+            placement: format, region: selectedRegion, country: selectedCountry, geoTargets: locations,
+            dailyBudgetMinor: Math.round(Number(dailyBudget) * 100),
+            lifetimeCapMinor: Math.round(Number(campaignBudget) * 100), bidStrategy,
+            startAt: new Date(startDate + "T00:00:00.000Z").toISOString(),
+            endAt: new Date(endDate + "T23:59:59.999Z").toISOString(),
+          }),
+        });
+        const campaignResult = await campaignResponse.json();
+        if (!campaignResponse.ok) {
+          setReviewMessage("The ad passed preliminary AI screening and is awaiting human review, but the campaign draft could not be saved: " + (campaignResult.error || "Campaign storage is not configured."));
+        } else {
+          setReviewMessage("Preliminary AI screening did not flag the ad. Your campaign draft was saved for human review. It is not approved, charged, or eligible for delivery.");
+        }
+      } else {
+        setReviewMessage(result.message || result.error || "Ad review could not be completed.");
+      }
     } catch {
       setReviewStatus("unavailable");
-      setReviewMessage("AI screening is unavailable. Payment and publication remain blocked.");
+      setReviewMessage("AI screening or campaign storage is unavailable. Payment and publication remain blocked.");
     } finally {
       setReviewing(false);
     }
@@ -102,7 +128,7 @@ export default function AdvertisePage() {
           </section>
           <section className="adFormSection"><div className="adStep"><span>04</span><div><h3>Set your budget and dates</h3><p>Choose what you can afford. Your campaign cannot exceed your total budget cap.</p></div></div>
             <div className="adBudgetControls"><label>Daily budget (USD)<input type="number" min="1" step="0.01" value={dailyBudget} onChange={(e) => { setDailyBudget(e.target.value); setSaved(false); }} /></label><label>Total campaign budget cap (USD)<input type="number" min="1" step="0.01" value={campaignBudget} onChange={(e) => { setCampaignBudget(e.target.value); setSaved(false); }} /></label><label>Delivery bidding strategy<select value={bidStrategy} onChange={(e) => setBidStrategy(e.target.value)}><option value="lowest-cost">Automatic — get the most results within my budget</option><option value="cost-cap">Cost goal — aim for an average result cost</option><option value="bid-cap">Bid cap — set a maximum auction bid</option></select></label><p className="adBudgetNote">Minimum starting daily budget: $1 USD. Your total campaign cap must be at least your daily budget. Auction prices vary with competition, objective, geography, placement, and ad quality. Results are not guaranteed.</p></div>
-            <div className="adDateGrid"><label>Start date<input type="date" value={startDate} onChange={(e) => { setStartDate(e.target.value); setSaved(false); }} /></label><label>End date<input type="date" min={startDate || undefined} value={endDate} onChange={(e) => { setEndDate(e.target.value); setSaved(false); }} /></label></div>
+            <div className="adDateGrid"><label>Start date<input type="date" required value={startDate} onChange={(e) => { setStartDate(e.target.value); setSaved(false); }} /></label><label>End date<input type="date" required min={startDate || undefined} value={endDate} onChange={(e) => { setEndDate(e.target.value); setSaved(false); }} /></label></div>
             <p className="adBudgetNote">ConnectTime will charge only for eligible, measured campaign delivery under the selected billing model. Billing and auction delivery are not active in this preview.</p>
           </section>
           <section className="adFormSection"><div className="adStep"><span>05</span><div><h3>Ad creative and safety screening</h3><p>Submit the actual ad content for AI safety screening before it can be considered for approval.</p></div></div>
