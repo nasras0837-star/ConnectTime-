@@ -5,11 +5,13 @@ import { useMemo, useState } from "react";
 
 const regions = [
   { name: "North America", countries: ["United States", "Canada", "Mexico"] },
-  { name: "Europe", countries: ["United Kingdom", "France", "Germany", "Spain", "Italy", "Netherlands"] },
-  { name: "Asia Pacific", countries: ["India", "Japan", "Australia", "Singapore", "Philippines"] },
-  { name: "Africa", countries: ["South Africa", "Nigeria", "Kenya", "Ghana", "Egypt"] },
-  { name: "Latin America", countries: ["Brazil", "Argentina", "Colombia", "Chile"] },
-  { name: "Middle East", countries: ["United Arab Emirates", "Saudi Arabia", "Qatar", "Jordan"] },
+  { name: "Central America & Caribbean", countries: ["Costa Rica", "Panama", "Guatemala", "Jamaica", "Dominican Republic", "Trinidad and Tobago"] },
+  { name: "South America", countries: ["Brazil", "Argentina", "Colombia", "Chile", "Peru", "Ecuador", "Uruguay", "Venezuela", "Bolivia", "Paraguay"] },
+  { name: "Europe", countries: ["United Kingdom", "Ireland", "France", "Germany", "Spain", "Italy", "Netherlands", "Belgium", "Switzerland", "Austria", "Portugal", "Sweden", "Norway", "Denmark", "Finland", "Poland", "Czechia", "Greece", "Romania", "Ukraine", "Turkey"] },
+  { name: "Middle East", countries: ["United Arab Emirates", "Saudi Arabia", "Qatar", "Jordan", "Israel", "Lebanon", "Oman", "Kuwait", "Bahrain", "Iraq"] },
+  { name: "Africa", countries: ["South Africa", "Nigeria", "Kenya", "Ghana", "Egypt", "Morocco", "Algeria", "Tunisia", "Ethiopia", "Tanzania", "Uganda", "Senegal", "Ivory Coast", "Cameroon", "Zimbabwe", "Zambia"] },
+  { name: "Asia", countries: ["India", "China", "Japan", "South Korea", "Indonesia", "Pakistan", "Bangladesh", "Vietnam", "Thailand", "Malaysia", "Singapore", "Philippines", "Taiwan", "Sri Lanka", "Nepal", "Cambodia"] },
+  { name: "Oceania", countries: ["Australia", "New Zealand", "Fiji", "Papua New Guinea"] },
 ];
 const formats = [
   { id: "feed", title: "Sponsored feed post", description: "Native-style promotion in community feeds", icon: "▤" },
