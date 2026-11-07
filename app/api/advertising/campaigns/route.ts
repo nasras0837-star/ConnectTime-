@@ -115,3 +115,47 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Campaign storage is not configured. No payment or ad delivery was started." }, { status: 503 });
   }
 }
+
+
+export async function PATCH(request: Request) {
+  const user = await currentAdvertiser();
+  if (!user) return NextResponse.json({ error: "Sign in to manage your campaigns." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ error: "Verified member access is required to manage advertising campaigns." }, { status: access.status });
+
+  let input: Record<string, unknown>;
+  try { input = await request.json() as Record<string, unknown>; }
+  catch { return NextResponse.json({ error: "Invalid campaign update request." }, { status: 400 }); }
+  const campaignId = typeof input.campaignId === "string" ? input.campaignId.trim().slice(0, 64) : "";
+  if (!campaignId) return NextResponse.json({ error: "A campaign ID is required." }, { status: 400 });
+
+  try {
+    const tableId = process.env.APPWRITE_AD_CAMPAIGNS_TABLE_ID;
+    if (!tableId) throw new Error("Campaign table is not configured.");
+    const { tablesDB, databaseId } = advertisingStore();
+    const campaign = await tablesDB.getRow({ databaseId, tableId, rowId: campaignId });
+    if (campaign.advertiser_user_id !== user.$id) {
+      return NextResponse.json({ error: "You can only manage campaigns owned by your advertiser account." }, { status: 403 });
+    }
+    if (campaign.status !== "pending_review" || campaign.payment_status !== "not_started" || Number(campaign.spend_minor || 0) > 0) {
+      return NextResponse.json({ error: "Only unpaid campaigns awaiting review can be cancelled here. Contact support for other campaign states." }, { status: 409 });
+    }
+    const updated = await tablesDB.updateRow({
+      databaseId,
+      tableId,
+      rowId: campaignId,
+      data: { status: "cancelled", cancelled_at: new Date().toISOString(), cancellation_requested_by: user.$id },
+    });
+    return NextResponse.json({
+      cancelled: true,
+      campaignId: updated.$id,
+      status: "cancelled",
+      message: "Your unpaid campaign draft has been cancelled. No payment or ad delivery was started.",
+      paymentAllowed: false,
+      deliveryAllowed: false,
+    }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("Campaign cancellation failed", error instanceof Error ? error.message : "unknown");
+    return NextResponse.json({ error: "The campaign could not be cancelled. No payment or ad delivery was started." }, { status: 503 });
+  }
+}
