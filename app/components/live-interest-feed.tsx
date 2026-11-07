@@ -36,7 +36,8 @@ export default function LiveInterestFeed() {
     async function loadPreferences() {
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
-        // Hydrate browser-local preferences after the first client render.\n        // eslint-disable-next-line react-hooks/set-state-in-effect\n        if (Array.isArray(saved) && active) setSelected(saved.filter((v): v is Topic => topics.includes(v)));
+        // Hydrate browser-local preferences after the first client render.
+        // eslint-disable-next-line react-hooks/set-state-in-effect\n        if (Array.isArray(saved) && active) setSelected(saved.filter((v): v is Topic => topics.includes(v)));
       } catch { /* Ignore malformed local preferences. */ }
       try {
         const response = await fetch("/api/live-feed/preferences", { cache: "no-store" });
