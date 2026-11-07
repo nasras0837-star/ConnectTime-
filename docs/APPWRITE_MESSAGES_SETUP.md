@@ -38,5 +38,7 @@ Required existing configuration:
 - Each member can only access conversations in which they are a participant.
 - The recipient can mark only messages in their own conversation as read.
 - Inbox and conversation responses are private and sent with no-store caching.
-- This first release is request/refresh based; it does not include WebSocket or push delivery, attachments, group chats, edit/delete, or a distributed abuse rate limiter.
+- Sending is throttled to 20 messages per member per rolling minute as a basic application-level control; this is not a distributed rate limiter and should be supplemented with edge/WAF protection before public launch.
+- Recipients can submit a private report against an individual message through the existing community report workflow.
+- This first release is request/refresh based; it does not include WebSocket or push delivery, attachments, group chats, or message edit/delete.
 - Keep the feature unavailable until the table and all required environment variables are configured.
