@@ -58,6 +58,14 @@ Set `APPWRITE_COMMUNITY_APPEALS_TABLE_ID` to this table ID.
 | status | Text | 30 | Yes |
 | created_at | Text | 40 | Yes |
 
+### Required indexes
+
+Create indexes after the columns are available; Appwrite requires indexes for queried attributes:
+
+- Community blocks: key index on `blocker_user_id` for listing a member's blocks.
+- Community blocks: composite key index on `blocker_user_id` and `blocked_user_id` for checking an existing block and unblocking.
+- If a moderator queue is added, index community reports by `status` and `created_at`, and appeals by `status` and `created_at`.
+
 The API creates row IDs. The Appwrite server API key performs the table operations, while the user ID is always taken from the authenticated session, never from submitted form data.
 
 ## Important launch requirements still outstanding
