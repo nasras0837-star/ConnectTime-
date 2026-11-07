@@ -55,3 +55,6 @@ Never commit real environment secrets.
 
 
 The homepage live-interest feed now syncs topic preferences to the signed-in, verified adult member's private Appwrite settings row. Configure the optional `live_feed_topics` string column as described in `docs/APPWRITE_ACCOUNT_SETTINGS_SETUP.md`; signed-out visitors retain device-local preferences.
+
+
+The first persistent community feed is available at `/community` for text-only posts. It requires a private Appwrite `community_posts` table and the server environment variable `APPWRITE_COMMUNITY_POSTS_TABLE_ID`; see `docs/APPWRITE_COMMUNITY_POSTS_SETUP.md`. Posting and viewing are restricted to independently verified, active adult members. Photo/video publishing remains disabled pending a tested moderation pipeline.
