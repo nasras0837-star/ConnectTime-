@@ -71,7 +71,7 @@ export default function VideosPage() {
   }, [active, interests, query, signals]);
   return <main className="videoShell">
     <header className="videoHeader"><Link className="videoBrand" href="/" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={112} height={73} priority className="ctVideoLogo"/></Link><nav><Link href="/">Home</Link><Link href="/account">My account</Link></nav></header>
-    <section className="videoIntro"><div className="videoEyebrow">CONNECTTIME TV</div><h1>Watch what<br/><span>moves you.</span></h1><p>A video feed shaped by the topics you explore and the videos you enjoy.</p>
+    <section className="videoIntro"><div className="videoEyebrow">CONNECTTIME VIDEO TUBE</div><h1>Connect. Discover.<br/><span>Watch what moves you.</span></h1><p>Welcome to ConnectTime Video Tube—discover creators, entertainment, learning, music, travel, and ideas from around the world.</p>
       <form className="videoSearch" onSubmit={(event) => {event.preventDefault(); submitSearch();}}><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search videos, creators, or interests…" aria-label="Search videos"/><button type="submit">Search</button></form>
       {history.length > 0 && <div className="searchHistory"><span>Recent searches</span>{history.slice(0,4).map((item) => <button key={item} onClick={() => {setQuery(item); submitSearch(item);}}>{item}</button>)}</div>}
     </section>
