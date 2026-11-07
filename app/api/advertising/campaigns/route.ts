@@ -72,20 +72,26 @@ export async function POST(request: Request) {
     const tableId = process.env.APPWRITE_AD_CAMPAIGNS_TABLE_ID;
     if (!tableId) throw new Error("Campaign table is not configured.");
     const { tablesDB, databaseId } = advertisingStore();
+    const adsTableId = process.env.APPWRITE_ADS_TABLE_ID;
+    if (!adsTableId) throw new Error("Ad submissions table is not configured.");
+    const adSubmission = await tablesDB.getRow({ databaseId, tableId: adsTableId, rowId: adSubmissionId });
+    if (adSubmission.advertiser_user_id !== user.$id) {
+      return NextResponse.json({ error: "This ad submission does not belong to your advertiser account." }, { status: 403 });
+    }
     const row = await tablesDB.createRow({
       databaseId, tableId, rowId: ID.unique(),
       data: {
         advertiser_user_id: user.$id, ad_submission_id: adSubmissionId, company, campaign_name: name, objective, placement, region, country, geo_targets: geoTargets,
         daily_budget_minor: dailyBudget, lifetime_cap_minor: lifetimeCap, currency,
-        bid_strategy: bidStrategy, status: "draft", moderation_status: "pending",
-        human_review_status: "not_started", payment_status: "not_started",
+        bid_strategy: bidStrategy, status: "pending_review", moderation_status: "passed_initial_screen",
+        human_review_status: "pending", payment_status: "not_started",
         starts_at: new Date(startAt).toISOString(), ends_at: new Date(endAt).toISOString(),
         spend_minor: 0, created_at: new Date().toISOString(),
       },
     });
     return NextResponse.json({
-      created: true, campaignId: row.$id, status: "draft",
-      message: "Campaign saved as a draft. It is not approved, billed, or eligible for ad delivery.",
+      created: true, campaignId: row.$id, status: "pending_review",
+      message: "Campaign saved for human review. It is not approved, billed, or eligible for ad delivery.",
       paymentAllowed: false, deliveryAllowed: false,
     }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
