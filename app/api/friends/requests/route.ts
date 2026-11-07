@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Client, Databases, ID, Query } from "node-appwrite";
+import { Client, Databases, ID, Query, TablesDB } from "node-appwrite";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 import { isEligible } from "@/lib/access-policy";
@@ -24,7 +24,7 @@ async function getServices() {
   return { tablesDB, databaseId, requestTableId, profileTableId, blockTableId, databases, accessDatabaseId, accessCollectionId };
 }
 
-async function profileFor(tablesDB: any, databaseId: string, tableId: string, userId: string) {
+async function profileFor(tablesDB: TablesDB, databaseId: string, tableId: string, userId: string) {
   try {
     const row = await tablesDB.getRow({ databaseId, tableId, rowId: userId });
     if (!["public", "members"].includes(String(row.visibility))) return null;
@@ -32,7 +32,7 @@ async function profileFor(tablesDB: any, databaseId: string, tableId: string, us
   } catch { return null; }
 }
 
-async function isBlocked(tablesDB: any, databaseId: string, tableId: string, first: string, second: string) {
+async function isBlocked(tablesDB: TablesDB, databaseId: string, tableId: string, first: string, second: string) {
   const [a, b] = await Promise.all([
     tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("blocker_user_id", first), Query.equal("blocked_user_id", second), Query.limit(1)] }),
     tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("blocker_user_id", second), Query.equal("blocked_user_id", first), Query.limit(1)] })
@@ -60,7 +60,7 @@ export async function GET() {
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.requestTableId, queries: [Query.equal("sender_user_id", user.$id), Query.equal("status", "accepted"), Query.orderDesc("$updatedAt"), Query.limit(100)] }),
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.requestTableId, queries: [Query.equal("recipient_user_id", user.$id), Query.equal("status", "accepted"), Query.orderDesc("$updatedAt"), Query.limit(100)] })
     ]);
-    const decorate = async (row: any, direction: "incoming" | "outgoing" | "connection") => {
+    const decorate = async (row: Record<string, unknown>, direction: "incoming" | "outgoing" | "connection") => {
       const otherId = direction === "incoming" ? String(row.sender_user_id) : String(row.recipient_user_id);
       if (!otherId || await isBlocked(s.tablesDB, s.databaseId, s.blockTableId, user.$id, otherId)) return null;
       if (!await eligible(s.databases, s.accessDatabaseId, s.accessCollectionId, otherId)) return null;
