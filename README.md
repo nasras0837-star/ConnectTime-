@@ -13,6 +13,9 @@ The Next.js foundation is being migrated to Appwrite Cloud. It includes a landin
 
 New accounts remain pending. A self-declared birth date or checkbox is not verification and does not grant access to social features. Only a trusted server-side verification process may activate adult eligibility.
 
+## Preview deployment
+The current Next.js app should be previewed through Vercel, not the legacy GitHub Pages static demo. Follow [the preview deployment guide](docs/PREVIEW_DEPLOYMENT.md). The repository includes a Vercel Next.js configuration; importing the repository into Vercel is still required to create a live deployment URL.
+
 ## Run locally
 1. Install Node.js LTS.
 2. Create a dedicated Appwrite Cloud project and add a Web platform for `localhost`.
