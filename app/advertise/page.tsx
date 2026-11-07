@@ -34,6 +34,34 @@ export default function AdvertisePage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [saved, setSaved] = useState(false);
+  const [headline, setHeadline] = useState("");
+  const [adCopy, setAdCopy] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [rightsConfirmed, setRightsConfirmed] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
+  const [reviewMessage, setReviewMessage] = useState("");
+  const [reviewStatus, setReviewStatus] = useState("");
+
+  const submitForReview = async () => {
+    setReviewing(true);
+    setReviewMessage("");
+    setReviewStatus("");
+    try {
+      const response = await fetch("/api/advertising/moderate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ company, campaign, headline, body: adCopy, imageUrl, rightsConfirmed }),
+      });
+      const result = await response.json();
+      setReviewStatus(result.status || "error");
+      setReviewMessage(result.message || result.error || "Ad review could not be completed.");
+    } catch {
+      setReviewStatus("unavailable");
+      setReviewMessage("AI screening is unavailable. Payment and publication remain blocked.");
+    } finally {
+      setReviewing(false);
+    }
+  };
   const countries = useMemo(() => regions.find((region) => region.name === selectedRegion)?.countries ?? [], [selectedRegion]);
   const totalBudget = monthlyAdFee;
   const dailyBudget = startDate && endDate && new Date(endDate) >= new Date(startDate)
@@ -75,7 +103,15 @@ export default function AdvertisePage() {
             <div className="adDateGrid"><label>Start date<input type="date" value={startDate} onChange={(e) => { setStartDate(e.target.value); setSaved(false); }} /></label><label>End date<input type="date" min={startDate || undefined} value={endDate} onChange={(e) => { setEndDate(e.target.value); setSaved(false); }} /></label></div>
             <p className="adBudgetNote">Flat monthly rate: $49.99 per ad. Billing begins only after campaign approval and checkout confirmation.</p>
           </section>
-          <div className="adSubmitArea"><button type="button" className="adSaveButton" onClick={() => setSaved(true)} disabled={!company.trim() || !campaign.trim()}>Save campaign plan ↗</button><p>{saved ? "Campaign plan prepared in this preview. It has not been submitted or charged." : "Planning preview only — saving does not create a live campaign or charge a payment method."}</p></div>
+          <section className="adFormSection"><div className="adStep"><span>05</span><div><h3>Ad creative and safety screening</h3><p>Submit the actual ad content for AI safety screening before it can be considered for approval.</p></div></div>
+            <label>Ad headline<input value={headline} maxLength={200} onChange={(e) => { setHeadline(e.target.value); setReviewStatus(""); }} placeholder="Write your ad headline" /></label>
+            <label>Ad text<textarea value={adCopy} maxLength={2000} onChange={(e) => { setAdCopy(e.target.value); setReviewStatus(""); }} rows={4} placeholder="Describe the product, service, offer, and claims in your advertisement." /></label>
+            <label>Creative image URL <span className="adOptional">Optional · HTTPS</span><input type="url" value={imageUrl} onChange={(e) => { setImageUrl(e.target.value); setReviewStatus(""); }} placeholder="https://example.com/your-ad-image.jpg" /></label>
+            <label className="adRightsCheck"><input type="checkbox" checked={rightsConfirmed} onChange={(e) => { setRightsConfirmed(e.target.checked); setReviewStatus(""); }} /> I own or have documented permission to use all submitted text, images, videos, logos, trademarks, music, and other creative assets. I will not submit infringing or misleading material.</label>
+            <div className="adSecureNote">🚫 No nudity, pornography, sexual services, exploitative content, hate, harassment, graphic violence, illegal products, scams, or deceptive ads. Suspected copyright/trademark violations require human review. AI screening does not prove ownership.</div>
+            <p className="adBudgetNote" role="status">{reviewMessage || "AI screening must complete before review. A clean AI result is not final campaign approval."}</p>
+          </section>
+          <div className="adSubmitArea"><button type="button" className="adSaveButton" onClick={submitForReview} disabled={reviewing || !company.trim() || !campaign.trim() || (!headline.trim() && !adCopy.trim() && !imageUrl.trim()) || !rightsConfirmed}>{reviewing ? "Screening ad…" : "Submit ad for AI screening ↗"}</button><p>{reviewStatus === "rejected" ? "Rejected: payment and publication are blocked." : reviewStatus === "manual_review_required" ? "AI screen passed. Human copyright, trademark, identity, and policy review is still required. Payment and publication remain blocked." : "No payment is collected and no ad is published through this preview."}</p></div>
         </div>
         <aside className="adSummary"><div className="adSummaryHead"><span>LIVE CAMPAIGN SUMMARY</span><b>✦</b></div>
           <div className="adPreviewCard"><div className="adPreviewLabel">SPONSORED PREVIEW</div><div className="adPreviewVisual"><span>YOUR BRAND</span><b>Make your next move memorable.</b><small>Your campaign creative will appear here.</small></div><div className="adPreviewMeta"><b>{campaign || "Your campaign name"}</b><span>Sponsored · ConnectTime</span></div></div>
@@ -84,7 +120,7 @@ export default function AdvertisePage() {
           <div className="adSummaryBlock"><small>RANDOM AD DELIVERY</small><strong>{selectedCountry}</strong><span>{selectedRegion} · {radius === "all" ? "Country-wide" : radius + " mile radius"}</span><span>Random eligible users in this audience</span>{locations && <span className="adLocationText">{locations}</span>}</div>
           <div className="adSummaryBlock"><small>CAMPAIGN OBJECTIVE</small><strong>{objective}</strong></div>
           <div className="adBudgetSummary"><small>MONTHLY AD FEE</small><strong>${totalBudget.toFixed(2)} <i>USD / month</i></strong>{dailyBudget !== null && Number.isFinite(dailyBudget) && <span>Estimated ${dailyBudget.toFixed(2)} for this date range</span>}<p>Flat rate per ad, worldwide. No payment is collected in this planning preview.</p></div>
-          <div className="adSecureNote">🔒 Payment is not collected in this preview. Advertiser verification, campaign review, billing, and reporting will be connected before paid campaigns go live.</div>
+          <div className="adSecureNote">🔒 Payment is not collected in this preview. AI safety screening is required. Copyright/trademark and advertiser checks require human approval. Payment and publication stay disabled until approval and secure billing are implemented.</div>
         </aside></div>
       </section>
       <section className="adHow"><div><span className="adEyebrow">SIMPLE BY DESIGN</span><h2>From local business to global brand.</h2></div><div className="adHowGrid"><article><b>1</b><h3>Select your region</h3><p>Choose the region and country. ConnectTime randomly displays your paid ad to eligible users there.</p></article><article><b>2</b><h3>Set your campaign</h3><p>Pick a placement, objective, schedule, and monthly ad fee.</p></article><article><b>3</b><h3>Review and launch</h3><p>Submit your ad for policy review, confirm the price, and pay securely when checkout is enabled.</p></article></div></section>
