@@ -14,6 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare lockfile for audit
+        run: npm install --package-lock-only --ignore-scripts
       - name: Check for accidentally committed environment files
         shell: bash
         run: |
