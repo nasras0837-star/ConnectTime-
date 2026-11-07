@@ -30,14 +30,14 @@ export default function SafetyCenterPage() {
   async function submit(event: FormEvent<HTMLFormElement>, endpoint: string, setStatus: (value: string) => void) {
     event.preventDefault();
     setStatus("Submitting…");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;\n    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     try {
       const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Submission failed.");
       setStatus(data.message || "Submitted successfully.");
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "The service is unavailable. Nothing was submitted.");
     }
