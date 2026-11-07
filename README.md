@@ -1,42 +1,54 @@
 # ConnectTime
 
-ConnectTime is an international, adults-only social platform being built as a web application.
+ConnectTime is an international social platform being built as a web application.
 
-## View the website
+## Website deployment
 
-**[Open the legacy static design preview](https://htmlpreview.github.io/?https://github.com/nasras0837-star/ConnectTime-/blob/main/docs/index.html)**
+The primary preview host is **Netlify**. The current application is a Next.js 16 App Router project in the repository root.
 
-This is the older static prototype and does **not** include the latest homepage, logo, and feature updates.
+- Netlify site: https://connecttime-sm.netlify.app
+- Netlify deploy dashboard: https://app.netlify.com/projects/connecttime-sm/deploys
+- Repository: https://github.com/nasras0837-star/ConnectTime-
 
-**To view the updated website**, deploy the current Next.js application in `app/` through Vercel by following [the preview deployment guide](docs/PREVIEW_DEPLOYMENT.md). A live Next.js preview URL has not been created yet.
+Connect the Netlify site to this repository with:
+- **Production branch:** `main`
+- **Base directory:** leave blank (repository root)
+- **Build command:** `npm run build`
+- **Publish directory:** `.next`
+- **Node version:** `22` (also set by `netlify.toml`)
 
-## Repository contents
-- `app/`: Next.js App Router application with Appwrite SSR authentication.
-- `app/api/appwrite/`: Appwrite's server-side authentication handlers.
-- `app/providers.tsx`: Appwrite React provider and session hydration.
-- `index.html`, `styles.css`, `app.js`: original standalone visual prototype.
+Netlify's current Next.js runtime detects Next.js automatically and provisions the server functions needed for App Router pages and route handlers. Do not add a static SPA fallback such as `/* /index.html 200`; it can break Next.js server routes.
 
-## Current status
-The Next.js foundation is being migrated to Appwrite Cloud. It includes a landing page, email/password signup and login, SSR session handling, and a restricted account status page. The Appwrite project and credentials still need to be configured. No database, media storage, social graph, or production age-verification provider has been deployed.
+After connecting the repository, trigger the first production deploy from Netlify. Later pushes to `main` should deploy automatically when continuous deployment is enabled.
 
-New accounts remain pending. A self-declared birth date or checkbox is not verification and does not grant access to social features. Only a trusted server-side verification process may activate adult eligibility.
+## GitHub Pages preview
 
-## Preview deployment
-The current Next.js app should be previewed through Vercel, not the legacy GitHub Pages static demo. Follow [the preview deployment guide](docs/PREVIEW_DEPLOYMENT.md). The repository includes a Vercel Next.js configuration; importing the repository into Vercel is still required to create a live deployment URL.
+The GitHub Pages workflow publishes only `docs/`, which is a separate static design preview. It is not the full Next.js application and does not provide live authentication, API routes, or backend functionality.
 
-## Run locally
-1. Install Node.js LTS.
+Expected static preview URL: https://nasras0837-star.github.io/ConnectTime-/
+
+## Current implementation status
+
+The Next.js foundation includes the landing page, sample feed, Chat Rooms prototype, News page, ConnectTime Video Tube page, advertising campaign planner, and a floating AI assistant interface. The AI assistant needs a server-side `OPENAI_API_KEY` in Netlify before it can return live AI responses.
+
+The authentication foundation uses Appwrite SSR handlers and a restricted account page. Appwrite project configuration is still required before signup/login can work in deployment. Configure the variables in `.env.example` in Netlify's environment-variable settings; keep server secrets private and never expose them through `NEXT_PUBLIC_*` variables.
+
+## Safety and production readiness
+
+This repository is a staged prototype, not a production-ready social network. Do not enable public social access until:
+- Appwrite is configured and authentication/session flows are tested.
+- Adult eligibility is independently verified by a trusted age/identity provider; a self-declared birth date or checkbox is not sufficient.
+- Server-controlled account activation and permissions are enforced.
+- Media uploads, content moderation, abuse reporting, rate limits, privacy controls, and retention policies are implemented and tested.
+- Messaging, calls, creator/video publishing, marketplace transactions, advertising billing, and analytics have secure backend services.
+- Security, integration, accessibility, and deployment tests pass.
+
+## Local development
+
+1. Install Node.js 22.
 2. Create a dedicated Appwrite Cloud project and add a Web platform for `localhost`.
-3. Create a server API key with `users.read`, `users.write`, and `sessions.write` scopes. Keep it secret.
+3. Configure a least-privilege Appwrite server API key and the environment variables in `.env.example`.
 4. Run `npm install`.
-5. Copy `.env.example` to `.env.local` and enter the Appwrite endpoint, project ID, and server API key.
-6. Run `npm run dev` and open `http://localhost:3000`.
+5. Run `npm run dev` and open `http://localhost:3000`.
 
-## Security notes
-- Never commit real environment secrets.
-- Never expose `APPWRITE_API_KEY` in browser code or a `NEXT_PUBLIC_*` variable.
-- Configure Appwrite resource permissions with least privilege.
-- Keep accounts pending until independent adult verification and server-side review.
-- Production access stays disabled until age verification, moderation, abuse controls, privacy/legal review, and security testing are complete.
-
-See [docs/PRODUCTION_FOUNDATION.md](docs/PRODUCTION_FOUNDATION.md) for the roadmap.
+Never commit real environment secrets.
