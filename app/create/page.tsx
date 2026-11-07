@@ -34,7 +34,7 @@ export default function CreatePage() {
   function previewPost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!file || !accepted) return;
-    setNotice("Your content preview is ready. Public publishing is currently locked until ConnectTime&apos;s server-side media moderation and storage are connected.");
+    setNotice("Your content preview is ready. Public publishing is currently locked until ConnectTime's server-side media moderation and storage are connected.");
   }
 
   return (
