@@ -732,3 +732,5 @@
 
 /* Homepage live-interest placement */
 .ctHomeLiveFeed{max-width:1240px;margin:0 auto;padding:0 clamp(18px,4vw,48px) 70px}.ctHomeLiveFeed .ctLiveInterest{margin:0}.ctHomeLiveFeed .ctLiveInterestHead h2{font-family:Manrope,sans-serif}
+
+.eventsPreviewNotice{margin:0 0 20px;padding:12px 15px;border:1px solid #eadff3;border-radius:12px;background:#fbf7ff;color:#6f5c83;font-size:11px;line-height:1.6}
