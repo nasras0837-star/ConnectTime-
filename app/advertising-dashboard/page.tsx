@@ -89,6 +89,44 @@ export default function AdvertisingDashboardPage() {
     }
   };
 
+  const exportCampaignReport = () => {
+    const columns = [
+      ["Campaign", "campaign_name"], ["Company", "company"], ["Status", "status"],
+      ["Objective", "objective"], ["Placement", "placement"], ["Country", "country"],
+      ["Region", "region"], ["Audience interests", "audience_interests"],
+      ["Daily budget (USD)", "daily_budget_minor"], ["Lifetime cap (USD)", "lifetime_cap_minor"],
+      ["Recorded spend (USD)", "spend_minor"], ["Verified impressions", "impressions_count"],
+      ["Verified clicks", "clicks_count"], ["Metrics status", "metrics_status"],
+      ["Human review", "human_review_status"], ["Payment status", "payment_status"],
+      ["Start date", "starts_at"], ["End date", "ends_at"],
+    ] as const;
+    const safeCell = (value: unknown) => {
+      let text = value == null ? "" : String(value);
+      if (/^[=+\\-@\\t\\r]/.test(text)) text = "'" + text;
+      return '"' + text.replaceAll('"', '""') + '"';
+    };
+    const rows = [
+      columns.map(([heading]) => safeCell(heading)).join(","),
+      ...filtered.map(campaign => columns.map(([, key]) => {
+        const value = campaign[key as keyof Campaign];
+        if (key === "daily_budget_minor" || key === "lifetime_cap_minor" || key === "spend_minor") {
+          return safeCell((Number(value) || 0) / 100);
+        }
+        return safeCell(value);
+      }).join(",")),
+    ];
+    const csv = "\\uFEFF" + rows.join("\\r\\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "connecttime-campaign-report.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   const filtered = useMemo(() => campaigns.filter(campaign => {
     const query = search.trim().toLowerCase();
     const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region].some(value => (value || "").toLowerCase().includes(query));
@@ -121,7 +159,7 @@ export default function AdvertisingDashboardPage() {
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
-        <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
+        <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>\n        <button type="button" onClick={exportCampaignReport} disabled={loading || filtered.length === 0}>↓ Export CSV</button>
       </section>
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status.</div> : <div className="ctCampaignList">{filtered.map(campaign => {
         const impressions = Number(campaign.impressions_count) || 0;
