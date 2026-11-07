@@ -3,10 +3,15 @@ import { advertisingStore, Query, requireReviewAdmin } from "@/lib/advertising-s
 
 export const runtime = "nodejs";
 
-export async function GET(request: Request) {
+function authorized(request: Request) {
   if (!process.env.AD_REVIEW_ADMIN_TOKEN) return NextResponse.json({ error: "Review dashboard is not configured." }, { status: 503 });
-  const auth = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") || "";
-  if (auth !== process.env.AD_REVIEW_ADMIN_TOKEN) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  if (!requireReviewAdmin(request)) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  return null;
+}
+
+export async function GET(request: Request) {
+  const denied = authorized(request);
+  if (denied) return denied;
   try {
     const { databases, databaseId } = advertisingStore();
     const adsCollection = process.env.APPWRITE_ADS_COLLECTION_ID;
@@ -24,16 +29,16 @@ export async function GET(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  if (!process.env.AD_REVIEW_ADMIN_TOKEN) return NextResponse.json({ error: "Review dashboard is not configured." }, { status: 503 });
-  const auth = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") || "";
-  if (auth !== process.env.AD_REVIEW_ADMIN_TOKEN) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  const denied = authorized(request);
+  if (denied) return denied;
   let body: Record<string, unknown>;
   try { body = await request.json() as Record<string, unknown>; }
   catch { return NextResponse.json({ error: "Invalid review action." }, { status: 400 }); }
-  const collection = body.kind === "complaint" ? process.env.APPWRITE_AD_COMPLAINTS_COLLECTION_ID : process.env.APPWRITE_ADS_COLLECTION_ID;
+  const kind = body.kind === "complaint" ? "complaint" : body.kind === "ad" ? "ad" : "";
+  const collection = kind === "complaint" ? process.env.APPWRITE_AD_COMPLAINTS_COLLECTION_ID : kind === "ad" ? process.env.APPWRITE_ADS_COLLECTION_ID : undefined;
   const id = typeof body.id === "string" ? body.id : "";
   const action = typeof body.action === "string" ? body.action : "";
-  const allowed = body.kind === "complaint"
+  const allowed = kind === "complaint"
     ? ["under_review", "resolved", "dismissed", "takedown_requested"]
     : ["approved", "rejected", "paused", "takedown"];
   if (!collection || !id || !allowed.includes(action)) return NextResponse.json({ error: "Invalid item or review action." }, { status: 400 });
