@@ -36,7 +36,7 @@ export default function EventsPage() {
     } finally { setLoading(false); }
   }, [category]);
 
-  useEffect(() => { void loadEvents(); }, [loadEvents]);
+  useEffect(() => { const timer = window.setTimeout(() => { void loadEvents(); }, 0); return () => window.clearTimeout(timer); }, [loadEvents]);
   const visible = useMemo(() => events.filter(event => [event.title, event.city, event.country, event.venue, event.description, event.host].join(" ").toLowerCase().includes(query.toLowerCase())), [events, query]);
   function update(field: keyof typeof form, value: string) { setForm(current => ({ ...current, [field]: value })); }
 
@@ -55,7 +55,7 @@ export default function EventsPage() {
   return (
     <main className="eventsPage">
       <header className="eventsHeader"><Link href="/" className="eventsBrand" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/signup" className="eventsJoin">Join free ↗</Link></nav></header>
-      <section className="eventsHero"><span className="eventsEyebrow">YOUR CITY. YOUR COMMUNITY. YOUR MOMENT.</span><h1>Make plans.<br/><em>Meet the world.</em></h1><p>Discover what's happening near you, find events in places you dream of visiting, and bring people together around something you love.</p><div className="eventsHeroActions"><button type="button" onClick={() => { setShowForm(true); setNotice(""); }}>＋ Promote an event</button><a href="#discover-events">Explore events ↓</a></div><div className="eventsPills"><span>📍 Local meetups</span><span>🎵 Music & culture</span><span>🤝 Community gatherings</span><span>🌎 Across the globe</span></div></section>
+      <section className="eventsHero"><span className="eventsEyebrow">YOUR CITY. YOUR COMMUNITY. YOUR MOMENT.</span><h1>Make plans.<br/><em>Meet the world.</em></h1><p>Discover what&apos;s happening near you, find events in places you dream of visiting, and bring people together around something you love.</p><div className="eventsHeroActions"><button type="button" onClick={() => { setShowForm(true); setNotice(""); }}>＋ Promote an event</button><a href="#discover-events">Explore events ↓</a></div><div className="eventsPills"><span>📍 Local meetups</span><span>🎵 Music & culture</span><span>🤝 Community gatherings</span><span>🌎 Across the globe</span></div></section>
       <section className="eventsMain" id="discover-events">
         <p className="eventsPreviewNotice" role="note">Member event directory. Events submitted by members remain private until reviewed and approved by moderators. Sign in with an independently verified adult account to browse.</p>
         <div className="eventsSectionHead"><div><span>FIND YOUR NEXT EXPERIENCE</span><h2>Events around the world</h2><p>Search by event, city, country, or venue.</p></div><button type="button" onClick={() => { setShowForm(true); setNotice(""); }}>＋ Add your event</button></div>
