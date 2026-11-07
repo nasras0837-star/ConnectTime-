@@ -31,7 +31,7 @@ export default function DatingPage() {
     return () => { active = false; };
   }, []);
 
-  const results = useMemo(() => profiles.filter(p => p.age >= minAge && p.age <= maxAge
+  const results = useMemo(() => profiles.filter(p => p.age >= 18 && !!p.gender && p.age >= minAge && p.age <= maxAge
     && (gender === "everyone" || p.gender === gender)
     && (goal === "any" || p.relationshipGoal === goal)
     && (!country.trim() || p.country.toLowerCase().includes(country.trim().toLowerCase()))
