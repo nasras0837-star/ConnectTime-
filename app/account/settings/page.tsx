@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type Preferences = { friend_requests: boolean; friend_acceptances: boolean; private_messages: boolean; product_updates: boolean };
-const defaults: Preferences = { friend_requests: true, friend_acceptances: true, private_messages: true, product_updates: false };
+type Preferences = { friend_requests: boolean; friend_acceptances: boolean; private_messages: boolean; dating_likes: boolean; product_updates: boolean };
+const defaults: Preferences = { friend_requests: true, friend_acceptances: true, private_messages: true, dating_likes: true, product_updates: false };
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<Preferences>(defaults);
@@ -36,10 +36,11 @@ export default function SettingsPage() {
     ["friend_requests", "New friend requests", "When another eligible member requests to connect."],
     ["friend_acceptances", "Accepted friend requests", "When a connection request you sent is accepted."],
     ["private_messages", "Private messages", "When a connection sends you a private message."],
+    ["dating_likes", "Dating likes and matches", "When someone likes your dating profile or you make a mutual match."],
     ["product_updates", "ConnectTime product updates", "Occasional platform announcements and feature updates."]
   ];
 
-  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><section className="authCard settingsCard">
+  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><section className="authCard settingsCard">
     <div className="eyebrow">ACCOUNT CONTROL</div><h1>Account settings</h1><p>Manage your in-app notification preferences and profile privacy.</p>
     <h2>Notifications</h2>
     {loading ? <p role="status">Loading settings…</p> : <div className="settingsChoices">{choices.map(([key, title, description]) => <label className="settingsChoice" key={key}><span><strong>{title}</strong><small>{description}</small></span><input type="checkbox" checked={settings[key]} onChange={e => setSettings(current => ({ ...current, [key]: e.target.checked }))}/></label>)}</div>}
