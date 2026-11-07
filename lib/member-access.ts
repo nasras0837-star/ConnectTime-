@@ -2,17 +2,8 @@ import "server-only";
 import { Client, Databases } from "node-appwrite";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 
-export type AdultStatus = "pending" | "verified" | "rejected" | "review";
-export type AccountStatus = "pending" | "active" | "suspended" | "banned";
-export type MemberAccess = { adult_status: AdultStatus; account_status: AccountStatus };
-
-export type AccessDecision =
-  | { allowed: true; access: MemberAccess }
-  | { allowed: false; status: 401 | 403 | 503; reason: "unauthenticated" | "not_eligible" | "not_configured" | "access_unavailable" };
-
-export function isEligible(access: Partial<MemberAccess> | null | undefined): access is MemberAccess {
-  return access?.adult_status === "verified" && access?.account_status === "active";
-}
+import type { AdultStatus, AccountStatus, MemberAccess } from "./access-policy";
+import { isEligible } from "./access-policy";
 
 export async function checkMemberAccess(): Promise<AccessDecision> {
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
