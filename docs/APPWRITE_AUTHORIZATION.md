@@ -3,7 +3,7 @@
 ## Status
 The current app uses Appwrite Auth through `@appwrite.io/react`. The account page deliberately displays a pending state; there is no independent age-verification integration or server-owned eligibility record yet. Do not unlock platform features based on the signup checkbox.
 
-## Required server-owned access record
+## Current code status\n- `lib/access-policy.ts` implements the strict `verified` + `active` decision and has unit tests.\n- `lib/member-access.ts` resolves the signed-in Appwrite user server-side and reads their server-owned access document; missing configuration/records and Appwrite errors deny access.\n- `GET /api/member-access` exposes only a minimal authorization result and sends `Cache-Control: no-store`.\n- The account page now reflects the server-side authorization result.\n- These are foundation controls only: no social, messaging, marketplace, dating, publishing, or calls feature endpoints exist yet to wire to this gate. The age provider/webhook is not configured.\n\n## Required server-owned access record
 Create an Appwrite Database collection (suggested ID: `member_access`) with document ID equal to the authenticated Appwrite user ID. Fields:
 - `adult_status`: pending | verified | rejected | review
 - `account_status`: pending | active | suspended | banned
