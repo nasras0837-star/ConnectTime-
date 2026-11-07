@@ -26,8 +26,8 @@ export async function POST(request: Request) {
     if (!tableId) throw new Error("Community reports table is not configured.");
     const { tablesDB, databaseId } = communitySafetyStore();
     const row = await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
-      reporter_user_id: user.$id, reported_user_id: targetUserId || null, target_type: targetType,
-      content_reference: contentReference || null, category, details, status: "open", created_at: new Date().toISOString(),
+      reporter_user_id: user.$id, ...(targetUserId ? { reported_user_id: targetUserId } : {}), target_type: targetType,
+      ...(contentReference ? { content_reference: contentReference } : {}), category, details, status: "open", created_at: new Date().toISOString(),
     } });
     return NextResponse.json({ submitted: true, reference: row.$id, message: "Your report was submitted for review. If you are in immediate danger, contact local emergency services." }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
