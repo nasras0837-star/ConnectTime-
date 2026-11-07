@@ -36,10 +36,16 @@ New Jersey P.L. 2026, c.25 (approved June 30, 2026) amended controller duties to
 
 **Design implications:** inventory data and purposes; do not collect more than needed; separate sensitive data; obtain and record required consent; make revocation easy; implement applicable access/correction/deletion/portability and opt-out requests; evaluate targeted advertising and profiling; document assessments where required; and maintain security controls.
 
+## New Jersey Age-Appropriate Design Code (P.L. 2026, c.73)
+
+New Jersey enacted the Age-Appropriate Design Code on August 11, 2026; it is scheduled to take effect September 1, 2027. Counsel must analyze the statutory covered-provider scope and exceptions against ConnectTime's revenue, consumer-household processing, features, and likelihood of access by children or minors. If covered, requirements include age-appropriate safeguards and privacy defaults, controls for adult/minor interactions, limits on certain data use and engagement-driving features, accessible harm-reporting and account unpublishing/deletion mechanisms, and protections around recommendation systems and geolocation. Do not assume the 18+ product label alone resolves coverage or future obligations. Build a product design assessment before enabling features that may be attractive to or accessible by minors.
+
+The Act also restricts use and retention of personal data collected for age assurance: age-assurance data must be used only for that purpose and deleted within the statutory period after age determination. Design the verification integration to minimize collection and retain only the minimum decision/audit metadata needed.
+
 ## Federal and platform obligations to assess
 
 - **FTC Act and endorsement rules:** advertising claims must be truthful and non-deceptive. A material relationship between an endorser and brand should be disclosed clearly and conspicuously in the endorsement. A profile-only disclosure or vague hashtag may not be sufficient.
-- **COPPA:** an 18+ label does not by itself resolve COPPA or all child-safety duties. Counsel must assess actual audience, knowledge, collection, and service design.
+- **COPPA:** the amended COPPA Rule became effective June 23, 2025, with most regulated-entity compliance due April 22, 2026. An 18+ label does not by itself resolve COPPA or all child-safety duties. Counsel must assess actual audience, knowledge, collection, and service design. The FTC's February 2026 age-verification policy statement offers conditional enforcement discretion for age-verification-only processing when strict purpose limitation, prompt deletion, security, notice, and provider safeguards are met.
 - **18 U.S.C. § 2258A:** assess whether ConnectTime is a provider subject to reporting requirements. Establish a process for appropriate CyberTipline reporting after actual knowledge of facts/circumstances described by the statute, with a designated responsible contact and evidence-handling controls.
 - **DMCA Section 512:** eligibility is conditional. The U.S. Copyright Office describes agent registration, public agent contact information, notice-and-takedown, counter-notice, and repeat-infringer policy requirements.
 - **Other laws:** review consumer protection, accessibility, privacy/security breach notification, unlawful discrimination, state intimate-image laws, defamation, sanctions/export, and platform-specific requirements as relevant.
@@ -64,7 +70,11 @@ New Jersey P.L. 2026, c.25 (approved June 30, 2026) amended controller duties to
 - FTC, [Disclosures 101 for Social Media Influencers](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers).
 - FTC, [Advertising and Marketing](https://www.ftc.gov/business-guidance/advertising-marketing).
 - U.S. Copyright Office, [Section 512 resources](https://www.copyright.gov/512/).
-- U.S. Code, [18 U.S.C. § 2258A](https://uscode.house.gov/us/usc/119-121/t18/s2258A/).
+- U.S. Code, [18 U.S.C. § 2258A](https://uscode.house.gov/us/usc/119-124/t18/s2258A/).
+- New Jersey Legislature, [A-4015 / New Jersey Age-Appropriate Design Code](https://pub.njleg.gov/Bills/2026/A4500/4015_R3.HTM).
+- New Jersey Governor, [August 11, 2026 Kids Code signing announcement](https://www.nj.gov/governor/news/2026/20260811a.shtml).
+- FTC, [February 25, 2026 age-verification policy statement](https://www.ftc.gov/news-events/news/press-releases/2026/02/ftc-issues-coppa-policy-statement-incentivize-use-age-verification-technologies-protect-children).
+- Federal Register, [2025 COPPA Rule amendments and compliance dates](https://www.govinfo.gov/content/pkg/FR-2025-04-22/html/2025-05904.htm).
 
 ## Important limitation
 
