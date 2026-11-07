@@ -24,15 +24,20 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { databases, databaseId } = advertisingStore();
-    const collectionId = process.env.APPWRITE_AD_COMPLAINTS_COLLECTION_ID;
-    if (!collectionId) throw new Error("Complaint collection is not configured.");
-    const doc = await databases.createDocument(databaseId, collectionId, ID.unique(), {
-      type, adReference, workDescription, details, claimantName, claimantEmail,
-      claimantAddress, electronicSignature, status: "received", goodFaith,
-      createdAt: new Date().toISOString(),
+    const { tablesDB, databaseId } = advertisingStore();
+    const tableId = process.env.APPWRITE_AD_COMPLAINTS_TABLE_ID;
+    if (!tableId) throw new Error("Complaint table is not configured.");
+    const row = await tablesDB.createRow({
+      databaseId,
+      tableId,
+      rowId: ID.unique(),
+      data: {
+        type, adReference, workDescription, details, claimantName, claimantEmail,
+        claimantAddress, electronicSignature, status: "received", goodFaith,
+        createdAt: new Date().toISOString(),
+      },
     });
-    return NextResponse.json({ received: true, reference: doc.$id, message: "Your report has been received for review. A report does not itself determine infringement." }, { status: 201 });
+    return NextResponse.json({ received: true, reference: row.$id, message: "Your report has been received for review. A report does not itself determine infringement." }, { status: 201 });
   } catch (error) {
     console.error("Advertising complaint storage failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "The reporting service is not configured or is temporarily unavailable. Please contact ConnectTime support." }, { status: 503 });
