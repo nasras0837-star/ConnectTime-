@@ -17,7 +17,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      - name: Update npm to current stable release
+        run: npm install --global npm@11
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
       - run: npm test
       - run: npm run typecheck
       - run: npm run lint
