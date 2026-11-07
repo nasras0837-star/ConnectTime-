@@ -34,7 +34,9 @@ The server uses the existing Appwrite service API key to read and write rows. Ta
 - Per-sender rate limit: 20 messages per minute.
 - Messages from users blocked by the viewer (or who blocked the viewer) are hidden from that viewer.
 - New-message notifications are attempted for active group members when the notifications table is configured.
-- The interface refreshes on page load and when the user selects Refresh chat. This is not realtime WebSocket messaging yet.
+- The group chat automatically polls for new messages every 8 seconds while the conversation is visible, and refreshes when the browser tab regains focus. This is near-real-time HTTP polling, not a persistent WebSocket/Appwrite Realtime connection.
+- New-message notifications are added to the existing notifications inbox and link directly to the relevant group discussion when the notifications table is configured.
+- Notification delivery excludes the sender and group members who have an existing block relationship with the sender.
 
 ## Routes
 
