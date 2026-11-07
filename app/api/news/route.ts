@@ -59,7 +59,7 @@ const PUBLISHER_FEEDS: Partial<Record<NewsCategory, Feed[]>> = {
 
 function decode(value: string) {
   return value
-    .replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, "$1")
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
     .replace(/&#(\\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([\\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
     .replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'")
@@ -73,14 +73,14 @@ function readTag(xml: string, name: string) {
 }
 
 function clean(value: string) {
-  return decode(value).replace(/<[^>]*>/g, " ").replace(/\\s+/g, " ").trim();
+  return decode(value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function parseFeed(xml: string, category: NewsCategory, fallbackSource: string) {
-  const entries = [...xml.matchAll(/<(?:item|entry)\\b[\\s\\S]*?<\\/(?:item|entry)\\s*>/gi)];
+  const entries = [...xml.matchAll(/<(?:item|entry)\b[\s\S]*?<\/(?:item|entry)\s*>/gi)];
   return entries.map(({ 0: item }) => {
     const title = clean(readTag(item, "title"));
-    const linkElement = item.match(/<link\\b[^>]*href=["']([^"']+)["'][^>]*\\/?\\s*>/i);
+    const linkElement = item.match(/<link\b[^>]*href=["']([^"']+)["'][^>]*\\/?\\s*>/i);
     const link = clean(readTag(item, "link")) || (linkElement ? decode(linkElement[1]) : "");
     const publishedAt = clean(readTag(item, "pubDate") || readTag(item, "published") || readTag(item, "updated") || readTag(item, "date"));
     const description = clean(readTag(item, "description") || readTag(item, "summary") || readTag(item, "encoded") || readTag(item, "content"));
@@ -98,7 +98,7 @@ function parseFeed(xml: string, category: NewsCategory, fallbackSource: string) 
       category,
       image: image ? decode(image) : undefined,
     };
-  }).filter((article) => article.title && /^https?:\\/\\//i.test(article.link));
+  }).filter((article) => article.title && /^https?:\/\//i.test(article.link));
 }
 
 async function fetchFeed(feed: Feed): Promise<ReturnType<typeof parseFeed>> {
