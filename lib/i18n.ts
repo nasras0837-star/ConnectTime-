@@ -1,4 +1,4 @@
-export type LanguageCode = "en" | "es" | "fr" | "ar" | "pt" | "hi";
+export type LanguageCode = "en" | "es" | "fr" | "ar" | "pt" | "hi" | "zh" | "ur";
 
 export const languages: { code: LanguageCode; label: string; native: string; dir: "ltr" | "rtl" }[] = [
   { code: "en", label: "English", native: "English", dir: "ltr" },
@@ -7,6 +7,8 @@ export const languages: { code: LanguageCode; label: string; native: string; dir
   { code: "ar", label: "Arabic", native: "العربية", dir: "rtl" },
   { code: "pt", label: "Portuguese", native: "Português", dir: "ltr" },
   { code: "hi", label: "Hindi", native: "हिन्दी", dir: "ltr" },
+  { code: "zh", label: "Chinese (Simplified)", native: "简体中文", dir: "ltr" },
+  { code: "ur", label: "Urdu", native: "اردو", dir: "rtl" },
 ];
 
 export const messages: Record<LanguageCode, Record<string, string>> = {
