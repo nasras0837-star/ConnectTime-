@@ -37,7 +37,8 @@ export default function LiveInterestFeed() {
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
         // Hydrate browser-local preferences after the first client render.
-        // eslint-disable-next-line react-hooks/set-state-in-effect\n        if (Array.isArray(saved) && active) setSelected(saved.filter((v): v is Topic => topics.includes(v)));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (Array.isArray(saved) && active) setSelected(saved.filter((v): v is Topic => topics.includes(v)));
       } catch { /* Ignore malformed local preferences. */ }
       try {
         const response = await fetch("/api/live-feed/preferences", { cache: "no-store" });
@@ -57,7 +58,8 @@ export default function LiveInterestFeed() {
       } catch {
         if (active) setSyncStatus("Using this device until account sync is available");
       } finally {
-        // eslint-disable-next-line react-hooks/set-state-in-effect\n        if (active) setReady(true);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (active) setReady(true);
       }
     }
     void loadPreferences();
