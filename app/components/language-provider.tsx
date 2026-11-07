@@ -11,7 +11,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem("connecttime-language");
-      if (saved && languages.some((item) => item.code === saved)) setLanguageState(saved as LanguageCode);
+      if (saved && languages.some((item) => item.code === saved)) window.setTimeout(() => setLanguageState(saved as LanguageCode), 0);
     } catch { /* Storage may be unavailable; English remains the fallback. */ }
   }, []);
   useEffect(() => {
