@@ -1,4 +1,4 @@
-import { Client, Databases, ID, Query } from "node-appwrite";
+import { Client, ID, Query, TablesDB } from "node-appwrite";
 import { timingSafeEqual } from "node:crypto";
 
 export function advertisingStore() {
@@ -10,7 +10,7 @@ export function advertisingStore() {
     throw new Error("Appwrite advertising storage is not configured.");
   }
   const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
-  return { databases: new Databases(client), databaseId };
+  return { tablesDB: new TablesDB(client), databaseId };
 }
 
 export function requireReviewAdmin(request: Request) {
