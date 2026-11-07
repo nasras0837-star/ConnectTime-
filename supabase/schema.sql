@@ -125,7 +125,8 @@ using ((select auth.uid()) in (requester_id, recipient_id));
 create policy "verified users can send friend requests"
 on public.friend_requests for insert to authenticated
 with check (
-  (select auth.uid()) = requester_id
+  status = 'pending'
+  and (select auth.uid()) = requester_id
   and exists (select 1 from public.profiles p where p.id = requester_id and p.adult_status = 'verified' and p.account_status = 'active')
   and exists (select 1 from public.profiles p where p.id = recipient_id and p.adult_status = 'verified' and p.account_status = 'active')
 );
@@ -138,4 +139,5 @@ with check ((select auth.uid()) = recipient_id);
 grant select on public.posts to anon, authenticated;
 grant insert, update, delete on public.posts to authenticated;
 grant select on public.friend_requests to authenticated;
-grant insert, update on public.friend_requests to authenticated;
+grant insert (requester_id, recipient_id) on public.friend_requests to authenticated;
+grant update (status) on public.friend_requests to authenticated;
