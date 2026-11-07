@@ -84,15 +84,20 @@ export async function POST(request: Request) {
     const flaggedCategories = Object.entries(moderation.categories || {})
       .filter(([, flagged]) => flagged === true)
       .map(([name]) => name);
-
     const status = moderation.flagged ? "rejected" : "manual_review_required";
+
     try {
-      const { databases, databaseId } = advertisingStore();
-      const collectionId = process.env.APPWRITE_ADS_COLLECTION_ID;
-      if (!collectionId) throw new Error("Ad submissions collection is not configured.");
-      await databases.createDocument(databaseId, collectionId, ID.unique(), {
-        company, campaign, headline, body, imageUrl, rightsConfirmed: true,
-        status, flaggedCategories, createdAt: new Date().toISOString(),
+      const { tablesDB, databaseId } = advertisingStore();
+      const tableId = process.env.APPWRITE_ADS_TABLE_ID;
+      if (!tableId) throw new Error("Ad submissions table is not configured.");
+      await tablesDB.createRow({
+        databaseId,
+        tableId,
+        rowId: ID.unique(),
+        data: {
+          company, campaign, headline, body, imageUrl, rightsConfirmed: true,
+          status, flaggedCategories: flaggedCategories.join(","), createdAt: new Date().toISOString(),
+        },
       });
     } catch (error) {
       console.error("Advertising submission could not be stored", error instanceof Error ? error.message : "unknown");
