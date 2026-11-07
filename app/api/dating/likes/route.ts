@@ -51,6 +51,7 @@ export async function POST(request: Request) {
     const s = tables();
     const matches = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("handle", [recipientHandle]), Query.limit(1)] });
     const target = matches.rows[0];
+    if (!target || !target.user_id || target.user_id === user.$id || !["public", "members"].includes(String(target.visibility))) return NextResponse.json({ error: "That member is not available for dating." }, { status: 404 });
     const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
     const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
     const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
@@ -60,7 +61,6 @@ export async function POST(request: Request) {
     const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
     const eligibility = await new Databases(client).getDocument(accessDatabaseId, accessCollectionId, String(target.user_id));
     if (!isEligible({ adult_status: eligibility.adult_status, account_status: eligibility.account_status })) return NextResponse.json({ error: "That member is not eligible for dating." }, { status: 403 });
-    if (!target || !target.user_id || target.user_id === user.$id || !["public", "members"].includes(String(target.visibility))) return NextResponse.json({ error: "That member is not available for dating." }, { status: 404 });
     const [outgoingBlock, incomingBlock, existing, reciprocal] = await Promise.all([
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", user.$id), Query.equal("blocked_user_id", String(target.user_id)), Query.limit(1)] }),
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", String(target.user_id)), Query.equal("blocked_user_id", user.$id), Query.limit(1)] }),
