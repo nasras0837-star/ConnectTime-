@@ -26,7 +26,20 @@ export async function GET() {
     if (!tableId) throw new Error("Campaign table is not configured.");
     const { tablesDB, databaseId } = advertisingStore();
     const result = await tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("advertiser_user_id", user.$id), Query.orderDesc("$createdAt"), Query.limit(100)] });
-    return NextResponse.json({ campaigns: result.rows }, { headers: { "Cache-Control": "no-store" } });
+    const eventsTable = process.env.APPWRITE_AD_DELIVERY_EVENTS_TABLE_ID;
+    const campaigns = await Promise.all(result.rows.map(async (campaign) => {
+      if (!eventsTable) return { ...campaign, impressions_count: 0, clicks_count: 0, metrics_status: "not_configured" };
+      try {
+        const [impressions, clicks] = await Promise.all([
+          tablesDB.listRows({ databaseId, tableId: eventsTable, queries: [Query.equal("campaign_id", campaign.$id), Query.equal("event_type", "impression"), Query.equal("validity_status", "valid"), Query.limit(1)] }),
+          tablesDB.listRows({ databaseId, tableId: eventsTable, queries: [Query.equal("campaign_id", campaign.$id), Query.equal("event_type", "click"), Query.equal("validity_status", "valid"), Query.limit(1)] }),
+        ]);
+        return { ...campaign, impressions_count: impressions.total, clicks_count: clicks.total, metrics_status: "verified_events" };
+      } catch {
+        return { ...campaign, impressions_count: 0, clicks_count: 0, metrics_status: "temporarily_unavailable" };
+      }
+    }));
+    return NextResponse.json({ campaigns }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Campaign listing failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Campaign storage is not configured or is unavailable." }, { status: 503 });
