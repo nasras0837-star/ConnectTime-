@@ -23,8 +23,6 @@ export default function EventsPage() {
   const minimumEventDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
   const loadEvents = useCallback(async () => {
-    await Promise.resolve();
-    setLoading(true); setError("");
     try {
       const params = new URLSearchParams();
       if (category !== "All events") params.set("category", category);
@@ -64,7 +62,7 @@ export default function EventsPage() {
         <div className="eventsSearch"><span>⌕</span><input aria-label="Search events or places" placeholder="Try “live music”, “Miami”, or “London”…" value={query} onChange={e => setQuery(e.target.value)}/></div>
         <div className="eventsCategories" role="group" aria-label="Filter events by category">{categories.map(item => <button type="button" key={item} className={category === item ? "active" : ""} onClick={() => setCategory(item)}>{item}</button>)}</div>
         {notice && <div className="eventSuccess" role="status">{notice}</div>}
-        {error && <div className="eventsEmpty" role="alert">{error} <Link href="/login">Sign in</Link> or <button type="button" onClick={() => void loadEvents()}>try again</button>.</div>}
+        {error && <div className="eventsEmpty" role="alert">{error} <Link href="/login">Sign in</Link> or <button type="button" onClick={() => { setLoading(true); setError(""); void loadEvents(); }}>try again</button>.</div>}
         {showForm && <div className="eventFormPanel" id="promote-event"><div className="eventFormHeading"><div><span>SHARE SOMETHING HAPPENING</span><h2>Promote your event</h2><p>Submissions go to moderation before they become visible.</p></div><button type="button" aria-label="Close event form" onClick={() => setShowForm(false)}>×</button></div>
           <form onSubmit={submitEvent} className="eventForm">
             <label>Event name<input required maxLength={90} value={form.title} onChange={e => update("title", e.target.value)} placeholder="e.g. Community food festival"/></label>
