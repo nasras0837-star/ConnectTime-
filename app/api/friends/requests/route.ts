@@ -90,10 +90,14 @@ export async function POST(request: Request) {
   if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
   let body: Record<string, unknown>;
   try { body = await request.json() as Record<string, unknown>; } catch { return NextResponse.json({ error: "Invalid friend request." }, { status: 400 }); }
-  const recipientId = typeof body.recipientUserId === "string" ? body.recipientUserId.trim().slice(0, 128) : "";
-  if (!recipientId || recipientId === user.$id) return NextResponse.json({ error: "Choose another member." }, { status: 400 });
+  const recipientHandle = typeof body.recipientHandle === "string" ? body.recipientHandle.trim().toLowerCase().slice(0, 24) : "";
+  if (!/^[a-z0-9_]{3,24}$/.test(recipientHandle)) return NextResponse.json({ error: "Enter a valid member handle." }, { status: 400 });
   try {
     const s = await getServices();
+    const matches = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profileTableId, queries: [Query.equal("handle", recipientHandle), Query.limit(2)] });
+    if (matches.rows.length !== 1) return NextResponse.json({ error: "This member is not available for connection requests." }, { status: 404 });
+    const recipientId = String(matches.rows[0].user_id || "");
+    if (!recipientId || recipientId === user.$id) return NextResponse.json({ error: "Choose another member." }, { status: 400 });
     const [recipientEligible, profile, blocked, existingForward, existingReverse] = await Promise.all([
       eligible(s.databases, s.accessDatabaseId, s.accessCollectionId, recipientId),
       profileFor(s.tablesDB, s.databaseId, s.profileTableId, recipientId),
