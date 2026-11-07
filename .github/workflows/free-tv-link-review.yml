@@ -1,0 +1,29 @@
+name: ConnectTime Free TV link review
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 8 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  check-official-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check official broadcaster destinations
+        run: node .github/scripts/check-free-tv-links.mjs
+      - name: Publish link health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: connecttime-free-tv-link-report
+          path: artifacts/free-tv-link-report.json
+          if-no-files-found: warn
+          retention-days: 30
