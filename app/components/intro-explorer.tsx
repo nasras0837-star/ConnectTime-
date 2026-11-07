@@ -4,18 +4,18 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 
 const experiences = [
-  { icon: "💖", title: "Match Maker & dating", description: "Explore dating and discover people with shared interests.", group: "Connect", color: "showcasePink", detail: "A dedicated adults-only dating space for different relationship goals, meaningful connections, and shared interests." },
-  { icon: "🛍️", title: "Marketplace", description: "Discover local finds, independent sellers, and new products.", group: "Discover", color: "showcaseGold", detail: "Explore a marketplace concept for local and international listings, seller discovery, and future buyer and seller tools." },
-  { icon: "✍️", title: "Forums, posts & blogs", description: "Share your voice, ask questions, and exchange ideas.", group: "Create", color: "showcaseBlue", detail: "Create posts and longer stories, comment, and take part in interest-based forums and community discussions." },
+  { icon: "💖", title: "Match Maker & dating", description: "Explore dating and discover people with shared interests.", group: "Connect", color: "showcasePink", detail: "A dedicated adults-only dating space for different relationship goals, meaningful connections, and shared interests.", href: "/coming-soon/dating" },
+  { icon: "🛍️", title: "Marketplace", description: "Discover local finds, independent sellers, and new products.", group: "Discover", color: "showcaseGold", detail: "Explore a marketplace concept for local and international listings, seller discovery, and future buyer and seller tools.", href: "/coming-soon/marketplace" },
+  { icon: "✍️", title: "Forums, posts & blogs", description: "Share your voice, ask questions, and exchange ideas.", group: "Create", color: "showcaseBlue", detail: "Create posts and longer stories, comment, and take part in interest-based forums and community discussions.", href: "/coming-soon/forums" },
   { icon: "▶️", title: "ConnectTime Video Tube", description: "Watch videos, discover creators, channels, and shows.", group: "Watch", color: "showcaseCoral", detail: "Explore ConnectTime Video Tube for creator-led entertainment, channels, and videos from around the world.", href: "/videos" },
-  { icon: "💬", title: "Friends & messaging", description: "Meet people, grow friendships, and keep the conversation going.", group: "Connect", color: "showcasePink", detail: "Build your circle with profiles, friend connections, text chat, and calls after connecting." },
-  { icon: "🌍", title: "Groups & communities", description: "Find your people, wherever they are in the world.", group: "Connect", color: "showcaseViolet", detail: "Join interest-led spaces, discover pages, and take part in community conversations." },
+  { icon: "💬", title: "Friends & messaging", description: "Meet people, grow friendships, and keep the conversation going.", group: "Connect", color: "showcasePink", detail: "Build your circle with profiles, friend connections, text chat, and calls after connecting.", href: "/coming-soon/friends" },
+  { icon: "🌍", title: "Groups & communities", description: "Find your people, wherever they are in the world.", group: "Connect", color: "showcaseViolet", detail: "Join interest-led spaces, discover pages, and take part in community conversations.", href: "/chat-rooms" },
   { icon: "📅", title: "Events", description: "Find local happenings or promote your own event.", group: "Discover", color: "showcaseCoral", detail: "Discover meetups, concerts, workshops, festivals, and community gatherings in your city or around the world. Event promotion is being prepared for launch.", href: "/events" },
-  { icon: "📰", title: "News & stories", description: "Keep up with topics, ideas, and stories that matter.", group: "Discover", color: "showcaseMint", detail: "A place for news and community perspectives across interests and regions." },
-  { icon: "🔴", title: "Live experiences", description: "Imagine sharing moments with a live audience.", group: "Watch", color: "showcasePink", detail: "Live streaming is part of the planned ConnectTime experience and is still being built." },
+  { icon: "📰", title: "News & stories", description: "Keep up with topics, ideas, and stories that matter.", group: "Discover", color: "showcaseMint", detail: "A place for news and community perspectives across interests and regions.", href: "/news" },
+  { icon: "🔴", title: "Live experiences", description: "Imagine sharing moments with a live audience.", group: "Watch", color: "showcasePink", detail: "Live streaming is part of the planned ConnectTime experience and is still being built.", href: "/coming-soon/live" },
   { icon: "📸", title: "Photo & video posts", description: "Share pictures, videos, and everyday moments with the world.", group: "Create", color: "showcaseCoral", detail: "Create photo and video posts with captions. Public uploads will require server-side moderation before launch.", href: "/create" },
-  { icon: "🎨", title: "Creator channels", description: "Build an audience around what you love making.", group: "Create", color: "showcaseViolet", detail: "Creator channels and subscriptions are planned experiences, subject to platform readiness." },
-  { icon: "📞", title: "Voice & video calls", description: "Make it feel more personal with a conversation.", group: "Connect", color: "showcaseMint", detail: "Voice and video calling are planned for accepted connections and are not yet enabled." },
+  { icon: "🎨", title: "Creator channels", description: "Build an audience around what you love making.", group: "Create", color: "showcaseViolet", detail: "Creator channels and subscriptions are planned experiences, subject to platform readiness.", href: "/coming-soon/blogs" },
+  { icon: "📞", title: "Voice & video calls", description: "Make it feel more personal with a conversation.", group: "Connect", color: "showcaseMint", detail: "Voice and video calling are planned for accepted connections and are not yet enabled.", href: "/coming-soon/video-chat" },
 ];
 
 const filters = ["All", "Connect", "Discover", "Watch", "Create"];
@@ -65,7 +65,7 @@ export function IntroExplorer() {
       <div className="experienceDetail" aria-live="polite">
         <div className="detailIcon">{active.icon}</div>
         <div><span>YOUR NEXT DISCOVERY</span><b>{active.title}</b><p>{active.detail}</p></div>
-        <Link href={active.href ?? "/signup"}>{active.href ? "Open Video Tube" : "Join the community"} ↗</Link>
+        <Link href={active.href ?? "/signup"}>{active.href?.startsWith("/coming-soon/") ? "View feature status" : active.href ? "Explore this feature" : "Join the community"} ↗</Link>
       </div>
       <p className="showcaseNote">ConnectTime is being built in stages. Some experiences shown here are previews and are not yet available. Membership is for adults 18+.</p>
     </section>
