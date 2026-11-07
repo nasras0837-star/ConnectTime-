@@ -148,7 +148,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
         <div className="communityFeedHead"><div><span>GROUP ADMINISTRATION</span><h2>Invite a member</h2></div></div>
         <form className="communityComposer" onSubmit={inviteMember}><label>Member handle<input value={inviteHandle} onChange={e => setInviteHandle(e.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required placeholder="Enter their ConnectTime handle" /></label><div className="communityComposerFoot"><span>Invitations are limited to discoverable, verified adult members.</span><button type="submit" disabled={inviteBusy}>{inviteBusy ? "Sending…" : "Send invitation"}</button></div></form>
         <h3>Pending invitations ({groupInvitations.length})</h3>
-        {groupInvitations.length ? groupInvitations.map(invitation => <article className="friendEntry" key={invitation.id}><div className="friendEntryCopy"><strong>{invitation.displayName}</strong><span>@{invitation.handle} · Awaiting response</span></div></article>) : <p className="communityEmpty">No outstanding invitations.</p>
+        {groupInvitations.length ? groupInvitations.map(invitation => <article className="friendEntry" key={invitation.id}><div className="friendEntryCopy"><strong>{invitation.displayName}</strong><span>@{invitation.handle} · Awaiting response</span></div></article>) : <p className="communityEmpty">No outstanding invitations.</p>}
       </section>}
       {isOwner && <section className="groupOwnerRequests">
         <div className="communityFeedHead"><div><span>GROUP ADMINISTRATION</span><h2>Current members</h2></div><strong>{members.length}</strong></div>
