@@ -76,3 +76,26 @@
 .rightCard{padding:16px}.rightTitle{font-size:13px;font-weight:850;margin-bottom:12px;display:flex;justify-content:space-between}.trend{padding:10px 0;border-top:1px solid #eff2f3}.trend b,.groupSuggest b{display:block;font-size:11px;color:#2a5368}.trend small,.groupSuggest small{display:block;font-size:9px;color:#87949c;margin-top:3px}.rightCard>a{display:inline-block;margin-top:10px;color:#16808d;font-size:10px;font-weight:850}.groupSuggest{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #eff2f3}.groupSuggest>span{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#edf5f6;font-size:18px}.communityNote{background:linear-gradient(145deg,#e7f4f5,#e9f5ee)}.communityNote p{font-size:11px;line-height:1.6;color:#5e7884}.communityNote small{font-size:9px;color:#718c91}.socialNotice{font-size:10px;line-height:1.6;color:#71858e;padding:11px 13px;background:#e9f2f4;border-radius:10px}.socialFooter{max-width:1480px;margin:auto;padding-left:28px!important;padding-right:28px!important}
 @media(max-width:1120px){.socialLayout{grid-template-columns:190px minmax(0,1fr)}.socialRight{display:none}}
 @media(max-width:700px){.socialLayout{display:block;padding:12px}.socialLeft{position:static;display:block;margin-bottom:12px}.socialProfile,.adultCard{display:none}.socialNav{display:flex;overflow-x:auto;padding:5px;background:#fff;border:1px solid #e1e9ed;border-radius:12px}.socialNav a{flex:0 0 auto;padding:9px 10px;font-size:0}.socialNav a span{font-size:17px}.socialCover{min-height:260px}.coverCopy{padding:25px 20px}.coverCopy h1{font-size:34px}.composerActions{gap:10px;font-size:9px}.socialFooter{padding-left:15px!important;padding-right:15px!important}}
+
+
+/* Introduction hero: editorial social welcome experience */
+.socialCover{min-height:390px;border-radius:22px;background:#164d67}
+.socialCover .coverPhoto{background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=90');background-position:center 38%;transform:scale(1.01)}
+.socialCover .coverShade{background:linear-gradient(90deg,rgba(10,43,62,.94) 0%,rgba(14,63,83,.82) 48%,rgba(16,69,78,.27) 100%),linear-gradient(0deg,rgba(10,43,62,.3),transparent 60%)}
+.socialCover .coverCopy{max-width:570px;padding:39px 34px;position:relative;z-index:2}
+.socialCover .introEyebrow{display:inline-flex;align-items:center;border:1px solid #ffffff52;background:#ffffff18;padding:8px 12px;border-radius:30px;font-size:9px;letter-spacing:1.2px;color:#d3f5eb}
+.socialCover .coverCopy h1{font-size:clamp(36px,4.5vw,54px);line-height:1.02;letter-spacing:-2px;margin:17px 0 13px}
+.socialCover .coverCopy h1 em{font-style:normal;color:#a9e9d8}
+.socialCover .coverCopy p{font-size:13px;line-height:1.75;color:#edf8f7;max-width:410px}
+.introActions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:21px}
+.socialCover .introActions>a{display:inline-flex;align-items:center;padding:12px 15px;border-radius:11px;background:#e7f7f1;color:#155b62;font-size:11px;font-weight:850}
+.socialCover .introActions>a.introExplore{background:#ffffff20;border:1px solid #ffffff6b;color:#fff}
+.introProof{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.introProof span{font-size:9px;color:#f0fbf9;background:#ffffff1c;border:1px solid #ffffff35;padding:7px 9px;border-radius:20px}
+.introPeople{position:absolute;right:5%;top:15%;width:230px;height:240px;z-index:2}
+.peopleBubble{position:absolute;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;border:3px solid #ffffffd9;background:linear-gradient(145deg,#e5f4ef,#d8eaf4);font-size:28px;box-shadow:0 10px 28px #092f4555}
+.bubbleA{right:115px;top:28px}.bubbleB{right:30px;top:78px}.bubbleC{right:130px;top:125px}.bubbleD{right:40px;top:166px}
+.peopleCaption{position:absolute;right:0;top:0;transform:translateY(-8px);background:#ffffffed;color:#234b5d;border-radius:13px;padding:11px 14px;box-shadow:0 12px 28px #092f4538}
+.peopleCaption b,.peopleCaption small{display:block}.peopleCaption b{font-size:10px}.peopleCaption small{font-size:8px;color:#6e8790;margin-top:3px}
+.introScroll{position:absolute;right:22px;bottom:16px;color:#e1f3ef;font-size:8px;font-weight:800;letter-spacing:1.2px;z-index:2}.introScroll span{font-size:14px;margin-left:8px}
+@media(max-width:700px){.socialCover{min-height:400px}.socialCover .coverShade{background:linear-gradient(90deg,rgba(10,43,62,.94),rgba(14,63,83,.72)),linear-gradient(0deg,rgba(10,43,62,.2),transparent)}.socialCover .coverCopy{padding:28px 21px}.socialCover .coverCopy h1{font-size:38px}.introPeople{right:0;top:auto;bottom:8px;transform:scale(.76);transform-origin:bottom right;opacity:.95}.introProof{max-width:310px}.introScroll{display:none}}
