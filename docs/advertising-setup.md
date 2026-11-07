@@ -1,42 +1,62 @@
 # ConnectTime advertising review setup
 
-The advertising review and complaint routes require Appwrite server-side credentials and collections. Until configured, these endpoints fail closed and do not accept ads for payment or publication.
+The advertising endpoints use Appwrite **TablesDB** (tables and rows). Your existing database is the TablesDB database shown in the Appwrite Console. Until the two tables and server credentials are configured, the endpoints fail closed and do not accept ads for payment or publication.
+
+## Tables to create
+
+In Appwrite Console, open your existing database and create these two tables:
+
+- `advertising_ads` — set its ID as `APPWRITE_ADS_TABLE_ID`.
+- `advertising_complaints` — set its ID as `APPWRITE_AD_COMPLAINTS_TABLE_ID`.
+
+Create the following columns on each table. Use the column types shown; make columns optional unless explicitly marked required. Do not enable public table/row permissions. The server API key is used for server-side access.
+
+### `advertising_ads` columns
+
+| Column ID | Type | Size / setting | Required |
+|---|---|---:|---|
+| company | Varchar | 160 | Yes |
+| campaign | Varchar | 160 | Yes |
+| headline | Varchar | 200 | No |
+| body | Varchar | 2000 | No |
+| imageUrl | Varchar | 2048 | No |
+| rightsConfirmed | Boolean | — | Yes |
+| status | Varchar | 40 | Yes |
+| flaggedCategories | Varchar | 1000 | No |
+| createdAt | Varchar | 40 | Yes |
+| reviewedAt | Varchar | 40 | No |
+
+### `advertising_complaints` columns
+
+| Column ID | Type | Size / setting | Required |
+|---|---|---:|---|
+| type | Varchar | 40 | Yes |
+| adReference | Varchar | 160 | Yes |
+| workDescription | Varchar | 2000 | No |
+| details | Varchar | 4000 | Yes |
+| claimantName | Varchar | 160 | Yes |
+| claimantEmail | Email | — | Yes |
+| claimantAddress | Varchar | 1000 | Yes |
+| electronicSignature | Varchar | 160 | Yes |
+| status | Varchar | 40 | Yes |
+| goodFaith | Boolean | — | Yes |
+| createdAt | Varchar | 40 | Yes |
+| reviewedAt | Varchar | 40 | No |
 
 ## Netlify environment variables
 
-Configure these in the Netlify site's production environment (never expose secret values in NEXT_PUBLIC variables):
+Configure these in the Netlify site's production environment. Never expose secret values in `NEXT_PUBLIC_` variables.
 
-- `NEXT_PUBLIC_APPWRITE_ENDPOINT`: Appwrite endpoint URL.
+- `NEXT_PUBLIC_APPWRITE_ENDPOINT`: Appwrite API endpoint, including `/v1`.
 - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`: Appwrite project ID.
-- `APPWRITE_API_KEY`: server API key with only the required database document read/create/update permissions.
-- `APPWRITE_DATABASE_ID`: database ID containing the collections below.
-- `APPWRITE_ADS_COLLECTION_ID`: collection ID for ad review submissions.
-- `APPWRITE_AD_COMPLAINTS_COLLECTION_ID`: collection ID for complaints and takedown reports.
+- `APPWRITE_API_KEY`: server API key with only the required `rows.read` and `rows.write` scopes.
+- `APPWRITE_DATABASE_ID`: your existing TablesDB database ID.
+- `APPWRITE_ADS_TABLE_ID`: ID of the `advertising_ads` table.
+- `APPWRITE_AD_COMPLAINTS_TABLE_ID`: ID of the `advertising_complaints` table.
 - `AD_REVIEW_ADMIN_TOKEN`: long random secret used by staff to access the review queue. Rotate it if exposed.
 - `OPENAI_API_KEY`: server-side key used by the AI moderation endpoint.
 
-## Appwrite collection: ad submissions
-
-Create a collection and set its ID as `APPWRITE_ADS_COLLECTION_ID`. Add string attributes with the indicated maximum lengths:
-
-- company (160), campaign (160), headline (200), body (2000), imageUrl (2048)
-- status (40), createdAt (40)
-- flaggedCategories (string array, each value max 100)
-- rightsConfirmed (boolean)
-
-Ad status begins as `manual_review_required` or `rejected`. A human staff reviewer may mark it approved, rejected, paused, or takedown. Approval currently records a review decision only; it does not trigger payment or ad delivery.
-
-## Appwrite collection: complaints
-
-Create a collection and set its ID as `APPWRITE_AD_COMPLAINTS_COLLECTION_ID`. Add string attributes:
-
-- type (40), adReference (160), workDescription (2000), details (4000)
-- claimantName (160), claimantEmail (254), status (40), createdAt (40)
-- claimantAddress (1000), electronicSignature (160)
-
-Also add boolean attribute `goodFaith`.
-
-Set collection permissions so only the server API key can read and write documents. Do not grant public read access. The public complaint endpoint only creates reports; staff queue endpoints require the server-side admin token.
+The Appwrite API key must be created in the same Appwrite project. Do not paste API keys or admin tokens into chat or commit them to GitHub.
 
 ## Staff review
 
