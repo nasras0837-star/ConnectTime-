@@ -29,13 +29,38 @@ export default function LiveInterestFeed() {
   const [selected, setSelected] = useState<Topic[]>(["News", "Sports", "Entertainment"]);
   const [loaded, setLoaded] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
+  const [syncStatus, setSyncStatus] = useState("Saved on this device");
 
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
-      if (Array.isArray(saved)) setSelected(saved.filter((v): v is Topic => topics.includes(v)));
-    } catch { /* Ignore malformed local preferences. */ }
-    setReady(true);
+    let active = true;
+    async function loadPreferences() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+        if (Array.isArray(saved) && active) setSelected(saved.filter((v): v is Topic => topics.includes(v)));
+      } catch { /* Ignore malformed local preferences. */ }
+      try {
+        const response = await fetch("/api/live-feed/preferences", { cache: "no-store" });
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data.topics)) {
+            const remote = data.topics.filter((v: unknown): v is Topic => typeof v === "string" && topics.includes(v as Topic));
+            if (active) {
+              setSelected(remote);
+              localStorage.setItem(storageKey, JSON.stringify(remote));
+              setSyncStatus("Synced to your ConnectTime account");
+            }
+          }
+        } else if (response.status === 401) {
+          if (active) setSyncStatus("Sign in to sync across devices");
+        } else if (active) setSyncStatus("Using this device until account sync is configured");
+      } catch {
+        if (active) setSyncStatus("Using this device until account sync is available");
+      } finally {
+        if (active) setReady(true);
+      }
+    }
+    void loadPreferences();
+    return () => { active = false; };
   }, []);
 
   const visible = useMemo(() => feeds.filter(feed => selected.includes(feed.topic)), [selected]);
@@ -44,13 +69,23 @@ export default function LiveInterestFeed() {
     setSelected(current => {
       const next = current.includes(topic) ? current.filter(item => item !== topic) : [...current, topic];
       localStorage.setItem(storageKey, JSON.stringify(next));
+      setSyncStatus("Saving to your account…");
+      void fetch("/api/live-feed/preferences", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topics: next })
+      }).then(async response => {
+        if (response.ok) setSyncStatus("Synced to your ConnectTime account");
+        else if (response.status === 401) setSyncStatus("Saved on this device · sign in to sync");
+        else setSyncStatus("Saved on this device · account sync unavailable");
+      }).catch(() => setSyncStatus("Saved on this device · account sync unavailable"));
       return next;
     });
   }
 
   return <section className="ctLiveInterest" aria-labelledby="ct-live-interest-title">
     <div className="ctLiveInterestHead"><div><span className="ctLiveEyebrow">YOUR PERSONAL LIVE FEED</span><h2 id="ct-live-interest-title">Watch what you&apos;re into</h2><p>Choose your interests. ConnectTime brings together official live channels and broadcaster video hubs.</p></div><span className="ctLiveCount">◉ Curated sources</span></div>
-    <div className="ctLiveTopics" role="group" aria-label="Choose live feed interests">{topics.map(topic => <button key={topic} type="button" onClick={() => toggle(topic)} className={selected.includes(topic) ? "active" : ""} aria-pressed={selected.includes(topic)}>{topic}</button>)}</div>
+    <div className="ctLiveTopics" role="group" aria-label="Choose live feed interests">{topics.map(topic => <button key={topic} type="button" onClick={() => toggle(topic)} className={selected.includes(topic) ? "active" : ""} aria-pressed={selected.includes(topic)}>{topic}</button>)}</div><p className="ctLiveSyncStatus" role="status">{syncStatus}</p>
     {!ready ? <p className="ctLiveNote">Loading your interests…</p> : visible.length ? <div className="ctLiveGrid">{visible.map(feed => <article className="ctLiveCard" key={feed.id}>
       <div className="ctLiveCardTop"><span>● {feed.topic}</span><span>{feed.country}</span></div>
       <h3>{feed.title}</h3><p className="ctLivePublisher">{feed.publisher}</p><p>{feed.note}</p>
