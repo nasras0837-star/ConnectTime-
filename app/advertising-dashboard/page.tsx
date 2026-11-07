@@ -18,6 +18,7 @@ type Campaign = {
   moderation_status?: string;
   human_review_status?: string;
   payment_status?: string;
+  metrics_status?: string;
   starts_at?: string;
   ends_at?: string;
 };
@@ -50,7 +51,7 @@ export default function AdvertisingDashboardPage() {
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : <div className="ctCampaignList">{campaigns.map((campaign) => <article className="ctCampaignCard" key={campaign.$id}>
         <div className="ctCampaignTitle"><div><span>{campaign.company || "Advertiser"}</span><h2>{campaign.campaign_name || "Untitled campaign"}</h2></div><b>{campaign.status || "draft"}</b></div>
         <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>SPEND RECORDED</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>AD VIEWS</small><strong>{Number(campaign.impressions_count || 0).toLocaleString()}</strong></div><div><small>CLICKS</small><strong>{Number(campaign.clicks_count || 0).toLocaleString()}</strong></div></div>
-        <div className="ctCampaignMeta"><span>{campaign.country || "Location not set"}</span><span>AI: {campaign.moderation_status || "pending"}</span><span>Human review: {campaign.human_review_status || "not started"}</span><span>Payment: {campaign.payment_status || "not started"}</span></div>
+        <div className="ctCampaignMeta"><span>{campaign.country || "Location not set"}</span><span>AI: {campaign.moderation_status || "pending"}</span><span>Human review: {campaign.human_review_status || "not started"}</span><span>Payment: {campaign.payment_status || "not started"}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "verified delivery events" : campaign.metrics_status === "temporarily_unavailable" ? "temporarily unavailable" : "not yet active"}</span></div>
       </article>)}</div>}
       <Link className="ctCampaignCreate" href="/advertise">＋ Create another campaign</Link>
     </section>
