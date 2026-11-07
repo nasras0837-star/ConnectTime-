@@ -162,3 +162,7 @@
 
 /* Official ConnectTime logo */
 .ctLogoImage{display:block;width:164px;height:auto;object-fit:contain}.vHeader .vLogo{display:flex;align-items:center;min-width:0}.ctProfileLogo{display:block;width:58px;height:58px;object-fit:cover;object-position:center;border-radius:50%}@media(max-width:640px){.ctLogoImage{width:132px}}
+
+/* Use the same ConnectTime brand mark in the TV header. */
+.videoBrand{display:inline-flex;align-items:center;line-height:0}.ctVideoLogo{display:block;width:112px;height:auto;object-fit:contain}
+@media(max-width:600px){.ctVideoLogo{width:94px}}
