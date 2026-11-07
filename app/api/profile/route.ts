@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 import { communitySafetyStore } from "@/lib/community-safety";
 
@@ -54,6 +54,16 @@ export async function PUT(request: Request) {
 
   try {
     const { tablesDB, databaseId, tableId } = profileTable();
+    // Preflight check improves feedback; the unique database index is the
+    // final protection against concurrent attempts to claim the same handle.
+    const handleMatches = await tablesDB.listRows({
+      databaseId,
+      tableId,
+      queries: [Query.equal("handle", [handle]), Query.limit(2)],
+    });
+    if (handleMatches.rows.some(row => row.user_id !== user.$id)) {
+      return NextResponse.json({ error: "That username is already in use. Please choose another." }, { status: 409 });
+    }
     const data = {
       user_id: user.$id,
       handle,
