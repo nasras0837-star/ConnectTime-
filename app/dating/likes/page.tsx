@@ -27,7 +27,7 @@ export default function DatingLikesPage() {
     } finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { void refresh(); }, [refresh]);
+  useEffect(() => { void Promise.resolve().then(() => refresh()); }, [refresh]);
 
   async function likeBack(profile: DatingProfile) {
     setBusy(profile.handle); setError(""); setNotice("");
