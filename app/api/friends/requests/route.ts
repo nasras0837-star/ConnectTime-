@@ -24,6 +24,26 @@ async function getServices() {
   return { tablesDB, databaseId, requestTableId, profileTableId, blockTableId, databases, accessDatabaseId, accessCollectionId };
 }
 
+
+async function notifyUser(tablesDB: TablesDB, databaseId: string, recipientId: string, actorId: string, type: string, message: string, referenceId: string) {
+  const tableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
+  if (!tableId) return;
+  try {
+    await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
+      recipient_user_id: recipientId,
+      actor_user_id: actorId,
+      type,
+      message: message.slice(0, 180),
+      reference_id: referenceId.slice(0, 128),
+      is_read: false,
+      created_at: new Date().toISOString()
+    }});
+  } catch (error) {
+    // Notification delivery must never undo a successful friend-request action.
+    console.error("Notification could not be saved", error instanceof Error ? error.message : "unknown");
+  }
+}
+
 async function profileFor(tablesDB: TablesDB, databaseId: string, tableId: string, userId: string) {
   try {
     const row = await tablesDB.getRow({ databaseId, tableId, rowId: userId });
@@ -112,6 +132,7 @@ export async function POST(request: Request) {
     const reversePending = existingReverse.rows.find(row => row.status === "pending");
     if (reversePending) return NextResponse.json({ error: "This member has already sent you a request. Review your incoming requests." }, { status: 409 });
     const row = await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.requestTableId, rowId: ID.unique(), data: { sender_user_id: user.$id, recipient_user_id: recipientId, status: "pending", created_at: new Date().toISOString(), updated_at: new Date().toISOString() } });
+    await notifyUser(s.tablesDB, s.databaseId, recipientId, user.$id, "friend_request", "You received a friend request.", String(row.$id));
     return NextResponse.json({ sent: true, requestId: row.$id }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Friend request creation failed", error instanceof Error ? error.message : "unknown");
@@ -139,6 +160,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "This connection request is no longer eligible." }, { status: 403 });
     }
     const updated = await s.tablesDB.updateRow({ databaseId: s.databaseId, tableId: s.requestTableId, rowId: requestId, data: { status: action === "accept" ? "accepted" : "declined", updated_at: new Date().toISOString() } });
+    if (action === "accept") await notifyUser(s.tablesDB, s.databaseId, senderId, user.$id, "friend_accepted", "Your friend request was accepted.", requestId);
     return NextResponse.json({ updated: true, status: updated.status }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Friend request update failed", error instanceof Error ? error.message : "unknown");
