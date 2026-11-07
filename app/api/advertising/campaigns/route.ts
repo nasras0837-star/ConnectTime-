@@ -51,6 +51,7 @@ export async function POST(request: Request) {
   const country = text("country", 100);
   const bidStrategy = text("bidStrategy", 24);
   const adSubmissionId = text("adSubmissionId", 64);
+  const refundPolicyAccepted = input.refundPolicyAccepted === true;
   const geoTargets = text("geoTargets", 2000);
   const currency = "USD";
   const dailyBudget = Number(input.dailyBudgetMinor);
@@ -61,7 +62,7 @@ export async function POST(request: Request) {
   const allowedPlacements = ["feed", "banner", "video", "event"];
   const allowedStrategies = ["lowest-cost", "cost-cap", "bid-cap"];
   if (!company || !name || !allowedObjectives.includes(objective) || !allowedPlacements.includes(placement) ||
-      !region || !country || !adSubmissionId || !allowedStrategies.includes(bidStrategy) ||
+      !region || !country || !adSubmissionId || !refundPolicyAccepted || !allowedStrategies.includes(bidStrategy) ||
       !Number.isSafeInteger(dailyBudget) || !Number.isSafeInteger(lifetimeCap) ||
       dailyBudget < 100 || lifetimeCap < dailyBudget || lifetimeCap > 100000000 ||
       !startAt || !endAt || !Number.isFinite(Date.parse(startAt)) || !Number.isFinite(Date.parse(endAt)) ||
@@ -86,12 +87,12 @@ export async function POST(request: Request) {
         bid_strategy: bidStrategy, status: "pending_review", moderation_status: "passed_initial_screen",
         human_review_status: "pending", payment_status: "not_started",
         starts_at: new Date(startAt).toISOString(), ends_at: new Date(endAt).toISOString(),
-        spend_minor: 0, created_at: new Date().toISOString(),
+        spend_minor: 0, impressions_count: 0, clicks_count: 0, refund_policy_accepted: true, refund_policy_accepted_at: new Date().toISOString(), created_at: new Date().toISOString(),
       },
     });
     return NextResponse.json({
       created: true, campaignId: row.$id, status: "pending_review",
-      message: "Campaign saved for human review. It is not approved, billed, or eligible for ad delivery.",
+      message: "Campaign saved for human review with refund-policy acknowledgment recorded. It is not approved, billed, or eligible for ad delivery.",
       paymentAllowed: false, deliveryAllowed: false,
     }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
