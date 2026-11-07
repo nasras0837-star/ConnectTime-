@@ -99,3 +99,18 @@
 .peopleCaption b,.peopleCaption small{display:block}.peopleCaption b{font-size:10px}.peopleCaption small{font-size:8px;color:#6e8790;margin-top:3px}
 .introScroll{position:absolute;right:22px;bottom:16px;color:#e1f3ef;font-size:8px;font-weight:800;letter-spacing:1.2px;z-index:2}.introScroll span{font-size:14px;margin-left:8px}
 @media(max-width:700px){.socialCover{min-height:400px}.socialCover .coverShade{background:linear-gradient(90deg,rgba(10,43,62,.94),rgba(14,63,83,.72)),linear-gradient(0deg,rgba(10,43,62,.2),transparent)}.socialCover .coverCopy{padding:28px 21px}.socialCover .coverCopy h1{font-size:38px}.introPeople{right:0;top:auto;bottom:8px;transform:scale(.76);transform-origin:bottom right;opacity:.95}.introProof{max-width:310px}.introScroll{display:none}}
+
+
+/* Social-first ConnectTime brand mark: a friendly trio of people, not a telecom globe */
+.ctBrandMark{position:relative;display:inline-block;flex:0 0 36px;width:36px;height:36px;border-radius:12px;background:linear-gradient(145deg,#7654e8 0%,#e64aa9 58%,#ff9b65 100%);box-shadow:0 5px 14px #8b5cf633;vertical-align:middle;overflow:hidden}
+.ctBrandMark i{position:absolute;display:block;border-radius:50%;background:#fff}
+.ctBrandMark i:nth-child(1){width:8px;height:8px;left:7px;top:8px}
+.ctBrandMark i:nth-child(2){width:9px;height:9px;left:14px;top:5px}
+.ctBrandMark i:nth-child(3){width:8px;height:8px;right:6px;top:9px}
+.ctBrandMark:before{content:"";position:absolute;left:4px;bottom:5px;width:13px;height:11px;border-radius:9px 9px 5px 5px;background:#fff}
+.ctBrandMark:after{content:"";position:absolute;right:4px;bottom:5px;width:13px;height:11px;border-radius:9px 9px 5px 5px;background:#fff}
+.vLogo{display:inline-flex;align-items:center;gap:9px}
+.ctWordmark{font:800 23px Manrope,sans-serif;letter-spacing:-1.1px;color:#26304a}
+.ctWordmark>span{background:linear-gradient(90deg,#7654e8,#e64aa9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.profileAvatar .ctBrandMark{width:43px;height:43px;flex-basis:43px;border-radius:15px}
+@media(max-width:700px){.ctBrandMark{width:32px;height:32px;flex-basis:32px}.ctWordmark{font-size:20px}}
