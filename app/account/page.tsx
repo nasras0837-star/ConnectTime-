@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createNextServerHelpers } from "@appwrite.io/react/server/next";
+import { SignOutButton } from "./signout-button";
 
 export default async function AccountPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  if (!process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || !process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID) return <main className="authShell"><section className="authCard"><h1>ConnectTime setup required</h1><p>Appwrite environment settings have not been configured yet.</p><Link href="/">Return home</Link></section></main>;
+  const user = await createNextServerHelpers({ endpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT, projectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID }).getLoggedInUser();
   if (!user) redirect("/login");
-  const { data: profile } = await supabase.from("profiles").select("adult_status,account_status").eq("id", user.id).maybeSingle();
-  const verified = profile?.adult_status === "verified" && profile?.account_status === "active";
-  return <main className="authShell"><Link className="logo" href="/">Connect<span>Time</span></Link><section className="authCard"><div className="eyebrow">YOUR ACCOUNT</div><h1>{verified ? "Welcome to ConnectTime" : "Verification required"}</h1><p>{verified ? "Your account has passed adult eligibility checks." : "Your sign-in is active, but the social platform remains locked until adult eligibility is verified by an approved verification provider."}</p><p className="message">Account status: {profile?.account_status ?? "pending"} · Adult eligibility: {profile?.adult_status ?? "pending"}</p><form action="/auth/signout" method="post"><button className="button">Sign out</button></form></section></main>;
+  return <main className="authShell"><Link className="logo" href="/">Connect<span>Time</span></Link><section className="authCard"><div className="eyebrow">YOUR ACCOUNT</div><h1>Verification required</h1><p>Signed in as {user.email || user.name || "ConnectTime member"}.</p><p>Your account is not authorized to use social features yet. Access remains locked until an approved provider confirms adult eligibility and a server-side review activates the account.</p><p className="message">Account access: pending · Adult eligibility: pending</p><SignOutButton /></section></main>;
 }
