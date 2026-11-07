@@ -6,7 +6,6 @@ import { useState } from "react";
 type MeetingGrant = { roomName: string; serverUrl: string; token: string; invitePath: string };
 
 export default function MeetingsPage() {
-  const [meetingTitle, setMeetingTitle] = useState("Family & friends catch-up");
   const [invite, setInvite] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const [grant, setGrant] = useState<MeetingGrant | null>(null);
@@ -69,7 +68,6 @@ export default function MeetingsPage() {
       </div>
       <section className="meetingAction">
         <span className="eyebrow">START A NEW MEETING</span>
-        <label>Meeting name (optional)<input value={meetingTitle} maxLength={80} onChange={e=>setMeetingTitle(e.target.value)} placeholder="Family catch-up"/></label>
         <button className="button meetingPrimary" disabled={busy} onClick={()=>void requestMeeting()}>{busy ? "Preparing room…" : "＋ Create a group meeting"}</button>
       </section>
       <section className="meetingAction">
@@ -78,7 +76,7 @@ export default function MeetingsPage() {
         <button className="button meetingSecondary" disabled={busy} onClick={joinFromInvite}>{busy ? "Connecting…" : "Join meeting →"}</button>
       </section>
       {grant && <section className="meetingInvitePanel">
-        <strong>{meetingTitle.trim() || "Your ConnectTime meeting"} is ready</strong>
+        <strong>Your ConnectTime meeting is ready</strong>
         <p>Share this invitation with friends and family. Each guest must sign in to an eligible ConnectTime account before joining.</p>
         <label>Private meeting invitation<input readOnly value={invite} onFocus={e=>e.currentTarget.select()}/></label>
         <div className="meetingInviteActions"><button className="button meetingSecondary" onClick={()=>void copyInvite()}>Copy invitation</button><button className="button meetingPrimary" onClick={joinMeeting}>Join meeting now ↗</button></div>
