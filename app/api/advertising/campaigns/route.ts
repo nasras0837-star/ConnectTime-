@@ -115,3 +115,45 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Campaign storage is not configured. No payment or ad delivery was started." }, { status: 503 });
   }
 }
+
+// Advertisers may cancel only their own campaign. This endpoint never approves,
+// activates, bills, or restarts a campaign.
+export async function PATCH(request: Request) {
+  const user = await currentAdvertiser();
+  if (!user) return NextResponse.json({ error: "Sign in to manage campaigns." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ error: "Verified member access is required to manage campaigns." }, { status: access.status });
+
+  let input: Record<string, unknown>;
+  try { input = await request.json() as Record<string, unknown>; }
+  catch { return NextResponse.json({ error: "Invalid campaign update." }, { status: 400 }); }
+  const campaignId = typeof input.campaignId === "string" ? input.campaignId.trim().slice(0, 64) : "";
+  if (!campaignId || input.action !== "cancel") {
+    return NextResponse.json({ error: "Only campaign cancellation is supported." }, { status: 400 });
+  }
+
+  try {
+    const tableId = process.env.APPWRITE_AD_CAMPAIGNS_TABLE_ID;
+    if (!tableId) throw new Error("Campaign table is not configured.");
+    const { tablesDB, databaseId } = advertisingStore();
+    const campaign = await tablesDB.getRow({ databaseId, tableId, rowId: campaignId });
+    if (campaign.advertiser_user_id !== user.$id) {
+      return NextResponse.json({ error: "You can only manage campaigns owned by your account." }, { status: 403 });
+    }
+    if (campaign.status === "cancelled") {
+      return NextResponse.json({ updated: true, status: "cancelled", message: "This campaign is already cancelled." });
+    }
+    await tablesDB.updateRow({
+      databaseId, tableId, rowId: campaignId,
+      data: { status: "cancelled", advertiser_cancelled_at: new Date().toISOString() },
+    });
+    return NextResponse.json({
+      updated: true, status: "cancelled",
+      message: "Campaign cancelled. No new delivery is authorized by this action; any previously delivered advertising remains subject to the applicable billing policy.",
+      paymentAllowed: false,
+    }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("Campaign cancellation failed", error instanceof Error ? error.message : "unknown");
+    return NextResponse.json({ error: "Campaign could not be cancelled. No billing or delivery action was taken." }, { status: 503 });
+  }
+}
