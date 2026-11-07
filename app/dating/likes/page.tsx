@@ -17,7 +17,7 @@ export default function DatingLikesPage() {
   const [tab, setTab] = useState<"received" | "matches" | "sent">("received");
   const [friendState, setFriendState] = useState<FriendRequestData>({ incoming: [], outgoing: [], connections: [] });
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (silent = false) => {
     try {
       const response = await fetch("/api/dating/likes", { cache: "no-store" });
       const result = await response.json();
@@ -29,11 +29,22 @@ export default function DatingLikesPage() {
         if (friendsResponse.ok) setFriendState({ incoming: friendsResult.incoming || [], outgoing: friendsResult.outgoing || [], connections: friendsResult.connections || [] });
       } catch { /* Dating likes remain available if the optional friends service is offline. */ }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Your dating inbox is unavailable.");
+      if (!silent) setError(e instanceof Error ? e.message : "Your dating inbox is unavailable.");
     } finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { void Promise.resolve().then(() => refresh()); }, [refresh]);
+  useEffect(() => {
+    void Promise.resolve().then(() => refresh());
+    const poll = () => { if (document.visibilityState === "visible") void refresh(true); };
+    const interval = window.setInterval(poll, 15000);
+    window.addEventListener("focus", poll);
+    document.addEventListener("visibilitychange", poll);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", poll);
+      document.removeEventListener("visibilitychange", poll);
+    };
+  }, [refresh]);
 
   async function likeBack(profile: DatingProfile) {
     setBusy(profile.handle); setError(""); setNotice("");
