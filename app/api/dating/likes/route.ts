@@ -118,3 +118,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "The like could not be sent. Dating storage may need configuration." }, { status: 503 });
   }
 }
+
+
+export async function DELETE(request: Request) {
+  if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
+  const user = await currentCommunityMember();
+  if (!user) return NextResponse.json({ error: "Sign in to manage dating likes." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
+  let body: Record<string, unknown>;
+  try { body = await request.json() as Record<string, unknown>; } catch { return NextResponse.json({ error: "Invalid like update." }, { status: 400 }); }
+  const likeId = typeof body.likeId === "string" ? body.likeId.trim().slice(0, 128) : "";
+  if (!likeId) return NextResponse.json({ error: "Choose a like to dismiss." }, { status: 400 });
+  try {
+    const s = tables();
+    const row = await s.tablesDB.getRow({ databaseId: s.databaseId, tableId: s.likesTableId, rowId: likeId });
+    if (String(row.recipient_user_id) !== user.$id) return NextResponse.json({ error: "This like is not available to dismiss." }, { status: 404 });
+    await s.tablesDB.deleteRow({ databaseId: s.databaseId, tableId: s.likesTableId, rowId: likeId });
+    return NextResponse.json({ dismissed: true }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    console.error("Dating like dismissal failed", error instanceof Error ? error.message : "unknown");
+    return NextResponse.json({ error: "This like could not be dismissed." }, { status: 503 });
+  }
+}
