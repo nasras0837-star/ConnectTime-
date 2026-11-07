@@ -17,8 +17,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Update npm to current stable release
+        run: npm install --global npm@11
       - name: Prepare lockfile for audit
-        run: npm install --package-lock-only --ignore-scripts
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Check for accidentally committed environment files
         shell: bash
         run: |
