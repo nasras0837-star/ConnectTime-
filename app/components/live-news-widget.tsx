@@ -48,7 +48,7 @@ export default function LiveNewsWidget() {
   }, [topic, refresh, geo]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setRefresh((value) => value + 1), 300000);
+    const timer = window.setInterval(() => setRefresh((value) => value + 1), 120000);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -112,7 +112,7 @@ export default function LiveNewsWidget() {
       ) : (
         <div className="homeNewsStatus">No headlines were returned for this topic. <button type="button" onClick={() => setRefresh((value) => value + 1)}>Refresh feed</button></div>
       )}
-      <div className="homeNewsFoot"><span>Feeds refresh automatically every 5 minutes. Headlines link to their original publishers.</span><button type="button" onClick={() => setRefresh((value) => value + 1)}>↻ Refresh now</button></div>
+      <div className="homeNewsFoot"><span>Feeds refresh automatically every 2 minutes. Headlines link to their original publishers.</span><button type="button" onClick={() => setRefresh((value) => value + 1)}>↻ Refresh now</button></div>
     </section>
   );
 }
