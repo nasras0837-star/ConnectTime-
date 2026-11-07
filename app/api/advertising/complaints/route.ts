@@ -18,8 +18,9 @@ export async function POST(request: Request) {
   const electronicSignature = typeof body.electronicSignature === "string" ? body.electronicSignature.trim().slice(0, 160) : "";
   const goodFaith = body.goodFaith === true;
   if (!["copyright", "trademark", "nudity", "sexual", "misleading", "other"].includes(type) ||
-      !adReference || !details || !claimantName || !/^\S+@\S+\.\S+$/.test(claimantEmail) || !goodFaith) {
-    return NextResponse.json({ error: "Complete all required fields and confirm the good-faith statement." }, { status: 400 });
+      !adReference || !details || !claimantName || !claimantAddress ||
+      electronicSignature !== claimantName || !/^\S+@\S+\.\S+$/.test(claimantEmail) || !goodFaith) {
+    return NextResponse.json({ error: "Complete all required fields, sign with your full name, and confirm the good-faith statement." }, { status: 400 });
   }
 
   try {
@@ -28,7 +29,8 @@ export async function POST(request: Request) {
     if (!collectionId) throw new Error("Complaint collection is not configured.");
     const doc = await databases.createDocument(databaseId, collectionId, ID.unique(), {
       type, adReference, workDescription, details, claimantName, claimantEmail,
-      status: "received", goodFaith, createdAt: new Date().toISOString(),
+      claimantAddress, electronicSignature, status: "received", goodFaith,
+      createdAt: new Date().toISOString(),
     });
     return NextResponse.json({ received: true, reference: doc.$id, message: "Your report has been received for review. A report does not itself determine infringement." }, { status: 201 });
   } catch (error) {
