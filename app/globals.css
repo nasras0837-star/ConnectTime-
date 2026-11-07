@@ -101,19 +101,16 @@
 @media(max-width:700px){.socialCover{min-height:400px}.socialCover .coverShade{background:linear-gradient(90deg,rgba(10,43,62,.94),rgba(14,63,83,.72)),linear-gradient(0deg,rgba(10,43,62,.2),transparent)}.socialCover .coverCopy{padding:28px 21px}.socialCover .coverCopy h1{font-size:38px}.introPeople{right:0;top:auto;bottom:8px;transform:scale(.76);transform-origin:bottom right;opacity:.95}.introProof{max-width:310px}.introScroll{display:none}}
 
 
-/* Social-first ConnectTime brand mark: a friendly trio of people, not a telecom globe */
-.ctBrandMark{position:relative;display:inline-block;flex:0 0 36px;width:36px;height:36px;border-radius:12px;background:linear-gradient(145deg,#7654e8 0%,#e64aa9 58%,#ff9b65 100%);box-shadow:0 5px 14px #8b5cf633;vertical-align:middle;overflow:hidden}
-.ctBrandMark i{position:absolute;display:block;border-radius:50%;background:#fff}
-.ctBrandMark i:nth-child(1){width:8px;height:8px;left:7px;top:8px}
-.ctBrandMark i:nth-child(2){width:9px;height:9px;left:14px;top:5px}
-.ctBrandMark i:nth-child(3){width:8px;height:8px;right:6px;top:9px}
-.ctBrandMark:before{content:"";position:absolute;left:4px;bottom:5px;width:13px;height:11px;border-radius:9px 9px 5px 5px;background:#fff}
-.ctBrandMark:after{content:"";position:absolute;right:4px;bottom:5px;width:13px;height:11px;border-radius:9px 9px 5px 5px;background:#fff}
-.vLogo{display:inline-flex;align-items:center;gap:9px}
-.ctWordmark{font:800 23px Manrope,sans-serif;letter-spacing:-1.1px;color:#26304a}
+/* Official ConnectTime CT social lettermark */
+.ctBrandMark{position:relative;display:inline-grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:14px;background:linear-gradient(140deg,#6748e8 0%,#bd42c7 52%,#f45a9c 78%,#ff946b 100%);box-shadow:0 7px 18px #9a45cb55, inset 0 1px 0 #ffffff70;color:#fff;font:900 17px/1 Manrope,ui-sans-serif,sans-serif;letter-spacing:-1.7px;text-shadow:0 1px 2px #53278b55;vertical-align:middle;overflow:hidden}
+.ctBrandMark:before{content:"";position:absolute;inset:2px;border-radius:12px;border:1px solid #ffffff38;pointer-events:none}
+.ctWordmark{display:inline-flex;align-items:baseline;gap:0;font:900 23px Manrope,sans-serif;letter-spacing:-1.2px;color:#26304a}
 .ctWordmark>span{background:linear-gradient(90deg,#7654e8,#e64aa9);-webkit-background-clip:text;background-clip:text;color:transparent}
-.profileAvatar .ctBrandMark{width:43px;height:43px;flex-basis:43px;border-radius:15px}
-@media(max-width:700px){.ctBrandMark{width:32px;height:32px;flex-basis:32px}.ctWordmark{font-size:20px}}
+.vLogo{display:inline-flex;align-items:center;gap:9px}
+.profileAvatar .ctBrandMark{width:43px;height:43px;flex-basis:43px;border-radius:15px;font-size:18px}
+.logo{display:inline-flex!important;align-items:center;gap:9px;font:900 22px Manrope,sans-serif;letter-spacing:-1px;color:#26304a}
+.logo .ctWordmark{font-size:22px}
+@media(max-width:700px){.ctBrandMark{width:34px;height:34px;flex-basis:34px;border-radius:12px;font-size:15px}.ctWordmark{font-size:20px}.logo .ctWordmark{font-size:20px}}
 
 
 /* More energetic introduction and feature discovery */
