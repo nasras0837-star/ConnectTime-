@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { ConnectTimeAssistant } from "./components/connecttime-assistant";
 import "./globals.css";
 import "./auth.css";
+import "./language.css";
 
 export const metadata: Metadata = { title: "ConnectTime — Whatever you’re into, there’s room for it.", description: "An international adults-only community for dating, marketplace discovery, forums, videos, creators, and global connections.", applicationName: "ConnectTime", icons: { icon: "https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/Glossy%20ConnectTime%20Community%20Logo.png", apple: "https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/Glossy%20ConnectTime%20Community%20Logo.png" } };
 
