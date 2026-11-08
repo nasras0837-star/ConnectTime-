@@ -940,3 +940,22 @@
 .radioResultCount{font-size:11px;font-weight:800;color:#54758a}.radioToolbar .radioReset{margin-left:auto;background:#f4f8fb;border-color:#cbdce7;color:#31566e}.radioToolbar .radioReset:hover{background:#e5f4fa;border-color:#76c8e6}@media(max-width:600px){.radioToolbar .radioResultCount{width:100%;order:3}.radioToolbar .radioReset{margin-left:0}}
 
 .radioLoadMore{display:flex;justify-content:center;margin:24px 0}.radioLoadMore button{border:1px solid #b9d7e8;border-radius:999px;background:#e9f6fc;color:#075b83;padding:13px 24px;font-size:12px;font-weight:850;cursor:pointer}.radioLoadMore button:hover:not(:disabled){background:#d9f0fa}.radioLoadMore button:disabled{opacity:.6;cursor:wait}
+
+
+/* Member dashboard keyboard focus visibility */
+.ctAccountHeader a:focus-visible,
+.ctAccountQuick a:focus-visible,
+.ctAccountCard:focus-visible,
+.ctAccountSectionHead a:focus-visible,
+.ctAccountStatus a:focus-visible,
+.ctAccountLocked a:focus-visible,
+.ctAccountFooter a:focus-visible,
+.ctAccountFooter button:focus-visible{
+  outline:3px solid #087eb9;
+  outline-offset:4px;
+  border-radius:6px;
+}
+@media(prefers-reduced-motion:reduce){
+  .ctAccountCard{transition:none}
+  .ctAccountCard:hover{transform:none}
+}
