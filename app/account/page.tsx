@@ -74,7 +74,7 @@ export default async function AccountPage() {
         </nav>
       </header>
 
-      <section className="ctAccountWelcome" id="account-content">
+      <section className="ctAccountWelcome" id="account-content" tabIndex={-1}>
         <div>
           <span className="ctAccountEyebrow">YOUR CONNECTTIME SPACE</span>
           <h1>Welcome{user.name ? `, ${user.name.split(" ")[0]}` : " back"}.</h1>
