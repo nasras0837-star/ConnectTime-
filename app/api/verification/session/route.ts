@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Client, ID, Query, TablesDB } from "node-appwrite";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
+import { checkMemberAccess } from "@/lib/member-access";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,6 +30,8 @@ export async function POST() {
   if (!endpoint || !projectId) return NextResponse.json({ error: "verification_unavailable" }, { status: 503 });
   const user = await createNextServerHelpers({ endpoint, projectId }).getLoggedInUser();
   if (!user) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
+  const currentAccess = await checkMemberAccess();
+  if (currentAccess.allowed) return NextResponse.json({ status: "verified" }, { headers: { "Cache-Control": "no-store" } });
   const config = configuration();
   if (!config) return NextResponse.json({ error: "verification_provider_not_configured" }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
