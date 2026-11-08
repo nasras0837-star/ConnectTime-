@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Query } from "node-appwrite";
+import { Client, Databases, ID, Query } from "node-appwrite";
 import { communitySafetyStore, currentCommunityMember, sameOrigin, cleanText } from "@/lib/community-safety";
 
 export const runtime = "nodejs";
@@ -19,7 +19,7 @@ async function auditAppeal(event: { moderator_user_id: string; appellant_user_id
   if (!tableId) { console.error("Moderation audit table is not configured."); return; }
   try {
     const { tablesDB, databaseId } = communitySafetyStore();
-    await tablesDB.createRow({ databaseId, tableId, rowId: "unique()", data: {
+    await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
       moderator_user_id: event.moderator_user_id, event_type: "appeal_decision",
       target_user_id: event.appellant_user_id, report_id: event.appeal_id,
       action: "appeal_review", outcome: event.outcome, note: event.note, created_at: event.created_at,
@@ -32,7 +32,7 @@ async function notifyAppellant(userId: string, appealId: string, outcome: string
   try {
     const { tablesDB, databaseId } = communitySafetyStore();
     const messages: Record<string,string> = { upheld: "Your Connect appeal was reviewed. The original moderation decision remains in place.", overturned: "Your Connect appeal was reviewed and the original decision was overturned. Contact support if you need assistance.", dismissed: "Your Connect appeal was reviewed and dismissed." };
-    await tablesDB.createRow({ databaseId, tableId, rowId: "unique()", data: {
+    await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
       recipient_user_id: userId, type: "appeal", message: messages[outcome] || "Your Connect appeal is being reviewed.",
       reference_id: appealId, is_read: false, created_at: createdAt,
     }});
@@ -84,17 +84,7 @@ export async function POST(request: Request) {
     const report = await s.tablesDB.getRow({databaseId:s.databaseId,tableId:reportTable,rowId:reportId});
     if (report.reported_user_id !== appeal.appellant_user_id) return NextResponse.json({error:"Appeal and enforcement target do not match."},{status:409});
     const now = new Date().toISOString();
-    if (restore === "reinstate_member") {
-      if (report.action_taken !== "suspend_member") return NextResponse.json({error:"This report did not record a member suspension."},{status:409});
-      const db=process.env.APPWRITE_ACCESS_DATABASE_ID, table=process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
-      const endpoint=process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT, project=process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID, key=process.env.APPWRITE_API_KEY;
-      if(!db||!table||!endpoint||!project||!key) return NextResponse.json({error:"Member access configuration is missing."},{status:503});
-      const client=new Client().setEndpoint(endpoint).setProject(project).setKey(key);const databases=new Databases(client);
-      const access=await databases.getDocument(db,table,String(appeal.appellant_user_id));
-      if(access.account_status!=="suspended") return NextResponse.json({error:"Account is not currently suspended; no change made."},{status:409});
-      // Explicit moderator approval required; this only clears the account status on the verified target.
-      await databases.updateDocument(db,table,String(appeal.appellant_user_id),{account_status:"active"});
-    } else {
+    if (restore === "reinstate_member") {\n      return NextResponse.json({ error: "Account reinstatement is temporarily disabled until Connect has a separate enforcement ledger that can safely distinguish overlapping restrictions. No account status was changed." }, { status: 409 });\nelse {
       if (report.action_taken !== "remove_content" || report.target_type !== "post" || !report.content_reference) return NextResponse.json({error:"This appeal does not reference a removable community post."},{status:409});
       const postTables=[process.env.APPWRITE_COMMUNITY_POSTS_TABLE_ID,process.env.APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID].filter((v):v is string=>Boolean(v));
       let restored=false;
