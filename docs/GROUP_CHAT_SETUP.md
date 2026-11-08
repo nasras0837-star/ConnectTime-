@@ -1,4 +1,4 @@
-# ConnectTime Community Group Chat Setup
+# Connect Community Group Chat Setup
 
 Community group chat uses the existing Appwrite database configured by `APPWRITE_DATABASE_ID` and a dedicated TablesDB table.
 
@@ -8,7 +8,7 @@ Set `APPWRITE_COMMUNITY_GROUP_MESSAGES_TABLE_ID` to the ID of the new group mess
 
 ## Create the table
 
-In the existing ConnectTime Appwrite database, create a table named **Community Group Messages**. Suggested table ID: `community_group_messages` (use a different ID if that ID is already taken, then set the environment variable to the actual ID).
+In the existing Connect Appwrite database, create a table named **Community Group Messages**. Suggested table ID: `community_group_messages` (use a different ID if that ID is already taken, then set the environment variable to the actual ID).
 
 Add these columns:
 
