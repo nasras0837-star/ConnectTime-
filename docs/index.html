@@ -166,8 +166,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
  ];
  function add(text,kind){const el=document.createElement('div');el.className='aiPreviewBubble'+(kind?' '+kind:'');el.textContent=text;msgs.appendChild(el);if(kind==='user')clear.disabled=false;msgs.scrollTop=msgs.scrollHeight}
  function answer(q){const match=answers.find(([pattern])=>pattern.test(q));return match?match[1]:"I can help explain ConnectTime’s planned features, including Friends, Chat Rooms, Video Tube, Marketplace, Blogs, News, and adult-only Dating. This preview only contains sample answers; the live AI assistant will be available through the full Next.js application once its server-side AI configuration is complete."}
- let pendingAnswerTimer=null;
-  function ask(q){q=q.trim();if(!q)return;if(pendingAnswerTimer!==null)clearTimeout(pendingAnswerTimer);add(q,'user');pendingAnswerTimer=setTimeout(()=>{pendingAnswerTimer=null;add(answer(q))},220)}
+ const pendingAnswerTimers=new Set();
+  function ask(q){q=q.trim();if(!q)return;add(q,'user');const timer=setTimeout(()=>{pendingAnswerTimers.delete(timer);add(answer(q))},220);pendingAnswerTimers.add(timer)}
  const closeMenu=({restoreFocus=false}={})=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation');if(restoreFocus)menuToggle.focus()};
  menuToggle.addEventListener('click',()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');nav.classList.toggle('open',open);if(open){const firstLink=nav.querySelector('a');if(firstLink)firstLink.focus()}});
  nav.addEventListener('click',event=>{if(event.target.closest('a'))closeMenu()});
@@ -176,7 +176,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
  window.addEventListener('resize',()=>{if(window.matchMedia('(min-width: 621px)').matches)closeMenu()});
  launch.addEventListener('click',()=>setOpen(launch.getAttribute('aria-expanded')!=='true'));
  close.addEventListener('click',()=>setOpen(false));
- clear.addEventListener('click',()=>{if(pendingAnswerTimer!==null){clearTimeout(pendingAnswerTimer);pendingAnswerTimer=null}msgs.replaceChildren(...initialMessages);clear.disabled=true;msgs.scrollTop=0});
+ clear.addEventListener('click',()=>{pendingAnswerTimers.forEach(timer=>clearTimeout(timer));pendingAnswerTimers.clear();msgs.replaceChildren(...initialMessages);clear.disabled=true;msgs.scrollTop=0});
  document.addEventListener('click',event=>{if(launch.getAttribute('aria-expanded')==='true'&&!panel.contains(event.target)&&!launch.contains(event.target))setOpen(false,false)});
  panel.addEventListener('keydown',event=>{if(event.key==='Escape'&&launch.getAttribute('aria-expanded')==='true'){event.preventDefault();setOpen(false)}});
  const updateInputState=()=>{const remaining=500-input.value.length;count.textContent=remaining+' characters remaining';send.disabled=!input.value.trim()};
