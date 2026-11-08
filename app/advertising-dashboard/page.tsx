@@ -40,6 +40,7 @@ export default function AdvertisingDashboardPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [scheduleFilter, setScheduleFilter] = useState("all");
   const [refreshing, setRefreshing] = useState(false);
+  const [now, setNow] = useState(0);
 
   const loadCampaigns = async () => {
     setError("");
@@ -56,6 +57,7 @@ export default function AdvertisingDashboardPage() {
     }
   };
   useEffect(() => {
+    setNow(Date.now());
     let active = true;
     fetch("/api/advertising/campaigns", { cache: "no-store" })
       .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Could not load campaigns."); return data; })
@@ -71,7 +73,6 @@ export default function AdvertisingDashboardPage() {
     const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
     const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
     const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
-    const now = Date.now();
     const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
     const matchesSchedule = scheduleFilter === "all" ||
       (scheduleFilter === "unscheduled" && !hasSchedule) ||
@@ -124,7 +125,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignMeta"><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
-      <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by ConnectTime's campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
+      <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by ConnectTime&apos;s campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
     </section>
   </main>;
 }
