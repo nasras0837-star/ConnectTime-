@@ -71,7 +71,23 @@ export default function RadioPage(){
  },[streamUrl]);
 
  const sourceList=savedOnly?favoriteStations:stations;
- const list=useMemo(()=>{const regionCodes=regions.find(r=>r.name===region)?.codes||[];return sourceList.filter(s=>region==="All regions"||regionCodes.includes(s.countryCode));},[sourceList,region]);
+ const list=useMemo(()=>{
+  const regionCodes=regions.find(r=>r.name===region)?.codes||[];
+  const term=query.trim().toLowerCase();
+  const filtered=sourceList.filter(s=>
+   (region==="All regions"||regionCodes.includes(s.countryCode))&&
+   (!country||s.countryCode===country)&&
+   (!language||s.language.toLowerCase().split(/[;,]/).some(value=>value.trim()===language.toLowerCase()))&&
+   (!term||[s.name,s.country,s.language,s.tags].join(" ").toLowerCase().includes(term))
+  );
+  if(savedOnly){
+   if(sort==="name")filtered.sort((a,b)=>a.name.localeCompare(b.name));
+   if(sort==="votes")filtered.sort((a,b)=>b.votes-a.votes);
+   if(sort==="bitrate")filtered.sort((a,b)=>b.bitrate-a.bitrate);
+   if(sort==="clickcount")filtered.sort((a,b)=>b.votes-a.votes);
+  }
+  return filtered;
+ },[sourceList,region,country,language,query,savedOnly,sort]);
 
  async function playStation(station:Station){
   if(playing===station.id){audioRef.current?.pause();return;}
@@ -98,6 +114,7 @@ export default function RadioPage(){
    {savedOnly&&saved.length===0&&<div className="radioEmpty">You have not saved any stations yet. Switch to All results and tap ☆ to save a station.</div>}
    {((!loading&&!savedOnly)||(savedOnly&&saved.length>0&&favoriteStations.length>0))&&<div className="radioGrid">{list.map(s=><article className={playing===s.id?"radioCard isPlaying":"radioCard"} key={s.id}><div className="radioCardTop"><span>📻 {s.country||"International"}</span><button aria-label={saved.includes(s.id)?"Remove favorite":"Save favorite"} onClick={()=>toggleSave(s.id)}>{saved.includes(s.id)?"★":"☆"}</button></div><h3>{s.name}</h3><p>{[s.language,s.tags].filter(Boolean).join(" · ")||"Radio station"}</p><div className="radioMeta">{s.codec||"Stream"}{s.bitrate?" · "+s.bitrate+" kbps":""}{s.votes?" · "+s.votes+" community votes":""}</div><button className="radioListenButton" onClick={()=>void playStation(s)} disabled={loadingId===s.id}>{loadingId===s.id?"Connecting…":playing===s.id?"Ⅱ Pause":"▶ Listen live"}</button>{s.homepage&&<div className="radioLinks"><a href={s.homepage} target="_blank" rel="noopener noreferrer">Station website ↗</a></div>}</article>)}</div>}
    {savedOnly&&saved.length>0&&favoriteStations.length===0&&<div className="radioEmpty" role="status">{favoritesLoading?"Loading your saved stations…":favoritesError?<>Saved stations could not be loaded. <button type="button" onClick={()=>setFavoriteRetry(value=>value+1)}>Retry loading favorites</button></>:"Your saved stations are no longer available in the directory."}</div>}
+   {savedOnly&&!favoritesLoading&&!favoritesError&&favoriteStations.length>0&&list.length===0&&<div className="radioEmpty" role="status">No saved stations match these filters. <button type="button" onClick={()=>{setRegion("All regions");setCountry("");setLanguage("");setQuery("");setSort("clickcount");}}>Clear filters</button></div>}
    {!loading&&!savedOnly&&!error&&list.length===0&&<div className="radioEmpty">No stations found. Try another country, language or genre.</div>}
    <p className="radioRights">Station availability, stream reliability, advertisements, content and music licensing are controlled by each broadcaster. ConnectTime links to publicly listed streams and does not own, rebroadcast, or guarantee rights to station content. Some stations may be unavailable in certain countries.</p>
   </section>
