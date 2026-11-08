@@ -981,3 +981,10 @@
   outline:3px solid #54c5ee;
   outline-offset:3px;
 }
+.ctAccountWelcome[id="account-content"]{
+  scroll-margin-top:1rem;
+}
+.ctAccountWelcome[id="account-content"]:focus{
+  outline:3px solid #087eb9;
+  outline-offset:5px;
+}
