@@ -20,7 +20,7 @@ Yoti's production Age Verification API and its isolated sandbox use different au
 
 ### Session creation
 
-1. Require an authenticated Appwrite user. Apply per-user and per-IP rate limits.
+1. Require an authenticated Appwrite user. Apply a per-user request guard here; add an edge-level per-IP rate limit before exposing the sandbox route broadly. The Appwrite count check is not an atomic distributed lock, so concurrent requests can race.
 2. Create an opaque, random, single-use internal reference mapped server-side to the Appwrite user ID. Do not put email, name, or other personal information in Yoti's reference_id.
 3. For sandbox only, generate a short-lived JWT client assertion (PS384; `iss` and `sub` are `sdk:<YOTI_SDK_ID>`, `aud` is `https://auth.api.yoti.com/v1/oauth/token`, with `iat`, `exp`, and unique `jti`), exchange it at `POST https://auth.api.yoti.com/v1/oauth/token` using the `client_credentials` grant and `avs:sessions:create` scope, then use the returned bearer token with `POST https://age.yoti.com/sandbox/api/v1/sessions` and `Yoti-SDK-Id`. Keep the private key and access token server-only; cache the token until shortly before expiry.
 4. Configure `type: OVER`, threshold 18, short session TTL, and only methods approved in the vendor contract and privacy review. Do not enable age estimation as the sole verification method for access to ConnectTime's protected social features.
