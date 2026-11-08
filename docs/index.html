@@ -155,9 +155,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
  function add(text,kind){const el=document.createElement('div');el.className='aiPreviewBubble'+(kind?' '+kind:'');el.textContent=text;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight}
  function answer(q){const match=answers.find(([pattern])=>pattern.test(q));return match?match[1]:"I can help explain ConnectTime’s planned features, including Friends, Chat Rooms, Video Tube, Marketplace, Blogs, News, and adult-only Dating. This preview only contains sample answers; the live AI assistant will be available through the full Next.js application once its server-side AI configuration is complete."}
  function ask(q){q=q.trim();if(!q)return;add(q,'user');setTimeout(()=>add(answer(q)),220)}
- menuToggle.addEventListener('click',()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');nav.classList.toggle('open',open)});
- nav.addEventListener('click',event=>{if(event.target.closest('a')){nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation')}});
- nav.addEventListener('keydown',event=>{if(event.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation');menuToggle.focus()}});
+ const closeMenu=({restoreFocus=false}={})=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation');if(restoreFocus)menuToggle.focus()};
+ menuToggle.addEventListener('click',()=>{const open=menuToggle.getAttribute('aria-expanded')!=='true';menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');nav.classList.toggle('open',open);if(open){const firstLink=nav.querySelector('a');if(firstLink)firstLink.focus()}});
+ nav.addEventListener('click',event=>{if(event.target.closest('a'))closeMenu()});
+ nav.addEventListener('keydown',event=>{if(event.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){event.preventDefault();closeMenu({restoreFocus:true})}});
+ document.addEventListener('click',event=>{if(menuToggle.getAttribute('aria-expanded')==='true'&&!nav.contains(event.target)&&!menuToggle.contains(event.target))closeMenu()});
+ window.addEventListener('resize',()=>{if(window.matchMedia('(min-width: 621px)').matches)closeMenu()});
  launch.addEventListener('click',()=>setOpen(launch.getAttribute('aria-expanded')!=='true'));
  close.addEventListener('click',()=>setOpen(false));
  panel.addEventListener('keydown',event=>{if(event.key==='Escape'&&launch.getAttribute('aria-expanded')==='true'){event.preventDefault();setOpen(false)}});
