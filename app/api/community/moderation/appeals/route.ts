@@ -63,6 +63,50 @@ export async function GET(request: Request) {
   }
 }
 
+
+export async function POST(request: Request) {
+  if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
+  const auth = await moderator();
+  if ("response" in auth) return auth.response;
+  let body: Record<string, unknown>;
+  try { body = await request.json() as Record<string, unknown>; } catch { return NextResponse.json({ error: "Invalid restoration request." }, { status: 400 }); }
+  const appealId = cleanText(body.appealId, 128);
+  const restore = cleanText(body.restore, 30);
+  const note = cleanText(body.note, 1000);
+  if (!appealId || !["reinstate_member", "restore_content"].includes(restore) || note.length < 20) return NextResponse.json({ error: "Choose a restoration action and provide at least 20 characters of justification." }, { status: 400 });
+  try {
+    const s = config();
+    const appeal = await s.tablesDB.getRow({ databaseId:s.databaseId, tableId:s.tableId, rowId:appealId });
+    if (appeal.status !== "overturned") return NextResponse.json({ error:"Only overturned appeals may request a restoration action." }, { status:409 });
+    const reportId = String(appeal.enforcement_reference || "");
+    const reportTable = process.env.APPWRITE_COMMUNITY_REPORTS_TABLE_ID;
+    if (!reportId || !reportTable) return NextResponse.json({ error:"The original enforcement report cannot be verified." }, {status:409});
+    const report = await s.tablesDB.getRow({databaseId:s.databaseId,tableId:reportTable,rowId:reportId});
+    if (report.reported_user_id !== appeal.appellant_user_id) return NextResponse.json({error:"Appeal and enforcement target do not match."},{status:409});
+    const now = new Date().toISOString();
+    if (restore === "reinstate_member") {
+      if (report.action_taken !== "suspend_member") return NextResponse.json({error:"This report did not record a member suspension."},{status:409});
+      const db=process.env.APPWRITE_ACCESS_DATABASE_ID, table=process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
+      const endpoint=process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT, project=process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID, key=process.env.APPWRITE_API_KEY;
+      if(!db||!table||!endpoint||!project||!key) return NextResponse.json({error:"Member access configuration is missing."},{status:503});
+      const client=new Client().setEndpoint(endpoint).setProject(project).setKey(key);const databases=new Databases(client);
+      const access=await databases.getDocument(db,table,String(appeal.appellant_user_id));
+      if(access.account_status!=="suspended") return NextResponse.json({error:"Account is not currently suspended; no change made."},{status:409});
+      // Explicit moderator approval required; this only clears the account status on the verified target.
+      await databases.updateDocument(db,table,String(appeal.appellant_user_id),{account_status:"active"});
+    } else {
+      if (report.action_taken !== "remove_content" || report.target_type !== "post" || !report.content_reference) return NextResponse.json({error:"This appeal does not reference a removable community post."},{status:409});
+      const postTables=[process.env.APPWRITE_COMMUNITY_POSTS_TABLE_ID,process.env.APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID].filter((v):v is string=>Boolean(v));
+      let restored=false;
+      for(const tableId of postTables){try{const post=await s.tablesDB.getRow({databaseId:s.databaseId,tableId,rowId:String(report.content_reference)});if(post.author_user_id!==appeal.appellant_user_id||post.status!=="removed")return NextResponse.json({error:"Post owner/status does not match this enforcement. No restoration occurred."},{status:409});await s.tablesDB.updateRow({databaseId:s.databaseId,tableId,rowId:String(post.$id),data:{status:"published",updated_at:now}});restored=true;break;}catch(e){if(!(typeof e==="object"&&e!==null&&"code"in e&&e.code===404))throw e;}}
+      if(!restored)return NextResponse.json({error:"Original removed post not found."},{status:404});
+    }
+    await auditAppeal({moderator_user_id:auth.user.$id,appellant_user_id:String(appeal.appellant_user_id),appeal_id:appealId,outcome:"restoration_"+restore,note,created_at:now});
+    await notifyAppellant(String(appeal.appellant_user_id),appealId,"overturned",now);
+    return NextResponse.json({restored:true,action:restore},{headers:{"Cache-Control":"no-store"}});
+  } catch(error) { console.error("Appeal restoration failed",error instanceof Error?error.message:"unknown");return NextResponse.json({error:"Restoration could not be completed. Verify the appeal, report, and access schema."},{status:503});}
+}
+
 export async function PATCH(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
   const auth = await moderator();
