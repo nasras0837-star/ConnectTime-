@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     });
     const result = await upstream.json();
     if (!upstream.ok) {
-      console.error("ConnectTime ad moderation provider error", upstream.status);
+      console.error("Connect ad moderation provider error", upstream.status);
       return NextResponse.json({ status: "unavailable", error: "AI screening could not be completed. No payment or publication is allowed." }, { status: 502 });
     }
     const moderation = result.results?.[0];
@@ -135,7 +135,7 @@ export async function POST(request: Request) {
       flaggedCategories: [],
     });
   } catch (error) {
-    console.error("ConnectTime ad moderation request failed", error instanceof Error ? error.message : "unknown");
+    console.error("Connect ad moderation request failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ status: "unavailable", error: "AI screening is temporarily unavailable. No payment or publication is allowed." }, { status: 502 });
   }
 }
