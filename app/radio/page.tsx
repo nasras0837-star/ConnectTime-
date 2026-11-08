@@ -62,9 +62,11 @@ export default function RadioPage(){
  useEffect(()=>{
   if(!savedOnly||saved.length===0)return;
   let active=true;
-  setFavoritesError("");
-  setFavoritesLoading(true);
   const loadFavorites=async()=>{
+   await Promise.resolve();
+   if(!active)return;
+   setFavoritesError("");
+   setFavoritesLoading(true);
    try{
     const batches=Array.from({length:Math.ceil(saved.length/100)},(_,index)=>saved.slice(index*100,(index+1)*100));
     const results=await Promise.all(batches.map(async ids=>{
