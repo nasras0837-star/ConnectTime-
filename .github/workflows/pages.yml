@@ -1,4 +1,4 @@
-name: Deploy ConnectTime preview to GitHub Pages
+name: Deploy Connect preview to GitHub Pages
 
 on:
   push:
