@@ -112,7 +112,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignMeta"><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
-      <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by Connect's campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
+      <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by Connect’s campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
     </section>
   </main>;
 }
