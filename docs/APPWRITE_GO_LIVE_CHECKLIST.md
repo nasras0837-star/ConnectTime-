@@ -77,7 +77,7 @@ A passing build or security workflow does not prove that Appwrite tables, secret
 
 ## Current known limitations — do not advertise as finished
 
-- Independent age verification provider and signed webhook integration are not implemented.
+- Veriff integration code is implemented, but production credentials, Appwrite verification table, webhook registration, and end-to-end test decisions still need configuration and verification.
 - Backend environment variables and table IDs have not been confirmed configured in Render.
 - Group owner approval, invitations, and group moderation are incomplete.
 - Messaging is request/refresh based, not real-time; no attachments or group chats.
