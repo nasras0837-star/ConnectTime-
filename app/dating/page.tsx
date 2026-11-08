@@ -82,9 +82,9 @@ export default function DatingPage() {
   }
 
   return <main className="authShell">
-    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/dating/likes">Likes & matches</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
+    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/dating/likes">Likes & matches</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
     <section className="authCard discoverCard">
-      <div className="eyebrow">CONNECTTIME DATING · VERIFIED ADULTS</div>
+      <div className="eyebrow">CONNECT DATING · VERIFIED ADULTS</div>
       <h1>Meet someone who gets you.</h1>
       <p>Discover people by shared interests, age, location and what they are looking for. Send a like to show interest. When you both like each other, it’s a match.</p>
       <div className="discoverFilters">
@@ -115,6 +115,6 @@ export default function DatingPage() {
       </article>)}</div> : <p>No dating profiles match these filters yet. Try widening your age range or changing your interests.</p>}
       <p className="switch"><Link href="/safety">Safety Center</Link> · <Link href="/profile">Edit dating profile</Link></p>
     </section>
-    <footer className="plannedFeatureFooter">ConnectTime · Meet through shared interests.</footer>
+    <footer className="plannedFeatureFooter">Connect · Meet through shared interests.</footer>
   </main>;
 }
