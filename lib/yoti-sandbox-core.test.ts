@@ -18,10 +18,11 @@ describe("Yoti sandbox client assertion", () => {
       publicKeyEncoding: { type: "spki", format: "pem" },
     });
     const now = 1_800_000_000;
+    const testJti = "00000000-0000-4000-8000-000000000001";
     const assertion = buildYotiClientAssertion(
       { sdkId: "sdk-test-id", privateKeyPem: privateKey },
       now,
-      "unique-test-jti-0001",
+      testJti,
     );
     const [header, payload, signature] = assertion.split(".");
     const signingInput = `${header}.${payload}`;
@@ -37,7 +38,7 @@ describe("Yoti sandbox client assertion", () => {
       aud: "https://auth.api.yoti.com/v1/oauth/token",
       iat: now,
       exp: now + 300,
-      jti: "unique-test-jti-0001",
+      jti: testJti,
     });
     expect(verify(
       "sha384",
