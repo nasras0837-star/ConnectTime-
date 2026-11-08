@@ -1,4 +1,4 @@
-# ConnectTime adult verification integration
+# Connect adult verification integration
 
 ## Provider selection
 Provider has not yet been contracted or configured. The integration is provider-neutral until an approved vendor is selected. Do not accept a checkbox, date of birth, client request, or uploaded image as verified adult status.
@@ -6,7 +6,7 @@ Provider has not yet been contracted or configured. The integration is provider-
 ## Required verification flow
 1. Signed-in user requests verification from a server endpoint.
 2. Server creates a provider verification session tied to the authenticated Appwrite user ID using server credentials.
-3. Browser redirects/opens provider's hosted verification flow; ConnectTime does not collect ID scans or face biometrics itself.
+3. Browser redirects/opens provider's hosted verification flow; Connect does not collect ID scans or face biometrics itself.
 4. Provider sends a signed webhook to a server endpoint.
 5. Webhook handler validates signature against raw request bytes, timestamp/replay window, event ID/idempotency, expected environment, and final adult result.
 6. Server maps provider subject/session to the initiating Appwrite user (never trust a user ID supplied in the webhook body without matching the server-created session).
