@@ -57,7 +57,6 @@ export default function AdvertisingDashboardPage() {
     }
   };
   useEffect(() => {
-    setNow(Date.now());
     let active = true;
     fetch("/api/advertising/campaigns", { cache: "no-store" })
       .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Could not load campaigns."); return data; })
@@ -80,7 +79,7 @@ export default function AdvertisingDashboardPage() {
       (scheduleFilter === "current" && hasSchedule && start <= now && end >= now) ||
       (scheduleFilter === "ended" && hasSchedule && end < now);
     return matchesText && matchesStatus && matchesSchedule;
-  }), [campaigns, search, statusFilter, scheduleFilter]);
+  }), [campaigns, search, statusFilter, scheduleFilter, now]);
 
   const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
@@ -106,7 +105,7 @@ export default function AdvertisingDashboardPage() {
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
-        <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
+        <label>Campaign schedule<select value={scheduleFilter} onChange={event => { setNow(Date.now()); setScheduleFilter(event.target.value); }}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
       {!loading && !error && campaigns.length > 0 && <p className="ctCampaignResultCount" aria-live="polite">Showing {filtered.length} of {campaigns.length} campaigns</p>}
