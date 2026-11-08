@@ -45,6 +45,7 @@ export default function AdvertisingDashboardPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [scheduleFilter, setScheduleFilter] = useState("all");
   const [metricsFilter, setMetricsFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("newest");
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
@@ -91,6 +92,24 @@ export default function AdvertisingDashboardPage() {
     return matchesText && matchesStatus && matchesSchedule;
   }), [campaigns, search, statusFilter, scheduleFilter]);
 
+  const sortedCampaigns = useMemo(() => [...filtered].sort((a, b) => {
+    const dateA = Date.parse(a.starts_at || "") || 0;
+    const dateB = Date.parse(b.starts_at || "") || 0;
+    const spendA = Number(a.spend_minor) || 0;
+    const spendB = Number(b.spend_minor) || 0;
+    const impressionsA = a.metrics_status === "verified_events" ? Number(a.impressions_count) || 0 : 0;
+    const impressionsB = b.metrics_status === "verified_events" ? Number(b.impressions_count) || 0 : 0;
+    const clicksA = a.metrics_status === "verified_events" ? Number(a.clicks_count) || 0 : 0;
+    const clicksB = b.metrics_status === "verified_events" ? Number(b.clicks_count) || 0 : 0;
+    const ctrA = impressionsA > 0 ? clicksA / impressionsA : 0;
+    const ctrB = impressionsB > 0 ? clicksB / impressionsB : 0;
+    if (sortOrder === "oldest") return dateA - dateB;
+    if (sortOrder === "spend_high") return spendB - spendA;
+    if (sortOrder === "spend_low") return spendA - spendB;
+    if (sortOrder === "ctr_high") return ctrB - ctrA;
+    return dateB - dateA;
+  }), [filtered, sortOrder]);
+
   const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
     result.cap += Number(campaign.lifetime_cap_minor) || 0;
@@ -110,7 +129,7 @@ export default function AdvertisingDashboardPage() {
       "Verified impressions", "Verified clicks", "Verified CTR", "Metrics status",
       "AI screening", "Human review", "Payment status", "Start date", "End date"
     ];
-    const rows = filtered.map(campaign => {
+    const rows = sortedCampaigns.map(campaign => {
       const verified = campaign.metrics_status === "verified_events";
       const impressions = verified ? Number(campaign.impressions_count) || 0 : null;
       const clicks = verified ? Number(campaign.clicks_count) || 0 : null;
@@ -157,12 +176,13 @@ export default function AdvertisingDashboardPage() {
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
         <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
         <label>Metrics verification<select value={metricsFilter} onChange={event => setMetricsFilter(event.target.value)}><option value="all">All metrics</option><option value="verified">Verified metrics</option><option value="unverified">Not verified</option></select></label>
+        <label>Sort campaigns<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}><option value="newest">Newest start date</option><option value="oldest">Oldest start date</option><option value="spend_high">Highest recorded spend</option><option value="spend_low">Lowest recorded spend</option><option value="ctr_high">Highest verified CTR</option></select></label>
         {(search.trim() || statusFilter !== "all" || scheduleFilter !== "all" || metricsFilter !== "all") && <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); }}>Clear filters</button>}
         <button type="button" onClick={exportCampaigns} disabled={loading || !!error || filtered.length === 0}>↓ Export filtered CSV ({filtered.length})</button>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
       {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length} of ${campaigns.length} campaigns` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
-      {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{filtered.map(campaign => {
+      {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{sortedCampaigns.map(campaign => {
         const metricsVerified = campaign.metrics_status === "verified_events";
         const impressions = metricsVerified ? Number(campaign.impressions_count) || 0 : 0;
         const clicks = metricsVerified ? Number(campaign.clicks_count) || 0 : 0;
