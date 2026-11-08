@@ -55,6 +55,18 @@ export default function AdvertisePage() {
       return;
     }
     if (!refundPolicyAccepted) { setReviewStatus("invalid"); setReviewMessage("Please acknowledge the advertising no-refund policy before submitting your campaign."); return; }
+    if (imageUrl.trim()) {
+      try {
+        const creativeUrl = new URL(imageUrl.trim());
+        if (creativeUrl.protocol !== "https:" || creativeUrl.username || creativeUrl.password) {
+          throw new Error("invalid creative URL");
+        }
+      } catch {
+        setReviewStatus("invalid");
+        setReviewMessage("Enter a valid HTTPS creative image URL without embedded login credentials, or leave the field blank.");
+        return;
+      }
+    }
     setReviewing(true);
     try {
       const response = await fetch("/api/advertising/moderate", {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { advertisingStore, ID, Query } from "@/lib/advertising-store";
 import { checkMemberAccess } from "@/lib/member-access";
+import { canEnterHumanReviewQueue } from "@/lib/advertising-policy";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -93,6 +94,15 @@ export async function POST(request: Request) {
     const adSubmission = await tablesDB.getRow({ databaseId, tableId: adsTableId, rowId: adSubmissionId });
     if (adSubmission.advertiser_user_id !== user.$id) {
       return NextResponse.json({ error: "This ad submission does not belong to your advertiser account." }, { status: 403 });
+    }
+    // Enforce the screening gate server-side; the browser must never be able to
+    // turn a rejected, unreviewed, or rights-unconfirmed submission into a campaign.
+    if (!canEnterHumanReviewQueue(adSubmission)) {
+      return NextResponse.json({
+        error: "Only ads that passed the initial safety screen and include confirmed creative rights can enter the human-review queue.",
+        paymentAllowed: false,
+        deliveryAllowed: false,
+      }, { status: 409 });
     }
     const row = await tablesDB.createRow({
       databaseId, tableId, rowId: ID.unique(),
