@@ -5,15 +5,15 @@ This checklist consolidates the Appwrite setup for the existing Connect Next.js 
 ## Important project boundaries
 
 - Use the existing Connect Appwrite project and database. Do not create another database just to satisfy an optional feature.
-- Deploy the Next.js application to Netlify for server-rendered pages and API routes. GitHub Pages publishes only the static `docs/` preview and cannot run authentication, API routes, or Appwrite server code.
-- The current public preview URLs are `https://connecttime-sm.netlify.app` (Netlify) and `https://nasras0837-star.github.io/ConnectTime-/` (static Pages preview). A configured URL is not evidence that the latest code is deployed.
+- Deploy the Next.js application to Render for server-rendered pages and API routes. GitHub Pages publishes only the static `docs/` preview and cannot run authentication, API routes, or Appwrite server code.
+- The static public preview is `https://nasras0837-star.github.io/ConnectTime-/`. The full application is intended for the Render hostname `https://connect-web.onrender.com` once its service is deployed. A configured URL is not evidence that the service is live.
 - Keep `APPWRITE_API_KEY` and all provider secrets server-only. Never use a `NEXT_PUBLIC_` prefix for secrets.
 - Tables must remain private. The browser must not receive Appwrite server credentials or be granted broad access to member data.
 
 ## Step 1 — Configure Appwrite authentication
 
-1. In the existing Appwrite project, add a Web platform for the exact Netlify production hostname and any staging hostname used for testing.
-2. Configure the project endpoint and project ID in Netlify environment variables:
+1. In the existing Appwrite project, add a Web platform for the exact Render production hostname and any staging hostname used for testing.
+2. Configure the project endpoint and project ID in Render environment variables:
    - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
    - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
 3. Verify Appwrite email/password signup, login, logout, session cookie handling, and redirects on the deployed Next.js site.
@@ -32,7 +32,7 @@ Create a private member-access collection as described in `APPWRITE_AUTHORIZATIO
 
 ## Step 3 — Create private tables in the existing Appwrite database
 
-Set `APPWRITE_DATABASE_ID` to the existing database. Create only the tables needed for features you intend to test, then set their actual table IDs in Netlify:
+Set `APPWRITE_DATABASE_ID` to the existing database. Create only the tables needed for features you intend to test, then set their actual table IDs in Render:
 
 | Table purpose | Environment variable | Setup guide |
 |---|---|---|
@@ -50,15 +50,15 @@ Use the exact column IDs, types, sizes, required flags, and indexes in each guid
 
 ## Step 4 — Configure hosting
 
-In Netlify, connect the GitHub repository `nasras0837-star/Connect-`:
-- Production branch: `main`
-- Base directory: repository root
-- Build command: `npm run build`
-- Publish directory: `.next`
+Use the Render Blueprint in the repository root (`render.yaml`):
+- Repository: `nasras0837-star/ConnectTime-`
+- Branch: `main`
+- Build command: `npm ci && npm run build`
+- Start command: `npm run start`
 - Node.js: 22
-- Next.js runtime plugin: `@netlify/plugin-nextjs` (already declared in `netlify.toml`)
+- Health check: `/api/auth/status`
 
-Add environment variables in the Netlify site settings, then trigger a new deploy. Do not add a static SPA rewrite for the Next.js app.
+Follow `docs/RENDER_DEPLOYMENT.md` to create the Render web service, add the manual environment values, and allow the exact Render hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
 
 ## Step 5 — Verify one feature at a time
 
@@ -78,7 +78,7 @@ A passing build or security workflow does not prove that Appwrite tables, secret
 ## Current known limitations — do not advertise as finished
 
 - Independent age verification provider and signed webhook integration are not implemented.
-- Backend environment variables and table IDs have not been confirmed configured in Netlify.
+- Backend environment variables and table IDs have not been confirmed configured in Render.
 - Group owner approval, invitations, and group moderation are incomplete.
 - Messaging is request/refresh based, not real-time; no attachments or group chats.
 - Notifications are in-app only; no email, push, or real-time delivery.
