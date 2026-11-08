@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import {
   buildYotiClientAssertion,
   buildYotiSandboxSessionRequest,
+  isYotiSandboxOver18Pass,
 } from "./yoti-sandbox-core";
 
 const AUTH_URL = "https://auth.api.yoti.com/v1/oauth/token";
@@ -123,8 +124,10 @@ export async function getYotiSandboxSessionResult(sessionId: string) {
     status?: string;
     reference_id?: string;
   };
-  if (payload.id !== sessionId || payload.sdk_id !== sdkId || payload.type !== "OVER" ||
-      !payload.status || !payload.reference_id) {
+  if (!payload.status || !payload.reference_id) {
+    throw new Error("Yoti sandbox returned an incomplete result");
+  }
+  if (payload.id !== sessionId || payload.sdk_id !== sdkId || payload.type !== "OVER") {
     throw new Error("Yoti sandbox returned a mismatched result");
   }
 
@@ -132,6 +135,6 @@ export async function getYotiSandboxSessionResult(sessionId: string) {
     sessionId,
     status: payload.status,
     referenceId: payload.reference_id,
-    over18SandboxPass: payload.status === "COMPLETE",
+    over18SandboxPass: isYotiSandboxOver18Pass(payload, { sessionId, sdkId, referenceId: payload.reference_id }),
   };
 }
