@@ -17,7 +17,7 @@ Create server-owned Appwrite collection `member_access`:
 - Server key with minimum database read/write scopes; only trusted server/webhook may write statuses.
 
 ## Age verification
-Provider is not selected/configured. See `docs/AGE_VERIFICATION_PROVIDER.md`. The signup 18+ checkbox is not verification. The session endpoint remains unavailable until provider-specific API and signed webhook handling are implemented.
+Connect uses Veriff. Configure the private verification records table and server-only `VERIFF_BASE_URL`, `VERIFF_API_KEY`, `VERIFF_SHARED_SECRET`, and `VERIFF_CALLBACK_URL` values as documented in `docs/VERIFF-AGE-VERIFICATION-SETUP.md`. The signup 18+ checkbox is not verification. Missing or invalid date of birth never grants access.
 
 ## Feature enforcement (pending)
 No production social, messaging, Match Maker, marketplace, publishing, creator, or calls APIs are released yet. Every future server route/action must call `checkMemberAccess()` before access, then enforce ownership, connections, blocks, and moderation. UI checks alone are not authorization. Keep features disabled until tests exist.
