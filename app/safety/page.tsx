@@ -78,10 +78,10 @@ export default function SafetyCenterPage() {
   const cardStyle = { background: "white", border: "1px solid #e9eaf1", borderRadius: 15, padding: 22, marginTop: 18 } as const;
 
   return <main className="authShell">
-    <Link className="logo ctAuthLogo" href="/" aria-label="ConnectTime home"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage" /></Link>
+    <Link className="logo ctAuthLogo" href="/" aria-label="Connect home"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage" /></Link>
     <div style={{ width: "min(100%, 820px)", padding: "0 14px 40px" }}>
       <header className="authCard">
-        <div className="eyebrow">CONNECTTIME · MEMBER SAFETY</div>
+        <div className="eyebrow">CONNECT · MEMBER SAFETY</div>
         <h1>Safety Center</h1>
         <p>Speak freely and disagree openly. Harassment, intimidation, threats, stalking, and privacy violations are not acceptable.</p>
         <p><Link href="/community-guidelines">Read the Community Guidelines →</Link></p>
@@ -103,7 +103,7 @@ export default function SafetyCenterPage() {
 
       <section style={cardStyle}>
         <h2>Block a member</h2>
-        <p>Blocking is personal: it records your choice to block that account. ConnectTime must also enforce block relationships in messaging, profile discovery, and content interactions before those features launch.</p>
+        <p>Blocking is personal: it records your choice to block that account. Connect must also enforce block relationships in messaging, profile discovery, and content interactions before those features launch.</p>
         <form onSubmit={addBlock}>
           <label style={fieldStyle}>Member user ID<input name="blockedUserId" required maxLength={128} style={inputStyle} placeholder="Enter the member&apos;s user ID" /></label>
           <button style={buttonStyle} type="submit">Block member</button>
@@ -126,7 +126,7 @@ export default function SafetyCenterPage() {
         {appealStatus && <p role="status" aria-live="polite">{appealStatus}</p>}
       </section>
       <p style={{ fontSize: 12, color: "#777", lineHeight: 1.6, marginTop: 18 }}>Reports and appeals are private submissions. Do not use these forms for emergencies. If someone is in immediate danger, contact local emergency services. The tools display an error rather than claim success when server storage is not configured.</p>
-      <p className="switch"><Link href="/">← Back to ConnectTime</Link></p>
+      <p className="switch"><Link href="/">← Back to Connect</Link></p>
     </div>
   </main>;
 }
