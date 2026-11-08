@@ -13,6 +13,8 @@ export default function SettingsPage() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
+    // Load device-only preferences after hydration to avoid a server/client mismatch.
+    /* eslint-disable react-hooks/set-state-in-effect */
     try {
       const saved = window.localStorage.getItem(storageKey);
       if (saved) {
@@ -21,6 +23,7 @@ export default function SettingsPage() {
       }
     } catch { /* Use safe defaults if device storage is unavailable. */ }
     setReady(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   function update(key: keyof Preferences, value: boolean) {
@@ -50,7 +53,7 @@ export default function SettingsPage() {
     <Link className="logo ctAuthLogo" href="/" aria-label="ConnectTime home"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link>
     <section className="authCard" style={{ width: "min(100%, 720px)" }}>
       <div className="eyebrow">MAKE IT YOURS</div><h1>Settings</h1>
-      <p>Manage this browser's display preferences and find account, privacy, and security controls.</p>
+      <p>Manage this browser&apos;s display preferences and find account, privacy, and security controls.</p>
       <div style={{ display: "grid", gap: 12, margin: "22px 0" }}>
         {rows.map(row => <label key={row.key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18, padding: 16, border: "1px solid #e5e8f2", borderRadius: 13, cursor: ready ? "pointer" : "wait" }}>
           <span><strong style={{ display: "block" }}>{row.title}</strong><small style={{ color: "#66718a" }}>{row.description}</small></span>
