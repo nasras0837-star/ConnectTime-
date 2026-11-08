@@ -988,3 +988,127 @@
   outline:3px solid #087eb9;
   outline-offset:5px;
 }
+
+
+/* ConnectTime visual refresh — shared color, depth and interaction language */
+:root{
+  --ct-violet:#7047eb;
+  --ct-pink:#e94caa;
+  --ct-blue:#268be8;
+  --ct-teal:#13a99b;
+  --ct-ink:#182544;
+  --ct-muted:#68738d;
+  --ct-surface:#fff;
+  --ct-border:#e6e8f4;
+}
+html{scroll-padding-top:88px}
+body{
+  color:var(--ct-ink);
+  background:
+    radial-gradient(ellipse at 2% 4%,rgba(226,207,255,.38),transparent 28rem),
+    radial-gradient(ellipse at 98% 18%,rgba(194,226,255,.32),transparent 30rem),
+    linear-gradient(145deg,#fbfaff 0%,#f5f8ff 48%,#fff8fc 100%);
+}
+::selection{background:#ded2ff;color:#28145e}
+a{transition:color .18s ease}
+button,.button,[role=button]{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,border-color .18s ease}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid rgba(112,71,235,.55);outline-offset:3px
+}
+/* Consistent elevated surfaces across member, community and discovery areas */
+:where(.ctAccountCard,.feature,.videoCard,.radioCard,.freeTvCard,.discoverCard,.friendsCard,.notificationsCard,.messagesCard,.settingsCard,.eventCard,.roomCard,.newsCard,.showcaseCard,.groupCard,.ctHomeCard,.homeLiveCard,.ctLiveCard,.rightCard,.adultCard,.adPreviewCard){
+  border:1px solid rgba(220,222,241,.9);
+  border-radius:19px;
+  box-shadow:0 10px 28px rgba(39,34,91,.055);
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+:where(.ctAccountCard,.feature,.videoCard,.radioCard,.freeTvCard,.discoverCard,.friendsCard,.notificationsCard,.messagesCard,.settingsCard,.eventCard,.roomCard,.newsCard,.showcaseCard,.groupCard,.ctHomeCard,.homeLiveCard,.ctLiveCard,.rightCard,.adultCard,.adPreviewCard):hover{
+  transform:translateY(-3px);
+  border-color:rgba(151,124,237,.48);
+  box-shadow:0 17px 38px rgba(66,47,139,.11);
+}
+:where(.ctAccountCardIcon,.ctHomeCardIcon,.freeTvChannelMark,.radioPlayerDisc,.ctHomeAdIcon){
+  background:linear-gradient(140deg,#eee8ff,#e3f3ff 58%,#ffe6f4);
+}
+:where(.ctHomePrimary,.ctHomeRegister,.ctAccountLocked a,.radioListenButton,.videoSearch button,.meetingPrimary,.meetingSecondary,.vJoin,.navButton,.button){
+  background:linear-gradient(110deg,var(--ct-violet),#a13be0 55%,var(--ct-pink));
+  color:#fff;
+  border:0;
+  box-shadow:0 8px 20px rgba(112,71,235,.19);
+}
+:where(.ctHomePrimary,.ctHomeRegister,.ctAccountLocked a,.radioListenButton,.videoSearch button,.meetingPrimary,.meetingSecondary,.vJoin,.navButton,.button):hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(112,71,235,.28);
+  filter:saturate(1.08);
+}
+:where(.eyebrow,.videoEyebrow,.videoCategory,.ctHomeEyebrow,.ctHomeIntro>span,.ctHomeSmartAds>div>span,.ctHomeFeatureBand>div>span){
+  color:var(--ct-violet);
+}
+:where(.authCard,.meetingAction,.meetingInvitePanel,.radioPlayerBar,.recommendationInfo,.ctAccountStatus,.ctAccountLocked){
+  border-color:#e2dcf8;
+  box-shadow:0 14px 36px rgba(47,37,104,.07);
+}
+.authShell{
+  max-width:560px;
+  padding-top:clamp(32px,7vh,76px);
+  padding-bottom:56px;
+}
+.authCard{
+  border-radius:22px;
+  border-color:#e5def9;
+  box-shadow:0 22px 65px rgba(54,36,118,.11);
+  background:linear-gradient(150deg,#fff 0%,#fff 72%,#faf7ff 100%);
+}
+.authCard h1{color:#211b49}
+.authCard input:not([type=checkbox]),.meetingAction input,.meetingInvitePanel input{
+  border-color:#dcd9ed;
+  background:#fdfcff;
+}
+.authCard input:not([type=checkbox]):focus,.meetingAction input:focus,.meetingInvitePanel input:focus{
+  border-color:#9b7bf0;
+  box-shadow:0 0 0 4px rgba(112,71,235,.1);
+  outline:0;
+}
+:where(.eventsPage,.createPage,.roomsPage,.newsPage,.freeTvPage,.radioPage,.communityPage,.datingInboxPage,.ctAccountPage){
+  background:
+    radial-gradient(ellipse at 0% 0%,rgba(232,218,255,.42),transparent 28rem),
+    radial-gradient(ellipse at 100% 16%,rgba(209,235,255,.35),transparent 26rem);
+}
+:where(.eventsHero,.createHero,.roomsHero,.newsHero,.freeTvHero,.radioHero,.communityHero,.vHero){
+  border:1px solid rgba(225,218,250,.75);
+  border-radius:26px;
+  background:linear-gradient(120deg,rgba(255,255,255,.96),rgba(245,239,255,.94) 52%,rgba(231,245,255,.92));
+  box-shadow:0 16px 42px rgba(63,47,130,.07);
+}
+:where(.eventsHero h1,.createHero h1,.roomsHero h1,.newsHero h1,.freeTvHero h1,.radioHero h1,.communityHero h1,.vHero h1){
+  color:#211b49;
+}
+:where(.eventsHero h1 em,.createHero h1 em,.roomsHero h1 em,.newsHero h1 em,.freeTvHero h1 em,.radioHero h1 em,.communityHero h1 em,.vHero h1 em){
+  color:var(--ct-violet);
+}
+:where(.eventsHeader,.createHeader,.roomsHeader,.newsHeader,.freeTvHeader,.radioHeader,.ctAccountHeader){
+  border-bottom-color:rgba(218,216,238,.8);
+}
+:where(.eventsSideCard,.eventFormPanel,.createCard,.groupCreateCard,.groupDiscussionWrap,.ctAssistantPanel){
+  border:1px solid #e6e0f6;
+  border-radius:19px;
+  box-shadow:0 12px 32px rgba(43,35,96,.06);
+}
+:where(.videoFilters button,.freeTvRegionShortcuts button,.radioToolbar button,.searchHistory button){
+  border-color:#e2ddf3;
+  background:linear-gradient(120deg,#fff,#f7f4ff);
+  color:#554b78;
+}
+:where(.videoFilters button.selected,.freeTvRegionShortcuts button.active){
+  background:linear-gradient(110deg,var(--ct-violet),#a13be0);
+  border-color:transparent;
+  color:#fff;
+}
+:where(.ctHome,.vibrantHome) :where(h1,h2,h3){color:#211b49}
+@media(max-width:700px){
+  :where(.ctAccountCard,.feature,.videoCard,.radioCard,.freeTvCard,.discoverCard,.friendsCard,.notificationsCard,.messagesCard,.settingsCard,.eventCard,.roomCard,.newsCard,.showcaseCard,.groupCard,.ctHomeCard,.homeLiveCard,.ctLiveCard,.rightCard,.adultCard,.adPreviewCard):hover{transform:none}
+  :where(.eventsHero,.createHero,.roomsHero,.newsHero,.freeTvHero,.radioHero,.communityHero,.vHero){border-radius:19px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
