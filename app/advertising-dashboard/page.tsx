@@ -31,6 +31,11 @@ const number = (value?: number) => (Number(value) || 0).toLocaleString();
 const pct = (value: number) => `${value.toFixed(2)}%`;
 const date = (value?: string) => value ? new Date(value).toLocaleDateString() : "Not scheduled";
 const label = (value?: string) => (value || "draft").replaceAll("_", " ").replaceAll("-", " ").split(" ").map(word => word ? word[0].toUpperCase() + word.slice(1) : word).join(" ");
+const csvCell = (value: unknown) => {
+  let text = value === null || value === undefined ? "" : String(value);
+  if (/^[=+@\\-\\t\\r]/.test(text)) text = "'" + text;
+  return '"' + text.replaceAll('"', '""') + '"';
+};
 
 export default function AdvertisingDashboardPage() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -98,6 +103,44 @@ export default function AdvertisingDashboardPage() {
   const ctr = totals.impressions > 0 ? totals.clicks / totals.impressions * 100 : 0;
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
 
+  const exportCampaigns = () => {
+    const columns = [
+      "Campaign", "Company", "Status", "Objective", "Placement", "Country", "Region",
+      "Audience interests", "Daily budget (USD)", "Lifetime cap (USD)", "Recorded spend (USD)",
+      "Verified impressions", "Verified clicks", "Verified CTR", "Metrics status",
+      "AI screening", "Human review", "Payment status", "Start date", "End date"
+    ];
+    const rows = filtered.map(campaign => {
+      const verified = campaign.metrics_status === "verified_events";
+      const impressions = verified ? Number(campaign.impressions_count) || 0 : null;
+      const clicks = verified ? Number(campaign.clicks_count) || 0 : null;
+      const ctrValue = impressions && impressions > 0 ? (clicks || 0) / impressions * 100 : null;
+      return [
+        campaign.campaign_name, campaign.company, label(campaign.status), label(campaign.objective),
+        label(campaign.placement), campaign.country, campaign.region, campaign.audience_interests,
+        ((Number(campaign.daily_budget_minor) || 0) / 100).toFixed(2),
+        ((Number(campaign.lifetime_cap_minor) || 0) / 100).toFixed(2),
+        ((Number(campaign.spend_minor) || 0) / 100).toFixed(2),
+        impressions === null ? "Not verified" : impressions,
+        clicks === null ? "Not verified" : clicks,
+        ctrValue === null ? "Not available" : ctrValue.toFixed(2) + "%",
+        label(campaign.metrics_status), label(campaign.moderation_status),
+        label(campaign.human_review_status), label(campaign.payment_status),
+        campaign.starts_at, campaign.ends_at
+      ];
+    });
+    const csv = [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\\r\\n");
+    const blob = new Blob(["\\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "connecttime-campaign-report.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   return <main className="adMarketplace">
     <header className="adTopbar"><Link href="/advertise" className="adBrand"><span className="adBrandMark">CT</span><span>ConnectTime <small>ADVERTISING</small></span></Link><nav><Link href="/advertise">Create campaign</Link><Link href="/">Community</Link></nav></header>
     <section className="ctCampaignDashboard">
@@ -115,6 +158,7 @@ export default function AdvertisingDashboardPage() {
         <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
         <label>Metrics verification<select value={metricsFilter} onChange={event => setMetricsFilter(event.target.value)}><option value="all">All metrics</option><option value="verified">Verified metrics</option><option value="unverified">Not verified</option></select></label>
         {(search.trim() || statusFilter !== "all" || scheduleFilter !== "all" || metricsFilter !== "all") && <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); }}>Clear filters</button>}
+        <button type="button" onClick={exportCampaigns} disabled={loading || !!error || filtered.length === 0}>↓ Export filtered CSV ({filtered.length})</button>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
       {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length} of ${campaigns.length} campaigns` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
