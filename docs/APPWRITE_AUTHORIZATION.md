@@ -1,4 +1,4 @@
-# ConnectTime Appwrite authorization
+# Connect Appwrite authorization
 
 ## Implemented code (foundation only)
 - `lib/access-policy.ts`: member eligible only if `adult_status=verified` AND `account_status=active`.
