@@ -10,7 +10,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<LanguageCode>("en");
   useEffect(() => {
     try {
-      const saved = window.localStorage.getItem("connecttime-language");
+      const saved = window.localStorage.getItem("connect-language");
       if (saved && languages.some((item) => item.code === saved)) window.setTimeout(() => setLanguageState(saved as LanguageCode), 0);
     } catch { /* Storage may be unavailable; English remains the fallback. */ }
   }, []);
@@ -18,7 +18,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const selected = languages.find((item) => item.code === language) ?? languages[0];
     document.documentElement.lang = language;
     document.documentElement.dir = selected.dir;
-    try { window.localStorage.setItem("connecttime-language", language); } catch { /* Preference remains active for this session. */ }
+    try { window.localStorage.setItem("connect-language", language); } catch { /* Preference remains active for this session. */ }
   }, [language]);
   const value = useMemo<LanguageContextValue>(() => ({
     language,
