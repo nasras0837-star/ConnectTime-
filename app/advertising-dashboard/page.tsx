@@ -105,11 +105,12 @@ export default function AdvertisingDashboardPage() {
       (budgetFilter === "within_cap" && cap > 0 && spend <= cap) ||
       (budgetFilter === "no_cap" && cap <= 0);
     const review = (campaign.human_review_status || "").toLowerCase();
+    const effectiveReview = review || (campaign.status === "pending_review" ? "pending" : "");
     const matchesReview = reviewFilter === "all" ||
-      (reviewFilter === "pending" && (review === "pending" || campaign.status === "pending_review")) ||
-      (reviewFilter === "approved" && review === "approved") ||
-      (reviewFilter === "rejected" && review === "rejected") ||
-      (reviewFilter === "not_recorded" && !review && campaign.status !== "pending_review");
+      (reviewFilter === "pending" && effectiveReview === "pending") ||
+      (reviewFilter === "approved" && effectiveReview === "approved") ||
+      (reviewFilter === "rejected" && effectiveReview === "rejected") ||
+      (reviewFilter === "not_recorded" && !effectiveReview);
     const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
     const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
     const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
@@ -159,10 +160,11 @@ export default function AdvertisingDashboardPage() {
     return result;
   }, { unverifiedMetrics: 0, overCap: 0, unscheduled: 0, invalidSchedules: 0 }), [filtered, now]);
   const reviewSummary = useMemo(() => filtered.reduce((result, campaign) => {
-    const review = (campaign.human_review_status || "").toLowerCase();
-    if (review === "pending" || campaign.status === "pending_review") result.pending += 1;
-    else if (review === "approved") result.approved += 1;
-    else if (review === "rejected") result.rejected += 1;
+    const recordedReview = (campaign.human_review_status || "").toLowerCase();
+    const effectiveReview = recordedReview || (campaign.status === "pending_review" ? "pending" : "");
+    if (effectiveReview === "pending") result.pending += 1;
+    else if (effectiveReview === "approved") result.approved += 1;
+    else if (effectiveReview === "rejected") result.rejected += 1;
     else result.notRecorded += 1;
     return result;
   }, { pending: 0, approved: 0, rejected: 0, notRecorded: 0 }), [filtered]);
