@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { Client, ID, InputFile, Query, Storage } from "node-appwrite";
+import { Client, ID, Query, Storage } from "node-appwrite";
+import { InputFile } from "node-appwrite/file";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 
