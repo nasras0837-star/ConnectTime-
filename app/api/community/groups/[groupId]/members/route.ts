@@ -141,6 +141,16 @@ export async function PATCH(request: Request, context: { params: Promise<{ group
     const now = new Date().toISOString();
     if (action === "approve" || action === "decline") {
       if (row.status !== "pending") return NextResponse.json({ error: "This membership request is no longer pending." }, { status: 409 });
+      if (action === "approve") {
+        const blocksTable = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
+        if (!blocksTable) throw new Error("Community block controls are not configured.");
+        const targetId = String(row.user_id || "");
+        const [targetEligible, blocked] = await Promise.all([
+          targetId ? eligibleTarget(targetId) : Promise.resolve(false),
+          targetId ? isBlocked(s.tablesDB, s.databaseId, blocksTable, user.$id, targetId) : Promise.resolve(true)
+        ]);
+        if (!targetEligible || blocked) return NextResponse.json({ error: "This member is no longer eligible to join this group." }, { status: 403 });
+      }
       await s.tablesDB.updateRow({ databaseId: s.databaseId, tableId: s.members, rowId: membershipId, data: { status: action === "approve" ? "active" : "declined", updated_at: now } });
       return NextResponse.json({ updated: true, status: action === "approve" ? "active" : "declined" }, { headers: { "Cache-Control": "no-store" } });
     }
