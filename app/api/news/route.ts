@@ -103,7 +103,7 @@ function parseFeed(xml: string, category: NewsCategory, fallbackSource: string) 
 async function fetchFeed(feed: Feed): Promise<ReturnType<typeof parseFeed>> {
   const response = await fetch(feed.url, {
     headers: {
-      "User-Agent": "ConnectTimeNews/1.0 (+https://connecttime-sm.netlify.app)",
+      "User-Agent": "ConnectNews/1.0 (+https://connecttime-sm.netlify.app)",
       Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
     },
     signal: AbortSignal.timeout(7000),
