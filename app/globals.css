@@ -779,7 +779,7 @@
 
 /* Homepage hero photography and smart advertising highlight */
 .ctHomeHero{position:relative;overflow:hidden;isolation:isolate;background:#eaf6fc}
-.ctHomeHero:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(90deg,#e5f5fc 0%,#f6faff 30%,#f6faffd9 48%,#e6f2fb25 100%),url("https://images.unsplash.com/photo-1790749870936-07546fb6c68e?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=2400");background-size:cover;background-position:center 43%;background-repeat:no-repeat}
+.ctHomeHero:before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(90deg,#e5f5fc 0%,#f6faff 30%,#f6faffd9 48%,#e6f2fb25 100%),url("https://images.pexels.com/photos/6146961/pexels-photo-6146961.jpeg?auto=compress&dpr=1&h=750&w=1260");background-size:cover;background-position:center 43%;background-repeat:no-repeat}
 .ctHomeHeroCopy,.ctHomeHeroVisual{position:relative;z-index:1}
 .ctHomeHero h1{max-width:700px;font-size:clamp(43px,5.2vw,68px);letter-spacing:-3px;line-height:1.04}
 .ctHomeSmartAds{max-width:1240px;margin:-25px auto 68px;padding:30px 34px;border:1px solid #cfe7f2;border-radius:23px;background:linear-gradient(115deg,#fff 0%,#f0faff 55%,#e4f5fc 100%);display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:20px;box-shadow:0 14px 34px #1643600c}
@@ -790,7 +790,7 @@
 .ctHomeAdPills{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
 .ctHomeAdPills b{padding:7px 10px;border-radius:99px;background:#e0f3fb;color:#28607e;font-size:9px}
 .ctHomeSmartAds>a{white-space:nowrap;padding:13px 17px;border-radius:99px;background:#087eb9;color:white;font-size:11px;font-weight:900}
-@media(max-width:760px){.ctHomeSmartAds{grid-template-columns:46px minmax(0,1fr);padding:23px 19px;gap:13px;margin:-12px auto 48px}.ctHomeAdIcon{width:43px;height:43px;font-size:24px}.ctHomeSmartAds>a{grid-column:1/-1;text-align:center}.ctHomeHero:before{background-image:linear-gradient(90deg,#e5f5fcf2 0%,#f6faffdf 48%,#e6f2fb88 100%),url("https://images.unsplash.com/photo-1790749870936-07546fb6c68e?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=1600");background-position:center;background-size:cover}.ctHomeHero h1{font-size:clamp(40px,10vw,54px);letter-spacing:-2px}}
+@media(max-width:760px){.ctHomeSmartAds{grid-template-columns:46px minmax(0,1fr);padding:23px 19px;gap:13px;margin:-12px auto 48px}.ctHomeAdIcon{width:43px;height:43px;font-size:24px}.ctHomeSmartAds>a{grid-column:1/-1;text-align:center}.ctHomeHero:before{background-image:linear-gradient(90deg,#e5f5fcf2 0%,#f6faffdf 48%,#e6f2fb88 100%),url("https://images.pexels.com/photos/6146961/pexels-photo-6146961.jpeg?auto=compress&dpr=1&h=1000&w=900");background-position:center;background-size:cover}.ctHomeHero h1{font-size:clamp(40px,10vw,54px);letter-spacing:-2px}}
 
 
 /* Group chat auto-update status */
