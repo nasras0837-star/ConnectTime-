@@ -1,4 +1,4 @@
-# ConnectTime Advertising Content and Intellectual Property Policy
+# Connect Advertising Content and Intellectual Property Policy
 
 ## Advertising approval gate
 
@@ -12,7 +12,7 @@ A failed, unavailable, timed-out, or inconclusive automated screening result fai
 
 ## Prohibited advertising
 
-ConnectTime prohibits ads containing nudity, pornography, sexually explicit or suggestive material, sexual services, sexual exploitation, sexualization of minors, hate, harassment, graphic violence, self-harm promotion, illegal goods or services, scams, deceptive claims, or other material that violates platform rules or applicable law. ConnectTime may reject, pause, or remove ads at its discretion.
+Connect prohibits ads containing nudity, pornography, sexually explicit or suggestive material, sexual services, sexual exploitation, sexualization of minors, hate, harassment, graphic violence, self-harm promotion, illegal goods or services, scams, deceptive claims, or other material that violates platform rules or applicable law. Connect may reject, pause, or remove ads at its discretion.
 
 ## Copyright and trademark requirements
 
@@ -22,11 +22,11 @@ Advertisers must own or hold documented licenses and permissions for every submi
 - Imply sponsorship, affiliation, or endorsement without authorization.
 - Use AI-generated or modified material to disguise infringement or misrepresent ownership.
 
-A checkbox or AI scan cannot establish legal ownership. ConnectTime requires a human review of rights declarations and supporting evidence when appropriate. Suspected infringement remains on hold; it cannot be paid for or published.
+A checkbox or AI scan cannot establish legal ownership. Connect requires a human review of rights declarations and supporting evidence when appropriate. Suspected infringement remains on hold; it cannot be paid for or published.
 
 ## Reporting and takedown
 
-Rights holders should be provided a clear reporting channel to identify the protected work, the allegedly infringing advertisement, their contact details, and a good-faith statement of ownership or authorization. ConnectTime should promptly restrict access to a reported ad while reviewing a credible claim, preserve relevant campaign records, notify the advertiser where appropriate, and remove confirmed infringing material. Repeat or deliberate infringement may result in advertiser suspension or termination.
+Rights holders should be provided a clear reporting channel to identify the protected work, the allegedly infringing advertisement, their contact details, and a good-faith statement of ownership or authorization. Connect should promptly restrict access to a reported ad while reviewing a credible claim, preserve relevant campaign records, notify the advertiser where appropriate, and remove confirmed infringing material. Repeat or deliberate infringement may result in advertiser suspension or termination.
 
 ## Current implementation limits
 
@@ -35,13 +35,13 @@ The moderation API performs preliminary AI text/image safety screening only when
 
 ## Auction pricing and advertiser budgets
 
-ConnectTime does not charge a fixed monthly price per advertisement. Advertisers set their own campaign budgets and participate in an auction when an eligible placement becomes available. The initial campaign planner supports a minimum daily budget of **US$1**, a separate total campaign spending cap, and a choice of bidding strategy. These are planning controls only until auction delivery and billing are implemented.
+Connect does not charge a fixed monthly price per advertisement. Advertisers set their own campaign budgets and participate in an auction when an eligible placement becomes available. The initial campaign planner supports a minimum daily budget of **US$1**, a separate total campaign spending cap, and a choice of bidding strategy. These are planning controls only until auction delivery and billing are implemented.
 
 - **Daily budget:** the advertiser's intended average daily spend limit.
 - **Lifetime campaign cap:** the hard maximum amount that may be charged for the campaign. The campaign must stop when this cap is reached.
 - **Auction price:** determined by competition for the eligible audience and placement, bid strategy, campaign objective, geography, and ad quality. No fixed CPC, CPM, CPL, or guaranteed result is promised.
 - **Billing basis:** before launch, each campaign must clearly disclose whether it is billed for valid impressions (CPM), valid clicks (CPC), or another explicitly supported event. Never charge for both an impression and a click for the same event unless the advertiser expressly selects and accepts a disclosed pricing model.
-- **Spend controls:** ConnectTime's initial billing design should use a strict no-overdelivery rule: do not exceed the daily pacing limit or lifetime cap. Pause delivery when the cap is reached, when payment authorization fails, or when the campaign is paused or rejected. Do not silently increase an advertiser's budget.
+- **Spend controls:** Connect's initial billing design should use a strict no-overdelivery rule: do not exceed the daily pacing limit or lifetime cap. Pause delivery when the cap is reached, when payment authorization fails, or when the campaign is paused or rejected. Do not silently increase an advertiser's budget.
 - **Transparency:** show spend, remaining budget, delivery counts, billing events, and campaign status. Provide an itemized invoice/receipt and a way to dispute invalid traffic or billing errors.
 - **No charge before approval:** do not collect campaign funds or begin billable delivery until advertiser checks, creative moderation, required human review, and secure checkout/authorization are complete.
 
