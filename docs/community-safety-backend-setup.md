@@ -78,12 +78,12 @@ Create indexes on `status + created_at` for appeals review.
 - Requests require an authenticated Appwrite session and a user ID in the server-side `APPWRITE_MODERATOR_USER_IDS` allowlist. Writes also require same-origin requests.
 - Post removal is limited to community feed and group posts and changes the post status to `removed`; it does not permanently delete records. Message removal is not supported.
 - Account restriction changes the target member-access document's `account_status` to `suspended`. It does not delete the account or disable Appwrite authentication.
-- Resolving a report requires a moderator note. Dismissed reports cannot carry an enforcement action. Closed reports cannot be changed through this endpoint.
+- Resolving a report requires a moderator note. Dismissed reports cannot carry an enforcement action. Closed reports cannot be changed through this endpoint.\n- `GET /api/community/moderation/appeals` lists up to 100 appeals; optional status filter: `received`, `reviewing`, `upheld`, `overturned`, or `dismissed`. `PATCH` records `appealId`, status, review note, moderator ID, and timestamp. Final appeal decisions require a review note and cannot be changed.
 
 ## Operational safeguards and launch gates
 
 - Review reports as allegations, not proof. Preserve distinctions between threats/harassment and protected disagreement or criticism.
 - Limit and regularly review moderator access. Define evidence retention, escalation, and emergency-response procedures.
-- Notify affected users and implement appeal review before production enforcement is enabled.
+- The appeal review queue is available at `/moderation/appeals`; appeal outcomes are recorded but do not automatically reinstate accounts, reverse removed content, or notify appellants.
 - Test with two separate member accounts and a moderator account: unauthenticated access, ordinary-member denial, queue visibility, invalid IDs, mismatched reported author, post removal, suspension, closed-report conflicts, and Appwrite outages.
-- The API is not a complete moderator dashboard. A review UI, appeal-review integration, audit export, and member notifications remain outstanding.
+- Moderator report and appeal dashboards are available at `/moderation` and `/moderation/appeals`. Audit export, member enforcement notifications, and automated appeal reversal/reinstatement remain outstanding.
