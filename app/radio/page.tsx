@@ -36,12 +36,11 @@ export default function RadioPage(){
  },[country,language,query]);
 
  useEffect(()=>{const timer=window.setTimeout(()=>{void search();},350);return()=>window.clearTimeout(timer);},[search]);
- useEffect(()=>{let active=true;try{const raw=window.localStorage.getItem("connecttime-radio-favorites");if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed)&&active)setSaved(parsed.filter((id):id is string=>typeof id==="string").slice(0,500));}}catch{/* Browser storage may be unavailable. */}finally{if(active)setFavoritesLoaded(true);}return()=>{active=false;}},[]);
+ useEffect(()=>{let active=true;void Promise.resolve().then(()=>{if(!active)return;try{const raw=window.localStorage.getItem("connecttime-radio-favorites");if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed))setSaved(parsed.filter((id):id is string=>typeof id==="string").slice(0,500));}}catch{/* Browser storage may be unavailable. */}finally{if(active)setFavoritesLoaded(true);}});return()=>{active=false;}},[]);
  useEffect(()=>{if(!favoritesLoaded)return;try{window.localStorage.setItem("connecttime-radio-favorites",JSON.stringify(saved));}catch{/* Favorites remain available for this session. */}},[saved,favoritesLoaded]);
 
  useEffect(()=>{
-  if(!savedOnly){setFavoriteStations([]);return;}
-  if(saved.length===0){setFavoriteStations([]);return;}
+  if(!savedOnly||saved.length===0)return;
   let active=true;
   fetch("/api/radio?ids="+encodeURIComponent(saved.join(",")),{cache:"no-store"})
    .then(async res=>{const data=await res.json();if(!res.ok)throw new Error(data.error||"Could not load saved stations");if(active)setFavoriteStations(Array.isArray(data.stations)?data.stations:[]);})
@@ -56,9 +55,8 @@ export default function RadioPage(){
   void audio.play().catch(()=>setError("This station did not start automatically. Press Play in the player controls or choose another station."));
  },[streamUrl]);
 
- const regionCodes=regions.find(r=>r.name===region)?.codes||[];
  const sourceList=savedOnly?favoriteStations:stations;
- const list=useMemo(()=>sourceList.filter(s=>region==="All regions"||regionCodes.includes(s.countryCode)),[sourceList,region,regionCodes]);
+ const list=useMemo(()=>{const regionCodes=regions.find(r=>r.name===region)?.codes||[];return sourceList.filter(s=>region==="All regions"||regionCodes.includes(s.countryCode));},[sourceList,region]);
 
  async function playStation(station:Station){
   if(playing===station.id){audioRef.current?.pause();return;}
