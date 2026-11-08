@@ -85,7 +85,7 @@ export default function ModerationPage() {
   return <main className="authShell">
     <header className="plannedFeatureHeader">
       <Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage" /></Link>
-      <nav><Link href="/">Home</Link><Link href="/safety">Safety Center</Link><Link href="/account">Account</Link></nav>
+      <nav><Link href="/">Home</Link><Link href="/moderation/appeals">Appeals</Link><Link href="/moderation/audit">Audit log</Link><Link href="/safety">Safety Center</Link><Link href="/account">Account</Link></nav>
     </header>
     <section style={{ width: "min(100% - 28px, 1050px)", margin: "0 auto 44px" }}>
       <div className="authCard">
