@@ -323,6 +323,15 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #6b2f
 .ctGroupMeetingButton:hover{background:#d9f6ff!important;box-shadow:0 12px 28px #001d3e66}
 .ctGroupMeetingButton:focus-visible{outline:3px solid #ffe66d;outline-offset:4px}
 @media(max-width:620px){.ctGroupMeetingCta{padding:21px 17px;gap:16px}.ctGroupMeetingCopy{font-size:14px!important}.ctGroupMeetingButton{width:100%;white-space:normal}}
+
+/* Video Tube CTA: bold contrast, bright accent, accessible button */
+.ctVideoTubeCta{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-top:16px;padding:25px 26px;border:1px solid #f3a9dc;border-radius:20px;background:linear-gradient(120deg,#35105f 0%,#652078 48%,#8c286d 100%);box-shadow:0 14px 32px #75246b2b}
+.ctVideoTubeTitle{display:block;color:#fff;font-size:clamp(20px,2.5vw,27px);font-weight:950;line-height:1.2;letter-spacing:-.45px;text-shadow:0 2px 8px #21002e88}
+.ctVideoTubeCopy{margin:8px 0 0!important;color:#ffeafa!important;font-size:15px!important;line-height:1.6!important;font-weight:650;max-width:680px}
+.ctVideoTubeButton{background:linear-gradient(110deg,#fff,#ffe9f7)!important;color:#79215f!important;border:2px solid #ffc4eb;padding:15px 22px;font-size:14px;box-shadow:0 8px 22px #24002f55;white-space:nowrap}
+.ctVideoTubeButton:hover{background:#ffe0f4!important;box-shadow:0 12px 28px #24002f66}
+.ctVideoTubeButton:focus-visible{outline:3px solid #ffe66d;outline-offset:4px}
+@media(max-width:620px){.ctVideoTubeCta{padding:21px 17px;gap:16px}.ctVideoTubeCopy{font-size:14px!important}.ctVideoTubeButton{width:100%;white-space:normal}}
 </style>
 
 <style id="connecttime-hero-people-background">
@@ -530,10 +539,7 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   <article class="topic"><span>🎬</span><h3>Creator discovery</h3><p>Find creators and video collections that match what you enjoy watching.</p></article>
   <article class="topic"><span>✨</span><h3>One connected experience</h3><p>Bring video discovery together with Connect profiles, communities, and conversations.</p></article>
  </div>
- <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffd9;padding:22px;border-radius:18px;border:1px solid #fff;margin-top:16px">
-  <div><b style="font-size:16px">Make Connect Video Tube your next stop.</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Video uploads and publishing remain subject to safety review and staged activation.</p></div>
-  <a class="btn pink" href="https://connect-web-7ypt.onrender.com/videos" target="_blank" rel="noopener noreferrer">Open Video Tube ↗</a>
- </div>
+ <div class="ctVideoTubeCta"><div class="ctVideoTubeText"><b class="ctVideoTubeTitle">Make Connect Video Tube your next stop.</b><p class="ctVideoTubeCopy">Video uploads and publishing remain subject to safety review and staged activation.</p></div><a class="btn ctVideoTubeButton" href="https://connect-web-7ypt.onrender.com/videos" target="_blank" rel="noopener noreferrer">Open Video Tube ↗</a></div>
  <div class="notice"><b>Availability:</b> Video Tube is being developed in stages. This preview does not host or stream member-uploaded videos; uploads and publishing stay disabled until required moderation and safety controls are ready.</div>
 </section>
 <section class="panel" id="free-tv"><div class="panelTop"><div><div class="eyebrow">FEATURE SPOTLIGHT · CONNECT FREE TV</div><h2>Free TV discovery from around the world.</h2></div><p>Discover official broadcaster services across regions and countries. Find news, public television, culture, documentaries, and entertainment in different languages.</p></div><div class="topics"><article class="topic"><span>🌍</span><h3>Browse by region</h3><p>Explore broadcasters across North America, Europe, Latin America, Asia-Pacific, Africa, and the Middle East.</p></article><article class="topic"><span>📰</span><h3>Local & world news</h3><p>Find official news services and public broadcasters covering local, regional, and international stories.</p></article><article class="topic"><span>🎭</span><h3>Entertainment & culture</h3><p>Discover public television, documentaries, cultural programming, and entertainment options.</p></article></div><div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffc9;padding:22px;border-radius:18px;border:1px solid #dcecf2;margin-top:16px"><div><b style="font-size:16px">Free TV channel guide</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Browse the public directory of official broadcaster destinations without signing in. Saving a personal watchlist requires an active account and verified adult eligibility.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="https://connect-web-7ypt.onrender.com/free-tv" target="_blank" rel="noopener noreferrer">Open Free TV ↗</a><a class="btn ghost" href="https://connect-web-7ypt.onrender.com/login" target="_blank" rel="noopener noreferrer">Sign in ↗</a></div></div><div class="notice"><b>Broadcaster rights and availability:</b> Connect links to official broadcaster services and does not host, record, rebroadcast, or bypass geo-restrictions. “Free” does not guarantee every programme is free or available in every country. Registration, advertising, schedules, and regional restrictions are controlled by each broadcaster. Channel links are subject to ongoing technical checks and manual review.</div></section>
