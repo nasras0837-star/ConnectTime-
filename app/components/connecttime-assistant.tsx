@@ -6,17 +6,17 @@ type Message = { role: "user" | "assistant"; content: string };
 
 const welcome: Message = {
   role: "assistant",
-  content: "Hi! I’m the ConnectTime AI Guide. Ask me about features, finding communities, chat rooms, news, creators, or how to get around the website. What can I help you with?",
+  content: "Hi! I’m the Connect AI Guide. Ask me about features, finding communities, chat rooms, news, creators, or how to get around the website. What can I help you with?",
 };
 
 const suggestions = [
-  "What can I do on ConnectTime?",
+  "What can I do on Connect?",
   "How do Chat Rooms work?",
-  "Tell me about ConnectTime Video Tube",
+  "Tell me about Connect Video Tube",
   "How does adult dating verification work?",
 ];
 
-export function ConnectTimeAssistant() {
+export function ConnectAssistant() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([welcome]);
   const [draft, setDraft] = useState("");
@@ -60,10 +60,10 @@ export function ConnectTimeAssistant() {
   return (
     <div className="ctAssistant">
       {open && (
-        <section className="ctAssistantPanel" aria-label="ConnectTime AI help chat">
+        <section className="ctAssistantPanel" aria-label="Connect AI help chat">
           <header className="ctAssistantHeader">
             <div className="ctAssistantAvatar" aria-hidden="true">✦</div>
-            <div><strong>ConnectTime AI Guide</strong><small>Website help & general questions</small></div>
+            <div><strong>Connect AI Guide</strong><small>Website help & general questions</small></div>
             <button type="button" className="ctAssistantClose" onClick={() => setOpen(false)} aria-label="Close assistant">×</button>
           </header>
           <div className="ctAssistantMessages" aria-live="polite">
@@ -85,15 +85,15 @@ export function ConnectTimeAssistant() {
             <div ref={endRef} />
           </div>
           <form className="ctAssistantForm" onSubmit={submit}>
-            <label className="sr-only" htmlFor="ct-assistant-input">Ask ConnectTime a question</label>
+            <label className="sr-only" htmlFor="ct-assistant-input">Ask Connect a question</label>
             <input id="ct-assistant-input" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Ask me anything…" maxLength={1200} disabled={pending} />
             <button type="submit" disabled={pending || !draft.trim()} aria-label="Send message">➤</button>
           </form>
           <p className="ctAssistantPrivacy">AI-generated answers may be inaccurate. Don’t share passwords, payment details, or identity documents.</p>
         </section>
       )}
-      <button className="ctAssistantLauncher" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? "Close ConnectTime AI Guide" : "Open ConnectTime AI Guide"}>
-        <span aria-hidden="true">{open ? "×" : "✦"}</span>{!open && <b>Ask ConnectTime</b>}
+      <button className="ctAssistantLauncher" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? "Close Connect AI Guide" : "Open Connect AI Guide"}>
+        <span aria-hidden="true">{open ? "×" : "✦"}</span>{!open && <b>Ask Connect</b>}
       </button>
     </div>
   );
