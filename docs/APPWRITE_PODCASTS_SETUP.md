@@ -58,7 +58,7 @@ Create a private Appwrite Storage bucket and set its ID as `APPWRITE_PODCASTS_BU
 3. Change approved episode rows to `published` in the episodes table.
 4. Keep rejected submissions unpublished and follow Connect's community guidelines and applicable copyright rules.
 
-The app does not automatically clear copyright, music licensing, or content-safety rights. Video and audio uploads should be checked by moderators for policy compliance and rights before publication. Creators must only upload audio they own or are authorized to distribute.
+The app does not automatically clear copyright, music licensing, or content-safety rights. Video and audio uploads should be checked by moderators for policy compliance and rights before publication. Creators must only upload audio or video they own or are authorized to distribute.
 
 ## Routes
 
