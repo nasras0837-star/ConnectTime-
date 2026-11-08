@@ -892,3 +892,20 @@ body{
 }
 .vibrantHome,.socialHome{background:transparent!important;color:#f5f8ff}
 @media(max-width:700px){body{background-attachment:scroll!important}}
+
+
+/* CONNECT GLOBAL ELECTRIC BLUE GLOBE THEME — all app routes */
+html,body{min-height:100%;background:#020827!important}
+body{color:#f3f8ff!important;background-color:#020827!important;background-image:linear-gradient(90deg,rgba(2,8,39,.78),rgba(2,8,39,.48)),url("https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/docs/connect-globe-background.svg")!important;background-position:center top!important;background-size:cover!important;background-repeat:no-repeat!important;background-attachment:fixed!important}
+.header,.videoHeader,.topbar{background:rgba(3,13,48,.86)!important;border-color:#28549a!important;color:#f5f8ff!important;backdrop-filter:blur(14px)}
+.header nav,.videoHeader nav,.logo,.videoBrand,.brand{color:#f5f8ff!important}
+.logo span,.hero h1 span,.videoBrand span,.eyebrow,.videoEyebrow,.videoCategory,.featureNumber{color:#65eaff!important}
+.hero>p,.sectionIntro p,.feature p,.videoIntro>p,.searchHistory,.interestNote,.feedDisclaimer{color:#c1d6f5!important}
+.feature,.videoCard,.recommendationInfo,.emptyVideos,.searchHistory button,.videoSearch,.story,.composer,.post,.panel,.profile,.person,.side-note,.featureGrid>*,.columns>*{background:rgba(5,19,57,.84)!important;border-color:#28549a!important;color:#f5f8ff!important;backdrop-filter:blur(10px)}
+.videoMeta p,.videoMeta small,.post p,.profile small,.post-head small,.person small,.feature p,.panel p{color:#c1d6f5!important}
+.videoSearch input,.search,.composer>button,textarea,input,select{background:rgba(5,22,65,.96)!important;color:#f5f8ff!important;border-color:#3865a5!important}
+.navButton,.button,.videoSearch button,.primary,.meetingPrimary,.ctCampaignCreate{background:linear-gradient(110deg,#087eae,#1765ed)!important;color:#fff!important}
+.textLink,.panel a,.videoActions button,.recommendationInfo button{color:#65eaff!important}
+footer,.videoFooter{border-color:#28549a!important;color:#a9c8f5!important}
+@media(max-width:700px){body{background-attachment:scroll!important}.sidebar{background:rgba(3,13,48,.96)!important;border-color:#28549a!important}}
+
