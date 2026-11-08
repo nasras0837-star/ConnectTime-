@@ -19,6 +19,36 @@ async function requireModerator() {
   return { user };
 }
 
+
+async function recordAudit(event: { moderator_user_id: string; event_type: string; target_user_id?: string; report_id?: string; action?: string; outcome?: string; note?: string; created_at: string }) {
+  const tableId = process.env.APPWRITE_MODERATION_AUDIT_TABLE_ID;
+  if (!tableId) { console.error("Moderation audit table is not configured."); return; }
+  try {
+    const { tablesDB, databaseId } = communitySafetyStore();
+    await tablesDB.createRow({ databaseId, tableId, rowId: "unique()", data: {
+      moderator_user_id: event.moderator_user_id,
+      event_type: event.event_type,
+      target_user_id: event.target_user_id || "",
+      report_id: event.report_id || "",
+      action: event.action || "none",
+      outcome: event.outcome || "",
+      note: event.note || "",
+      created_at: event.created_at,
+    }});
+  } catch (error) { console.error("Moderation audit write failed", error instanceof Error ? error.message : "unknown"); }
+}
+
+async function notifyMember(recipientUserId: string | undefined, type: string, message: string, referenceId: string, createdAt: string) {
+  const tableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
+  if (!recipientUserId || !tableId) { console.error("Moderation notification recipient/table unavailable."); return; }
+  try {
+    const { tablesDB, databaseId } = communitySafetyStore();
+    await tablesDB.createRow({ databaseId, tableId, rowId: "unique()", data: {
+      recipient_user_id: recipientUserId, type, message, reference_id: referenceId, is_read: false, created_at: createdAt,
+    }});
+  } catch (error) { console.error("Moderation notification write failed", error instanceof Error ? error.message : "unknown"); }
+}
+
 function reportConfig() {
   const reports = process.env.APPWRITE_COMMUNITY_REPORTS_TABLE_ID;
   if (!reports) throw new Error("Community reports table is not configured.");
@@ -122,6 +152,11 @@ export async function PATCH(request: Request) {
         action_taken: action,
       },
     });
+    await recordAudit({ moderator_user_id: auth.user.$id, event_type: "report_decision", target_user_id: typeof report.reported_user_id === "string" ? report.reported_user_id : undefined, report_id: reportId, action, outcome: status, note: resolutionNote, created_at: now });
+    if (typeof report.reported_user_id === "string" && (action !== "none" || status === "resolved" || status === "dismissed")) {
+      const message = action === "suspend_member" ? "A moderation decision has restricted your Connect account. You may submit an appeal." : action === "remove_content" ? "A moderation decision was made about content you posted. You may submit an appeal." : status === "dismissed" ? "A report concerning you was reviewed and dismissed." : "A report concerning you was reviewed. Check your account for details or appeal if applicable.";
+      await notifyMember(report.reported_user_id, "moderation", message, reportId, now);
+    }
     return NextResponse.json({ updated: true, report: updated }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Moderation decision failed", error instanceof Error ? error.message : "unknown");
