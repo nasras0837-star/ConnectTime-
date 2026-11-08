@@ -1,4 +1,4 @@
-# ConnectTime community groups — Appwrite setup
+# Connect community groups — Appwrite setup
 
 Use the existing Appwrite database referenced by `APPWRITE_DATABASE_ID`. Do not create another database. Create three private TablesDB tables and keep all permissions server-only (no public read/write permissions). Configure these server environment variables:
 
