@@ -1,8 +1,8 @@
-# ConnectTime Ad Auction and Billing Specification
+# Connect Ad Auction and Billing Specification
 
 ## Product policy
 
-ConnectTime advertising uses advertiser-controlled budgets and an auction model. There is no fixed monthly price per ad and no guaranteed CPC, CPM, CPL, impression count, click count, or lead volume.
+Connect advertising uses advertiser-controlled budgets and an auction model. There is no fixed monthly price per ad and no guaranteed CPC, CPM, CPL, impression count, click count, or lead volume.
 
 Advertisers configure:
 - Campaign objective: awareness, traffic, engagement, leads, sales, event attendance, or app promotion.
