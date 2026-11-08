@@ -11,12 +11,16 @@ Required columns:
 | Column ID | Type | Required | Size / notes |
 |---|---|---:|---|
 | user_id | varchar/string | yes | 128 |
-| handle | varchar/string | yes | 24; unique index recommended |
+| handle | varchar/string | yes | 24; unique index required |
 | display_name | varchar/string | yes | 80 |
 | bio | varchar/string | yes | 500 |
 | country | varchar/string | yes | 80 |
 | region | varchar/string | yes | 100 |
 | interests | varchar/string | yes | 384; comma-separated |
+| age | integer | no | Optional self-reported display age; never treat as age verification |
+| gender | varchar/string | no | woman, man, nonbinary, prefer_not_to_say, or empty |
+| interested_in | varchar/string | yes | everyone, women, men, nonbinary |
+| relationship_goal | varchar/string | yes | serious_relationship, dating, friendship |
 | visibility | varchar/string | yes | public, members, friends, private |
 | created_at | varchar/string | yes | ISO timestamp |
 | updated_at | varchar/string | yes | ISO timestamp |
