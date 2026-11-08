@@ -54,7 +54,7 @@ After Yoti onboarding and sandbox access are approved, configure these as server
 
 Do not add either variable with a `NEXT_PUBLIC_` prefix. Do not commit credentials or ask users to paste them into chat. The notification verifier must use Yoti's official published Age Verification public key, pinned and reviewed in code/configuration according to Yoti's current documentation; do not accept a public key supplied by the webhook.
 
-Until the Yoti sandbox SDK ID and private key are configured and the sandbox adapter is implemented and tested, the session endpoint must continue returning 503. Sandbox results must be stored separately from production member-access state and must never set `adult_status=verified`. The existing `AGE_VERIFICATION_PROVIDER` placeholder is not a live integration switch.
+The session endpoint remains disabled unless all Appwrite settings are present, Yoti sandbox credentials are configured, and `YOTI_SANDBOX_ENABLED=true`. Sandbox results must be stored separately from production member-access state and must never set `adult_status=verified`. The sandbox session adapter creates an isolated sandbox session and persists its session-to-user mapping before returning the sandbox UI URL. It does not retrieve results, verify notifications, or update production member-access status. The sandbox endpoint is not a production verification integration.
 
 ## Tests and release gates
 
