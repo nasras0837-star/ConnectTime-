@@ -48,6 +48,7 @@ export default function AdvertisingDashboardPage() {
   const [sortOrder, setSortOrder] = useState("newest");
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [copiedCampaignId, setCopiedCampaignId] = useState<string | null>(null);
 
   const loadCampaigns = async () => {
     setError("");
@@ -76,7 +77,7 @@ export default function AdvertisingDashboardPage() {
 
   const filtered = useMemo(() => campaigns.filter(campaign => {
     const query = search.trim().toLowerCase();
-    const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region, campaign.objective, campaign.placement, campaign.audience_interests, campaign.geo_targets].some(value => (value || "").toLowerCase().includes(query));
+    const matchesText = !query || [campaign.$id, campaign.campaign_name, campaign.company, campaign.country, campaign.region, campaign.objective, campaign.placement, campaign.audience_interests, campaign.geo_targets].some(value => (value || "").toLowerCase().includes(query));
     const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
     const metricsVerified = campaign.metrics_status === "verified_events";
     const matchesMetrics = metricsFilter === "all" || (metricsFilter === "verified" && metricsVerified) || (metricsFilter === "unverified" && !metricsVerified);
@@ -121,6 +122,16 @@ export default function AdvertisingDashboardPage() {
   }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [filtered]);
   const ctr = totals.impressions > 0 ? totals.clicks / totals.impressions * 100 : 0;
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
+
+  const copyCampaignId = async (id: string) => {
+    try {
+      await navigator.clipboard.writeText(id);
+      setCopiedCampaignId(id);
+      window.setTimeout(() => setCopiedCampaignId(current => current === id ? null : current), 1800);
+    } catch {
+      setError("Could not copy the campaign ID. Check your browser clipboard permissions.");
+    }
+  };
 
   const exportCampaigns = () => {
     const columns = [
@@ -195,7 +206,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>RECORDED SPEND</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>VERIFIED IMPRESSIONS</small><strong>{metricsVerified ? number(impressions) : "Not verified"}</strong></div><div><small>VERIFIED CLICKS</small><strong>{metricsVerified ? number(clicks) : "Not verified"}</strong></div><div><small>VERIFIED CTR</small><strong>{metricsVerified ? pct(campaignCtr) : "Not available"}</strong></div></div>
           <div className="ctAdSpendTrack" aria-label={`Spend cap used: ${spendPercent.toFixed(1)} percent`}><span style={{ width: `${spendPercent}%` }} /></div><div className="ctAdSpendCaption"><span>{money(spend)} recorded</span><span>{money(Math.max(0, cap - spend))} remaining of cap</span></div>
           <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}{campaign.audience_interests && <span>Interests: {campaign.audience_interests.split(",").filter(Boolean).join(" · ")}</span>}</div><div><small>SCHEDULE</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
-          <div className="ctCampaignMeta"><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
+          <div className="ctCampaignMeta"><span>Campaign ID: <code>{campaign.$id}</code> <button type="button" onClick={() => void copyCampaignId(campaign.$id)} aria-label={`Copy campaign ID ${campaign.$id}`}>{copiedCampaignId === campaign.$id ? "Copied" : "Copy ID"}</button></span><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
       <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by ConnectTime's campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
