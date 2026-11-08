@@ -92,3 +92,46 @@ export async function createYotiSandboxSession() {
     sessionUrl: sessionUrl.toString(),
   };
 }
+
+
+export async function getYotiSandboxSessionResult(sessionId: string) {
+  if (process.env.YOTI_SANDBOX_ENABLED !== "true") {
+    throw new Error("Yoti sandbox is not explicitly enabled");
+  }
+  if (!/^[0-9a-f-]{36}$/i.test(sessionId)) {
+    throw new Error("Invalid Yoti session identifier");
+  }
+
+  const sdkId = requiredEnv("YOTI_SDK_ID");
+  const accessToken = await getSandboxAccessToken();
+  const response = await fetch(`https://age.yoti.com/sandbox/api/v1/sessions/${sessionId}/result`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Yoti-SDK-Id": sdkId,
+      Accept: "application/json",
+    },
+    cache: "no-store",
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error("Yoti sandbox result retrieval failed");
+
+  const payload = (await response.json()) as {
+    id?: string;
+    sdk_id?: string;
+    type?: string;
+    status?: string;
+    reference_id?: string;
+  };
+  if (payload.id !== sessionId || payload.sdk_id !== sdkId || payload.type !== "OVER" ||
+      !payload.status || !payload.reference_id) {
+    throw new Error("Yoti sandbox returned a mismatched result");
+  }
+
+  return {
+    sessionId,
+    status: payload.status,
+    referenceId: payload.reference_id,
+    over18SandboxPass: payload.status === "COMPLETE",
+  };
+}
