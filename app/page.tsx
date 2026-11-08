@@ -12,7 +12,8 @@ const destinations = [
   { icon: "📺", title: "Watch and explore", description: "Find news, entertainment and official broadcaster streams, plus video discovery.", href: "/free-tv", action: "Explore TV & video" },
   { icon: "🎵", title: "Free music & radio", description: "Tune into local radio and free music streams from countries and cultures around the world.", href: "/radio", action: "Listen worldwide" },
   { icon: "🎯", title: "Your personalized live feed", description: "Choose interests across news, sports, entertainment, music, business and science.", href: "#live-interest", action: "Explore live feeds" },
-  { icon: "📰", title: "Stay informed", description: "Browse current affairs and news topics from a range of publishers.", href: "/news", action: "Read the news" },\n  { icon: "📈", title: "Stock market & financial news", description: "Follow global indexes, stock charts, market movers, company activity and financial headlines.", href: "/markets", action: "Explore markets" },
+  { icon: "📰", title: "Stay informed", description: "Browse current affairs and news topics from a range of publishers.", href: "/news", action: "Read the news" },
+  { icon: "📈", title: "Stock market & financial news", description: "Follow global indexes, stock charts, market movers, company activity and financial headlines.", href: "/markets", action: "Explore markets" },
   { icon: "🎉", title: "Discover what's happening", description: "Explore community events and find activities and conversations to join.", href: "/events", action: "Explore events" },
   { icon: "🎯", title: "Smart advertising", description: "Plan campaigns around audience interests, regions and business goals. Explore targeting options and campaign tools, with review before launch.", href: "/advertise", action: "Explore smart advertising" },
 ];
