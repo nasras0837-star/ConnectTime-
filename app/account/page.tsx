@@ -85,7 +85,7 @@ export default async function AccountPage() {
         </div>
       </section>
 
-      <section className={decision.allowed ? "ctAccountStatus isActive" : "ctAccountStatus"} aria-live="polite">
+      <section className={decision.allowed ? "ctAccountStatus isActive" : "ctAccountStatus"} role="status" aria-live="polite">
         <span className="ctAccountStatusIcon">{decision.allowed ? "✓" : "🔒"}</span>
         <div><span className="ctAccountEyebrow">ACCOUNT ACCESS</span><h2>{status}</h2><p>{explanation}</p></div>
         {!decision.allowed && <Link href="/safety">Review verification requirements ↗</Link>}
