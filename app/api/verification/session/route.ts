@@ -49,7 +49,7 @@ export async function POST() {
     const session = await createYotiSandboxSession();
 
     // Persist the user/session binding before returning the hosted URL.
-    // This collection must be private and writable only by this server API key.
+    // This table must be private; the server API key performs row operations.
     await tablesDB.createRow({ databaseId, tableId, rowId: session.sessionId, data: {
       provider: "yoti",
       environment: "sandbox",
