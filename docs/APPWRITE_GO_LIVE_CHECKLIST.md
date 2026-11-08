@@ -6,13 +6,14 @@ This checklist consolidates the Appwrite setup for the existing Connect Next.js 
 
 - Use the existing Connect Appwrite project and database. Do not create another database just to satisfy an optional feature.
 - Deploy the Next.js application to Render for server-rendered pages and API routes. GitHub Pages publishes only the static `docs/` preview and cannot run authentication, API routes, or Appwrite server code.
-- The static public preview is `https://nasras0837-star.github.io/ConnectTime-/`. The full application is intended for the Render hostname `https://connect-web.onrender.com` once its service is deployed. A configured URL is not evidence that the service is live.
+- The static public preview is `https://nasras0837-star.github.io/ConnectTime-/`. The configured Render web-service hostname is `https://connect-web-7ypt.onrender.com`. Confirm the current deployment is live before treating the hostname as proof that the latest code is running.
+- Add the exact Render hostname as a Web platform in Appwrite. If a custom domain is added later, register that hostname separately.
 - Keep `APPWRITE_API_KEY` and all provider secrets server-only. Never use a `NEXT_PUBLIC_` prefix for secrets.
 - Tables must remain private. The browser must not receive Appwrite server credentials or be granted broad access to member data.
 
 ## Step 1 — Configure Appwrite authentication
 
-1. In the existing Appwrite project, add a Web platform for the exact Render production hostname and any staging hostname used for testing.
+1. In the existing Appwrite project, add a Web platform for `connect-web-7ypt.onrender.com` and any staging hostname used for testing.
 2. Configure the project endpoint and project ID in Render environment variables:
    - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
    - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
@@ -59,7 +60,7 @@ Use the Render Blueprint in the repository root (`render.yaml`):
 - Node.js: 22
 - Health check: `/api/auth/status`
 
-Follow `docs/RENDER_DEPLOYMENT.md` to create the Render web service, add the manual environment values, and allow the exact Render hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
+The existing Render service is `connect-web-7ypt` at `https://connect-web-7ypt.onrender.com`. Follow `docs/RENDER_DEPLOYMENT.md` to configure environment values and allow the exact hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
 
 ## Step 5 — Verify one feature at a time
 
