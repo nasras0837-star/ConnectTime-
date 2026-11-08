@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: connect-web
+    runtime: node
+    plan: free
+    region: ohio
+    branch: setup/render-auth-hosting
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/auth/status
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_PUBLIC_APPWRITE_ENDPOINT
+        sync: false
+      - key: NEXT_PUBLIC_APPWRITE_PROJECT_ID
+        sync: false
+      - key: APPWRITE_API_KEY
+        sync: false
+      - key: APPWRITE_ACCESS_DATABASE_ID
+        sync: false
+      - key: APPWRITE_MEMBER_ACCESS_COLLECTION_ID
+        sync: false
