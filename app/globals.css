@@ -935,3 +935,27 @@
 .ctAnalystCoverage a{display:inline-flex;margin-top:8px;color:#087eae;font-size:11px;font-weight:900;text-decoration:underline;text-underline-offset:3px}
 .ctAnalystNote{margin:12px 2px 0}
 @media(max-width:650px){.ctAnalystCoverage{grid-template-columns:1fr}.ctStockPanelHead{display:block}.ctHistoryRanges{margin-top:12px}}
+
+.ctAnalystLivePanel{margin:14px 0;padding:16px;border:1px solid #dce7ef;border-radius:15px;background:#fff}
+.ctAnalystDataMeta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;color:#087eae;font-size:10px;font-weight:900}
+.ctAnalystDataMeta small{color:#8799a8;font-weight:600}
+.ctAnalystSummary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ctAnalystSummary article{padding:15px;border:1px solid #e4edf3;border-radius:12px;background:#f8fbfd}
+.ctAnalystSummary article span{display:block;color:#8295a5;font-size:9px;font-weight:900;letter-spacing:.8px}
+.ctAnalystSummary article strong{display:block;margin:9px 0 5px;color:#173e5a;font:800 20px Manrope,sans-serif;overflow-wrap:anywhere}
+.ctAnalystSummary article small{color:#8093a2;font-size:9px}
+.ctAnalystDistribution{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:12px 0}
+.ctAnalystDistribution div{display:flex;justify-content:space-between;gap:5px;padding:10px;border-radius:9px;background:#eef6fa;color:#46667d;font-size:10px}
+.ctAnalystDistribution strong{color:#087eae}
+.ctAnalystChanges{margin-top:17px}
+.ctAnalystChanges h3{font:800 14px Manrope,sans-serif;color:#173e5a;margin:0 0 9px}
+.ctAnalystChanges article{display:grid;grid-template-columns:minmax(140px,1fr) minmax(150px,1.2fr) minmax(150px,1fr);align-items:center;gap:12px;padding:12px 3px;border-top:1px solid #edf1f4}
+.ctAnalystChanges article>div strong,.ctAnalystChanges article>div small{display:block}
+.ctAnalystChanges article>div strong{font-size:11px;color:#315b76}
+.ctAnalystChanges article>div small,.ctAnalystChanges article>small{font-size:9px;color:#8294a4}
+.ctAnalystChanges article p{margin:0;color:#506d81;font-size:10px;text-transform:capitalize}
+.ctAnalystUnavailable,.ctAnalystNoData{padding:14px;border-radius:10px;background:#f5f8fa;color:#708698;font-size:11px;line-height:1.7}
+.ctAnalystUnavailable strong{color:#315b76}
+.ctAnalystUnavailable p{margin:5px 0}
+.ctAnalystUnavailable a{color:#087eae;font-weight:900;text-decoration:underline}
+@media(max-width:650px){.ctAnalystSummary{grid-template-columns:1fr}.ctAnalystDistribution{grid-template-columns:repeat(2,minmax(0,1fr))}.ctAnalystChanges article{grid-template-columns:1fr;gap:5px}}
