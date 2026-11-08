@@ -137,7 +137,7 @@ export async function GET(request: Request) {
   }
 
   const categories: NewsCategory[] = requested === "For You"
-    ? ["World", "Politics", "Sports", "Entertainment", "Business", "Technology"]
+    ? ["World", "Politics", "Sports", "Entertainment", "Business", "Technology", "Music", "Gaming"]
     : [requested as NewsCategory];
 
   let lat: number | undefined;
