@@ -39,6 +39,7 @@ async function isBlocked(tablesDB: ReturnType<typeof communitySafetyStore>["tabl
     tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("blocker_user_id", a), Query.equal("blocked_user_id", b), Query.limit(1)] }),
     tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("blocker_user_id", b), Query.equal("blocked_user_id", a), Query.limit(1)] })
   ]);
+  // A block in either direction must prevent invitations and related contact.
   return forward.rows.length > 0 || reverse.rows.length > 0;
 }
 
