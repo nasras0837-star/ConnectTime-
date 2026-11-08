@@ -73,7 +73,7 @@ export async function POST(request: Request) {
   const appealId = cleanText(body.appealId, 128);
   const restore = cleanText(body.restore, 30);
   const note = cleanText(body.note, 1000);
-  if (!appealId || !["reinstate_member", "restore_content"].includes(restore) || note.length < 20) return NextResponse.json({ error: "Choose a restoration action and provide at least 20 characters of justification." }, { status: 400 });
+  if (!appealId || restore !== "restore_content" || note.length < 20) return NextResponse.json({ error: "Choose a restoration action and provide at least 20 characters of justification." }, { status: 400 });
   try {
     const s = config();
     const appeal = await s.tablesDB.getRow({ databaseId:s.databaseId, tableId:s.tableId, rowId:appealId });
@@ -84,13 +84,11 @@ export async function POST(request: Request) {
     const report = await s.tablesDB.getRow({databaseId:s.databaseId,tableId:reportTable,rowId:reportId});
     if (report.reported_user_id !== appeal.appellant_user_id) return NextResponse.json({error:"Appeal and enforcement target do not match."},{status:409});
     const now = new Date().toISOString();
-    if (restore === "reinstate_member") {\n      return NextResponse.json({ error: "Account reinstatement is temporarily disabled until Connect has a separate enforcement ledger that can safely distinguish overlapping restrictions. No account status was changed." }, { status: 409 });\nelse {
-      if (report.action_taken !== "remove_content" || report.target_type !== "post" || !report.content_reference) return NextResponse.json({error:"This appeal does not reference a removable community post."},{status:409});
-      const postTables=[process.env.APPWRITE_COMMUNITY_POSTS_TABLE_ID,process.env.APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID].filter((v):v is string=>Boolean(v));
-      let restored=false;
-      for(const tableId of postTables){try{const post=await s.tablesDB.getRow({databaseId:s.databaseId,tableId,rowId:String(report.content_reference)});if(post.author_user_id!==appeal.appellant_user_id||post.status!=="removed")return NextResponse.json({error:"Post owner/status does not match this enforcement. No restoration occurred."},{status:409});await s.tablesDB.updateRow({databaseId:s.databaseId,tableId,rowId:String(post.$id),data:{status:"published",updated_at:now}});restored=true;break;}catch(e){if(!(typeof e==="object"&&e!==null&&"code"in e&&e.code===404))throw e;}}
-      if(!restored)return NextResponse.json({error:"Original removed post not found."},{status:404});
-    }
+    if (report.action_taken !== "remove_content" || report.target_type !== "post" || !report.content_reference) return NextResponse.json({error:"This appeal does not reference a removable community post."},{status:409});
+    const postTables=[process.env.APPWRITE_COMMUNITY_POSTS_TABLE_ID,process.env.APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID].filter((v):v is string=>Boolean(v));
+    let restored=false;
+    for(const tableId of postTables){try{const post=await s.tablesDB.getRow({databaseId:s.databaseId,tableId,rowId:String(report.content_reference)});if(post.author_user_id!==appeal.appellant_user_id||post.status!=="removed")return NextResponse.json({error:"Post owner/status does not match this enforcement. No restoration occurred."},{status:409});await s.tablesDB.updateRow({databaseId:s.databaseId,tableId,rowId:String(post.$id),data:{status:"published",updated_at:now}});restored=true;break;}catch(e){if(!(typeof e==="object"&&e!==null&&"code"in e&&e.code===404))throw e;}}
+    if(!restored)return NextResponse.json({error:"Original removed post not found."},{status:404});
     await auditAppeal({moderator_user_id:auth.user.$id,appellant_user_id:String(appeal.appellant_user_id),appeal_id:appealId,outcome:"restoration_"+restore,note,created_at:now});
     await notifyAppellant(String(appeal.appellant_user_id),appealId,"overturned",now);
     return NextResponse.json({restored:true,action:restore},{headers:{"Cache-Control":"no-store"}});
