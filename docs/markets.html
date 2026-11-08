@@ -41,7 +41,18 @@ main.wrap>.head .eyebrow, main.wrap section .head .eyebrow{color:#087eae}
 .market-guide h3{font-size:14px;margin:0 0 7px;color:#173e5a}
 .market-guide p{font-size:11px;line-height:1.7;color:#71879a;margin:0}
 @media(max-width:760px){.market-briefing{grid-template-columns:repeat(2,minmax(0,1fr))}.market-guide{grid-template-columns:1fr}}
-</style></head><body>
+</style>
+<style>
+/* Connect electric-blue globe background — Markets page */
+body{
+  color:#f5f8ff!important;
+  background-color:#020827!important;
+  background-image:linear-gradient(90deg,rgba(2,8,39,.90) 0%,rgba(2,8,39,.74) 48%,rgba(2,8,39,.48) 100%),url("https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/docs/connect-globe-background.svg")!important;
+  background-position:center top!important;background-size:cover!important;background-repeat:no-repeat!important;background-attachment:fixed!important;
+}
+@media(max-width:650px){body{background-attachment:scroll!important}}
+</style>
+</head><body>
 <header><a class="brand" href="./">Connect<small>MARKETS</small></a><nav><a href="./">Home</a><a href="./#news">News</a><a href="https://connecttime-sm.netlify.app/register" target="_blank" rel="noopener noreferrer">Register Now</a></nav></header>
 <main class="wrap"><section class="hero"><div class="eyebrow">CONNECT · FINANCIAL MARKETS</div><h1>Markets move.<br>Stay in the know.</h1><p>Follow global indexes, explore company charts, save a personal stock watchlist, and keep up with financial headlines.</p></section>
 <div class="panel ticker"><div class="widget" id="ticker" style="height:76px"></div></div>
