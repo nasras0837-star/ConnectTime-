@@ -137,6 +137,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
    <div class="aiPreviewQuick"><small>QUICK QUESTIONS</small>
     <button type="button" data-question="What can I do on ConnectTime?">What can I do on ConnectTime? <b>↗</b></button>
     <button type="button" data-question="How do Chat Rooms work?">How do Chat Rooms work? <b>↗</b></button>
+    <button type="button" data-question="How do group video meetings work?">How do group video meetings work? <b>↗</b></button>
     <button type="button" data-question="What is ConnectTime Video Tube?">What is ConnectTime Video Tube? <b>↗</b></button>
     <button type="button" data-question="Can I browse Free TV without registering?">Can I browse Free TV without registering? <b>↗</b></button>
     <button type="button" data-question="How does ConnectTime Radio work?">How does ConnectTime Radio work? <b>↗</b></button>
@@ -156,6 +157,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
  const answers=[
   [/what can i do|features|connecttime about/i,"ConnectTime brings together worldwide member discovery, friend requests, private text messaging, community groups, text posts, a personalized live-interest feed, news, official TV destinations, events, advertising tools, and member feedback. Some areas remain in development and require production configuration."],
   [/chat room|group|private room|public room/i,"Chat Rooms are designed for people to discover interest-based groups, search by topic, join public rooms, or request access to private rooms. The current website preview demonstrates the idea; shared room membership, messages, and secure invitations still need the production backend."],
+  [/group video meeting|group call|video meeting|meeting room|livekit/i,"ConnectTime Group Video Meetings are designed to bring friends and groups together in a shared audio-and-video room. An eligible signed-in account is required, and your browser controls camera and microphone permissions. You can create a room or join with an invitation link. Availability depends on the production LiveKit service configuration."],
   [/video tube|creator|video post/i,"ConnectTime Video Tube is the planned video-post destination where members can discover creator videos and share their own content. Publishing, uploads, and creator tools may not yet be active in this preview."],
   [/dating|verify|identity|age/i,"ConnectTime Dating is intended for adults 18+ only. Access must require reliable government-issued ID checks for age and identity. Never send an ID document or ID number through this chat preview."],
   [/radio|music|listen|station|soundcloud|bandcamp/i,"ConnectTime Radio helps visitors discover internet radio stations by country, language, station name, and genre. You can listen to supported public streams in the full application and save favorite stations. Streams are supplied by independent broadcasters and may be interrupted, unavailable, or subject to regional restrictions."],
