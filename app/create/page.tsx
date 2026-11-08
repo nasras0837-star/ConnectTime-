@@ -34,12 +34,12 @@ export default function CreatePage() {
   function previewPost(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!file || !accepted) return;
-    setNotice("Your content preview is ready. Public publishing is currently locked until ConnectTime's server-side media moderation and storage are connected.");
+    setNotice("Your content preview is ready. Public publishing is currently locked until Connect's server-side media moderation and storage are connected.");
   }
 
   return (
     <main className="createPage">
-      <header className="createHeader"><Link href="/" className="createBrand" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/events">Events</Link></nav></header>
+      <header className="createHeader"><Link href="/" className="createBrand" aria-label="Connect home"><Image src="/connect-logo.svg" alt="Connect" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">Connect TV</Link><Link href="/events">Events</Link></nav></header>
       <section className="createHero"><span>CREATE · SHARE · CONNECT</span><h1>Your moment deserves<br/><em>to be seen.</em></h1><p>Share photos and videos, tell your story, and connect with people who love what you love—wherever they are in the world.</p></section>
       <section className="createWorkspace">
         <form className="createCard" onSubmit={previewPost}>
@@ -53,14 +53,14 @@ export default function CreatePage() {
             <span className="createChoose">Choose media</span>
           </button>
           {previewUrl && <div className="createPreview">{file?.type.startsWith("video/") ? <video src={previewUrl} controls playsInline /> : <img src={previewUrl} alt="Selected media preview"/>}<div><b>{file?.name}</b><small>{file ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : ""}</small></div></div>}
-          <div className="contentRules"><b>Community content rules</b> <Link href="/community-guidelines">Read the full Community Guidelines</Link><ul><li>No nudity, sexually explicit images, or pornographic content.</li><li>No sexual exploitation, non-consensual intimate imagery, or content involving minors.</li><li>No threats, harassment, intimidation, stalking, doxxing, or illegal content.</li><li>Good-faith opinions, criticism, debate, and unpopular viewpoints are welcome; disagreement alone is not a violation.</li><li>Only share media you have the rights and permission to post.</li></ul><label className="createConsent"><input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)}/> I confirm this content follows ConnectTime&apos;s rules, including the no-harassment and no-intimidation standard.</label></div>
+          <div className="contentRules"><b>Community content rules</b> <Link href="/community-guidelines">Read the full Community Guidelines</Link><ul><li>No nudity, sexually explicit images, or pornographic content.</li><li>No sexual exploitation, non-consensual intimate imagery, or content involving minors.</li><li>No threats, harassment, intimidation, stalking, doxxing, or illegal content.</li><li>Good-faith opinions, criticism, debate, and unpopular viewpoints are welcome; disagreement alone is not a violation.</li><li>Only share media you have the rights and permission to post.</li></ul><label className="createConsent"><input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)}/> I confirm this content follows Connect&apos;s rules, including the no-harassment and no-intimidation standard.</label></div>
           <button className="createSubmit" type="submit" disabled={!file || !accepted}>Prepare post preview</button>
           {notice && <p className="createNotice" role="status">{notice}</p>}
           <p className="createDisclaimer">Preview only. Media is not uploaded, stored, or published. Public posting will remain disabled until server-side file validation, nudity/sexual-content moderation, reporting, and secure media storage are tested.</p>
         </form>
-        <aside className="createSafety"><span>🛡️</span><h3>Open expression, without harassment</h3><p>ConnectTime welcomes creativity, culture, hobbies, education, good-faith debate, criticism, and differing opinions. Harassment, intimidation, threats, and privacy violations are not allowed.</p><div>🚫 No nudity or pornographic content</div><div>🔞 Adults 18+ only</div><div>🤝 Respect consent and privacy</div><div>🌍 Share respectfully across cultures</div><Link href="/">Back to community →</Link></aside>
+        <aside className="createSafety"><span>🛡️</span><h3>Open expression, without harassment</h3><p>Connect welcomes creativity, culture, hobbies, education, good-faith debate, criticism, and differing opinions. Harassment, intimidation, threats, and privacy violations are not allowed.</p><div>🚫 No nudity or pornographic content</div><div>🔞 Adults 18+ only</div><div>🤝 Respect consent and privacy</div><div>🌍 Share respectfully across cultures</div><Link href="/">Back to community →</Link></aside>
       </section>
-      <footer className="createFooter">ConnectTime · Share your world, safely. · Adults 18+</footer>
+      <footer className="createFooter">Connect · Share your world, safely. · Adults 18+</footer>
     </main>
   );
 }
