@@ -18,6 +18,7 @@ const languages=["Arabic","Bengali","Chinese","English","French","German","Hindi
 export default function RadioPage(){
  const audioRef=useRef<HTMLAudioElement>(null);
  const searchController=useRef<AbortController|null>(null);
+ const moreController=useRef<AbortController|null>(null);
  const [region,setRegion]=useState("All regions"),[country,setCountry]=useState(""),[language,setLanguage]=useState(""),[query,setQuery]=useState(""),[sort,setSort]=useState("clickcount");
  const [stations,setStations]=useState<Station[]>([]),[favoriteStations,setFavoriteStations]=useState<Station[]>([]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(""),[playing,setPlaying]=useState<string|null>(null),[playingName,setPlayingName]=useState(""),[streamUrl,setStreamUrl]=useState(""),[loadingId,setLoadingId]=useState("");
@@ -29,6 +30,9 @@ export default function RadioPage(){
 
  const search=useCallback(async()=>{
   searchController.current?.abort();
+  moreController.current?.abort();
+  moreController.current=null;
+  setMoreLoading(false);
   const controller=new AbortController();
   searchController.current=controller;
   setLoading(true);setError("");
@@ -105,18 +109,25 @@ export default function RadioPage(){
 
  async function loadMoreStations(){
   if(moreLoading||!hasMore||savedOnly)return;
+  moreController.current?.abort();
+  const controller=new AbortController();
+  moreController.current=controller;
   setMoreLoading(true);
   try{
    const p=new URLSearchParams({limit:"100",offset:String(stations.length),sort});
    if(country)p.set("country",country);if(language)p.set("language",language);if(query.trim())p.set("q",query.trim());
-   const response=await fetch("/api/radio?"+p.toString(),{cache:"no-store"});
+   const response=await fetch("/api/radio?"+p.toString(),{cache:"no-store",signal:controller.signal});
    const data=await response.json();
    if(!response.ok)throw new Error(data.error||"Could not load more stations");
    const next=Array.isArray(data.stations)?data.stations as Station[]:[];
+   if(controller.signal.aborted||moreController.current!==controller)return;
    setStations(current=>{const seen=new Set(current.map(station=>station.id));return [...current,...next.filter(station=>!seen.has(station.id))];});
    setHasMore(next.length===100);
-  }catch(e){setError(e instanceof Error?e.message:"Could not load more stations");}
-  finally{setMoreLoading(false);}
+  }catch(e){
+   if(!controller.signal.aborted&&moreController.current===controller)setError(e instanceof Error?e.message:"Could not load more stations");
+  }finally{
+   if(moreController.current===controller){moreController.current=null;setMoreLoading(false);}
+  }
  }
 
  async function playStation(station:Station){
