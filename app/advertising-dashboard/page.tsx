@@ -42,7 +42,8 @@ const scheduleStatus = (campaign: Campaign, now = Date.now()) => {
 const label = (value?: string) => (value || "draft").replaceAll("_", " ").replaceAll("-", " ").split(" ").map(word => word ? word[0].toUpperCase() + word.slice(1) : word).join(" ");
 const csvCell = (value: unknown) => {
   let text = value === null || value === undefined ? "" : String(value);
-  if (/^[=+\-@\t\r]/.test(text)) text = "'" + text;
+  // Protect spreadsheet users even when untrusted text starts with whitespace/control characters.
+  if (/^[\\u0000-\\u0020]*[=+\\-@]/.test(text)) text = "'" + text;
   return '"' + text.replaceAll('"', '""') + '"';
 };
 
