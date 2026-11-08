@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       status = "review"; adultStatus = "review";
     }
     const now = new Date().toISOString();
-    await tables.updateRow({ databaseId, tableId: recordsTableId, rowId: record.$id, data: { status, verified_at: verifiedAt || "", updated_at: now } });
+    await tables.updateRow({ databaseId, tableId: recordsTableId, rowId: record.$id, data: { status, ...(verifiedAt ? { verified_at: verifiedAt } : {}), updated_at: now } });
     const access = await databases.getDocument(accessDatabaseId, accessCollectionId, userId).catch(() => null);
     if (!access) {
       await databases.createDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus });
