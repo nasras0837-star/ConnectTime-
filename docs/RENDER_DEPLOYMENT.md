@@ -6,7 +6,7 @@ This repository's full Next.js application is intended to run on Render. GitHub 
 
 1. Open https://dashboard.render.com/ and choose **New → Blueprint**.
 2. Connect GitHub repository `nasras0837-star/ConnectTime-`.
-3. Select branch `setup/render-auth-hosting` for this setup preview (after review/merge, change the Blueprint branch to `main`).
+3. Select branch `main`.
 4. Render detects the root `render.yaml` and creates the `connect-web` web service.
 5. In the service's Environment settings, enter the real values for the variables marked **not synced**:
    - `NEXT_PUBLIC_APPWRITE_ENDPOINT`: your existing Appwrite Cloud endpoint, including `/v1`.
