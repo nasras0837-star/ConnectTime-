@@ -1,4 +1,4 @@
-# ConnectTime Appwrite platform data model
+# Connect Appwrite platform data model
 
 This is the proposed server-side data model for the first production backend. It is a deployment specification, not a claim that these tables/collections have already been created. Create resources in a dedicated Appwrite project and keep all private collections inaccessible to anonymous clients.
 
@@ -34,7 +34,7 @@ Do not paste API keys or webhook secrets into chat, source files, screenshots, o
 - Store timestamps in UTC ISO-8601 format.
 - Validate and bound all user-supplied strings, arrays, URLs, and pagination values.
 - Keep verification evidence, moderation notes, private messages, and reports private.
-- Do not store raw government ID images or card details in ConnectTime.
+- Do not store raw government ID images or card details in Connect.
 
 ## Proposed collections
 
