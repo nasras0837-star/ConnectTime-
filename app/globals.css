@@ -945,3 +945,11 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 .messageStartForm button { border: 0; border-radius: 9px; padding: 8px 12px; background: #2d70cd; color: white; cursor: pointer; }
 .messageStartForm small, .messageReadReceipt { color: #b9c9e2; font-size: .72rem; }
 .messageReadReceipt { display: block; margin-top: 3px; text-align: right; }
+
+
+/* Prominent homepage feature highlights */
+.ctHomeFeatureHighlights{display:flex;align-items:center;justify-content:flex-start;gap:clamp(8px,1.25vw,17px);flex-wrap:wrap;margin-top:24px;padding:15px 18px;border:1px solid #55c7f3;border-radius:16px;background:linear-gradient(110deg,#073e73 0%,#075b9b 52%,#087fbd 100%);box-shadow:0 12px 28px #075b9b30;color:#fff}
+.ctHomeFeatureHighlights a{color:#fff;text-decoration:none;font-size:clamp(12px,1.1vw,15px);font-weight:950;line-height:1.4;text-shadow:0 1px 2px #00294d70}
+.ctHomeFeatureHighlights a:hover{text-decoration:underline;text-underline-offset:4px;color:#fff}
+.ctHomeFeatureHighlights span{color:#83e7ff;font-size:18px;font-weight:1000;text-shadow:0 0 12px #8deaff90}
+@media(max-width:560px){.ctHomeFeatureHighlights{justify-content:center;gap:8px 10px;margin-top:20px;padding:13px 12px}.ctHomeFeatureHighlights a{font-size:12px}.ctHomeFeatureHighlights span{font-size:14px}}
