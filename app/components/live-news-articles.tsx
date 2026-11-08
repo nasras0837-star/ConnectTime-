@@ -65,9 +65,12 @@ export default function LiveNewsArticles() {
   }, []);
 
   useEffect(() => {
-    void load("Top stories");
+    const initialLoad = window.setTimeout(() => { void load("Top stories"); }, 0);
     const timer = window.setInterval(() => { void load("Top stories"); }, 5 * 60 * 1000);
-    return () => window.clearInterval(timer);
+    return () => {
+      window.clearTimeout(initialLoad);
+      window.clearInterval(timer);
+    };
   }, [load]);
 
   const visible = category === "Top stories" ? articles : articles.filter((article) => article.category === category);
