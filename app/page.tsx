@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import LiveInterestFeed from "./components/live-interest-feed";
+import RadioStationFinder from "./components/radio-station-finder";
 
 const destinations = [
   { icon: "❤️", title: "Dating & mutual likes", description: "Find compatible adults by age, interests, location and relationship goals. Like someone and connect when the interest is mutual.", href: "/dating", action: "Explore dating" },
@@ -29,6 +30,7 @@ export default function HomePage() {
       <div className="ctHomeHeroVisual" aria-label="ConnectTime brings together community, media and discovery"><div className="ctHomeOrb">CT</div><div className="ctHomeFloat ctHomeFloatOne"><b>📰</b><span>News & stories</span></div><div className="ctHomeFloat ctHomeFloatTwo"><b>📺</b><span>TV & video</span></div><div className="ctHomeFloat ctHomeFloatThree"><b>💬</b><span>People & community</span></div><div className="ctHomeFloat ctHomeFloatFour"><b>🎵</b><span>Entertainment</span></div></div>
     </section>
     <section className="ctHomeIntro"><span>MORE THAN A SOCIAL NETWORK</span><h2>Social connection meets your daily media hub.</h2><p>Catch up on the latest, find something to watch, share your point of view and connect around what matters to you.</p></section>
+    <RadioStationFinder />
     <div id="live-interest" className="ctHomeLiveFeed"><LiveInterestFeed /></div>
     <section className="ctHomeSmartAds"><div className="ctHomeAdIcon">✦</div><div><span>FOR BUSINESSES, CREATORS & ORGANIZATIONS</span><h2>Smart advertising that helps you reach the right audience.</h2><p>Explore campaign planning built around audience interests, geographic reach and your marketing goals. Review your campaign options and submit it for approval before launch.</p><div className="ctHomeAdPills"><b>Interest-led planning</b><b>Regional reach</b><b>Campaign insights</b></div></div><Link href="/advertise">Explore smart advertising <span>→</span></Link></section>
     <section className="ctHomeGrid">{destinations.map(item=><article className="ctHomeCard" key={item.title}><span className="ctHomeCardIcon">{item.icon}</span><h3>{item.title}</h3><p>{item.description}</p><Link href={item.href}>{item.action} <span>→</span></Link></article>)}</section>
