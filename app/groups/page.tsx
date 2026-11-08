@@ -67,7 +67,7 @@ export default function GroupsPage() {
   }
 
   return <main className="communityPage">
-    <header className="communityHeader"><Link href="/" className="communityBrand">◉ ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/community">Community</Link><Link href="/groups/invitations">Invitations</Link><Link href="/discover">Discover</Link><Link href="/account">Account</Link></nav></header>
+    <header className="communityHeader"><Link href="/" className="communityBrand">◉ Connect</Link><nav><Link href="/">Home</Link><Link href="/community">Community</Link><Link href="/groups/invitations">Invitations</Link><Link href="/discover">Discover</Link><Link href="/account">Account</Link></nav></header>
     <section className="communityHero"><span>FIND YOUR PEOPLE</span><h1>Communities for <em>every interest.</em></h1><p>Create a group, join conversations, and connect around shared interests. Group content follows its privacy settings. Verified adult members only.</p></section>
     <section className="groupsLayout">
       <div className="groupsDirectory"><div className="communityFeedHead"><div><span>YOUR COMMUNITY</span><h2>Group invitations</h2><p>Check invitations to private communities and accept or decline them.</p><Link href="/groups/invitations">Open invitation inbox →</Link></div></div><div className="communityFeedHead"><div><span>DISCOVER</span><h2>Available groups</h2></div><button type="button" onClick={() => void refresh()}>Refresh</button></div>
@@ -76,6 +76,6 @@ export default function GroupsPage() {
       </div>
       <aside className="groupCreateCard"><span>START A COMMUNITY</span><h2>Create a group</h2><p>Choose who can discover the group and whether membership is open or requires approval.</p><form onSubmit={create}><label>Group name<input value={name} onChange={e => setName(e.target.value)} minLength={3} maxLength={70} required placeholder="e.g. Local photography" /></label><label>Description<textarea value={description} onChange={e => setDescription(e.target.value)} maxLength={500} rows={4} placeholder="What is this group about?" /></label><label>Who can discover it<select value={privacy} onChange={e => setPrivacy(e.target.value)}><option value="public">Public — anyone signed in</option><option value="members">Members — discoverable, discussion members only</option><option value="private">Private — members only, invitation required</option></select></label><label>Membership<select value={membership} onChange={e => setMembership(e.target.value)}><option value="open">Open — join immediately</option><option value="approval">Approval required</option></select></label><button type="submit" disabled={busy === "create"}>{busy === "create" ? "Creating…" : "Create group"}</button></form><small>Group owners are automatically enrolled. Owners cannot leave their group until ownership is transferred or the group is closed.</small></aside>
     </section>
-    <footer className="communityFooter"><Link href="/legal/terms">Terms</Link> · <Link href="/safety">Safety Center</Link> · ConnectTime</footer>
+    <footer className="communityFooter"><Link href="/legal/terms">Terms</Link> · <Link href="/safety">Safety Center</Link> · Connect</footer>
   </main>;
 }
