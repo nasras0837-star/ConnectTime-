@@ -203,6 +203,37 @@ body{background-color:#020a2a;color:#f7fbff}
 footer a{color:#bceeff}
 @media(min-width:900px){.heroArt{background-size:cover;background-position:center}}
 @media(max-width:620px){.hero h1{letter-spacing:-2px}.hero p{font-size:15px}.nav{background:#06143df5;border:1px solid #3974c7}}
+
+/* Connect electric-blue globe background and legibility */
+body{background:#020827 url('./connect-globe-background.svg') center top/cover fixed no-repeat!important;color:#f7fbff}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(2,8,39,.92) 0%,rgba(2,8,39,.72) 43%,rgba(2,8,39,.28) 100%)}
+header{background:linear-gradient(180deg,rgba(2,8,39,.9),rgba(2,8,39,.28));border-radius:0 0 18px 18px}
+.brand span{background:linear-gradient(90deg,#65eaff,#a6b5ff 55%,#ff72d6);background-clip:text;color:transparent}
+.nav{color:#e2efff}.nav a:hover{color:#75f3ff}
+.hero{position:relative;isolation:isolate;min-height:600px}
+.hero:before{content:"";position:absolute;inset:12px -20px;border-radius:34px;z-index:-1;background:linear-gradient(90deg,rgba(2,9,42,.94),rgba(3,18,67,.72) 54%,rgba(3,18,67,.08));border:1px solid rgba(92,190,255,.24);box-shadow:0 24px 70px rgba(0,0,0,.2)}
+.hero h1,.head h2,.community h2,.panelTop h2,.tile h3,.topic h3,.postTop b{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.hero p,.head p,.community p,.panelTop p,.tile p,.topic p,.post p,.proof,.postTop small,.stats{color:#d7e7ff;text-shadow:0 1px 7px rgba(0,0,0,.5)}
+.heroEyebrow,.eyebrow{color:#70f0ff;text-shadow:0 1px 8px #001238}
+.hero h1 em{background:linear-gradient(95deg,#43e7ff,#a6a4ff 48%,#ff68cb);background-clip:text;color:transparent}
+.heroArt{background:radial-gradient(circle at 62% 35%,#087eff 0,#063baf 42%,#020b35 100%);border:1px solid #48cfff;box-shadow:0 25px 75px #006bff55}
+.heroArt:before{background:radial-gradient(circle at 32% 28%,#8ffcff 0,#2c9fff 12%,#1456db 38%,#061a69 72%);box-shadow:inset -35px -25px 65px #01082e,0 0 45px #00c8ff66;animation:globePulse 7s ease-in-out infinite alternate}
+.heroArt:after{background:radial-gradient(circle,#00d9ff55,transparent 68%);animation:blueAura 8s ease-in-out infinite alternate}
+.orb{border:2px solid #62eaffaa;box-shadow:0 0 0 18px #32aaff18,0 0 0 38px #32aaff10,0 0 48px #00cfff55;animation:orbitGlow 6s ease-in-out infinite alternate}
+.centerLogo{background:#04123cbb;border:1px solid #6cecff66;backdrop-filter:blur(8px);box-shadow:0 20px 55px #0008;animation:logoFloat 6s ease-in-out infinite}
+.float,.post,.tile,.topic,.notice{background:rgba(4,19,59,.92);border:1px solid #397bd0;color:#f2f8ff;box-shadow:0 14px 35px #0005}
+.float small,.postTop small,.stats{color:#b9d5ff}
+.metrics{background:linear-gradient(105deg,#07164b,#073e9b 60%,#075b9d);border:1px solid #246cff;box-shadow:0 15px 34px #001b5b66}
+.metrics b,.proof b{color:#63f5ff}
+.panel{background:linear-gradient(125deg,rgba(5,24,71,.96),rgba(10,39,103,.94) 52%,rgba(52,19,91,.94));border-color:#397bd0}
+.join{background:linear-gradient(110deg,#0758d8,#007eae 58%,#7616b5);box-shadow:0 18px 40px #001b5b66}
+.btn{background:linear-gradient(110deg,#087cff,#00d9ff 65%,#20e7d0);box-shadow:0 10px 28px #007bff55}
+.btn.pink{background:linear-gradient(110deg,#a72cff,#ff169d)}
+.btn.ghost{background:#07194be8;color:#c7f5ff!important;border-color:#3d7cff;box-shadow:none}
+footer{color:#c0d7f7;border-color:#28549a}
+@keyframes globePulse{to{transform:translate(-8px,12px) scale(1.04);filter:saturate(1.3)}}@keyframes blueAura{to{transform:translate(30px,-18px) scale(1.12)}}@keyframes orbitGlow{to{box-shadow:0 0 0 26px #32aaff20,0 0 0 52px #32aaff12,0 0 65px #00cfff88;transform:rotate(8deg)}}@keyframes logoFloat{50%{transform:translateY(-8px) rotate(-1deg)}}
+@media(max-width:760px){body:before{background:rgba(2,8,39,.72)}.hero:before{inset:0}.hero{min-height:auto}.heroArt{min-height:320px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 
 <style id="connecttime-hero-people-background">
