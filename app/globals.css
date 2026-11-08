@@ -1370,3 +1370,77 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .plannedFeatureFooter{max-width:1120px;margin:24px auto 0;padding:20px 0;text-align:center;color:#9990ad;font-size:11px}
 @media(max-width:850px){.discoverFilters{grid-template-columns:1fr 1fr}.discoverGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.messagesLayout{grid-template-columns:1fr}.messageInbox{max-height:260px;overflow:auto}.messageThread{min-height:420px}}
 @media(max-width:560px){.authShell{padding:0 12px 20px}.plannedFeatureHeader{align-items:flex-start;flex-direction:column;padding:12px 16px}.plannedFeatureHeader nav{gap:12px;font-size:12px}.ctLogoImage{width:120px;height:58px}.authCard{padding:20px 16px;border-radius:19px}.discoverFilters,.discoverGrid{grid-template-columns:1fr}.messageHistory{padding:14px}.messageBubble{max-width:94%}}
+
+/* ConnectTime dating, friends and community suite */
+.datingSelectionBar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:18px 0;padding:13px 15px;border:1px solid #e9def8;border-radius:15px;background:linear-gradient(105deg,#f6efff,#fff0f8)}
+.datingSelectionBar>span{margin-right:auto;color:#6e4c99;font-size:12px;font-weight:800}
+.datingSelectionBar button{border:1px solid #e7d9f7;border-radius:10px;padding:9px 12px;background:#fff;color:#704b9c;font-size:11px;font-weight:800;cursor:pointer}
+.datingSelectionBar button.discoverConnectButton{border:0;background:linear-gradient(105deg,#7538db,#dc35a8);color:white}
+.datingSelectMember{display:flex!important;grid-template-columns:auto 1fr!important;align-items:center;gap:8px!important;margin:14px 0!important;padding:9px 11px;border-radius:10px;background:#f7f1ff;color:#70538e!important;font-size:11px!important}
+.datingSelectMember input{width:16px!important;height:16px;accent-color:#963ed0}
+.discoverMember>p strong{color:#8c43c6;font-size:12px}
+.friendsCard{max-width:980px}
+.friendSection{margin:22px 0;padding:19px;border:1px solid #ebe4f6;border-radius:18px;background:linear-gradient(145deg,#fff,#fbf9ff);box-shadow:0 8px 25px #4931780a}
+.friendSectionHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.friendSectionHead h2{margin:0;font-size:19px;letter-spacing:-.7px;color:#39285e}
+.friendSectionHead>span{display:grid;place-items:center;min-width:29px;height:29px;padding:0 8px;border-radius:20px;background:#f0e5ff;color:#8144c5;font-size:11px;font-weight:800}
+.friendEntry{display:flex;align-items:center;gap:13px;padding:13px 12px;margin:8px 0;border:1px solid #eee9f5;border-radius:14px;background:#fff}
+.friendEntryCopy{display:grid;gap:4px;min-width:0}
+.friendEntryCopy strong{font-size:13px;color:#3f315f}
+.friendEntryCopy span{font-size:11px;color:#9289a4;overflow-wrap:anywhere}
+.friendEntryActions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-left:auto}
+.friendEntryActions button,.friendEntryActions a{border:0;border-radius:9px;padding:9px 12px;background:linear-gradient(105deg,#7538db,#dc35a8);color:white;font-size:11px;font-weight:800;cursor:pointer}
+.friendEntryActions button.secondary{background:#f2edf8;color:#76648e;border:1px solid #e8e0f1}
+.friendEntryActions>span{font-size:11px;color:#9675bd;font-weight:800}
+.friendEntryActions .friendConnected{color:#179b79}
+.friendEntryActions .friendMessageLink{background:#e9f1ff;color:#426ec2}
+.friendEmpty{padding:15px 12px;border-radius:12px;background:#f8f6fc;color:#8b829d;font-size:12px;line-height:1.6}
+.friendRefresh{border:0;background:transparent;color:#8745c7;font:700 12px 'DM Sans',sans-serif;cursor:pointer}
+.introActions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.introActions>a{display:inline-flex;align-items:center;justify-content:center;padding:11px 15px;border-radius:11px;background:linear-gradient(105deg,#7538db,#dc35a8);color:white;font-size:12px;font-weight:800}
+.introActions>a.introExplore{background:#f1eaff;color:#7741b8}
+.communityPage{min-height:100vh;padding:0 clamp(14px,3vw,34px) 28px;background:radial-gradient(ellipse at 3% 0%,#f3e6ff 0,transparent 33%),radial-gradient(ellipse at 100% 12%,#e2f0ff 0,transparent 32%),linear-gradient(145deg,#faf7ff,#f4f7ff 60%,#fff7fb);color:#30234f}
+.communityHeader{max-width:1320px;min-height:76px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid #ffffffd9;border-radius:0 0 20px 20px;background:#ffffffc9;box-shadow:0 10px 32px #4931780c;backdrop-filter:blur(16px)}
+.communityBrand{font:800 22px Manrope,sans-serif;color:#39245f}
+.communityHeader nav{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;font-weight:800;color:#74668d}
+.communityHeader nav a:hover{color:#a43dc9}
+.communityHero{max-width:1180px;margin:28px auto 22px;padding:clamp(26px,4vw,44px);border-radius:25px;background:linear-gradient(115deg,#381078,#7024c8 52%,#e72c9f);color:white;box-shadow:0 18px 40px #8b5cf62e}
+.communityHero>span{font-size:10px;font-weight:800;letter-spacing:1.7px;color:#f7caff}
+.communityHero h1{font-size:clamp(34px,5vw,52px);line-height:1.08;margin:12px 0;letter-spacing:-2px}
+.communityHero p{max-width:660px;color:#f0ddff;font-size:14px;line-height:1.7}
+.communityLayout,.groupsLayout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(230px,.8fr);gap:18px;align-items:start}
+.communityMain,.groupsDirectory,.communitySidebar{min-width:0}
+.communityComposer,.communityPost,.groupCard,.groupCreateCard{padding:20px;margin:0 0 15px;border:1px solid #ebe4f6;border-radius:18px;background:#ffffffed;box-shadow:0 9px 28px #4931780b}
+.communityComposerTitle,.communityPostHead{display:flex;align-items:center;gap:12px}
+.communityComposerTitle strong,.communityPostHead strong{font:800 14px Manrope,sans-serif;color:#3b2b60}
+.communityComposer textarea,.communityComposer input{width:100%;margin:14px 0;padding:13px 14px;border:1px solid #e6e0f2;border-radius:12px;background:#fcfbff;color:#30264d;font:500 13px 'DM Sans',sans-serif;resize:vertical}
+.communityComposer textarea:focus,.communityComposer input:focus{outline:3px solid #a78bfa2c;border-color:#9b65ed}
+.communityComposerFoot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.communityComposerFoot button,.communityPostActions button,.communityFeedHead button,.groupCardActions button,.groupCreateCard button{border:0;border-radius:10px;padding:10px 14px;background:linear-gradient(105deg,#7538db,#dc35a8);color:#fff;font-size:11px;font-weight:800;cursor:pointer}
+.communityPost{padding:21px}
+.communityPostHead{justify-content:space-between}
+.communityAvatar{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#e8dcff,#ffdef1);color:#7935bd;font-weight:800}
+.communityPost p{font-size:13px;line-height:1.75;color:#554a70;overflow-wrap:anywhere}
+.communityPostActions{display:flex;gap:8px;flex-wrap:wrap;padding-top:12px;border-top:1px solid #f0ebf6}
+.communityPostActions button{background:#f1eaff;color:#7741b8}
+.communityDiscussion{margin-top:15px;padding:14px;border-radius:13px;background:#faf8ff}
+.communityComment{padding:10px 0;border-bottom:1px solid #eee8f5;font-size:12px;color:#665a7e}
+.communitySidebar{padding:19px;border:1px solid #ebe4f6;border-radius:18px;background:#ffffffd9}
+.communitySidebar h2{font-size:17px;color:#3b2b60}
+.communitySidebar p{font-size:12px;line-height:1.7;color:#817794}
+.communityFeedHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0 13px}
+.communityFeedHead h2{margin:5px 0;font-size:22px;color:#39285e}
+.communityFeedHead span{font-size:10px;font-weight:800;letter-spacing:1px;color:#9c55c9}
+.communityEmpty{padding:28px 18px;border:1px dashed #d9c9ef;border-radius:15px;background:#ffffffa8;text-align:center;color:#8b829d;font-size:13px;line-height:1.6}
+.communityNotice,.communityError{padding:12px 15px;border-radius:12px;background:#f0fff9;color:#247d68;font-size:12px}
+.communityError{background:#fff0f4;color:#a53b66}
+.groupCard{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.groupCard h3{margin:8px 0;font-size:18px;color:#3c2c60}
+.groupCard p{font-size:12px;line-height:1.6;color:#807691}
+.groupPrivacy{font-size:9px;letter-spacing:1px;font-weight:800;color:#9953c6}
+.groupCardActions{display:flex;gap:8px;flex-wrap:wrap}
+.groupCardActions button.secondary{background:#f1eaff;color:#7741b8}
+.groupCreateCard h2{font-size:19px}
+.communityFooter{max-width:1180px;margin:24px auto 0;padding:20px 0;border-top:1px solid #e8e0f1;color:#958ba8;font-size:11px}
+@media(max-width:850px){.communityLayout,.groupsLayout{grid-template-columns:1fr}.communitySidebar{order:2}}
+@media(max-width:600px){.friendEntry{align-items:flex-start;flex-wrap:wrap}.friendEntryActions{width:100%;margin-left:55px;justify-content:flex-start}.communityHeader{align-items:flex-start;flex-direction:column;padding:14px}.communityHeader nav{gap:12px}.communityHero{margin-top:18px;border-radius:18px}.groupCard{align-items:flex-start;flex-direction:column}.groupCardActions{width:100%}.datingSelectionBar{align-items:flex-start}.datingSelectionBar>span{width:100%}}
