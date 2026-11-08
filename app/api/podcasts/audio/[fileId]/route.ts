@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, context: { params: Promise<{ fileId: string }> }) {
   const user = await currentCommunityMember();
-  if (!user) return NextResponse.json({ error: "Sign in to listen to Connect Podcasts." }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "Sign in to view Connect Podcasts media." }, { status: 401 });
   const access = await checkMemberAccess();
   if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
   try {
@@ -26,9 +26,12 @@ export async function GET(_request: Request, context: { params: Promise<{ fileId
     if (!episode) return NextResponse.json({ error: "Episode not found." }, { status: 404 });
     if (String(episode.status) !== "published" && String(episode.creator_user_id) !== user.$id) return NextResponse.json({ error: "This episode is not published yet." }, { status: 403 });
     const storage = new Storage(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
-    const audio = await storage.getFileView({ bucketId, fileId: String(episode.audio_file_id) });
-    return new Response(audio, { headers: {
-      "Content-Type": String(episode.audio_mime_type || "audio/mpeg"),
+    const media = await storage.getFileView({ bucketId, fileId: String(episode.audio_file_id) });
+    const mimeType = String(episode.audio_mime_type || "audio/mpeg");
+    const isVideo = String(episode.media_type || "audio") === "video";
+    return new Response(media, { headers: {
+      "Content-Type": mimeType,
+      "Accept-Ranges": "bytes",
       "Content-Disposition": "inline",
       "Cache-Control": "private, max-age=300",
       "X-Content-Type-Options": "nosniff",
