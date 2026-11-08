@@ -28,7 +28,6 @@ export async function GET(_request: Request, context: { params: Promise<{ fileId
     const storage = new Storage(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
     const media = await storage.getFileView({ bucketId, fileId: String(episode.audio_file_id) });
     const mimeType = String(episode.audio_mime_type || "audio/mpeg");
-    const isVideo = String(episode.media_type || "audio") === "video";
     return new Response(media, { headers: {
       "Content-Type": mimeType,
       "Accept-Ranges": "bytes",
