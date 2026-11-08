@@ -15,7 +15,7 @@ This repository's full Next.js application is intended to run on Render. GitHub 
    - `APPWRITE_ACCESS_DATABASE_ID`: existing private access database ID.
    - `APPWRITE_MEMBER_ACCESS_COLLECTION_ID`: existing private member-access collection ID.
 6. Deploy and wait for the health check at `/api/auth/status` to return HTTP 200 with `configured: true`.
-7. In Appwrite Console → Auth → Settings / Platforms, add the exact Render hostname (for example, `connect-web.onrender.com`) as a Web platform / allowed origin. Use the actual hostname assigned by Render; do not guess it.
+7. In Appwrite Console → Auth → Settings / Platforms, add the exact Render hostname (for example, `connect-web-7ypt.onrender.com`) as a Web platform / allowed origin. Use the actual hostname assigned by Render; do not guess it.
 8. Test registration, sign-in, refresh/session persistence, sign-out, and denied access using a test account before inviting members.
 
 ## Important
