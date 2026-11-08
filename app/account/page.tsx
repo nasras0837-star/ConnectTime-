@@ -93,7 +93,7 @@ export default async function AccountPage() {
 
       <section className="ctAccountQuick">
         <Link href="/profile"><span>👤</span><div><strong>Your profile</strong><small>Update your details and interests</small></div><b>→</b></Link>
-        <Link href="/account/settings"><span>⚙️</span><div><strong>Account settings</strong><small>Manage your account preferences</small></div><b>→</b></Link>
+        <Link href="/safety"><span>🛡️</span><div><strong>Safety & blocking</strong><small>Manage blocks and report community concerns</small></div><b>→</b></Link>
         <Link href="/feedback"><span>💡</span><div><strong>Share feedback</strong><small>Help shape ConnectTime</small></div><b>→</b></Link>
       </section>
 
