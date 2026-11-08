@@ -35,6 +35,12 @@ export async function POST(request: Request) {
     const tableId = process.env.APPWRITE_COMMUNITY_APPEALS_TABLE_ID;
     if (!tableId) throw new Error("Community appeals table is not configured.");
     const { tablesDB, databaseId } = communitySafetyStore();
+    const reportsTable = process.env.APPWRITE_COMMUNITY_REPORTS_TABLE_ID;
+    if (!reportsTable) throw new Error("Reports table is not configured.");
+    const enforcement = await tablesDB.getRow({ databaseId, tableId: reportsTable, rowId: enforcementReference });
+    if (enforcement.reported_user_id !== user.$id || !["resolved", "dismissed"].includes(String(enforcement.status)) || !["suspend_member", "remove_content"].includes(String(enforcement.action_taken))) {
+      return NextResponse.json({ error: "That reference is not an eligible enforcement action on your account." }, { status: 403 });
+    }
     const row = await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
       appellant_user_id: user.$id, enforcement_reference: enforcementReference, reason, details,
       status: "received", created_at: new Date().toISOString(),
