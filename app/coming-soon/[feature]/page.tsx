@@ -122,7 +122,7 @@ export default async function PlannedFeaturePage({ params }: { params: Promise<{
     <main className="authShell plannedFeatureShell">
       <header className="plannedFeatureHeader">
         <Link className="logo ctAuthLogo" href="/" aria-label="Connect home">
-          <img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/Glossy%20ConnectTime%20Community%20Logo.png" alt="Connect" width={180} height={117} className="ctLogoImage" />
+          <img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage" />
         </Link>
         <nav><Link href="/">Home</Link><Link href="/news">Explore</Link><Link href="/register" className="eventsJoin">Register Now ↗</Link></nav>
       </header>
