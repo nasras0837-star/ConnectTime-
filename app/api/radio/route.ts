@@ -20,7 +20,7 @@ function normalize(rows: unknown) {
       id: String(s.stationuuid), name: String(s.name).trim().slice(0, 180), country: String(s.country || "").slice(0, 80),
       countryCode: String(s.countrycode || "").slice(0, 2), language: String(s.language || "").slice(0, 120),
       tags: String(s.tags || "").slice(0, 180), codec: String(s.codec || "").slice(0, 16),
-      bitrate: Number(s.bitrate || 0), homepage: secureUrl(s.homepage), streamUrl: secureUrl(s.url_resolved), votes: Number(s.votes || 0),
+      bitrate: Number(s.bitrate || 0), homepage: secureUrl(s.homepage), streamUrl: secureUrl(s.url_resolved), votes: Number(s.votes || 0), clickcount: Number(s.clickcount || 0),
     }));
 }
 
