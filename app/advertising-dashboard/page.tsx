@@ -135,8 +135,8 @@ export default function AdvertisingDashboardPage() {
 
   const exportCampaigns = () => {
     const columns = [
-      "Campaign", "Company", "Status", "Objective", "Placement", "Country", "Region",
-      "Audience interests", "Daily budget (USD)", "Lifetime cap (USD)", "Recorded spend (USD)",
+      "Campaign ID", "Campaign", "Company", "Status", "Objective", "Placement", "Country", "Region",
+      "Geographic targeting details", "Audience interests", "Daily budget (USD)", "Lifetime cap (USD)", "Recorded spend (USD)",
       "Verified impressions", "Verified clicks", "Verified CTR", "Metrics status",
       "AI screening", "Human review", "Payment status", "Start date", "End date"
     ];
@@ -146,8 +146,8 @@ export default function AdvertisingDashboardPage() {
       const clicks = verified ? Number(campaign.clicks_count) || 0 : null;
       const ctrValue = impressions && impressions > 0 ? (clicks || 0) / impressions * 100 : null;
       return [
-        campaign.campaign_name, campaign.company, label(campaign.status), label(campaign.objective),
-        label(campaign.placement), campaign.country, campaign.region, campaign.audience_interests,
+        campaign.$id, campaign.campaign_name, campaign.company, label(campaign.status), label(campaign.objective),
+        label(campaign.placement), campaign.country, campaign.region, campaign.geo_targets, campaign.audience_interests,
         ((Number(campaign.daily_budget_minor) || 0) / 100).toFixed(2),
         ((Number(campaign.lifetime_cap_minor) || 0) / 100).toFixed(2),
         ((Number(campaign.spend_minor) || 0) / 100).toFixed(2),
