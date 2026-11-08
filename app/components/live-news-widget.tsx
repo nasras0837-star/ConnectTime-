@@ -78,7 +78,7 @@ export default function LiveNewsWidget() {
     <section className="homeLiveNews" aria-label="Live news">
       <div className="homeLiveNewsTop">
         <div>
-          <span className="homeLiveEyebrow">CONNECTTIME NEWSROOM</span>
+          <span className="homeLiveEyebrow">CONNECT NEWSROOM</span>
           <h2>What’s happening <em>now</em></h2>
           <p>Fresh headlines from external news publishers, grouped by topic.</p>
         </div>
