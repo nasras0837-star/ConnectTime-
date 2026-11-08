@@ -33,7 +33,7 @@ const date = (value?: string) => value ? new Date(value).toLocaleDateString() : 
 const label = (value?: string) => (value || "draft").replaceAll("_", " ").replaceAll("-", " ").split(" ").map(word => word ? word[0].toUpperCase() + word.slice(1) : word).join(" ");
 const csvCell = (value: unknown) => {
   let text = value === null || value === undefined ? "" : String(value);
-  if (/^[=+@\\-\\t\\r]/.test(text)) text = "'" + text;
+  if (/^[=+\-@\t\r]/.test(text)) text = "'" + text;
   return '"' + text.replaceAll('"', '""') + '"';
 };
 
@@ -129,8 +129,8 @@ export default function AdvertisingDashboardPage() {
         campaign.starts_at, campaign.ends_at
       ];
     });
-    const csv = [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\\r\\n");
-    const blob = new Blob(["\\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+    const csv = [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
+    const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
