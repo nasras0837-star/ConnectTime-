@@ -60,8 +60,8 @@ export default async function AccountPage() {
         : "We could not confirm your member-access status right now. Protected features remain locked; please try again later.";
 
   return (
-    <main className="ctAccountPage" id="account-main">
-      <a className="ctAccountSkipLink" href="#account-main">Skip to account content</a>
+    <main className="ctAccountPage">
+      <a className="ctAccountSkipLink" href="#account-content">Skip to account content</a>
       <header className="ctAccountHeader">
         <Link href="/" className="ctAccountBrand" aria-label="ConnectTime home">
           <Image src="/connecttime-logo.svg" alt="" width={48} height={48} priority />
@@ -74,7 +74,7 @@ export default async function AccountPage() {
         </nav>
       </header>
 
-      <section className="ctAccountWelcome">
+      <section className="ctAccountWelcome" id="account-content">
         <div>
           <span className="ctAccountEyebrow">YOUR CONNECTTIME SPACE</span>
           <h1>Welcome{user.name ? `, ${user.name.split(" ")[0]}` : " back"}.</h1>
