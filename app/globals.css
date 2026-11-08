@@ -918,3 +918,20 @@
 .ctMarketsPanel h3{font:800 14px Manrope,sans-serif;color:#173e5a;margin:5px 4px 12px}
 .ctStockProfile,.ctStockFinancials{margin:14px 0}
 @media(max-width:760px){.ctStockDataGrid{grid-template-columns:minmax(0,1fr)}.ctMarketsQuickPick{gap:6px}.ctMarketsQuickPick button{padding:8px 9px}}
+
+
+/* Selected stock research and history controls */
+.ctStockPanelHead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:4px 4px 12px}
+.ctStockPanelHead h3{margin:3px 0 6px}
+.ctStockPanelHead p{margin:0;color:#7890a2;font-size:11px;line-height:1.6}
+.ctHistoryRanges{display:flex;flex-wrap:wrap;gap:5px}
+.ctHistoryRanges button{border:1px solid #dce7ef;border-radius:8px;background:#fff;color:#42647b;padding:7px 10px;font-size:10px;font-weight:850;cursor:pointer}
+.ctHistoryRanges button.active,.ctHistoryRanges button:hover{border-color:#087eae;background:#eaf7fc;color:#075b83}
+.ctAnalystCoverage{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ctAnalystCoverage article{padding:22px;border:1px solid #e0e9f0;border-radius:15px;background:#fff}
+.ctAnalystCoverage article>span{font-size:9px;letter-spacing:1.3px;font-weight:900;color:#0b83b4}
+.ctAnalystCoverage h3{margin:11px 0 8px;font-size:18px;letter-spacing:-.5px}
+.ctAnalystCoverage p,.ctAnalystNote{font-size:11px;line-height:1.75;color:#71879a}
+.ctAnalystCoverage a{display:inline-flex;margin-top:8px;color:#087eae;font-size:11px;font-weight:900;text-decoration:underline;text-underline-offset:3px}
+.ctAnalystNote{margin:12px 2px 0}
+@media(max-width:650px){.ctAnalystCoverage{grid-template-columns:1fr}.ctStockPanelHead{display:block}.ctHistoryRanges{margin-top:12px}}
