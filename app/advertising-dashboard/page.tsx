@@ -63,6 +63,7 @@ export default function AdvertisingDashboardPage() {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [copiedCampaignId, setCopiedCampaignId] = useState<string | null>(null);
   const [copyError, setCopyError] = useState("");
+  const [copyErrorCampaignId, setCopyErrorCampaignId] = useState<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
 
   const loadCampaigns = async () => {
@@ -189,12 +190,14 @@ export default function AdvertisingDashboardPage() {
 
   const copyCampaignId = async (id: string) => {
     setCopyError("");
+    setCopyErrorCampaignId(null);
     try {
       await navigator.clipboard.writeText(id);
       setCopiedCampaignId(id);
       window.setTimeout(() => setCopiedCampaignId(current => current === id ? null : current), 1800);
     } catch {
-      setCopyError("Could not copy the campaign ID. Check browser clipboard permissions or copy the ID manually.");
+      setCopyErrorCampaignId(id);
+      setCopyError("Could not copy this campaign ID. Check browser clipboard permissions or copy it manually.");
     }
   };
 
@@ -294,7 +297,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>RECORDED SPEND</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>VERIFIED IMPRESSIONS</small><strong>{metricsVerified ? number(impressions) : "Not verified"}</strong></div><div><small>VERIFIED CLICKS</small><strong>{metricsVerified ? number(clicks) : "Not verified"}</strong></div><div><small>VERIFIED CTR</small><strong>{metricsVerified ? pct(campaignCtr) : "Not available"}</strong></div></div>
           <div className="ctAdSpendTrack" aria-label={`Spend cap used: ${spendPercent.toFixed(1)} percent${overCap ? ", over cap" : ""}`}><span style={{ width: `${Math.min(100, spendPercent)}%` }} /></div><div className="ctAdSpendCaption"><span>{money(spend)} recorded</span><span>{overCap ? `${money(spend - cap)} over lifetime cap` : cap > 0 ? `${money(cap - spend)} remaining of cap` : "No lifetime cap recorded"}</span></div>{overCap && <p className="ctCampaignOverCap" role="alert">Recorded spend exceeds this campaign’s lifetime cap. Review the account and delivery records.</p>}
           <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}{campaign.audience_interests && <span>Interests: {campaign.audience_interests.split(",").filter(Boolean).join(" · ")}</span>}</div><div><small>SCHEDULE · {scheduleStatus(campaign, now).toUpperCase()}</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
-          <div className="ctCampaignMeta"><span>Campaign ID: <code>{campaign.$id}</code> <button type="button" onClick={() => void copyCampaignId(campaign.$id)} aria-label={`Copy campaign ID ${campaign.$id}`}>{copiedCampaignId === campaign.$id ? "Copied" : "Copy ID"}</button></span>{copyError && <span role="status">{copyError}</span>}<span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
+          <div className="ctCampaignMeta"><span>Campaign ID: <code>{campaign.$id}</code> <button type="button" onClick={() => void copyCampaignId(campaign.$id)} aria-label={`Copy campaign ID ${campaign.$id}`}>{copiedCampaignId === campaign.$id ? "Copied" : "Copy ID"}</button></span>{copyError && copyErrorCampaignId === campaign.$id && <span role="status">{copyError}</span>}<span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
       <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by ConnectTime's campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
