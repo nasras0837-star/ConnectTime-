@@ -901,3 +901,11 @@
 .ctMarketsFooter{max-width:1240px;margin:0 auto;padding:22px 0 32px;border-top:1px solid #e0e9f0;display:flex;justify-content:space-between;gap:16px;color:#8497a7;font-size:10px}
 .ctMarketsFooter>a{font-weight:900;color:#315b76}.ctMarketsFooter div{display:flex;gap:15px}
 @media(max-width:760px){.ctMarketsHeader{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 16px}.ctMarketsHeader nav{gap:13px;flex-wrap:wrap}.ctMarketsHero{margin:18px 12px;padding:25px 20px;min-height:0}.ctMarketsHeroArt{display:none}.ctMarketsSection{margin:26px 12px;padding:0}.ctMarketsTicker{margin:0 12px 20px}.ctMarketsSectionHead{display:block}.ctMarketsSectionHead>small{display:block;margin-top:9px}.ctMarketsSearch{align-items:stretch;flex-wrap:wrap}.ctMarketsSearch label{width:100%}.ctMarketsSearch input{flex-basis:60%}.ctMarketsSearch button{flex:1}.ctMarketsDisclaimer{margin:26px 12px;padding:16px}.ctMarketsFooter{margin:0 12px;flex-wrap:wrap}}
+
+.ctMarketsWatchlist{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 20px}
+.ctMarketsWatchlist>p{margin:0;padding:14px;color:#8294a4;font-size:12px}
+.ctMarketsWatchItem{display:flex;align-items:center;gap:5px;padding:5px 7px 5px 11px;border:1px solid #dce7ef;border-radius:10px;background:#fff}
+.ctMarketsWatchItem.active{border-color:#087eae;background:#eaf7fc}
+.ctMarketsWatchItem button{border:0;background:transparent;color:#315b76;font-size:11px;font-weight:800;cursor:pointer;padding:5px}
+.ctMarketsWatchItem button:last-child{font-size:17px;color:#8a9cac;padding:3px 7px}
+.ctMarketsWatchItem button:last-child:hover{color:#bb4141}
