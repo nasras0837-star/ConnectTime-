@@ -134,6 +134,12 @@ export default function AdvertisingDashboardPage() {
     return result;
   }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [filtered]);
   const ctr = totals.impressions > 0 ? totals.clicks / totals.impressions * 100 : 0;
+  const dataQuality = useMemo(() => filtered.reduce((result, campaign) => {
+    if (campaign.metrics_status !== "verified_events") result.unverifiedMetrics += 1;
+    if ((Number(campaign.lifetime_cap_minor) || 0) > 0 && (Number(campaign.spend_minor) || 0) > (Number(campaign.lifetime_cap_minor) || 0)) result.overCap += 1;
+    if (scheduleStatus(campaign, now) === "Unscheduled") result.unscheduled += 1;
+    return result;
+  }, { unverifiedMetrics: 0, overCap: 0, unscheduled: 0 }), [filtered, now]);
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
 
   const copyCampaignId = async (id: string) => {
@@ -195,6 +201,7 @@ export default function AdvertisingDashboardPage() {
         <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified-event campaigns only</small></article>
         <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks only</small></article>
       </div>
+      <div className="ctCampaignNotice" aria-live="polite"><strong>Filtered data-quality review:</strong> {dataQuality.unverifiedMetrics} campaign(s) without verified delivery metrics · {dataQuality.overCap} campaign(s) over lifetime cap · {dataQuality.unscheduled} campaign(s) without a complete schedule. These counts reflect the current filters.</div>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search campaign, company, location, objective or interests" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
