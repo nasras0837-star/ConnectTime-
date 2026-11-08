@@ -1,4 +1,4 @@
-# ConnectTime Community Safety Backend Setup
+# Connect Community Safety Backend Setup
 
 The Safety Center UI is available at `/safety`. The server endpoints require an authenticated Appwrite session and use the existing Appwrite database. Safety requests fail closed: if a table is not configured or storage fails, the API returns an error and does not report success.
 
@@ -9,7 +9,7 @@ Set these in the production hosting environment (and staging separately):
 - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
 - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
 - `APPWRITE_API_KEY` — server-only key with the minimum TablesDB row read/create/update/delete permissions needed for these tables.
-- `APPWRITE_DATABASE_ID` — existing ConnectTime database ID.
+- `APPWRITE_DATABASE_ID` — existing Connect database ID.
 - `APPWRITE_COMMUNITY_REPORTS_TABLE_ID`
 - `APPWRITE_COMMUNITY_BLOCKS_TABLE_ID`
 - `APPWRITE_COMMUNITY_APPEALS_TABLE_ID`
