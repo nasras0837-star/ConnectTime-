@@ -149,7 +149,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
 (()=>{
  const menuToggle=document.getElementById('mobileMenuToggle'),nav=document.getElementById('mainNavigation');
  const panel=document.getElementById('aiPreviewPanel'),launch=document.getElementById('aiPreviewLauncher'),close=document.getElementById('aiPreviewClose'),msgs=document.getElementById('aiPreviewMsgs'),form=document.getElementById('aiPreviewForm'),input=document.getElementById('aiPreviewInput');
- const setOpen=open=>{panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launch.setAttribute('aria-expanded',String(open));if(open)input.focus();else launch.focus()};
+ const setOpen=(open,restoreFocus=true)=>{panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launch.setAttribute('aria-expanded',String(open));if(open)input.focus();else if(restoreFocus)launch.focus()};
  const answers=[
   [/what can i do|features|connecttime about/i,"ConnectTime brings together worldwide member discovery, friend requests, private text messaging, community groups, text posts, a personalized live-interest feed, news, official TV destinations, events, advertising tools, and member feedback. Some areas remain in development and require production configuration."],
   [/chat room|group|private room|public room/i,"Chat Rooms are designed for people to discover interest-based groups, search by topic, join public rooms, or request access to private rooms. The current website preview demonstrates the idea; shared room membership, messages, and secure invitations still need the production backend."],
@@ -174,6 +174,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
  window.addEventListener('resize',()=>{if(window.matchMedia('(min-width: 621px)').matches)closeMenu()});
  launch.addEventListener('click',()=>setOpen(launch.getAttribute('aria-expanded')!=='true'));
  close.addEventListener('click',()=>setOpen(false));
+ document.addEventListener('click',event=>{if(launch.getAttribute('aria-expanded')==='true'&&!panel.contains(event.target)&&!launch.contains(event.target))setOpen(false,false)});
  panel.addEventListener('keydown',event=>{if(event.key==='Escape'&&launch.getAttribute('aria-expanded')==='true'){event.preventDefault();setOpen(false)}});
  form.addEventListener('submit',e=>{e.preventDefault();ask(input.value);input.value=''});
  panel.querySelectorAll('[data-question]').forEach(button=>button.addEventListener('click',()=>ask(button.dataset.question)));
