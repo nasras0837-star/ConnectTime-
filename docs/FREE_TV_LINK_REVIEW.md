@@ -1,10 +1,10 @@
-# ConnectTime Free TV link review
+# Connect Free TV link review
 
 The Free TV directory uses links to official broadcaster websites and players. It does not scrape streams, proxy video, bypass geo-blocking, or embed a broadcaster's player without permission.
 
 ## Automated weekly check
 
-The `ConnectTime Free TV link review` GitHub Actions workflow runs every Monday at 08:23 UTC and can also be started manually from Actions. It checks each listed official destination using HTTP requests and uploads a JSON report as a 30-day workflow artifact.
+The `Connect Free TV link review` GitHub Actions workflow runs every Monday at 08:23 UTC and can also be started manually from Actions. It checks each listed official destination using HTTP requests and uploads a JSON report as a 30-day workflow artifact.
 
 ## How to interpret results
 
@@ -16,7 +16,7 @@ A channel should only be marked as confirmed available after a human checks the 
 
 ## Manual review procedure
 
-1. Open the latest workflow run and download the `connecttime-free-tv-link-report` artifact.
+1. Open the latest workflow run and download the `connect-free-tv-link-report` artifact.
 2. Review every item marked `manual-review` or `needs-review` in a normal browser.
 3. Confirm that the link belongs to the broadcaster and the advertised category/service is still accurate.
 4. Update the URL, description, or access note in `app/free-tv/free-tv-directory.tsx`, or remove the listing if it is no longer appropriate.
