@@ -57,6 +57,8 @@ export default function AdvertisingDashboardPage() {
   const [budgetFilter, setBudgetFilter] = useState("all");
   const [reviewFilter, setReviewFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("newest");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [copiedCampaignId, setCopiedCampaignId] = useState<string | null>(null);
@@ -141,6 +143,18 @@ export default function AdvertisingDashboardPage() {
     if (sortOrder === "ctr_high") return ctrB - ctrA;
     return dateB - dateA;
   }), [filtered, sortOrder]);
+
+  const pageCount = Math.max(1, Math.ceil(sortedCampaigns.length / pageSize));
+  const currentPage = Math.min(page, pageCount);
+  const pageCampaigns = useMemo(() => sortedCampaigns.slice((currentPage - 1) * pageSize, currentPage * pageSize), [sortedCampaigns, currentPage, pageSize]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter, scheduleFilter, metricsFilter, budgetFilter, reviewFilter, sortOrder, pageSize]);
+
+  useEffect(() => {
+    if (page !== currentPage) setPage(currentPage);
+  }, [page, currentPage]);
 
   const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
@@ -248,8 +262,16 @@ export default function AdvertisingDashboardPage() {
         <button type="button" onClick={exportCampaigns} disabled={loading || !!error || filtered.length === 0}>↓ Export filtered CSV ({filtered.length})</button>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
-      {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length} of ${campaigns.length} campaigns` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
-      {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); setBudgetFilter("all"); setReviewFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{sortedCampaigns.map(campaign => {
+      {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length ? (currentPage - 1) * pageSize + 1 : 0}–${Math.min(currentPage * pageSize, filtered.length)} of ${filtered.length} matching campaigns (${campaigns.length} total)` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
+      {!loading && !error && campaigns.length > 0 && <div className="ctCampaignPagination" aria-label="Campaign list pagination">
+        <label>Rows per page <select value={pageSize} onChange={event => setPageSize(Number(event.target.value))}><option value={10}>10</option><option value={25}>25</option><option value={50}>50</option></select></label>
+        <span aria-live="polite">Page {currentPage} of {pageCount}</span>
+        <button type="button" onClick={() => setPage(1)} disabled={currentPage <= 1}>First</button>
+        <button type="button" onClick={() => setPage(value => Math.max(1, value - 1))} disabled={currentPage <= 1}>Previous</button>
+        <button type="button" onClick={() => setPage(value => Math.min(pageCount, value + 1))} disabled={currentPage >= pageCount}>Next</button>
+        <button type="button" onClick={() => setPage(pageCount)} disabled={currentPage >= pageCount}>Last</button>
+      </div>}
+      {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); setBudgetFilter("all"); setReviewFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{pageCampaigns.map(campaign => {
         const metricsVerified = campaign.metrics_status === "verified_events";
         const impressions = metricsVerified ? Number(campaign.impressions_count) || 0 : 0;
         const clicks = metricsVerified ? Number(campaign.clicks_count) || 0 : 0;
