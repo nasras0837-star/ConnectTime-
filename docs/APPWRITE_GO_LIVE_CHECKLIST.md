@@ -6,7 +6,7 @@ This checklist consolidates the Appwrite setup for the existing Connect Next.js 
 
 - Use the existing Connect Appwrite project and database. Do not create another database just to satisfy an optional feature.
 - Deploy the Next.js application to Render for server-rendered pages and API routes. GitHub Pages publishes only the static `docs/` preview and cannot run authentication, API routes, or Appwrite server code.
-- The static public preview is `https://nasras0837-star.github.io/ConnectTime-/`. The full application is intended for the Render hostname `https://connect-web.onrender.com` once its service is deployed. A configured URL is not evidence that the service is live.
+- The static public preview is `https://nasras0837-star.github.io/ConnectTime-/`. The full application is intended for the Render hostname `https://connect-web-7ypt.onrender.com` once its service is deployed. A configured URL is not evidence that the service is live.
 - Keep `APPWRITE_API_KEY` and all provider secrets server-only. Never use a `NEXT_PUBLIC_` prefix for secrets.
 - Tables must remain private. The browser must not receive Appwrite server credentials or be granted broad access to member data.
 
@@ -53,9 +53,9 @@ Use the exact column IDs, types, sizes, required flags, and indexes in each guid
 Use the Render Blueprint in the repository root (`render.yaml`):
 - Repository: `nasras0837-star/ConnectTime-`
 - Branch: `main`
-- Build command: `npm ci && npm run build`
+- Build command: `npm install && npm run build`
 - Start command: `npm run start`
-- Node.js: 22
+- Node.js: 24
 - Health check: `/api/auth/status`
 
 Follow `docs/RENDER_DEPLOYMENT.md` to create the Render web service, add the manual environment values, and allow the exact Render hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
