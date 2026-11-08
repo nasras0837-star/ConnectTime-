@@ -49,14 +49,14 @@ export default function MeetingsPage() {
     const typed = roomCode.trim();
     const candidate = typed || queryRoom;
     const match = candidate.match(/(?:[?&]room=)?(ct-[a-f0-9]{48})$/);
-    if (!match) { setError("Paste a valid ConnectTime meeting invitation link or meeting code."); return; }
+    if (!match) { setError("Paste a valid Connect meeting invitation link or meeting code."); return; }
     void requestMeeting(match[1]);
   }
 
   return <main className="authShell meetingsShell">
-    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/">🌐 ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
+    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/">🌐 Connect</Link><nav><Link href="/">Home</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
     <section className="authCard meetingsCard">
-      <div className="eyebrow">CONNECTTIME · FACE-TO-FACE</div>
+      <div className="eyebrow">CONNECT · FACE-TO-FACE</div>
       <h1>Group video meetings</h1>
       <p>Bring your friends and family together in one video call. Start a room, share a private invitation, and meet face-to-face from your browser.</p>
       {error && <p className="message" role="alert">{error}</p>}
@@ -72,18 +72,18 @@ export default function MeetingsPage() {
       </section>
       <section className="meetingAction">
         <span className="eyebrow">JOIN AN EXISTING MEETING</span>
-        <label>Invitation link or meeting code<input value={roomCode} onChange={e=>setRoomCode(e.target.value)} placeholder="Paste your ConnectTime meeting invitation"/></label>
+        <label>Invitation link or meeting code<input value={roomCode} onChange={e=>setRoomCode(e.target.value)} placeholder="Paste your Connect meeting invitation"/></label>
         <button className="button meetingSecondary" disabled={busy} onClick={joinFromInvite}>{busy ? "Connecting…" : "Join meeting →"}</button>
       </section>
       {grant && <section className="meetingInvitePanel">
-        <strong>Your ConnectTime meeting is ready</strong>
-        <p>Share this invitation with friends and family. Each guest must sign in to an eligible ConnectTime account before joining.</p>
+        <strong>Your Connect meeting is ready</strong>
+        <p>Share this invitation with friends and family. Each guest must sign in to an eligible Connect account before joining.</p>
         <label>Private meeting invitation<input readOnly value={invite} onFocus={e=>e.currentTarget.select()}/></label>
         <div className="meetingInviteActions"><button className="button meetingSecondary" onClick={()=>void copyInvite()}>Copy invitation</button><button className="button meetingPrimary" onClick={joinMeeting}>Join meeting now ↗</button></div>
       </section>}
-      <small>Meetings require a signed-in, independently verified adult account in good standing. Meeting links should be shared only with people you trust. Video calls are provided by the configured LiveKit service; ConnectTime does not record meetings by default.</small>
+      <small>Meetings require a signed-in, independently verified adult account in good standing. Meeting links should be shared only with people you trust. Video calls are provided by the configured LiveKit service; Connect does not record meetings by default.</small>
       <p className="switch"><Link href="/safety">Safety Center</Link> · <Link href="/account">Back to account</Link></p>
     </section>
-    <footer className="plannedFeatureFooter">ConnectTime · Your people. Your passions. Your ConnectTime.</footer>
+    <footer className="plannedFeatureFooter">Connect · Your people. Your passions. Your Connect.</footer>
   </main>;
 }
