@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-type Station = { id:string; name:string; country:string; countryCode:string; language:string; tags:string; codec:string; bitrate:number; homepage:string; streamUrl:string; votes:number };
+type Station = { id:string; name:string; country:string; countryCode:string; language:string; tags:string; codec:string; bitrate:number; homepage:string; streamUrl:string; votes:number; clickcount:number };
 const regions = [
  {name:"Africa",codes:["DZ","AO","BJ","BW","BF","BI","CM","CV","CF","TD","KM","CG","CD","CI","DJ","EG","GQ","ER","SZ","ET","GA","GM","GH","GN","GW","KE","LS","LR","LY","MG","MW","ML","MR","MU","MA","MZ","NA","NE","NG","RW","ST","SN","SC","SL","SO","ZA","SS","SD","TZ","TG","TN","UG","ZM","ZW"]},
  {name:"Asia",codes:["AF","AM","AZ","BH","BD","BT","BN","KH","CN","CY","GE","IN","ID","IR","IQ","IL","JP","JO","KZ","KW","KG","LA","LB","MY","MV","MN","MM","NP","KP","OM","PK","PS","PH","QA","SA","SG","KR","LK","SY","TW","TJ","TH","TL","TR","TM","AE","UZ","VN","YE"]},
@@ -84,7 +84,7 @@ export default function RadioPage(){
    if(sort==="name")filtered.sort((a,b)=>a.name.localeCompare(b.name));
    if(sort==="votes")filtered.sort((a,b)=>b.votes-a.votes);
    if(sort==="bitrate")filtered.sort((a,b)=>b.bitrate-a.bitrate);
-   if(sort==="clickcount")filtered.sort((a,b)=>b.votes-a.votes);
+   if(sort==="clickcount")filtered.sort((a,b)=>b.clickcount-a.clickcount);
   }
   return filtered;
  },[sourceList,region,country,language,query,savedOnly,sort]);
