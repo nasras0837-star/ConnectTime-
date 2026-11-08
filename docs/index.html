@@ -119,8 +119,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
 </style>
 <div class="aiPreview">
  <section class="aiPreviewPanel" id="aiPreviewPanel" aria-label="ConnectTime AI Guide" aria-hidden="true">
-  <header class="aiPreviewHead"><div class="aiPreviewMark">✦</div><div><strong>ConnectTime AI Guide</strong><small>Website help & general questions · demo</small></div><button class="aiPreviewClose" id="aiPreviewClose" aria-label="Close">×</button></header>
-  <div class="aiPreviewMsgs" id="aiPreviewMsgs" aria-live="polite">
+  <header class="aiPreviewHead"><div class="aiPreviewMark" aria-hidden="true">✦</div><div><strong>ConnectTime AI Guide</strong><small>Website help & general questions · demo</small></div><button type="button" class="aiPreviewClose" id="aiPreviewClose" aria-label="Close guide">×</button></header>
+  <div class="aiPreviewMsgs" id="aiPreviewMsgs" role="log" aria-label="ConnectTime Guide conversation" aria-live="polite" aria-relevant="additions">
    <div class="aiPreviewBubble">Hi! I’m the ConnectTime AI Guide preview. ConnectTime helps you meet people across the world. Ask me about global connections, Free TV, features, Chat Rooms, Video Tube, news, or registration.</div>
    <div class="aiPreviewQuick"><small>QUICK QUESTIONS</small>
     <button data-question="What can I do on ConnectTime?">What can I do on ConnectTime? <b>↗</b></button>
@@ -129,10 +129,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
     <button data-question="How does adult dating verification work?">How does adult dating verification work? <b>↗</b></button>
    </div>
   </div>
-  <form class="aiPreviewForm" id="aiPreviewForm"><input id="aiPreviewInput" maxlength="500" placeholder="Ask about ConnectTime…" aria-label="Ask about ConnectTime"><button aria-label="Send">➤</button></form>
+  <form class="aiPreviewForm" id="aiPreviewForm" aria-label="Ask the ConnectTime preview guide"><input id="aiPreviewInput" maxlength="500" placeholder="Ask about ConnectTime…" aria-label="Ask about ConnectTime"><button type="submit" aria-label="Send question">➤</button></form>
   <p class="aiPreviewDisclaimer">Static preview with sample answers only — this is not connected to a live AI service. Don’t share passwords, payment details, or identity documents.</p>
  </section>
- <button class="aiPreviewLauncher" id="aiPreviewLauncher" aria-expanded="false" aria-controls="aiPreviewPanel"><span>✦</span> Ask ConnectTime</button>
+ <button type="button" class="aiPreviewLauncher" id="aiPreviewLauncher" aria-expanded="false" aria-controls="aiPreviewPanel"><span>✦</span> Ask ConnectTime</button>
 </div>
 <script>
 (()=>{
