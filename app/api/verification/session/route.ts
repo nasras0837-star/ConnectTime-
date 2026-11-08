@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
-import { Client, Databases, Query } from "node-appwrite";
+import { Client, Query, TablesDB } from "node-appwrite";
 
 import { createYotiSandboxSession } from "@/lib/yoti-sandbox";
 
@@ -12,9 +12,9 @@ export async function POST() {
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const apiKey = process.env.APPWRITE_API_KEY;
   const databaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
-  const collectionId = process.env.APPWRITE_YOTI_SESSIONS_COLLECTION_ID;
+  const tableId = process.env.APPWRITE_YOTI_SESSIONS_TABLE_ID;
 
-  if (!endpoint || !projectId || !apiKey || !databaseId || !collectionId ||
+  if (!endpoint || !projectId || !apiKey || !databaseId || !tableId ||
       process.env.YOTI_SANDBOX_ENABLED !== "true" ||
       !process.env.YOTI_SDK_ID || !process.env.YOTI_PRIVATE_KEY_PEM) {
     return NextResponse.json(
@@ -33,12 +33,12 @@ export async function POST() {
     }
 
     const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
-    const databases = new Databases(client);
-    const recent = await databases.listDocuments(databaseId, collectionId, [
+    const tablesDB = new TablesDB(client);
+    const recent = await tablesDB.listRows({ databaseId, tableId, queries: [
       Query.equal("user_id", user.$id),
       Query.greaterThanEqual("$createdAt", new Date(Date.now() - 15 * 60 * 1000).toISOString()),
       Query.limit(3),
-    ]);
+    ] });
     if (recent.total >= 3) {
       return NextResponse.json(
         { error: "verification_rate_limited" },
@@ -50,14 +50,14 @@ export async function POST() {
 
     // Persist the user/session binding before returning the hosted URL.
     // This collection must be private and writable only by this server API key.
-    await databases.createDocument(databaseId, collectionId, session.sessionId, {
+    await tablesDB.createRow({ databaseId, tableId, rowId: session.sessionId, data: {
       provider: "yoti",
       environment: "sandbox",
       user_id: user.$id,
       reference_id: session.referenceId,
       status: "pending",
       expires_at: session.expiresAt,
-    });
+    }, permissions: [] });
 
     return NextResponse.json(
       {
