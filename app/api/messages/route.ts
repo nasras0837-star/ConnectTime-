@@ -56,7 +56,7 @@ async function profileByHandle(s: Services, handle: string) {
   const result = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("handle", handle), Query.limit(2)] });
   if (result.rows.length !== 1) return null;
   const row = result.rows[0];
-  if (!["public", "members"].includes(String(row.visibility || ""))) return null;
+  if (!["public", "members", "friends"].includes(String(row.visibility || ""))) return null;
   const userId = String(row.user_id || "");
   if (!userId) return null;
   return { userId, handle: String(row.handle || ""), displayName: String(row.display_name || row.handle || ""), country: String(row.country || "") };
@@ -125,7 +125,7 @@ export async function GET(request: Request) {
       if (!await peerAccess(s, user.$id, peerId)) continue;
       const profileRows = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", peerId), Query.limit(1)] });
       const profile = profileRows.rows[0];
-      if (!profile || !["public", "members"].includes(String(profile.visibility || ""))) continue;
+      if (!profile || !["public", "members", "friends"].includes(String(profile.visibility || ""))) continue;
       rows.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
       const latest = rows[0];
       conversations.push({
