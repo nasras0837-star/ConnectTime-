@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const destinations = [
-  { icon: "📺", title: "Free TV worldwide", description: "Explore official public broadcasters, live news services and free entertainment destinations. Watch on each broadcaster's own website, with regional availability and rights respected.", href: "/free-tv", action: "Browse TV channels", tone: "tv" },
+  { icon: "📺", title: "Free TV worldwide", description: "Explore official public broadcasters, live news services and free entertainment destinations. Watch on each broadcaster&apos;s own website, with regional availability and rights respected.", href: "/free-tv", action: "Browse TV channels", tone: "tv" },
   { icon: "📻", title: "Free internet radio", description: "Search community-listed stations by country, language and genre. Play streams in the browser, save favorites and discover local voices from around the world.", href: "/radio", action: "Listen to radio", tone: "radio" },
 ];
 
