@@ -37,7 +37,7 @@ const pages: Record<string, FeaturePage> = {
     title: "Messages",
     eyebrow: "CONNECT · PRIVATE CONVERSATIONS",
     intro: "Keep the conversation going with people you choose.",
-    description: "ConnectTime plans private messaging for accepted connections, with controls to protect your inbox and manage unwanted contact.",
+    description: "Connect plans private messaging for accepted connections, with controls to protect your inbox and manage unwanted contact.",
     icon: "💬",
     highlights: ["One-to-one conversations", "Conversation requests and inbox controls", "Block and report access from conversations"],
     planned: ["Text messaging and delivery states", "Message request filtering", "Notifications, privacy settings, and abuse reporting"],
@@ -67,7 +67,7 @@ const pages: Record<string, FeaturePage> = {
     title: "Marketplace",
     eyebrow: "DISCOVER · BUY, SELL & SUPPORT",
     intro: "Find independent sellers, useful products, and local discoveries.",
-    description: "ConnectTime Marketplace is planned as a discovery space for listings and sellers. Transactions will not be processed in this preview.",
+    description: "Connect Marketplace is planned as a discovery space for listings and sellers. Transactions will not be processed in this preview.",
     icon: "🛍️",
     highlights: ["Browse listings by category and location", "Discover independent sellers", "Seller profiles and listing details"],
     planned: ["Listing creation and moderation", "Buyer-seller messaging", "Payment, refund, dispute, and prohibited-item safeguards"],
@@ -77,7 +77,7 @@ const pages: Record<string, FeaturePage> = {
     title: "Forums & discussions",
     eyebrow: "CREATE · SHARE YOUR PERSPECTIVE",
     intro: "Ask questions, exchange ideas, and take part in thoughtful discussions.",
-    description: "Forums are planned for topic-based public conversations. ConnectTime supports freedom of expression while prohibiting harassment, intimidation, threats, and privacy violations.",
+    description: "Forums are planned for topic-based public conversations. Connect supports freedom of expression while prohibiting harassment, intimidation, threats, and privacy violations.",
     icon: "🗣️",
     highlights: ["Interest-based discussion spaces", "Topics, replies, and community perspectives", "Room for respectful disagreement and debate"],
     planned: ["Forum categories and topic creation", "Replies, reactions, and subscriptions", "Moderation, reporting, and appeal workflows"],
@@ -94,7 +94,7 @@ const pages: Record<string, FeaturePage> = {
     related: [{label:"News & stories",href:"/news"},{label:"Create a post",href:"/create"}]
   },
   live: {
-    title: "ConnectTime Live",
+    title: "Connect Live",
     eyebrow: "WATCH · SHARE MOMENTS LIVE",
     intro: "Bring people together around real-time experiences.",
     description: "Live broadcasting is on the roadmap. Streaming, audience interaction, and monetization are not enabled in this preview.",
@@ -121,8 +121,8 @@ export default async function PlannedFeaturePage({ params }: { params: Promise<{
   return (
     <main className="authShell plannedFeatureShell">
       <header className="plannedFeatureHeader">
-        <Link className="logo ctAuthLogo" href="/" aria-label="ConnectTime home">
-          <img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/Glossy%20ConnectTime%20Community%20Logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage" />
+        <Link className="logo ctAuthLogo" href="/" aria-label="Connect home">
+          <img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/Glossy%20ConnectTime%20Community%20Logo.png" alt="Connect" width={180} height={117} className="ctLogoImage" />
         </Link>
         <nav><Link href="/">Home</Link><Link href="/news">Explore</Link><Link href="/register" className="eventsJoin">Register Now ↗</Link></nav>
       </header>
@@ -137,11 +137,11 @@ export default async function PlannedFeaturePage({ params }: { params: Promise<{
           <section><h3>What this feature is designed to offer</h3><ul>{page.highlights.map(item=><li key={item}>{item}</li>)}</ul></section>
           <section><h3>Planned functionality</h3><ul>{page.planned.map(item=><li key={item}>{item}</li>)}</ul></section>
         </div>
-        <div className="plannedFeatureRelated"><h3>Explore ConnectTime</h3><div>{page.related.map(item=><Link key={item.href} href={item.href}>{item.label} ↗</Link>)}</div></div>
+        <div className="plannedFeatureRelated"><h3>Explore Connect</h3><div>{page.related.map(item=><Link key={item.href} href={item.href}>{item.label} ↗</Link>)}</div></div>
         <div className="introActions"><Link href="/register">Register Now</Link><Link className="introExplore" href="/">Back to homepage</Link></div>
         <p className="switch">Adults 18+ · <Link href="/community-guidelines">Community Guidelines</Link> · <Link href="/safety">Safety Center</Link></p>
       </section>
-      <footer className="plannedFeatureFooter">© {new Date().getFullYear()} ConnectTime · Your people. Your passions. Your ConnectTime.</footer>
+      <footer className="plannedFeatureFooter">© {new Date().getFullYear()} Connect · Your people. Your passions. Your Connect.</footer>
     </main>
   );
 }
