@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { Providers } from "./providers";
 import { ConnectAssistant } from "./components/connect-assistant";
-import " ./globals.css";
+import "./globals.css";
 import "./auth.css";
 import "./language.css";
 
