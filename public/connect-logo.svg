@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+<title id="title">Connect</title><desc id="desc">A colorful global connection emblem with three people and the Connect wordmark.</desc>
+<defs>
+ <radialGradient id="bg" cx="48%" cy="42%" r="72%"><stop stop-color="#123fbd"/><stop offset=".58" stop-color="#07165c"/><stop offset="1" stop-color="#08052e"/></radialGradient>
+ <radialGradient id="globe" cx="40%" cy="25%" r="75%"><stop stop-color="#19c9ff"/><stop offset=".48" stop-color="#0875ed"/><stop offset="1" stop-color="#102c9c"/></radialGradient>
+ <linearGradient id="ct" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff79d1"/><stop offset=".34" stop-color="#a000ff"/><stop offset=".68" stop-color="#ff176f"/><stop offset="1" stop-color="#ff9d27"/></linearGradient>
+ <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff16a"/><stop offset=".45" stop-color="#ff8d17"/><stop offset=".72" stop-color="#ff18a5"/><stop offset="1" stop-color="#8b1cff"/></linearGradient>
+ <linearGradient id="time" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ffc928"/><stop offset=".5" stop-color="#ff693e"/><stop offset="1" stop-color="#ed149b"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <clipPath id="globeClip"><circle cx="600" cy="300" r="258"/></clipPath>
+</defs>
+<rect width="1200" height="780" rx="46" fill="url(#bg)"/>
+<circle cx="600" cy="300" r="270" fill="#087aff" opacity=".28" filter="url(#shadow)"/>
+<circle cx="600" cy="300" r="258" fill="url(#globe)" stroke="#14caff" stroke-width="7"/>
+<g clip-path="url(#globeClip)" fill="#50d6ff" opacity=".48">
+<path d="M402 130l44-33 45 13 20 35-22 26-4 38-31 20-18-26-42-7-14-29zM550 82l48-20 35 15 8 29-30 17-4 32-35 11-29-32-24-8zM685 115l39-24 45 15 18 34-32 28-44-9-30-22zM748 240l46-16 40 23-3 46-33 25-34-24-32-5zM420 330l37-27 42 16 13 39-28 27-40-8zM662 375l45-22 38 16 8 46-31 29-49-19zM560 470l40-22 35 19 2 39-36 24-40-22z"/>
+</g>
+<path d="M270 368C235 222 325 89 480 82c116-5 208 58 224 149 6 33-10 56-42 63l-99 19c-37 7-56-11-61-43-8-49-42-79-92-76-70 4-110 66-98 136 12 69 70 111 137 99 27-5 51-18 72-37 24-21 47-28 76-22l56 12c-37 99-134 160-247 153-105-7-189-71-216-167z" fill="url(#ct)" stroke="#ffb4f0" stroke-width="7" filter="url(#glow)"/>
+<path d="M570 172h337c44 0 64 22 64 52 0 29-20 49-62 49H791L715 570c-8 42-31 61-70 61h-76c-31 0-45-18-38-49l78-309h-92z" fill="#fff" stroke="#e8d8ff" stroke-width="7"/>
+<path d="M192 438C103 527 179 623 351 630c220 9 456-93 657-242 102-76 137-143 113-204-21-54-76-79-153-76 91-34 179-7 207 63 37 92-28 191-177 295-224 156-491 249-697 234-176-13-261-94-109-262z" fill="none" stroke="url(#orbit)" stroke-width="24" stroke-linecap="round" filter="url(#glow)"/>
+<g transform="translate(360 282)">
+ <circle cx="60" cy="72" r="34" fill="#20c8ff"/><path d="M9 170c4-42 24-68 51-68s47 26 51 68c-28 26-75 28-102 0z" fill="#009ef5"/>
+ <circle cx="152" cy="47" r="39" fill="#fff"/><path d="M89 177c4-52 29-85 63-85s59 33 63 85c-34 33-92 34-126 0z" fill="#fff"/>
+ <circle cx="250" cy="72" r="34" fill="#ff319f"/><path d="M199 170c4-42 24-68 51-68s47 26 51 68c-28 26-75 28-102 0z" fill="#f01894"/>
+</g>
+<text x="600" y="730" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="100" font-weight="800" letter-spacing="-5" fill="#fff">Connect<tspan fill="url(#time)">Time</tspan></text>
+<path d="M310 755Q600 690 895 750" fill="none" stroke="#d61bfa" stroke-width="9" stroke-linecap="round"/>
+</svg>
