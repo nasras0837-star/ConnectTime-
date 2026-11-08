@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
   const now = Math.floor(Date.now() / 1000);
   const identity = member.$id + "-" + randomBytes(8).toString("hex");
-  const displayName = (typeof member.name === "string" ? member.name : "ConnectTime member").replace(/[<>\u0000-\u001f]/g, "").trim().slice(0, 80) || "ConnectTime member";
+  const displayName = (typeof member.name === "string" ? member.name : "Connect member").replace(/[<>\u0000-\u001f]/g, "").trim().slice(0, 80) || "Connect member";
   const token = signToken({
     iss: apiKey,
     sub: identity,
