@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     const found = await tables.listRows({ databaseId, tableId: recordsTableId, queries: [Query.equal("provider_session_id", sessionId), Query.equal("user_id", userId), Query.equal("provider", "veriff"), Query.limit(2)] });
     if (found.rows.length !== 1) return NextResponse.json({ error: "verification_session_not_found" }, { status: 404 });
     const record = found.rows[0];
-    if (record.status === "verified") return NextResponse.json({ received: true, duplicate: true });
+    if (["verified", "failed"].includes(String(record.status))) return NextResponse.json({ received: true, duplicate: true });
     let status = "review";
     let adultStatus: "pending" | "verified" | "rejected" | "review" = "review";
     let accountStatus: "pending" | "active" = "pending";
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     await tables.updateRow({ databaseId, tableId: recordsTableId, rowId: record.$id, data: { status, verified_at: verifiedAt || "", updated_at: now } });
     const access = await databases.getDocument(accessDatabaseId, accessCollectionId, userId).catch(() => null);
     if (!access) {
-      await databases.createDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus, updated_at: now });
+      await databases.createDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus });
     } else {
       await databases.updateDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus, updated_at: now });
     }
