@@ -81,18 +81,18 @@ export default async function AccountPage() {
           <p>One place to manage your profile, connections, conversations and the things you love.</p>
         </div>
         <div className="ctAccountMember">
-          <span className="ctAccountAvatar">{(user.name || user.email || "C").slice(0, 1).toUpperCase()}</span>
+          <span className="ctAccountAvatar" aria-hidden="true">{(user.name || user.email || "C").slice(0, 1).toUpperCase()}</span>
           <div><strong>{user.name || "ConnectTime member"}</strong><small>{user.email || "Signed-in account"}</small></div>
         </div>
       </section>
 
       <section className={decision.allowed ? "ctAccountStatus isActive" : "ctAccountStatus"} role="status" aria-live="polite">
-        <span className="ctAccountStatusIcon">{decision.allowed ? "✓" : "🔒"}</span>
+        <span className="ctAccountStatusIcon" aria-hidden="true">{decision.allowed ? "✓" : "🔒"}</span>
         <div><span className="ctAccountEyebrow">ACCOUNT ACCESS</span><h2>{status}</h2><p>{explanation}</p></div>
         {!decision.allowed && <Link href="/safety">Review verification requirements ↗</Link>}
       </section>
 
-      <section className="ctAccountQuick">
+      <section className="ctAccountQuick" aria-label="Account shortcuts">
         <Link href="/profile"><span>👤</span><div><strong>Your profile</strong><small>Update your details and interests</small></div><b>→</b></Link>
         <Link href="/safety"><span>🛡️</span><div><strong>Safety & blocking</strong><small>Manage blocks and report community concerns</small></div><b>→</b></Link>
         <Link href="/feedback"><span>💡</span><div><strong>Share feedback</strong><small>Help shape ConnectTime</small></div><b>→</b></Link>
@@ -103,13 +103,13 @@ export default async function AccountPage() {
           <div className="ctAccountSectionHead"><div><span className="ctAccountEyebrow">YOUR PLATFORM</span><h2>Explore ConnectTime</h2><p>Pick up where you left off or discover something new.</p></div><Link href="/">View homepage ↗</Link></div>
           <div className="ctAccountGrid">
             {memberLinks.map(item => <Link className="ctAccountCard" href={item.href} key={item.title}>
-              <span className="ctAccountCardIcon">{item.icon}</span><h3>{item.title}</h3><p>{item.description}</p><b>{item.label} <span>→</span></b>
+              <span className="ctAccountCardIcon" aria-hidden="true">{item.icon}</span><h3>{item.title}</h3><p>{item.description}</p><b>{item.label} <span>→</span></b>
             </Link>)}
           </div>
         </section>
       ) : (
         <section className="ctAccountLocked">
-          <div className="ctAccountLockedIcon">🛡️</div>
+          <div className="ctAccountLockedIcon" aria-hidden="true">🛡️</div>
           <div><span className="ctAccountEyebrow">YOUR NEXT STEP</span><h2>Prepare your member profile</h2><p>You can update your profile and review the safety requirements now. Discover, messaging, groups and other protected member experiences stay unavailable until eligibility and activation are confirmed.</p><div><Link href="/profile">Complete your profile</Link><Link href="/safety">Read safety information</Link></div></div>
         </section>
       )}
