@@ -14,6 +14,7 @@ The existing Appwrite settings are also required:
 - `APPWRITE_PROFILES_TABLE_ID`
 - `APPWRITE_ACCESS_DATABASE_ID`
 - `APPWRITE_MEMBER_ACCESS_COLLECTION_ID`
+- `APPWRITE_COMMUNITY_BLOCKS_TABLE_ID`
 
 ## Create the Appwrite table
 
@@ -39,7 +40,7 @@ Create indexes:
 - `status + created_at` (key; descending created_at where supported)
 - `seller_user_id + created_at`
 
-Keep the table private to server-side API access. Do not grant anonymous create/update/delete permissions. The API derives the seller ID from the authenticated session, requires verified adult member access, checks seller eligibility and profile visibility, applies a per-user posting limit, and blocks listings matching prohibited sexual-services language.
+Keep the table private to server-side API access. Do not grant anonymous create/update/delete permissions. The API derives the seller ID from the authenticated session, requires verified adult member access, checks seller eligibility, profile visibility and reciprocal member blocks, applies a per-user posting limit, and blocks listings matching prohibited sexual-services language.
 
 ## Listing policy and safety
 
