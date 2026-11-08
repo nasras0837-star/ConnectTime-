@@ -1,6 +1,6 @@
-# ConnectTime
+# Connect
 
-ConnectTime is an international social platform being built as a web application.
+Connect is an international social platform being built as a web application.
 
 ## Website deployment
 
@@ -29,7 +29,7 @@ Expected static preview URL: https://nasras0837-star.github.io/ConnectTime-/
 
 ## Current implementation status
 
-The Next.js foundation includes the landing page, member discovery and profiles, friend requests, private messaging, notifications, community feed, groups, News, ConnectTime Video Tube, official broadcaster directory, advertising campaign planner, events interface, group video meeting entry point, and floating AI assistant. These features depend on Appwrite tables and server environment configuration described in `.env.example` and `docs/`. The AI assistant needs a server-side `OPENAI_API_KEY` in Netlify before it can return live AI responses.
+The Next.js foundation includes the landing page, member discovery and profiles, friend requests, private messaging, notifications, community feed, groups, News, Connect Video Tube, official broadcaster directory, advertising campaign planner, events interface, group video meeting entry point, and floating AI assistant. These features depend on Appwrite tables and server environment configuration described in `.env.example` and `docs/`. The AI assistant needs a server-side `OPENAI_API_KEY` in Netlify before it can return live AI responses.
 
 Authentication uses Appwrite SSR handlers. Member-facing social functions require independently verified adult eligibility and an active server-side account. Do not treat self-declared age or a checkbox as verification.
 
@@ -72,9 +72,9 @@ Never commit real environment secrets.
 
 ## Product positioning
 
-**ConnectTime is an all-in-one media and community platform** — bringing social connection, member discovery, community discussions and groups, news, video discovery, official TV destinations, events, and advertising tools into one web experience.
+**Connect is an all-in-one media and community platform** — bringing social connection, member discovery, community discussions and groups, news, video discovery, official TV destinations, events, and advertising tools into one web experience.
 
-Brand promise: **Your people. Your passions. Your ConnectTime.**
+Brand promise: **Your people. Your passions. Your Connect.**
 
 Some areas remain prototypes or require Appwrite/Netlify configuration. Do not advertise unfinished features as operational or promise universal free access to third-party streams.
 
