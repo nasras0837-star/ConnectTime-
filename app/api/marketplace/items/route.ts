@@ -14,23 +14,23 @@ const prohibited = /\b(prostitution|escort services?|sexual services?|sex servic
 function services() {
   const tableId = process.env.APPWRITE_MARKETPLACE_ITEMS_TABLE_ID;
   const profilesTableId = process.env.APPWRITE_PROFILES_TABLE_ID;
+  const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const apiKey = process.env.APPWRITE_API_KEY;
   const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
   const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
-  if (!tableId || !profilesTableId || !endpoint || !projectId || !apiKey || !accessDatabaseId || !accessCollectionId) throw new Error("Marketplace storage is not configured.");
+  if (!tableId || !profilesTableId || !blocksTableId || !endpoint || !projectId || !apiKey || !accessDatabaseId || !accessCollectionId) throw new Error("Marketplace storage is not configured.");
   const { tablesDB, databaseId } = communitySafetyStore();
   const databases = new Databases(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
-  return { tablesDB, databaseId, tableId, profilesTableId, databases, accessDatabaseId, accessCollectionId };
+  return { tablesDB, databaseId, tableId, profilesTableId, blocksTableId, databases, accessDatabaseId, accessCollectionId };
 }
 async function eligible(s: ReturnType<typeof services>, userId: string) {
   try { const row = await s.databases.getDocument(s.accessDatabaseId,s.accessCollectionId,userId); return isEligible({adult_status:row.adult_status,account_status:row.account_status}); }
   catch { return false; }
 }
 async function blocked(s: ReturnType<typeof services>, a: string, b: string) {
-  const tableId=process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
-  if(!tableId)return false;
+  const tableId=s.blocksTableId;
   const [ab,ba]=await Promise.all([
     s.tablesDB.listRows({databaseId:s.databaseId,tableId,queries:[Query.equal("blocker_user_id",a),Query.equal("blocked_user_id",b),Query.limit(1)]}),
     s.tablesDB.listRows({databaseId:s.databaseId,tableId,queries:[Query.equal("blocker_user_id",b),Query.equal("blocked_user_id",a),Query.limit(1)]})
