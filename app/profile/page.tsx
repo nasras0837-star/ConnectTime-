@@ -41,8 +41,8 @@ export default function ProfilePage() {
     finally { setSaving(false); }
   }
 
-  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><form className="authCard" onSubmit={submit}>
-    <div className="eyebrow">YOUR CONNECTTIME IDENTITY</div><h1>Edit your profile</h1>
+  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.png" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><form className="authCard" onSubmit={submit}>
+    <div className="eyebrow">YOUR CONNECT IDENTITY</div><h1>Edit your profile</h1>
     <p>Choose what other members can see. Your precise location and verification documents are never displayed here.</p>
     {loading ? <p role="status">Loading your profile…</p> : error ? <div role="alert" className="message"><p>{error}</p><p>If you are not signed in, log in and return to profile setup. If profile storage is unavailable, try again after the service is configured.</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div> : <>
       <label>Username / handle<input value={profile.handle || ""} onChange={e => update("handle", e.target.value)} placeholder="your_handle" minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required/><small>3–24 letters, numbers, or underscores.</small></label>
