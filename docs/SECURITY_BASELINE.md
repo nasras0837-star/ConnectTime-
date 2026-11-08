@@ -1,4 +1,4 @@
-# ConnectTime Security & Trust Baseline
+# Connect Security & Trust Baseline
 
 This document tracks controls to implement and verify. It is a checklist, not certification or a claim that controls are deployed.
 
