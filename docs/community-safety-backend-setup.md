@@ -12,7 +12,7 @@ Set these in Render (and separately in staging):
 - `APPWRITE_DATABASE_ID` — existing Connect database ID.
 - `APPWRITE_COMMUNITY_REPORTS_TABLE_ID`
 - `APPWRITE_COMMUNITY_BLOCKS_TABLE_ID`
-- `APPWRITE_COMMUNITY_APPEALS_TABLE_ID`
+- `APPWRITE_COMMUNITY_APPEALS_TABLE_ID`\n- `APPWRITE_MODERATION_AUDIT_TABLE_ID`
 - `APPWRITE_MODERATOR_USER_IDS` — comma-separated Appwrite user IDs of trusted moderators. Server-only; never use a browser-submitted role to grant access.
 - `APPWRITE_ACCESS_DATABASE_ID` and `APPWRITE_MEMBER_ACCESS_COLLECTION_ID` — required for moderator account suspension.
 - `APPWRITE_COMMUNITY_POSTS_TABLE_ID` and/or `APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID` — required for moderator post removal.
@@ -69,7 +69,7 @@ Set `APPWRITE_COMMUNITY_APPEALS_TABLE_ID`.
 | status | Text | 30 | Yes |
 | created_at | Text | 40 | Yes |
 
-Create indexes on `status + created_at` for appeals review.
+Create indexes on `status + created_at` for appeals review.\n\n### Moderation audit table\n\nSet `APPWRITE_MODERATION_AUDIT_TABLE_ID` to a private table with these Text columns:\n\n| Column ID | Size | Required |\n|---|---:|---|\n| moderator_user_id | 128 | Yes |\n| event_type | 40 | Yes |\n| target_user_id | 128 | No |\n| report_id | 128 | No |\n| action | 40 | Yes |\n| outcome | 40 | No |\n| note | 1000 | No |\n| created_at | 40 | Yes |\n\nKeep this table private and restrict access to server-side moderator operations. The `/moderation/audit` page is read-only and moderator allowlist protected. Audit writes are best-effort: configure and test the table before relying on it for compliance records.
 
 ## Moderator API
 
@@ -86,4 +86,4 @@ Create indexes on `status + created_at` for appeals review.
 - Limit and regularly review moderator access. Define evidence retention, escalation, and emergency-response procedures.
 - The appeal review queue is available at `/moderation/appeals`; appeal outcomes are recorded but do not automatically reinstate accounts, reverse removed content, or notify appellants.
 - Test with two separate member accounts and a moderator account: unauthenticated access, ordinary-member denial, queue visibility, invalid IDs, mismatched reported author, post removal, suspension, closed-report conflicts, and Appwrite outages.
-- Moderator report and appeal dashboards are available at `/moderation` and `/moderation/appeals`. Audit export, member enforcement notifications, and automated appeal reversal/reinstatement remain outstanding.
+- Moderator report, appeal, and read-only audit dashboards are available at `/moderation`, `/moderation/appeals`, and `/moderation/audit`. Decision notifications are written to the configured Connect notifications table; automated appeal reversal/reinstatement and audit export remain outstanding.
