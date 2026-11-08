@@ -48,7 +48,7 @@ export default function ModerationPage() {
   useEffect(() => { void load(); }, [load]);
 
   function updateDecision(id: string, patch: Partial<Decision>) {
-    setDecisions(current => ({ ...current, [id]: { status: "reviewing", action: "none", resolutionNote: "", ...current[id], ...patch } }));
+    setDecisions(current => { const existing = current[id] || { status: "reviewing" as const, action: "none" as const, resolutionNote: "" }; return { ...current, [id]: { ...existing, ...patch } }; });
   }
 
   async function submitDecision(report: Report) {
