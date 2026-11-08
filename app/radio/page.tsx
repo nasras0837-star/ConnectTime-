@@ -17,6 +17,7 @@ const languages=["Arabic","Bengali","Chinese","English","French","German","Hindi
 
 export default function RadioPage(){
  const audioRef=useRef<HTMLAudioElement>(null);
+ const searchController=useRef<AbortController|null>(null);
  const [region,setRegion]=useState("All regions"),[country,setCountry]=useState(""),[language,setLanguage]=useState(""),[query,setQuery]=useState(""),[sort,setSort]=useState("clickcount");
  const [stations,setStations]=useState<Station[]>([]),[favoriteStations,setFavoriteStations]=useState<Station[]>([]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(""),[playing,setPlaying]=useState<string|null>(null),[playingName,setPlayingName]=useState(""),[streamUrl,setStreamUrl]=useState(""),[loadingId,setLoadingId]=useState("");
@@ -26,18 +27,28 @@ export default function RadioPage(){
  const countryNames=useMemo(()=>new Intl.DisplayNames(["en"],{type:"region"}),[]);
 
  const search=useCallback(async()=>{
+  searchController.current?.abort();
+  const controller=new AbortController();
+  searchController.current=controller;
   setLoading(true);setError("");
   try{
    const p=new URLSearchParams({limit:"100",sort});
    if(country)p.set("country",country);if(language)p.set("language",language);if(query.trim())p.set("q",query.trim());
-   const res=await fetch("/api/radio?"+p.toString(),{cache:"no-store"});const data=await res.json();
+   const res=await fetch("/api/radio?"+p.toString(),{cache:"no-store",signal:controller.signal});const data=await res.json();
    if(!res.ok)throw new Error(data.error||"Could not load stations");
    setStations(Array.isArray(data.stations)?data.stations:[]);
-  }catch(e){setError(e instanceof Error?e.message:"Radio search failed");setStations([]);}
-  finally{setLoading(false);}
+  }catch(e){
+   if(controller.signal.aborted)return;
+   setError(e instanceof Error?e.message:"Radio search failed");setStations([]);
+  }finally{
+   if(!controller.signal.aborted&&searchController.current===controller)setLoading(false);
+  }
  },[country,language,query,sort]);
 
- useEffect(()=>{const timer=window.setTimeout(()=>{void search();},350);return()=>window.clearTimeout(timer);},[search]);
+ useEffect(()=>{
+  const timer=window.setTimeout(()=>{void search();},350);
+  return()=>{window.clearTimeout(timer);searchController.current?.abort();};
+ },[search]);
  useEffect(()=>{let active=true;void Promise.resolve().then(()=>{if(!active)return;try{const raw=window.localStorage.getItem("connecttime-radio-favorites");if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed))setSaved(parsed.filter((id):id is string=>typeof id==="string").slice(0,500));}}catch{/* Browser storage may be unavailable. */}finally{if(active)setFavoritesLoaded(true);}});return()=>{active=false;}},[]);
  useEffect(()=>{if(!favoritesLoaded)return;try{window.localStorage.setItem("connecttime-radio-favorites",JSON.stringify(saved));}catch{/* Favorites remain available for this session. */}},[saved,favoritesLoaded]);
 
