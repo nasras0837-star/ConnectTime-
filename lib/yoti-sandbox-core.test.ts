@@ -46,7 +46,7 @@ describe("Yoti sandbox client assertion", () => {
       {
         key: publicKey,
         padding: constants.RSA_PKCS1_PSS_PADDING,
-        saltLength: constants.RSA_PSS_SALTLEN_AUTO,
+        saltLength: constants.RSA_PSS_SALTLEN_DIGEST,
       },
       Buffer.from(signature, "base64url"),
     )).toBe(true);
