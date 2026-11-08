@@ -22,7 +22,7 @@ export default function MarketplacePage() {
       <section className="marketplaceContent">
         <div className="marketplaceSectionTitle"><span>WHAT’S COMING</span><h2>A marketplace built around community</h2><p>We’re building the foundations before opening listings or purchases.</p></div>
         <div className="marketplaceFeatureGrid">{plannedTools.map((item) => <article className="marketplaceFeature" key={item.title}><div>{item.icon}</div><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
-        <section className="marketplaceSafety"><div><span>SAFETY FIRST</span><h2>Trust and transparency before transactions.</h2><p>Listings, seller identity checks, reporting, moderation, payment handling, refunds, and dispute processes must be tested before any buying or selling is enabled.</p></div><Link href="/safety">Visit Safety Center ↗</Link></section>
+        <section className="marketplaceSafety"><div><span>SAFETY FIRST</span><h2>Trust and transparency before transactions.</h2><p>Listings, seller identity checks, reporting, moderation, payment handling, refunds, and dispute processes must be tested before any buying or selling is enabled.</p></div><Link href="/community-guidelines">Visit Safety Center ↗</Link></section>
       </section>
       <footer className="marketplaceFooter">© {new Date().getFullYear()} ConnectTime · Marketplace preview · Adults 18+</footer>
     </main>
