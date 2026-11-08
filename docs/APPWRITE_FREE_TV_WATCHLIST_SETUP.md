@@ -1,4 +1,4 @@
-# ConnectTime Free TV watchlist setup
+# Connect Free TV watchlist setup
 
 Create this table in the existing Appwrite database. Do not create a second database.
 
