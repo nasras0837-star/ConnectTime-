@@ -23,7 +23,7 @@ const destinations = [
 export default function HomePage() {
   return <main className="ctHome">
     <header className="ctHomeHeader">
-      <Link href="/" className="ctHomeBrand"><span className="ctHomeMark">◉</span><span>Connect<small>Your people. Your passions. Your Connect.</small></span></Link>
+      <Link href="/" className="ctHomeBrand"><img className="ctHomeLogo" src="/connect-logo.svg" alt="Connect — Meet people worldwide. Discover. Share. Connect." /></Link>
       <nav aria-label="Main navigation"><Link href="/community">Community</Link><Link href="/news">News</Link><Link href="/free-tv">TV & Video</Link><Link href="/radio">Music & Radio</Link><Link href="/groups">Groups</Link><Link href="/dating">Dating</Link><Link href="/marketplace">Marketplace</Link><Link href="/meetings">Group Meetings</Link><Link href="/advertise">Advertise</Link><Link href="/feedback">Feedback</Link><Link href="/login">Log in</Link><Link className="ctHomeRegister" href="/register">Register Now</Link></nav>
     </header>
     <section className="ctHomeHero">
