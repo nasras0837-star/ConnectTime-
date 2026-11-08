@@ -89,8 +89,8 @@ export default function AdvertisingDashboardPage() {
       (scheduleFilter === "upcoming" && hasSchedule && start > now) ||
       (scheduleFilter === "current" && hasSchedule && start <= now && end >= now) ||
       (scheduleFilter === "ended" && hasSchedule && end < now);
-    return matchesText && matchesStatus && matchesSchedule;
-  }), [campaigns, search, statusFilter, scheduleFilter]);
+    return matchesText && matchesStatus && matchesSchedule && matchesMetrics;
+  }), [campaigns, search, statusFilter, scheduleFilter, metricsFilter]);
 
   const sortedCampaigns = useMemo(() => [...filtered].sort((a, b) => {
     const dateA = Date.parse(a.starts_at || "") || 0;
