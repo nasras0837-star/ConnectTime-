@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { checkMemberAccess } from "@/lib/member-access";
 import { SignOutButton } from "./signout-button";
+import { DashboardNotificationSummary } from "./dashboard-notification-summary";
 
 type DashboardLink = {
   icon: string;
@@ -85,6 +86,8 @@ export default async function AccountPage() {
           <div><strong>{user.name || "ConnectTime member"}</strong><small>{user.email || "Signed-in account"}</small></div>
         </div>
       </section>
+
+      {decision.allowed && <DashboardNotificationSummary />}
 
       <section className={decision.allowed ? "ctAccountStatus isActive" : "ctAccountStatus"} role="status" aria-live="polite">
         <span className="ctAccountStatusIcon" aria-hidden="true">{decision.allowed ? "✓" : "🔒"}</span>
