@@ -527,6 +527,8 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   <button type="button" class="ctNewsFilter" data-news-category="technology" aria-pressed="false">Technology</button>
   <button type="button" class="ctNewsFilter" data-news-category="sports" aria-pressed="false">Sports</button>
   <button type="button" class="ctNewsFilter" data-news-category="entertainment" aria-pressed="false">Entertainment</button>
+  <button type="button" class="ctNewsFilter" data-news-category="gaming" aria-pressed="false">Gaming</button>
+  <button type="button" class="ctNewsFilter" data-news-category="music" aria-pressed="false">Music</button>
   <button type="button" class="ctNewsRefresh" id="ctNewsRefresh">↻ Refresh</button>
  </div>
  <div class="ctNewsStatus" id="ctNewsStatus" role="status" aria-live="polite">Loading current headlines…</div>
@@ -775,7 +777,9 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   business:{label:'Business',query:'business markets economy'},
   technology:{label:'Technology',query:'technology science'},
   sports:{label:'Sports',query:'sports'},
-  entertainment:{label:'Entertainment',query:'entertainment culture'}
+  entertainment:{label:'Entertainment',query:'entertainment culture'},
+  gaming:{label:'Gaming',query:'video games gaming esports'},
+  music:{label:'Music',query:'music news artists releases'}
  };
  let active='all',articles=[],loading=false;
  const escapeText=value=>String(value||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/gi,' ').replace(/&#39;/g,"'").replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
