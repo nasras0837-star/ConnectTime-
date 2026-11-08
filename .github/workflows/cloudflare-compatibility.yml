@@ -1,0 +1,39 @@
+name: Connect Cloudflare compatibility check
+
+on:
+  push:
+    branches: [migration/cloudflare-workers]
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "lib/**"
+      - "package.json"
+      - "next.config.ts"
+      - ".github/workflows/cloudflare-compatibility.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install existing application dependencies
+        run: npm install --no-audit --no-fund
+      - name: Check Next.js compatibility with Cloudflare vinext
+        run: npx --yes vinext check
+      - name: Run application tests
+        run: npm test
+      - name: Type-check application
+        run: npm run typecheck
+      - name: Lint application
+        run: npm run lint
+      - name: Verify existing Next.js production build remains intact
+        run: npm run build
