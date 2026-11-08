@@ -140,6 +140,30 @@ footer{border-color:#e9e1f5;color:#9389a7}
 .ctNewsDisclaimer{margin:16px 0 0;color:#817691;font-size:10px;line-height:1.7}
 @media(max-width:620px){.ctNewsGrid{grid-template-columns:1fr}.ctNewsRefresh{margin-left:0}.ctNewsToolbar{gap:6px}.ctNewsFilter,.ctNewsRefresh{padding:8px 10px}}
 
+
+/* ConnectTime public homepage sports scores */
+.ctPublicSports{margin:12px 0 44px;padding:clamp(20px,3vw,32px);border:1px solid #e6d9f6;border-radius:28px;background:linear-gradient(130deg,#f0e6ff,#e5efff 52%,#ffe8f4);box-shadow:0 18px 45px #51327b12}
+.ctPublicSportsHead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
+.ctPublicSportsHead h2{margin:8px 0;font-size:clamp(27px,4vw,42px);line-height:1.05;letter-spacing:-1.8px}
+.ctPublicSportsHead p{margin:0;color:#776d8b;font-size:13px}
+.ctPublicSportsRefresh{white-space:nowrap;color:#7540a9;font-size:10px;font-weight:850}
+.ctPublicSportsFilters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.ctPublicSportsFilters button{border:1px solid #e1d5f2;border-radius:99px;padding:8px 13px;background:#ffffffc9;color:#70558f;font-size:10px;font-weight:850;cursor:pointer}
+.ctPublicSportsFilters button.is-active{background:linear-gradient(110deg,#7538db,#3985e6 55%,#dc35a8);border-color:transparent;color:white}
+.ctPublicSportsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ctPublicSportsLeague{min-width:0;padding:15px;border:1px solid #fff;border-radius:17px;background:#ffffffdf}
+.ctPublicSportsLeagueHead{display:flex;justify-content:space-between;gap:8px;align-items:center;padding-bottom:10px;border-bottom:1px solid #eee7f6}
+.ctPublicSportsLeagueHead b{font-size:12px;color:#7540bd}
+.ctPublicSportsLeagueHead a,.ctPublicSportsNote a{color:#7940bd;font-size:10px;font-weight:850}
+.ctPublicSportsGame{padding:11px 0;border-bottom:1px solid #f0ebf6}.ctPublicSportsGame:last-child{border-bottom:0;padding-bottom:0}
+.ctPublicSportsGameStatus{display:flex;align-items:center;gap:6px;margin-bottom:7px;color:#8a7e9c;font-size:9px;font-weight:800}
+.ctPublicSportsDot{width:6px;height:6px;border-radius:50%;background:#a8a0b5}.ctPublicSportsDot.live{background:#e33c67;box-shadow:0 0 0 3px #f8d9e8}
+.ctPublicSportsTeam{display:flex;justify-content:space-between;gap:8px;padding:3px 0;color:#4d4266;font-size:11px}.ctPublicSportsTeam strong{font-variant-numeric:tabular-nums;color:#30234f}
+.ctPublicSportsEmpty{grid-column:1/-1;padding:22px;border:1px dashed #d9cdea;border-radius:15px;background:#ffffffa8;color:#807691;text-align:center;font-size:12px}
+.ctPublicSportsNote{margin:15px 0 0;color:#817691;font-size:10px;line-height:1.7}
+@media(max-width:850px){.ctPublicSportsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.ctPublicSports{padding:19px 13px;border-radius:22px}.ctPublicSportsHead{display:block}.ctPublicSportsRefresh{display:inline-block;margin-top:10px}.ctPublicSportsGrid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body><a class="skip-link" href="#main-content">Skip to main content</a><div class="wrap">
@@ -148,6 +172,15 @@ footer{border-color:#e9e1f5;color:#9389a7}
 <section class="hero"><div><div class="eyebrow"><i class="dot"></i> ONE WORLD. PEOPLE EVERYWHERE.</div><h1>Your global social world,<br><em>all in one place.</em></h1><p>Meet people across countries and cultures, build communities, message friends, join group video chats, discover worldwide music and TV, follow the news, and explore opportunities—all in one connected social world.</p><div class="actions"><a class="btn" href="https://connect-web.onrender.com/register" target="_blank" rel="noopener noreferrer">Register Now ↗</a><a class="btn ghost" href="#features">Explore features ↓</a><a class="btn ghost" href="#group-meetings">View group meeting details ↗</a></div><div class="proof"><span><b>✦</b> People & communities</span><span><b>✦</b> Private text chat</span><span><b>✦</b> Video chat worldwide</span><span><b>✦</b> News, TV & video</span></div></div>
 <div class="heroArt"><div class="orb"></div><div class="centerLogo"><img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/public/connect-logo.svg?v=7893aa3" alt="Connect logo"></div><div class="float f1">🌍 Meet people worldwide<small>Connect across countries and cultures</small></div><div class="float f2">🤝 Friendships without borders<small>Find people who share your interests</small></div><div class="float f3">💬 One world, connected</div><span class="spark s1">✳</span><span class="spark s2">✦</span></div></section>
 <div class="metrics"><span><b>01</b> Connect across the world</span><span><b>02</b> Discover new cultures</span><span><b>03</b> Share your interests</span><span><b>04</b> Build global friendships</span><span><b id="ctRegisteredMemberCount" aria-live="polite">…</b> Registered members</span></div>
+
+<section class="ctPublicSports" id="sports-scores" aria-labelledby="ctPublicSportsTitle">
+ <div class="ctPublicSportsHead"><div><span class="eyebrow">CONNECT · SPORTS DESK</span><h2 id="ctPublicSportsTitle">Scores, games &amp; matchups.</h2><p>Follow game-day action across major leagues, right from your ConnectTime homepage.</p></div><span class="ctPublicSportsRefresh" id="ctPublicSportsStatus" aria-live="polite">Loading scores…</span></div>
+ <div class="ctPublicSportsFilters" role="group" aria-label="Sports leagues">
+  <button type="button" class="is-active" data-sport="all">All leagues</button><button type="button" data-sport="nba">NBA</button><button type="button" data-sport="nfl">NFL</button><button type="button" data-sport="mlb">MLB</button><button type="button" data-sport="nhl">NHL</button><button type="button" data-sport="soccer">Soccer</button>
+ </div>
+ <div class="ctPublicSportsGrid" id="ctPublicSportsGrid"><div class="ctPublicSportsEmpty">Fetching the latest game information…</div></div>
+ <p class="ctPublicSportsNote">Scores and game details are supplied by ESPN public scoreboard feeds. Coverage may vary. ConnectTime is not affiliated with ESPN. <a href="https://www.espn.com/scoreboard" target="_blank" rel="noopener noreferrer">View ESPN scoreboards ↗</a></p>
+</section>
 
 <section class="liveNewsPanel" id="live-video-news" aria-labelledby="liveNewsTitle">
  <div class="liveNewsHead"><div><div class="eyebrow">CONNECT · LIVE VIDEO NEWS</div><h2 id="liveNewsTitle">Watch the world as it happens.</h2><p>Choose an official broadcaster to load its live video stream. Coverage and embedding availability may vary by country and time.</p></div><span class="liveNewsPill"><i></i> Official broadcaster channels</span></div>
@@ -490,4 +523,54 @@ footer{border-color:#e9e1f5;color:#9389a7}
 })();
 </script>
 
-\n<script>\n(()=>{const el=document.getElementById('ctRegisteredMemberCount');if(!el)return;fetch('https://connect-web.onrender.com/api/public/member-count',{headers:{'Accept':'application/json'},cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('unavailable');return r.json()}).then(data=>{if(typeof data.count!=='number'||!Number.isFinite(data.count))throw new Error('invalid');el.textContent=data.count.toLocaleString();const status=document.getElementById('ctRegisteredMemberStatus');if(status)status.textContent='Live registered-member total'}).catch(()=>{el.textContent='—';el.title='Live member count is temporarily unavailable';const status=document.getElementById('ctRegisteredMemberStatus');if(status)status.textContent='Count temporarily unavailable — backend connection needs attention'})})();\n</script>\n</body></html>
+\n<script>\n(()=>{const el=document.getElementById('ctRegisteredMemberCount');if(!el)return;fetch('https://connect-web.onrender.com/api/public/member-count',{headers:{'Accept':'application/json'},cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('unavailable');return r.json()}).then(data=>{if(typeof data.count!=='number'||!Number.isFinite(data.count))throw new Error('invalid');el.textContent=data.count.toLocaleString();const status=document.getElementById('ctRegisteredMemberStatus');if(status)status.textContent='Live registered-member total'}).catch(()=>{el.textContent='—';el.title='Live member count is temporarily unavailable';const status=document.getElementById('ctRegisteredMemberStatus');if(status)status.textContent='Count temporarily unavailable — backend connection needs attention'})})();\n</script>\n
+<script>
+/* Public homepage sports scoreboard; refreshes every three minutes. */
+(()=> {
+ const grid=document.getElementById('ctPublicSportsGrid'),status=document.getElementById('ctPublicSportsStatus'),buttons=[...document.querySelectorAll('[data-sport]')];
+ if(!grid||!status)return;
+ const leagues=[
+  {id:'nba',label:'NBA',sport:'basketball',league:'nba',url:'https://www.espn.com/nba/scoreboard'},
+  {id:'nfl',label:'NFL',sport:'football',league:'nfl',url:'https://www.espn.com/nfl/scoreboard'},
+  {id:'mlb',label:'MLB',sport:'baseball',league:'mlb',url:'https://www.espn.com/mlb/scoreboard'},
+  {id:'nhl',label:'NHL',sport:'hockey',league:'nhl',url:'https://www.espn.com/nhl/scoreboard'},
+  {id:'soccer',label:'Soccer · Premier League',sport:'soccer',league:'eng.1',url:'https://www.espn.com/soccer/scoreboard'}
+ ];
+ let active='all',data=[],busy=false;
+ const safe=(value,fallback='—')=>typeof value==='string'&&value.trim()?value.trim():fallback;
+ function node(tag,cls,txt){const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el}
+ function render(){
+  const shown=active==='all'?data:data.filter(x=>x.league.id===active);grid.replaceChildren();
+  if(!shown.length){grid.append(node('div','ctPublicSportsEmpty',data.length?'No games are currently listed for this league.':'No scoreboard data is available right now. Please try again later.'));return}
+  shown.forEach(({league,events})=>{
+   const card=node('section','ctPublicSportsLeague');const head=node('div','ctPublicSportsLeagueHead');head.append(node('b','',league.label));
+   const link=node('a','','Full scoreboard ↗');link.href=league.url;link.target='_blank';link.rel='noopener noreferrer';head.append(link);card.append(head);
+   events.slice(0,5).forEach(event=>{
+    const comp=event.competitions&&event.competitions[0];if(!comp)return;
+    const statusType=comp.status&&comp.status.type||{};const state=statusType.state;
+    const game=node('article','ctPublicSportsGame');const stat=node('div','ctPublicSportsGameStatus');
+    stat.append(node('span','ctPublicSportsDot'+(state==='in'?' live':'')),document.createTextNode(safe(statusType.shortDetail||statusType.detail||statusType.description,'Scheduled')));game.append(stat);
+    (comp.competitors||[]).forEach(team=>{
+     const row=node('div','ctPublicSportsTeam');row.append(node('span','',safe(team.team&&team.team.displayName,'Team')),node('strong','',safe(team.score,'—')));game.append(row);
+    });card.append(game);
+   });grid.append(card);
+  });
+ }
+ async function load(){
+  if(busy)return;busy=true;status.textContent='Updating scores…';
+  try{
+   const results=await Promise.all(leagues.map(async league=>{
+    const url='https://site.api.espn.com/apis/site/v2/sports/'+league.sport+'/'+league.league+'/scoreboard';
+    const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error('Feed unavailable');
+    const payload=await response.json();return {league,events:Array.isArray(payload.events)?payload.events:[]};
+   }));
+   data=results;render();status.textContent='Updated '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+' · refreshes every 3 minutes';
+  }catch(error){status.textContent='Sports scores are temporarily unavailable.';if(!data.length)render()}
+  finally{busy=false}
+ }
+ buttons.forEach(button=>button.addEventListener('click',()=>{active=button.dataset.sport;buttons.forEach(b=>{const selected=b===button;b.classList.toggle('is-active',selected);b.setAttribute('aria-pressed',String(selected))});render()}));
+ load();window.setInterval(load,180000);
+})();
+</script>
+
+</body></html>
