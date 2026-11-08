@@ -856,3 +856,48 @@
 @media(max-width:650px){.ctLiveNewsArticles{margin:22px 12px;padding:18px 13px}.ctLiveNewsArticlesHead{display:block}.ctLiveNewsArticlesHead>button{margin-top:12px}.ctLiveNewsArticleGrid{grid-template-columns:1fr}.ctLiveNewsArticleMeta{font-size:8px}}
 [object Object]
 
+
+/* Connect Markets dashboard */
+.ctMarketsPage{min-height:100vh;background:#f5f8fc;color:#173b56;font-family:'DM Sans',sans-serif}
+.ctMarketsHeader{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(16px,4vw,54px);background:#fff;border-bottom:1px solid #e2eaf1}
+.ctMarketsBrand{display:flex;align-items:center;gap:10px;font:800 20px Manrope,sans-serif;color:#173b56}
+.ctMarketsBrand img{width:42px;height:42px;object-fit:contain}
+.ctMarketsBrand small{display:block;color:#0b83b4;font:800 9px 'DM Sans',sans-serif;letter-spacing:1.6px;text-transform:uppercase}
+.ctMarketsHeader nav{display:flex;align-items:center;gap:22px;font-size:12px;font-weight:800}
+.ctMarketsJoin{background:#087eae;color:#fff;border-radius:10px;padding:11px 15px}
+.ctMarketsHero{max-width:1240px;margin:34px auto 20px;padding:clamp(25px,4vw,48px);border-radius:24px;min-height:265px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden;background:linear-gradient(115deg,#102f50,#126f9c 65%,#18a6a1);color:white}
+.ctMarketsHero>div:first-child{position:relative;z-index:1;max-width:690px}
+.ctMarketsEyebrow,.ctMarketsSectionHead>div>span{font-size:10px;font-weight:900;letter-spacing:1.6px;color:#45c6d4}
+.ctMarketsHero h1{font:800 clamp(38px,5vw,58px)/1.04 Manrope,sans-serif;letter-spacing:-2.5px;margin:15px 0}
+.ctMarketsHero h1 em{font-style:normal;color:#9af1e6}
+.ctMarketsHero p{max-width:610px;color:#d9eaf4;font-size:14px;line-height:1.75}
+.ctMarketsTags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.ctMarketsTags span{border:1px solid #ffffff42;background:#ffffff14;border-radius:20px;padding:8px 11px;font-size:10px;font-weight:800}
+.ctMarketsHeroArt{position:relative;flex:0 0 235px;height:190px;border:1px solid #ffffff32;border-radius:22px;background:linear-gradient(145deg,#ffffff20,#ffffff05);display:grid;place-items:center}
+.ctMarketsHeroArt span{font-size:92px;color:#8df4df;font-weight:300}
+.ctMarketsHeroArt b{position:absolute;bottom:18px;left:20px;font-size:11px;letter-spacing:2px;line-height:1.5}
+.ctMarketsHeroArt i{position:absolute;right:18px;top:15px;font-size:26px;color:#8df4df}
+.ctMarketsTicker{max-width:1240px;margin:0 auto 22px;background:#fff;border:1px solid #e0e9f0;border-radius:14px;overflow:hidden}
+.ctMarketsSection{max-width:1240px;margin:32px auto;padding:0 4px}
+.ctMarketsSectionHead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:14px}
+.ctMarketsSectionHead h2{font:800 27px Manrope,sans-serif;letter-spacing:-1px;margin:7px 0}
+.ctMarketsSectionHead p{margin:0;color:#71879a;font-size:12px;line-height:1.6}
+.ctMarketsSectionHead>small{font-size:10px;color:#8497a7}
+.ctMarketsPanel{background:#fff;border:1px solid #e0e9f0;border-radius:15px;overflow:hidden;padding:12px}
+.ctMarketWidget{position:relative;width:100%;overflow:hidden}
+.ctMarketWidget .tradingview-widget-container__widget{width:100%;height:100%}
+.ctMarketLoading{padding:25px;color:#8294a4;font-size:12px}
+.ctMarketAttribution{padding:4px 8px 7px;text-align:right;font-size:9px;color:#8a9cac}
+.ctMarketAttribution a{color:#647f94;text-decoration:underline}
+.ctMarketsSearch{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e0e9f0;border-radius:13px;padding:11px;margin:12px 0}
+.ctMarketsSearch label{font-size:10px;font-weight:900;color:#678093;white-space:nowrap}
+.ctMarketsSearch input{flex:1;min-width:0;border:1px solid #dce7ef;border-radius:9px;padding:11px 12px;font:inherit;font-size:12px;outline-color:#0b89b9}
+.ctMarketsSearch button{border:0;border-radius:9px;background:#087eae;color:white;padding:12px 16px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap}
+.ctMarketsMessage{font-size:11px;color:#b64c4c}
+.ctMarketsDisclaimer{max-width:1240px;margin:36px auto 24px;padding:20px 22px;border:1px solid #dce7ef;border-radius:15px;background:#eaf3f8;color:#4b687d}
+.ctMarketsDisclaimer strong{font-size:12px;color:#244e6a}
+.ctMarketsDisclaimer p{font-size:11px;line-height:1.75}
+.ctMarketsDisclaimer small{font-size:10px}.ctMarketsDisclaimer a{color:#087eae;text-decoration:underline}
+.ctMarketsFooter{max-width:1240px;margin:0 auto;padding:22px 0 32px;border-top:1px solid #e0e9f0;display:flex;justify-content:space-between;gap:16px;color:#8497a7;font-size:10px}
+.ctMarketsFooter>a{font-weight:900;color:#315b76}.ctMarketsFooter div{display:flex;gap:15px}
+@media(max-width:760px){.ctMarketsHeader{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 16px}.ctMarketsHeader nav{gap:13px;flex-wrap:wrap}.ctMarketsHero{margin:18px 12px;padding:25px 20px;min-height:0}.ctMarketsHeroArt{display:none}.ctMarketsSection{margin:26px 12px;padding:0}.ctMarketsTicker{margin:0 12px 20px}.ctMarketsSectionHead{display:block}.ctMarketsSectionHead>small{display:block;margin-top:9px}.ctMarketsSearch{align-items:stretch;flex-wrap:wrap}.ctMarketsSearch label{width:100%}.ctMarketsSearch input{flex-basis:60%}.ctMarketsSearch button{flex:1}.ctMarketsDisclaimer{margin:26px 12px;padding:16px}.ctMarketsFooter{margin:0 12px;flex-wrap:wrap}}
