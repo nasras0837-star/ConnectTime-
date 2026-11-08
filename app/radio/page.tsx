@@ -21,6 +21,7 @@ export default function RadioPage(){
  const [region,setRegion]=useState("All regions"),[country,setCountry]=useState(""),[language,setLanguage]=useState(""),[query,setQuery]=useState(""),[sort,setSort]=useState("clickcount");
  const [stations,setStations]=useState<Station[]>([]),[favoriteStations,setFavoriteStations]=useState<Station[]>([]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(""),[playing,setPlaying]=useState<string|null>(null),[playingName,setPlayingName]=useState(""),[streamUrl,setStreamUrl]=useState(""),[loadingId,setLoadingId]=useState("");
+ const [hasMore,setHasMore]=useState(false),[moreLoading,setMoreLoading]=useState(false);
  const [saved,setSaved]=useState<string[]>([]),[savedOnly,setSavedOnly]=useState(false),[favoritesLoaded,setFavoritesLoaded]=useState(false);
  const [favoritesError,setFavoritesError]=useState(""),[favoriteRetry,setFavoriteRetry]=useState(0),[favoritesLoading,setFavoritesLoading]=useState(false);
  const countryOptions=useMemo(()=>region==="All regions"?Array.from(new Set(regions.flatMap(item=>item.codes))).sort():regions.find(item=>item.name===region)?.codes||[],[region]);
@@ -36,7 +37,9 @@ export default function RadioPage(){
    if(country)p.set("country",country);if(language)p.set("language",language);if(query.trim())p.set("q",query.trim());
    const res=await fetch("/api/radio?"+p.toString(),{cache:"no-store",signal:controller.signal});const data=await res.json();
    if(!res.ok)throw new Error(data.error||"Could not load stations");
-   setStations(Array.isArray(data.stations)?data.stations:[]);
+   const nextStations=Array.isArray(data.stations)?data.stations as Station[]:[];
+   setStations(nextStations);
+   setHasMore(nextStations.length===100);
   }catch(e){
    if(controller.signal.aborted)return;
    setError(e instanceof Error?e.message:"Radio search failed");setStations([]);
@@ -100,6 +103,22 @@ export default function RadioPage(){
   return filtered;
  },[sourceList,region,country,language,query,savedOnly,sort]);
 
+ async function loadMoreStations(){
+  if(moreLoading||!hasMore||savedOnly)return;
+  setMoreLoading(true);
+  try{
+   const p=new URLSearchParams({limit:"100",offset:String(stations.length),sort});
+   if(country)p.set("country",country);if(language)p.set("language",language);if(query.trim())p.set("q",query.trim());
+   const response=await fetch("/api/radio?"+p.toString(),{cache:"no-store"});
+   const data=await response.json();
+   if(!response.ok)throw new Error(data.error||"Could not load more stations");
+   const next=Array.isArray(data.stations)?data.stations as Station[]:[];
+   setStations(current=>{const seen=new Set(current.map(station=>station.id));return [...current,...next.filter(station=>!seen.has(station.id))];});
+   setHasMore(next.length===100);
+  }catch(e){setError(e instanceof Error?e.message:"Could not load more stations");}
+  finally{setMoreLoading(false);}
+ }
+
  async function playStation(station:Station){
   if(playing===station.id){audioRef.current?.pause();return;}
   setLoadingId(station.id);setError("");
@@ -127,6 +146,7 @@ export default function RadioPage(){
    {savedOnly&&saved.length>0&&favoriteStations.length===0&&<div className="radioEmpty" role="status">{favoritesLoading?"Loading your saved stations…":favoritesError?<>Saved stations could not be loaded. <button type="button" onClick={()=>setFavoriteRetry(value=>value+1)}>Retry loading favorites</button></>:"Your saved stations are no longer available in the directory."}</div>}
    {savedOnly&&!favoritesLoading&&!favoritesError&&favoriteStations.length>0&&list.length===0&&<div className="radioEmpty" role="status">No saved stations match these filters. <button type="button" onClick={()=>{setRegion("All regions");setCountry("");setLanguage("");setQuery("");setSort("clickcount");}}>Clear filters</button></div>}
    {!loading&&!savedOnly&&!error&&list.length===0&&<div className="radioEmpty" role="status">No stations match these filters. Try another country, language or genre, or <button type="button" onClick={()=>{setRegion("All regions");setCountry("");setLanguage("");setQuery("");setSort("clickcount");}}>clear all filters</button>.</div>}
+   {!loading&&!savedOnly&&list.length>0&&hasMore&&<div className="radioLoadMore"><button type="button" onClick={()=>void loadMoreStations()} disabled={moreLoading}>{moreLoading?"Loading more stations…":"Load 100 more stations"}</button></div>}
    <p className="radioRights">Station availability, stream reliability, advertisements, content and music licensing are controlled by each broadcaster. ConnectTime links to publicly listed streams and does not own, rebroadcast, or guarantee rights to station content. Some stations may be unavailable in certain countries.</p>
   </section>
   <section className="radioFreeMusic"><div><span>FREE MUSIC DISCOVERY</span><h2>Find music, not just radio.</h2><p>Discover free, legal listening and artist-supported music services. Catalogs, account requirements and geographic availability vary.</p></div><div className="radioMusicLinks"><a href="https://www.jamendo.com/" target="_blank" rel="noopener noreferrer"><b>Jamendo</b><small>Independent artists · free listening options</small>↗</a><a href="https://soundcloud.com/" target="_blank" rel="noopener noreferrer"><b>SoundCloud</b><small>Artist uploads · free tracks and mixes</small>↗</a><a href="https://bandcamp.com/" target="_blank" rel="noopener noreferrer"><b>Bandcamp</b><small>Artist-first discovery · some free releases</small>↗</a><a href="https://freemusicarchive.org/" target="_blank" rel="noopener noreferrer"><b>Free Music Archive</b><small>Curated music · license terms per track</small>↗</a></div></section>
