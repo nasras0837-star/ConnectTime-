@@ -147,6 +147,11 @@ export default function AdvertisingDashboardPage() {
   const pageCount = Math.max(1, Math.ceil(sortedCampaigns.length / pageSize));
   const currentPage = Math.min(page, pageCount);
   const pageCampaigns = useMemo(() => sortedCampaigns.slice((currentPage - 1) * pageSize, currentPage * pageSize), [sortedCampaigns, currentPage, pageSize]);
+  const pageNumbers = useMemo(() => {
+    const first = Math.max(1, Math.min(currentPage - 2, pageCount - 4));
+    const last = Math.min(pageCount, first + 4);
+    return Array.from({ length: last - first + 1 }, (_, index) => first + index);
+  }, [currentPage, pageCount]);
 
   useEffect(() => {
     if (page > pageCount) setPage(pageCount);
@@ -264,6 +269,9 @@ export default function AdvertisingDashboardPage() {
         <span aria-live="polite">Page {currentPage} of {pageCount}</span>
         <button type="button" onClick={() => setPage(1)} disabled={currentPage <= 1}>First</button>
         <button type="button" onClick={() => setPage(value => Math.max(1, value - 1))} disabled={currentPage <= 1}>Previous</button>
+        <div className="ctCampaignPageNumbers" role="group" aria-label="Choose campaign page">
+          {pageNumbers.map(pageNumber => <button key={pageNumber} type="button" onClick={() => setPage(pageNumber)} aria-current={pageNumber === currentPage ? "page" : undefined} aria-label={`Page ${pageNumber}`} disabled={pageNumber === currentPage}>{pageNumber}</button>)}
+        </div>
         <button type="button" onClick={() => setPage(value => Math.min(pageCount, value + 1))} disabled={currentPage >= pageCount}>Next</button>
         <button type="button" onClick={() => setPage(pageCount)} disabled={currentPage >= pageCount}>Last</button>
       </div>}
