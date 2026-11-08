@@ -60,6 +60,7 @@ export async function PATCH(request: Request) {
   const resolutionNote = cleanText(body.resolutionNote, 1000);
   if (!reportId || !["reviewing", "resolved", "dismissed"].includes(status) ||
       !["none", "remove_content", "suspend_member"].includes(action) ||
+      (status !== "resolved" && action !== "none") ||
       (status === "dismissed" && action !== "none") ||
       (status === "resolved" && !resolutionNote)) {
     return NextResponse.json({ error: "Provide a report, valid status, and a resolution note when resolving a report." }, { status: 400 });
