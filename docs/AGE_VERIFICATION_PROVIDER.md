@@ -6,8 +6,12 @@
 
 The initial integration target is an **OVER 18** check. Prefer privacy-preserving age-threshold proof that returns only whether the threshold was met. Do not request or store a user's exact age unless a documented product/legal requirement makes it necessary.
 
-Yoti's hosted Age Verification API supports server-created sessions, a hosted user flow, result retrieval, and notifications:
-- API reference: https://developers.yoti.com/age-verification-api
+Yoti's production Age Verification API and its isolated sandbox use different authentication and session endpoints. Do not mix the two flows. The production API uses the Yoti Hub API key as a bearer token. The sandbox requires a short-lived OAuth access token obtained by signing a PS384 client-assertion JWT with the Yoti service private key:
+- Sandbox introduction: https://developers.yoti.com/age-verification/sandbox-introduction
+- Sandbox integration guide (OAuth): https://developers.yoti.com/age-verification/sandbox-integration-guide
+- Sandbox session creation: https://developers.yoti.com/age-verification/create-sandbox-session
+- Sandbox notifications: https://developers.yoti.com/age-verification/sandbox-notifications
+- Production API reference (not used by this sandbox adapter): https://developers.yoti.com/age-verification-api
 - Create a session: https://developers.yoti.com/age-verification/create-a-session
 - Results: https://developers.yoti.com/age-verification/results
 - Notifications and signature verification: https://developers.yoti.com/age-verification/notifications
@@ -18,10 +22,10 @@ Yoti's hosted Age Verification API supports server-created sessions, a hosted us
 
 1. Require an authenticated Appwrite user. Apply per-user and per-IP rate limits.
 2. Create an opaque, random, single-use internal reference mapped server-side to the Appwrite user ID. Do not put email, name, or other personal information in Yoti's reference_id.
-3. Create a Yoti session server-to-server using `POST https://age.yoti.com/api/v1/sessions`, with `Authorization: Bearer <YOTI_API_KEY>`, `Yoti-Sdk-Id: <YOTI_SDK_ID>`, and JSON content type.
+3. For sandbox only, generate a short-lived JWT client assertion (PS384; `iss` and `sub` are `sdk:<YOTI_SDK_ID>`, `aud` is `https://auth.api.yoti.com/v1/oauth/token`, with `iat`, `exp`, and unique `jti`), exchange it at `POST https://auth.api.yoti.com/v1/oauth/token` using the `client_credentials` grant and `avs:sessions:create` scope, then use the returned bearer token with `POST https://age.yoti.com/sandbox/api/v1/sessions` and `Yoti-SDK-Id`. Keep the private key and access token server-only; cache the token until shortly before expiry.
 4. Configure `type: OVER`, threshold 18, short session TTL, and only methods approved in the vendor contract and privacy review. Do not enable age estimation as the sole verification method for access to ConnectTime's protected social features.
 5. Supply HTTPS callback and notification URLs. Keep the Yoti session ID and internal reference mapped to the initiating user in a private server-owned store.
-6. Return only the hosted Yoti URL and an opaque session reference to the signed-in user. Never expose API credentials.
+6. Return only the sandbox-hosted Yoti flow URL and an opaque session reference to the signed-in user. The sandbox session is not a real age check and must never grant production access. Never expose credentials.
 7. Redirect the user to Yoti's hosted flow. A browser redirect or query parameter is not proof of a pass.
 
 ### Result and notification handling
@@ -50,7 +54,7 @@ After Yoti onboarding and sandbox access are approved, configure these as server
 
 Do not add either variable with a `NEXT_PUBLIC_` prefix. Do not commit credentials or ask users to paste them into chat. The notification verifier must use Yoti's official published Age Verification public key, pinned and reviewed in code/configuration according to Yoti's current documentation; do not accept a public key supplied by the webhook.
 
-Until the Yoti sandbox credentials and integration are configured, the session endpoint must continue returning 503. The existing `AGE_VERIFICATION_PROVIDER` placeholder is not a live integration switch.
+Until the Yoti sandbox SDK ID and private key are configured and the sandbox adapter is implemented and tested, the session endpoint must continue returning 503. Sandbox results must be stored separately from production member-access state and must never set `adult_status=verified`. The existing `AGE_VERIFICATION_PROVIDER` placeholder is not a live integration switch.
 
 ## Tests and release gates
 
@@ -65,4 +69,4 @@ Until the Yoti sandbox credentials and integration are configured, the session e
 
 ## Current implementation status
 
-The provider decision is recorded for sandbox evaluation only. Vendor onboarding, credentials, the Yoti session adapter, signature-verified webhook, persistent session/event storage, and end-to-end tests are not yet implemented. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
+The provider decision is recorded for sandbox evaluation only. Vendor onboarding and credentials, the Yoti sandbox session adapter, sandbox result retrieval, signature-verified webhook, persistent session/event storage, and end-to-end tests are not yet implemented. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
