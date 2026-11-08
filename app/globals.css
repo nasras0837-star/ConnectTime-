@@ -959,3 +959,25 @@
   .ctAccountCard{transition:none}
   .ctAccountCard:hover{transform:none}
 }
+
+
+/* Member dashboard skip navigation */
+.ctAccountSkipLink{
+  position:absolute;
+  z-index:100;
+  top:8px;
+  left:8px;
+  transform:translateY(-160%);
+  padding:12px 16px;
+  border-radius:9px;
+  background:#123f5c;
+  color:#fff;
+  font-size:12px;
+  font-weight:850;
+  text-decoration:none;
+}
+.ctAccountSkipLink:focus{
+  transform:translateY(0);
+  outline:3px solid #54c5ee;
+  outline-offset:3px;
+}
