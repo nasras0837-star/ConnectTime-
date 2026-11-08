@@ -11,7 +11,7 @@ services:
     autoDeploy: true
     envVars:
       - key: NODE_VERSION
-        value: "22"
+        value: "24"
       - key: NEXT_PUBLIC_APPWRITE_ENDPOINT
         sync: false
       - key: NEXT_PUBLIC_APPWRITE_PROJECT_ID
