@@ -38,7 +38,9 @@ export default function AdvertisingDashboardPage() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [scheduleFilter, setScheduleFilter] = useState("all");
   const [refreshing, setRefreshing] = useState(false);
+  const [now, setNow] = useState(0);
 
   const loadCampaigns = async () => {
     setError("");
@@ -68,16 +70,24 @@ export default function AdvertisingDashboardPage() {
     const query = search.trim().toLowerCase();
     const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region].some(value => (value || "").toLowerCase().includes(query));
     const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
-    return matchesText && matchesStatus;
-  }), [campaigns, search, statusFilter]);
+    const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
+    const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
+    const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
+    const matchesSchedule = scheduleFilter === "all" ||
+      (scheduleFilter === "unscheduled" && !hasSchedule) ||
+      (scheduleFilter === "upcoming" && hasSchedule && start > now) ||
+      (scheduleFilter === "current" && hasSchedule && start <= now && end >= now) ||
+      (scheduleFilter === "ended" && hasSchedule && end < now);
+    return matchesText && matchesStatus && matchesSchedule;
+  }), [campaigns, search, statusFilter, scheduleFilter, now]);
 
-  const totals = useMemo(() => campaigns.reduce((result, campaign) => {
+  const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
     result.cap += Number(campaign.lifetime_cap_minor) || 0;
     result.impressions += Number(campaign.impressions_count) || 0;
     result.clicks += Number(campaign.clicks_count) || 0;
     return result;
-  }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [campaigns]);
+  }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [filtered]);
   const ctr = totals.impressions > 0 ? totals.clicks / totals.impressions * 100 : 0;
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
 
@@ -87,16 +97,18 @@ export default function AdvertisingDashboardPage() {
       <div className="ctAdDashboardTop"><div><span className="adEyebrow">ADVERTISER CENTER</span><h1>Campaign performance</h1><p>Manage your campaign plans, review audience targeting, and monitor verified delivery metrics.</p></div><Link className="ctCampaignCreate" href="/advertise">＋ Create campaign</Link></div>
       <div className="ctCampaignNotice"><strong>Preview / approval status:</strong> Campaign drafts are not published or charged. Impressions and clicks are shown only when verified delivery events are configured. AI screening is not final approval; human review and secure billing are still required before launch.</div>
       <div className="ctAdKpis">
-        <article><span>CAMPAIGNS</span><strong>{campaigns.length}</strong><small>{campaigns.filter(c => c.status === "pending_review").length} awaiting review</small></article>
-        <article><span>RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>Verified spend records only</small></article>
-        <article><span>AD IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified delivery events</small></article>
-        <article><span>CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks</small></article>
+        <article><span>MATCHING CAMPAIGNS</span><strong>{filtered.length}</strong><small>{filtered.filter(c => c.status === "pending_review").length} awaiting review</small></article>
+        <article><span>FILTERED RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>For campaigns matching your filters</small></article>
+        <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified events for matching campaigns</small></article>
+        <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks</small></article>
       </div>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
+        <label>Campaign schedule<select value={scheduleFilter} onChange={event => { setNow(Date.now()); setScheduleFilter(event.target.value); }}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
+      {!loading && !error && campaigns.length > 0 && <p className="ctCampaignResultCount" aria-live="polite">Showing {filtered.length} of {campaigns.length} campaigns</p>}
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status.</div> : <div className="ctCampaignList">{filtered.map(campaign => {
         const impressions = Number(campaign.impressions_count) || 0;
         const clicks = Number(campaign.clicks_count) || 0;
@@ -112,7 +124,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignMeta"><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
-      <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by ConnectTime's campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
+      <p className="ctAdDashboardFoot">Reporting is calculated from verified event records returned by ConnectTime&apos;s campaign API. Estimated reach, demographic predictions, and unverified views are not presented as actual performance.</p>
     </section>
   </main>;
 }
