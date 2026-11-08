@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { checkMemberAccess } from "@/lib/member-access";
+import { currentCommunityMember } from "@/lib/community-safety";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -6,6 +8,10 @@ const allowedSort = new Set(["clickcount", "votes", "bitrate", "name"]);
 const clean = (value: string | null, max = 80) => (value || "").trim().slice(0, max);
 
 export async function GET(request: Request) {
+  const member = await currentCommunityMember();
+  if (!member) return NextResponse.json({ error: "Sign in to browse radio stations." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ error: "Verified adult membership with an active account is required." }, { status: access.status });
   const params = new URL(request.url).searchParams;
   const country = clean(params.get("country"), 80);
   const language = clean(params.get("language"), 60);
