@@ -16,3 +16,18 @@ body{
   background-attachment:fixed!important;
 }
 @media(max-width:680px){body{background-attachment:scroll!important}}
+
+
+/* CONNECT ELECTRIC BLUE GLOBE THEME — social/feed experience */
+html,body{min-height:100%;background:#020827!important}
+body{color:#f3f8ff!important;background-color:#020827!important;background-image:linear-gradient(90deg,rgba(2,8,39,.78),rgba(2,8,39,.48)),url("https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/docs/connect-globe-background.svg")!important;background-position:center top!important;background-size:cover!important;background-repeat:no-repeat!important;background-attachment:fixed!important}
+.topbar,.sidebar{background:rgba(3,13,48,.9)!important;border-color:#28549a!important;color:#f5f8ff!important;backdrop-filter:blur(14px)}
+.brand,.profile,.welcome h1,.post-head,.person{color:#f5f8ff!important}
+.search,.story,.composer,.post,.panel,.side-note,.feature,.photo{background:rgba(5,19,57,.86)!important;border:1px solid #28549a!important;color:#f5f8ff!important;backdrop-filter:blur(10px)}
+.profile small,.post-head small,.person small,.welcome p,.post p,.feature p,.panel p,.side-note small,.foot,.stats{color:#c1d6f5!important}
+nav button{color:#d7e7ff!important}nav button.active,nav button:hover{background:#0755bd!important;color:white!important}
+.primary{background:linear-gradient(110deg,#087eae,#1765ed)!important;color:white!important}
+.avatar,.story i,.post-head i,.person i{background:#0756c9!important;color:#fff!important}
+footer,.foot{color:#a9c8f5!important}
+@media(max-width:680px){body{background-attachment:scroll!important}.sidebar{background:rgba(3,13,48,.97)!important}}
+
