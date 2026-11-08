@@ -5,7 +5,7 @@ type Event = {
   id: string;
   name?: string;
   date?: string;
-  competitions?: Array<{ competitors?: Competitor[]; status?: { type?: { description?: string; detail?: string; state?: string } } }>;
+  competitions?: Array<{ competitors?: Competitor[]; status?: { type?: { description?: string; detail?: string; shortDetail?: string; state?: string } } }>;
 };
 type League = { label: string; sport: string; league: string; href: string };
 
