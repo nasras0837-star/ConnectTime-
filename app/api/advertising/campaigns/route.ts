@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { advertisingStore, ID, Query } from "@/lib/advertising-store";
 import { checkMemberAccess } from "@/lib/member-access";
+import { canEnterHumanReviewQueue } from "@/lib/advertising-policy";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
     }
     // Enforce the screening gate server-side; the browser must never be able to
     // turn a rejected, unreviewed, or rights-unconfirmed submission into a campaign.
-    if (adSubmission.status !== "manual_review_required" || adSubmission.rights_confirmed !== true) {
+    if (!canEnterHumanReviewQueue(adSubmission)) {
       return NextResponse.json({
         error: "Only ads that passed the initial safety screen and include confirmed creative rights can enter the human-review queue.",
         paymentAllowed: false,
