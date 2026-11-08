@@ -94,6 +94,35 @@ footer{border-color:#e9e1f5;color:#9389a7}
 .liveNewsDisclaimer{margin:17px 0 0;color:#7b718f;font-size:10px;line-height:1.7}
 @media(max-width:620px){.liveNewsHead{display:block}.liveNewsPill{margin-top:14px}.liveNewsGrid{grid-template-columns:1fr}.liveNewsPanel{padding:19px 14px;border-radius:22px}}
 
+
+/* Homepage radio station finder */
+.ctRadioFinder{margin:18px 0 20px;padding:22px;border:1px solid #e8def6;border-radius:22px;background:linear-gradient(135deg,#fff,#f5f0ff 58%,#eef7ff);box-shadow:0 12px 30px #49317810}
+.ctRadioFinderIntro{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+.ctRadioFinderIcon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:#eee2ff;font-size:25px}
+.ctRadioFinderIntro h3{margin:0 0 4px;font-size:19px;letter-spacing:-.5px}
+.ctRadioFinderIntro p{margin:0;color:#807691;font-size:12px}
+.ctRadioSearchForm{display:flex;gap:9px}
+.ctRadioSearchForm input{flex:1;min-width:0;padding:13px 14px;border:1px solid #dfd5ef;border-radius:12px;background:#fff;color:#30234f;font:inherit;font-size:13px}
+.ctRadioSearchButton,.ctRadioPlayButton{border:0;border-radius:12px;padding:12px 17px;background:linear-gradient(110deg,#7538db,#3985e6 55%,#dc35a8);color:#fff;font:inherit;font-size:12px;font-weight:850;cursor:pointer}
+.ctRadioSearchButton:disabled,.ctRadioPlayButton:disabled{opacity:.55;cursor:wait}
+.ctRadioSearchStatus{min-height:19px;margin:12px 0;color:#75698b;font-size:11px}
+.ctRadioResults{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ctRadioResult{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid #e9e1f5;border-radius:14px;background:#ffffffdf}
+.ctRadioStationMark{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;overflow:hidden;border-radius:11px;background:#eee8fa;color:#7743bc;font-size:19px}
+.ctRadioStationMark img{width:100%;height:100%;object-fit:contain;background:#fff}
+.ctRadioStationInfo{flex:1;min-width:0}
+.ctRadioStationInfo b{display:block;overflow:hidden;color:#38295b;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.ctRadioStationInfo small{display:block;margin-top:3px;overflow:hidden;color:#887d9a;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.ctRadioPlayButton{flex:0 0 auto;padding:9px 12px}
+.ctRadioNowPlaying{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,1.2fr);align-items:center;gap:15px;margin-top:15px;padding:14px;border:1px solid #e6ddf4;border-radius:14px;background:#fff}
+.ctRadioNowPlaying b,.ctRadioNowPlaying span{display:block}
+.ctRadioNowPlaying b{font-size:11px;color:#7540c4}
+.ctRadioNowPlaying span{margin-top:3px;color:#776d8b;font-size:11px;overflow-wrap:anywhere}
+.ctRadioNowPlaying audio{width:100%;min-width:0;height:38px}
+.ctRadioFinderNote{margin:12px 0 0;color:#8a8098;font-size:10px;line-height:1.6}
+.ctRadioSrOnly{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:620px){.ctRadioFinder{padding:17px 13px}.ctRadioSearchForm{flex-direction:column}.ctRadioSearchButton{width:100%}.ctRadioResults{grid-template-columns:1fr}.ctRadioNowPlaying{grid-template-columns:1fr}.ctRadioNowPlaying audio{width:100%}}
+
 </style>
 </head>
 <body><a class="skip-link" href="#main-content">Skip to main content</a><div class="wrap">
@@ -173,7 +202,19 @@ footer{border-color:#e9e1f5;color:#9389a7}
  <div class="notice"><b>Availability:</b> Video Tube is being developed in stages. This preview does not host or stream member-uploaded videos; uploads and publishing stay disabled until required moderation and safety controls are ready.</div>
 </section>
 <section class="panel" id="free-tv"><div class="panelTop"><div><div class="eyebrow">FEATURE SPOTLIGHT · CONNECTTIME FREE TV</div><h2>Free TV discovery from around the world.</h2></div><p>Discover official broadcaster services across regions and countries. Find news, public television, culture, documentaries, and entertainment in different languages.</p></div><div class="topics"><article class="topic"><span>🌍</span><h3>Browse by region</h3><p>Explore broadcasters across North America, Europe, Latin America, Asia-Pacific, Africa, and the Middle East.</p></article><article class="topic"><span>📰</span><h3>Local & world news</h3><p>Find official news services and public broadcasters covering local, regional, and international stories.</p></article><article class="topic"><span>🎭</span><h3>Entertainment & culture</h3><p>Discover public television, documentaries, cultural programming, and entertainment options.</p></article></div><div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffc9;padding:22px;border-radius:18px;border:1px solid #dcecf2;margin-top:16px"><div><b style="font-size:16px">Free TV channel guide</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Browse the public directory of official broadcaster destinations without signing in. Saving a personal watchlist requires an active account and verified adult eligibility.</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="https://connecttime-sm.netlify.app/free-tv" target="_blank" rel="noopener noreferrer">Open Free TV ↗</a><a class="btn ghost" href="https://connecttime-sm.netlify.app/login" target="_blank" rel="noopener noreferrer">Sign in ↗</a></div></div><div class="notice"><b>Broadcaster rights and availability:</b> ConnectTime links to official broadcaster services and does not host, record, rebroadcast, or bypass geo-restrictions. “Free” does not guarantee every programme is free or available in every country. Registration, advertising, schedules, and regional restrictions are controlled by each broadcaster. Channel links are subject to ongoing technical checks and manual review.</div></section>
-<section class="panel" id="radio" style="background:linear-gradient(125deg,#e1f5fc,#e4f8f0 52%,#f8e8f5);border-color:#d7edf1"> <div class="panelTop"><div><div class="eyebrow">FEATURE SPOTLIGHT · CONNECTTIME MUSIC & RADIO</div><h2>Turn on the world. Discover music and radio from every region.</h2></div><p>Explore free internet radio from countries and communities worldwide. Tune into music, culture, local voices, news, and more—all from one place.</p></div> <div class="topics"><article class="topic"><span>🌍</span><h3>Six world regions</h3><p>Browse stations across Africa, Asia, Europe, North America, South America, and Oceania.</p></article><article class="topic"><span>🎧</span><h3>Find your sound</h3><p>Search stations by country, language, station name, or genre, then listen with the built-in audio player.</p></article><article class="topic"><span>📻</span><h3>Free radio & music discovery</h3><p>Save favorite stations and explore independent music services and artist-supported releases.</p></article></div> <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffd9;padding:22px;border-radius:18px;border:1px solid #fff;margin-top:16px"><div><b style="font-size:16px">Ready to listen around the world?</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Open ConnectTime Radio to browse stations and start listening.</p></div><a class="btn" href="https://connecttime-sm.netlify.app/radio" target="_blank" rel="noopener noreferrer">Open ConnectTime Radio ↗</a></div> <div class="notice"><b>Availability and rights:</b> Radio streams are provided by independent broadcasters and may be unavailable, geo-restricted, interrupted, or contain advertising. ConnectTime links to public station streams and does not host or rebroadcast music. Music platform catalogs, free listening options, and licensing terms vary by country and release.</div></section><section class="panel" id="news"><div class="panelTop"><div><div class="eyebrow">CONNECTTIME NEWS & STORIES · REGIONAL DISCOVERY</div><h2>What’s happening around your world?</h2></div><p>Explore world, politics, sports, entertainment, business, technology, and nearby stories. The full application will load current headlines using your selected country and optional location.</p></div><div class="topics"><article class="topic"><span>🌍</span><h3>World & Regional</h3><p>Stories from countries and regions around the globe.</p></article><article class="topic"><span>🏛️</span><h3>Politics</h3><p>Government, elections, policy, and public affairs.</p></article><article class="topic"><span>🏆</span><h3>Sports</h3><p>Teams, competitions, athletes, and match stories.</p></article><article class="topic"><span>🎬</span><h3>Entertainment</h3><p>Movies, television, music, and popular culture.</p></article><article class="topic"><span>📍</span><h3>Nearby News</h3><p>Location-relevant headlines when you opt in to share your location.</p></article><article class="topic"><span>💼</span><h3>Business & Technology</h3><p>Companies, markets, innovation, and technology.</p></article></div><div class="notice"><b>Live-feed behavior:</b> In the full ConnectTime application, news is retrieved from external feeds and refreshed periodically. This GitHub HTML preview is static and does not retrieve real-time headlines or use your location.</div></section>
+<section class="panel" id="radio" style="background:linear-gradient(125deg,#e1f5fc,#e4f8f0 52%,#f8e8f5);border-color:#d7edf1"> <div class="panelTop"><div><div class="eyebrow">FEATURE SPOTLIGHT · CONNECTTIME MUSIC & RADIO</div><h2>Turn on the world. Discover music and radio from every region.</h2></div><p>Explore free internet radio from countries and communities worldwide. Tune into music, culture, local voices, news, and more—all from one place.</p></div> <div class="topics"><article class="topic"><span>🌍</span><h3>Six world regions</h3><p>Browse stations across Africa, Asia, Europe, North America, South America, and Oceania.</p></article><article class="topic"><span>🎧</span><h3>Find your sound</h3><p>Search stations by country, language, station name, or genre, then listen with the built-in audio player.</p></article><article class="topic"><span>📻</span><h3>Free radio & music discovery</h3><p>Save favorite stations and explore independent music services and artist-supported releases.</p></article></div> <div class="ctRadioFinder" aria-labelledby="ctRadioFinderTitle">
+  <div class="ctRadioFinderIntro"><span class="ctRadioFinderIcon" aria-hidden="true">📻</span><div><h3 id="ctRadioFinderTitle">Find a radio station and listen now</h3><p>Search thousands of public internet radio stations by station name, then play a stream right here.</p></div></div>
+  <form id="ctRadioSearchForm" class="ctRadioSearchForm" role="search">
+   <label class="ctRadioSrOnly" for="ctRadioQuery">Radio station name</label>
+   <input id="ctRadioQuery" name="q" type="search" minlength="2" maxlength="80" placeholder="Search a station — e.g. BBC, jazz, classical…" autocomplete="off" required>
+   <button class="ctRadioSearchButton" type="submit">Search stations</button>
+  </form>
+  <p id="ctRadioSearchStatus" class="ctRadioSearchStatus" role="status" aria-live="polite">Enter a station name or music style to get started.</p>
+  <div id="ctRadioResults" class="ctRadioResults" aria-label="Radio search results"></div>
+  <div class="ctRadioNowPlaying"><div><b>Now playing</b><span id="ctRadioNowPlayingName">Choose a station from the results.</span></div><audio id="ctRadioAudio" controls preload="none" aria-label="Selected radio station audio player">Your browser does not support audio playback.</audio></div>
+  <p class="ctRadioFinderNote">Streams are provided by independent broadcasters. Some stations may be offline, geo-restricted, or block playback in certain browsers. ConnectTime does not host or rebroadcast these streams.</p>
+ </div>
+ <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffd9;padding:22px;border-radius:18px;border:1px solid #fff;margin-top:16px"><div><b style="font-size:16px">Ready to listen around the world?</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Open ConnectTime Radio to browse stations and start listening.</p></div><a class="btn" href="https://connecttime-sm.netlify.app/radio" target="_blank" rel="noopener noreferrer">Open ConnectTime Radio ↗</a></div> <div class="notice"><b>Availability and rights:</b> Radio streams are provided by independent broadcasters and may be unavailable, geo-restricted, interrupted, or contain advertising. ConnectTime links to public station streams and does not host or rebroadcast music. Music platform catalogs, free listening options, and licensing terms vary by country and release.</div></section><section class="panel" id="news"><div class="panelTop"><div><div class="eyebrow">CONNECTTIME NEWS & STORIES · REGIONAL DISCOVERY</div><h2>What’s happening around your world?</h2></div><p>Explore world, politics, sports, entertainment, business, technology, and nearby stories. The full application will load current headlines using your selected country and optional location.</p></div><div class="topics"><article class="topic"><span>🌍</span><h3>World & Regional</h3><p>Stories from countries and regions around the globe.</p></article><article class="topic"><span>🏛️</span><h3>Politics</h3><p>Government, elections, policy, and public affairs.</p></article><article class="topic"><span>🏆</span><h3>Sports</h3><p>Teams, competitions, athletes, and match stories.</p></article><article class="topic"><span>🎬</span><h3>Entertainment</h3><p>Movies, television, music, and popular culture.</p></article><article class="topic"><span>📍</span><h3>Nearby News</h3><p>Location-relevant headlines when you opt in to share your location.</p></article><article class="topic"><span>💼</span><h3>Business & Technology</h3><p>Companies, markets, innovation, and technology.</p></article></div><div class="notice"><b>Live-feed behavior:</b> In the full ConnectTime application, news is retrieved from external feeds and refreshed periodically. This GitHub HTML preview is static and does not retrieve real-time headlines or use your location.</div></section>
 <section class="panel" id="advertise"><div class="panelTop"><div><div class="eyebrow">CONNECTTIME BUSINESS · SMART ADVERTISING</div><h2>Your budget. Your audience. Your campaign.</h2></div><p>Businesses will set their own campaign budgets and compete in a real-time ad auction. Delivery is guided by campaign bids, audience relevance, and the regions advertisers choose—not a fixed price per advertisement.</p></div><div class="topics"><article class="topic"><span>🎛️</span><h3>Control your budget</h3><p>Choose a daily or total campaign budget and manage how much you are willing to spend.</p></article><article class="topic"><span>🌎</span><h3>Choose your audience</h3><p>Set eligible locations and audience preferences for your campaign.</p></article><article class="topic"><span>🛡️</span><h3>Safety review before launch</h3><p>Ads must pass content and policy screening and receive approval before publication or delivery.</p></article></div><div style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:#ffffffd9;padding:20px;border-radius:18px;border:1px solid #fff;margin-top:16px"><div><b style="font-size:16px">Explore the Smart Advertising dashboard</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Preview campaign planning, audience targeting, campaign status, and example performance reporting.</p></div><a class="btn" href="./advertising-dashboard.html">Open advertiser dashboard ↗</a></div><div class="notice"><b>Advertising policy:</b> The planned advertiser experience includes a no-refund policy for published campaigns, subject to refunds required by law and billing or service errors. Advertisers are intended to monitor campaign views and clicks. Actual ad delivery, billing, and verified impression reporting are not active on this static preview.</div></section>
 <section class="panel" id="signup"><div class="panelTop"><div><div class="eyebrow">JOIN THE WORLDWIDE CONNECTTIME COMMUNITY</div><h2>Your next connection could be anywhere.</h2></div><p>Register through ConnectTime’s account page. During signup, choose your country of residence so the community can bring together people and perspectives from around the globe.</p></div><div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffc9;padding:22px;border-radius:18px;border:1px solid #dcecf2"><div><b style="font-size:16px">Ready to meet your people?</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Create your profile and join a community without borders.</p></div><a class="btn" href="https://connecttime-sm.netlify.app/register" target="_blank" rel="noopener noreferrer">Register Now ↗</a></div><div class="notice"><b>Registration note:</b> This GitHub Pages preview is informational only. Use the Register Now or Sign in links to open the full ConnectTime application. Do not enter passwords, personal details, or identity documents on this static preview.</div></section>
 
@@ -283,6 +324,61 @@ footer{border-color:#e9e1f5;color:#9389a7}
  input.addEventListener('input',updateInputState);
  form.addEventListener('submit',e=>{e.preventDefault();ask(input.value);input.value='';updateInputState()});
  panel.querySelectorAll('[data-question]').forEach(button=>button.addEventListener('click',()=>ask(button.dataset.question)));
+})();
+</script>
+
+
+<script>
+(()=> {
+ const form=document.getElementById('ctRadioSearchForm');
+ if(!form)return;
+ const input=document.getElementById('ctRadioQuery');
+ const status=document.getElementById('ctRadioSearchStatus');
+ const results=document.getElementById('ctRadioResults');
+ const audio=document.getElementById('ctRadioAudio');
+ const nowPlaying=document.getElementById('ctRadioNowPlayingName');
+ const searchButton=form.querySelector('button[type="submit"]');
+ const endpoint='https://de1.api.radio-browser.info/json/stations/search';
+ const safeStream=value=>{try{const url=new URL(value);return url.protocol==='https:'||url.protocol==='http:'?url.href:null}catch{return null}};
+ const text=(value,fallback='')=>typeof value==='string'&&value.trim()?value.trim():fallback;
+ function renderStation(station){
+  const stream=safeStream(station.url_resolved||station.url);
+  if(!stream)return;
+  const card=document.createElement('article');card.className='ctRadioResult';
+  const mark=document.createElement('div');mark.className='ctRadioStationMark';mark.textContent='📻';
+  const icon=safeStream(station.favicon);
+  if(icon){const img=document.createElement('img');img.src=icon;img.alt='';img.loading='lazy';img.referrerPolicy='no-referrer';img.addEventListener('error',()=>{img.remove();mark.textContent='📻'},{once:true});mark.replaceChildren(img)}
+  const info=document.createElement('div');info.className='ctRadioStationInfo';
+  const name=document.createElement('b');name.textContent=text(station.name,'Unnamed station');
+  const meta=document.createElement('small');meta.textContent=[text(station.country),text(station.language),text(station.tags)].filter(Boolean).join(' · ')||'Internet radio';
+  info.append(name,meta);
+  const play=document.createElement('button');play.type='button';play.className='ctRadioPlayButton';play.textContent='▶ Play';play.setAttribute('aria-label','Play '+name.textContent);
+  play.addEventListener('click',async()=>{
+   audio.pause();audio.src=stream;audio.load();nowPlaying.textContent=name.textContent+(station.country?' · '+station.country:'');
+   status.textContent='Connecting to '+name.textContent+'…';
+   try{await audio.play();status.textContent='Playing '+name.textContent+'.'}catch(error){status.textContent='This station could not start. Try another result or use the player controls.'}
+  });
+  card.append(mark,info,play);results.append(card);
+ }
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  const query=input.value.trim();
+  if(query.length<2){status.textContent='Enter at least two characters to search.';return}
+  searchButton.disabled=true;searchButton.textContent='Searching…';results.replaceChildren();status.textContent='Searching public radio stations…';
+  try{
+   const url=new URL(endpoint);url.searchParams.set('name',query);url.searchParams.set('limit','12');url.searchParams.set('hidebroken','true');url.searchParams.set('order','clickcount');url.searchParams.set('reverse','true');
+   const response=await fetch(url.href,{headers:{'Accept':'application/json'}});
+   if(!response.ok)throw new Error('Radio directory unavailable');
+   const stations=await response.json();
+   if(!Array.isArray(stations))throw new Error('Unexpected radio directory response');
+   stations.forEach(renderStation);
+   const count=results.children.length;
+   status.textContent=count?('Found '+count+' stations. Select Play to listen here.'):'No playable stations found. Try another station name.';
+  }catch(error){status.textContent='Radio search is temporarily unavailable. Please try again shortly.'}
+  finally{searchButton.disabled=false;searchButton.textContent='Search stations'}
+ });
+ audio.addEventListener('error',()=>{status.textContent='The selected stream could not be played. The station may be offline or restrict browser playback.'});
+ audio.addEventListener('playing',()=>{status.textContent='Radio is playing.'});
 })();
 </script>
 
