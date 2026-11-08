@@ -52,7 +52,8 @@ export async function GET(request: Request) {
         episodes: episodesResult.rows.map(episode => ({
           id: String(episode.$id), title: String(episode.title || ""), description: String(episode.description || ""),
           duration: String(episode.duration || ""), status: String(episode.status || "pending_review"),
-          audioUrl: "/api/podcasts/audio/" + encodeURIComponent(String(episode.$id)),
+          mediaUrl: "/api/podcasts/audio/" + encodeURIComponent(String(episode.$id)),
+          mediaType: String(episode.media_type || "audio"),
           createdAt: String(episode.created_at || ""),
         })),
       });
@@ -93,10 +94,14 @@ export async function POST(request: Request) {
     const showId = clean(form.get("showId"), 80);
     const title = clean(form.get("title"), 90);
     const description = clean(form.get("description"), 600);
-    const file = form.get("audio");
-    if (!(file instanceof File) || !showId || !title) return NextResponse.json({ error: "Choose a podcast show, episode title, and audio file." }, { status: 400 });
-    const allowedTypes = ["audio/mpeg", "audio/mp3", "audio/mp4", "audio/aac", "audio/ogg", "audio/wav", "audio/x-wav", "audio/webm", "audio/flac"];
-    if (!allowedTypes.includes(file.type) || file.size < 1 || file.size > 40 * 1024 * 1024) return NextResponse.json({ error: "Upload an MP3, M4A, AAC, OGG, WAV, WebM, or FLAC audio file up to 40 MB." }, { status: 400 });
+    const file = form.get("media");
+    const mediaType = clean(form.get("mediaType"), 10);
+    if (!(file instanceof File) || !showId || !title || !["audio", "video"].includes(mediaType)) return NextResponse.json({ error: "Choose a podcast show, episode title, media type, and file." }, { status: 400 });
+    const allowedAudioTypes = ["audio/mpeg", "audio/mp3", "audio/mp4", "audio/aac", "audio/ogg", "audio/wav", "audio/x-wav", "audio/webm", "audio/flac"];
+    const allowedVideoTypes = ["video/mp4", "video/webm", "video/quicktime"];
+    const allowedTypes = mediaType === "video" ? allowedVideoTypes : allowedAudioTypes;
+    const maxBytes = mediaType === "video" ? 200 * 1024 * 1024 : 40 * 1024 * 1024;
+    if (!allowedTypes.includes(file.type) || file.size < 1 || file.size > maxBytes) return NextResponse.json({ error: mediaType === "video" ? "Upload an MP4, WebM, or MOV video up to 200 MB." : "Upload an MP3, M4A, AAC, OGG, WAV, WebM, or FLAC audio file up to 40 MB." }, { status: 400 });
     const ownedShows = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.showsTableId, queries: [Query.equal("$id", showId), Query.equal("creator_user_id", user.$id), Query.limit(1)] });
     if (!ownedShows.rows.length) return NextResponse.json({ error: "You can only add episodes to your own podcast shows." }, { status: 403 });
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-100) || "episode-audio";
@@ -104,7 +109,7 @@ export async function POST(request: Request) {
     const now = new Date().toISOString();
     const row = await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.episodesTableId, rowId: ID.unique(), data: {
       show_id: showId, creator_user_id: user.$id, title, description,
-      audio_file_id: uploaded.$id, audio_file_name: safeName, audio_mime_type: file.type,
+      audio_file_id: uploaded.$id, audio_file_name: safeName, audio_mime_type: file.type, media_type: mediaType,
       status: "pending_review", created_at: now, updated_at: now,
     } });
     return NextResponse.json({ uploaded: true, episodeId: String(row.$id), message: "Your episode was uploaded and submitted for review." }, { status: 201 });
