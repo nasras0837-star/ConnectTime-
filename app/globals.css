@@ -927,8 +927,8 @@
 /* Free TV directory filter actions */
 .freeTvClearFilters{align-self:end;min-height:40px;padding:10px 13px;border:1px solid #d5e3ea;border-radius:10px;background:#f5fafc;color:#37657b;font:800 11px 'DM Sans',sans-serif;cursor:pointer}
 .freeTvClearFilters:hover{border-color:#178e91;background:#eaf7f6;color:#126b70}
-@media(min-width:1000px){.freeTvControls{grid-template-columns:minmax(220px,2fr) 1fr 1fr 1fr auto}}
-@media(max-width:600px){.freeTvControls label:nth-child(4){grid-column:1/-1}.freeTvClearFilters{grid-column:1/-1;width:100%}}
+@media(min-width:1000px){.freeTvControls{grid-template-columns:minmax(220px,2fr) repeat(4,minmax(0,1fr)) auto}}
+@media(max-width:600px){.freeTvControls label:nth-child(4),.freeTvControls label:nth-child(5){grid-column:1/-1}.freeTvClearFilters{grid-column:1/-1;width:100%}}
 
 /* Free TV live result summary */
 .freeTvResultSummary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 16px;color:#647b8b;font-size:13px}
