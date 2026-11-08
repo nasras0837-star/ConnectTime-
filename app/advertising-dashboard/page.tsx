@@ -30,6 +30,14 @@ const money = (minor?: number) => new Intl.NumberFormat(undefined, { style: "cur
 const number = (value?: number) => (Number(value) || 0).toLocaleString();
 const pct = (value: number) => `${value.toFixed(2)}%`;
 const date = (value?: string) => value ? new Date(value).toLocaleDateString() : "Not scheduled";
+const scheduleStatus = (campaign: Campaign, now = Date.now()) => {
+  const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
+  const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
+  if (!Number.isFinite(start) || !Number.isFinite(end)) return "Unscheduled";
+  if (end < now) return "Ended";
+  if (start > now) return "Upcoming";
+  return "Currently scheduled";
+};
 const label = (value?: string) => (value || "draft").replaceAll("_", " ").replaceAll("-", " ").split(" ").map(word => word ? word[0].toUpperCase() + word.slice(1) : word).join(" ");
 const csvCell = (value: unknown) => {
   let text = value === null || value === undefined ? "" : String(value);
@@ -49,6 +57,7 @@ export default function AdvertisingDashboardPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [copiedCampaignId, setCopiedCampaignId] = useState<string | null>(null);
+  const [now, setNow] = useState(() => Date.now());
 
   const loadCampaigns = async () => {
     setError("");
@@ -65,6 +74,11 @@ export default function AdvertisingDashboardPage() {
       setRefreshing(false);
     }
   };
+  useEffect(() => {
+    const clock = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(clock);
+  }, []);
+
   useEffect(() => {
     let active = true;
     fetch("/api/advertising/campaigns", { cache: "no-store" })
@@ -83,7 +97,6 @@ export default function AdvertisingDashboardPage() {
     const matchesMetrics = metricsFilter === "all" || (metricsFilter === "verified" && metricsVerified) || (metricsFilter === "unverified" && !metricsVerified);
     const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
     const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
-    const now = Date.now();
     const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
     const matchesSchedule = scheduleFilter === "all" ||
       (scheduleFilter === "unscheduled" && !hasSchedule) ||
@@ -91,7 +104,7 @@ export default function AdvertisingDashboardPage() {
       (scheduleFilter === "current" && hasSchedule && start <= now && end >= now) ||
       (scheduleFilter === "ended" && hasSchedule && end < now);
     return matchesText && matchesStatus && matchesSchedule && matchesMetrics;
-  }), [campaigns, search, statusFilter, scheduleFilter, metricsFilter]);
+  }), [campaigns, search, statusFilter, scheduleFilter, metricsFilter, now]);
 
   const sortedCampaigns = useMemo(() => [...filtered].sort((a, b) => {
     const dateA = Date.parse(a.starts_at || "") || 0;
@@ -137,7 +150,7 @@ export default function AdvertisingDashboardPage() {
     const columns = [
       "Campaign ID", "Campaign", "Company", "Status", "Objective", "Placement", "Country", "Region",
       "Geographic targeting details", "Audience interests", "Daily budget (USD)", "Lifetime cap (USD)", "Recorded spend (USD)",
-      "Verified impressions", "Verified clicks", "Verified CTR", "Metrics status",
+      "Verified impressions", "Verified clicks", "Verified CTR", "Schedule status", "Metrics status",
       "AI screening", "Human review", "Payment status", "Start date", "End date"
     ];
     const rows = sortedCampaigns.map(campaign => {
@@ -154,7 +167,7 @@ export default function AdvertisingDashboardPage() {
         impressions === null ? "Not verified" : impressions,
         clicks === null ? "Not verified" : clicks,
         ctrValue === null ? "Not available" : ctrValue.toFixed(2) + "%",
-        label(campaign.metrics_status), label(campaign.moderation_status),
+        scheduleStatus(campaign, now), label(campaign.metrics_status), label(campaign.moderation_status),
         label(campaign.human_review_status), label(campaign.payment_status),
         campaign.starts_at, campaign.ends_at
       ];
@@ -206,7 +219,7 @@ export default function AdvertisingDashboardPage() {
           <div className="ctCampaignTitle"><div><span>{campaign.company || "Advertiser"}</span><h2>{campaign.campaign_name || "Untitled campaign"}</h2></div><b className={campaign.status === "approved" || campaign.status === "active" ? "ctAdStatus positive" : "ctAdStatus"}>{label(campaign.status)}</b></div>
           <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>RECORDED SPEND</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>VERIFIED IMPRESSIONS</small><strong>{metricsVerified ? number(impressions) : "Not verified"}</strong></div><div><small>VERIFIED CLICKS</small><strong>{metricsVerified ? number(clicks) : "Not verified"}</strong></div><div><small>VERIFIED CTR</small><strong>{metricsVerified ? pct(campaignCtr) : "Not available"}</strong></div></div>
           <div className="ctAdSpendTrack" aria-label={`Spend cap used: ${spendPercent.toFixed(1)} percent${overCap ? ", over cap" : ""}`}><span style={{ width: `${Math.min(100, spendPercent)}%` }} /></div><div className="ctAdSpendCaption"><span>{money(spend)} recorded</span><span>{overCap ? `${money(spend - cap)} over lifetime cap` : cap > 0 ? `${money(cap - spend)} remaining of cap` : "No lifetime cap recorded"}</span></div>{overCap && <p className="ctCampaignOverCap" role="alert">Recorded spend exceeds this campaign’s lifetime cap. Review the account and delivery records.</p>}
-          <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}{campaign.audience_interests && <span>Interests: {campaign.audience_interests.split(",").filter(Boolean).join(" · ")}</span>}</div><div><small>SCHEDULE</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
+          <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}{campaign.audience_interests && <span>Interests: {campaign.audience_interests.split(",").filter(Boolean).join(" · ")}</span>}</div><div><small>SCHEDULE · {scheduleStatus(campaign, now).toUpperCase()}</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
           <div className="ctCampaignMeta"><span>Campaign ID: <code>{campaign.$id}</code> <button type="button" onClick={() => void copyCampaignId(campaign.$id)} aria-label={`Copy campaign ID ${campaign.$id}`}>{copiedCampaignId === campaign.$id ? "Copied" : "Copy ID"}</button></span><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
         </article>;
       })}</div>}
