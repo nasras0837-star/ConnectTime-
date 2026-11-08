@@ -63,3 +63,7 @@ function encodeBase64Url(value: object): string {
   return Buffer.from(JSON.stringify(value)).toString("base64url");
 }
 
+
+export function isYotiSandboxOver18Pass(result: { id?: string; sdk_id?: string; type?: string; status?: string; reference_id?: string }, expected: { sessionId: string; sdkId: string; referenceId: string }): boolean {
+  return result.id === expected.sessionId && result.sdk_id === expected.sdkId && result.type === "OVER" && result.reference_id === expected.referenceId && result.status === "COMPLETE";
+}
