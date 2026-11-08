@@ -923,3 +923,9 @@
 .freeTvCard>a:last-child{margin-top:2px;justify-content:center;width:100%;text-align:center}
 .freeTvCard>a:last-child:hover{background:#d9edf0}
 @media(max-width:600px){.freeTvRegionShortcuts{margin-right:-14px;padding-right:14px}.freeTvChannelMark{width:44px;height:44px;flex-basis:44px}}
+
+/* Free TV directory filter actions */
+.freeTvClearFilters{align-self:end;min-height:40px;padding:10px 13px;border:1px solid #d5e3ea;border-radius:10px;background:#f5fafc;color:#37657b;font:800 11px 'DM Sans',sans-serif;cursor:pointer}
+.freeTvClearFilters:hover{border-color:#178e91;background:#eaf7f6;color:#126b70}
+@media(min-width:1000px){.freeTvControls{grid-template-columns:minmax(220px,2fr) 1fr 1fr 1fr auto}}
+@media(max-width:600px){.freeTvControls label:nth-child(4){grid-column:1/-1}.freeTvClearFilters{grid-column:1/-1;width:100%}}
