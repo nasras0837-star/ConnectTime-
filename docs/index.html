@@ -22,6 +22,7 @@ section{padding:34px 0 48px}.head{text-align:center;max-width:720px;margin:0 aut
 @media(max-width:620px){.wrap{padding:0 16px}header{height:70px}.brand{font-size:19px}.brand img{width:46px;height:46px}.nav{gap:10px}.nav>a:not(.btn){display:none}.nav .btn{padding:10px 12px;font-size:11px}.hero{grid-template-columns:1fr;padding:30px 0 34px;gap:22px}.hero h1{font-size:clamp(47px,13vw,64px);letter-spacing:-3.5px}.hero p{font-size:15px}.heroArt{height:315px;border-radius:25px}.centerLogo{inset:56px 50px 55px}.float{padding:9px 11px}.f1{left:7px;top:25px}.f2{right:4px;bottom:23px}.f3{right:4px;top:27px}.metrics{justify-content:flex-start;margin-bottom:24px}.metrics span{width:44%}.grid{grid-template-columns:1fr 1fr;gap:10px}.tile{padding:14px;min-height:150px}.panel{padding:20px 14px;border-radius:22px}.panelTop{display:block}.panelTop p{margin-top:8px}.topics{grid-template-columns:1fr}.community{gap:20px}.join{padding:24px 19px;align-items:flex-start;flex-direction:column}.join .btn{width:100%}footer{display:block}footer span{display:block;margin:5px 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 .skip-link{position:absolute;top:8px;left:8px;z-index:1000;transform:translateY(-160%);padding:11px 15px;border-radius:9px;background:#123f5c;color:#fff;font-size:12px;font-weight:850}.skip-link:focus{transform:translateY(0);outline:3px solid #54c5ee;outline-offset:3px}#main-content:focus{outline:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087eae;outline-offset:3px;border-radius:6px}
 </style>
 </head>
 <body><a class="skip-link" href="#main-content">Skip to main content</a><div class="wrap">
@@ -117,7 +118,7 @@ section{padding:34px 0 48px}.head{text-align:center;max-width:720px;margin:0 aut
 @media(prefers-reduced-motion:reduce){.aiPreviewPanel.open,.aiPreviewLauncher{animation:none;transition:none}}
 </style>
 <div class="aiPreview">
- <section class="aiPreviewPanel" id="aiPreviewPanel" aria-label="ConnectTime AI Guide">
+ <section class="aiPreviewPanel" id="aiPreviewPanel" aria-label="ConnectTime AI Guide" aria-hidden="true">
   <header class="aiPreviewHead"><div class="aiPreviewMark">✦</div><div><strong>ConnectTime AI Guide</strong><small>Website help & general questions · demo</small></div><button class="aiPreviewClose" id="aiPreviewClose" aria-label="Close">×</button></header>
   <div class="aiPreviewMsgs" id="aiPreviewMsgs" aria-live="polite">
    <div class="aiPreviewBubble">Hi! I’m the ConnectTime AI Guide preview. ConnectTime helps you meet people across the world. Ask me about global connections, Free TV, features, Chat Rooms, Video Tube, news, or registration.</div>
@@ -131,11 +132,12 @@ section{padding:34px 0 48px}.head{text-align:center;max-width:720px;margin:0 aut
   <form class="aiPreviewForm" id="aiPreviewForm"><input id="aiPreviewInput" maxlength="500" placeholder="Ask about ConnectTime…" aria-label="Ask about ConnectTime"><button aria-label="Send">➤</button></form>
   <p class="aiPreviewDisclaimer">Static preview with sample answers only — this is not connected to a live AI service. Don’t share passwords, payment details, or identity documents.</p>
  </section>
- <button class="aiPreviewLauncher" id="aiPreviewLauncher" aria-expanded="false"><span>✦</span> Ask ConnectTime</button>
+ <button class="aiPreviewLauncher" id="aiPreviewLauncher" aria-expanded="false" aria-controls="aiPreviewPanel"><span>✦</span> Ask ConnectTime</button>
 </div>
 <script>
 (()=>{
  const panel=document.getElementById('aiPreviewPanel'),launch=document.getElementById('aiPreviewLauncher'),close=document.getElementById('aiPreviewClose'),msgs=document.getElementById('aiPreviewMsgs'),form=document.getElementById('aiPreviewForm'),input=document.getElementById('aiPreviewInput');
+ const setOpen=open=>{panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launch.setAttribute('aria-expanded',String(open));if(open)input.focus();else launch.focus()};
  const answers=[
   [/what can i do|features|connecttime about/i,"ConnectTime brings together worldwide member discovery, friend requests, private text messaging, community groups, text posts, a personalized live-interest feed, news, official TV destinations, events, advertising tools, and member feedback. Some areas remain in development and require production configuration."],
   [/chat room|group|private room|public room/i,"Chat Rooms are designed for people to discover interest-based groups, search by topic, join public rooms, or request access to private rooms. The current website preview demonstrates the idea; shared room membership, messages, and secure invitations still need the production backend."],
@@ -152,8 +154,9 @@ section{padding:34px 0 48px}.head{text-align:center;max-width:720px;margin:0 aut
  function add(text,kind){const el=document.createElement('div');el.className='aiPreviewBubble'+(kind?' '+kind:'');el.textContent=text;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight}
  function answer(q){const match=answers.find(([pattern])=>pattern.test(q));return match?match[1]:"I can help explain ConnectTime’s planned features, including Friends, Chat Rooms, Video Tube, Marketplace, Blogs, News, and adult-only Dating. This preview only contains sample answers; the live AI assistant will be available through the full Next.js application once its server-side AI configuration is complete."}
  function ask(q){q=q.trim();if(!q)return;add(q,'user');setTimeout(()=>add(answer(q)),220)}
- launch.addEventListener('click',()=>{panel.classList.toggle('open');launch.setAttribute('aria-expanded',String(panel.classList.contains('open')));if(panel.classList.contains('open'))input.focus()});
- close.addEventListener('click',()=>{panel.classList.remove('open');launch.setAttribute('aria-expanded','false')});
+ launch.addEventListener('click',()=>setOpen(launch.getAttribute('aria-expanded')!=='true'));
+ close.addEventListener('click',()=>setOpen(false));
+ panel.addEventListener('keydown',event=>{if(event.key==='Escape'&&launch.getAttribute('aria-expanded')==='true'){event.preventDefault();setOpen(false)}});
  form.addEventListener('submit',e=>{e.preventDefault();ask(input.value);input.value=''});
  panel.querySelectorAll('[data-question]').forEach(button=>button.addEventListener('click',()=>ask(button.dataset.question)));
 })();
