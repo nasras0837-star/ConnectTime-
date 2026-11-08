@@ -36,7 +36,28 @@ export default function PodcastsPage() {
     } catch (e) { setShows([]); setError(e instanceof Error ? e.message : "Unable to load podcasts."); }
     finally { setLoading(false); }
   }, [mine]);
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    let active = true;
+
+    async function fetchShows() {
+      try {
+        const response = await fetch("/api/podcasts" + (mine ? "?mine=1" : ""), { cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Unable to load podcasts.");
+        if (active) setShows(data.shows || []);
+      } catch (e) {
+        if (active) {
+          setShows([]);
+          setError(e instanceof Error ? e.message : "Unable to load podcasts.");
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    void fetchShows();
+    return () => { active = false; };
+  }, [mine]);
 
   const visible = useMemo(() => shows.filter(show => [show.title, show.description, show.category, show.creatorName].join(" ").toLowerCase().includes(query.toLowerCase())), [shows, query]);
 
