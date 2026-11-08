@@ -4,6 +4,30 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 
 type WidgetProps = { src: string; config: Record<string, unknown>; height: number; label: string };
+type AnalystResearch = {
+  ticker: string;
+  consensus: null | {
+    consensus_rating?: string;
+    consensus_price_target?: number;
+    low_price_target?: number;
+    high_price_target?: number;
+    ratings_contributors?: number;
+    price_target_contributors?: number;
+    strong_buy_ratings?: number;
+    buy_ratings?: number;
+    hold_ratings?: number;
+    sell_ratings?: number;
+    strong_sell_ratings?: number;
+  };
+  ratings: Array<{
+    companyName: string; analyst: string | null; firm: string | null; date: string | null;
+    rating: string | null; previousRating: string | null; ratingAction: string | null;
+    priceTargetAction: string | null; priceTarget: number | null; previousPriceTarget: number | null;
+    currency: string; sourceUrl: string | null;
+  }>;
+  source: string;
+  fetchedAt: string;
+};
 function TradingViewEmbed({ src, config, height, label }: WidgetProps) {
   const host = useRef<HTMLDivElement>(null);
   const configJson = JSON.stringify(config);
@@ -95,6 +119,9 @@ export default function MarketDashboard() {
   const [watchlist, setWatchlist] = useState<string[]>([]);
   const [watchlistStatus, setWatchlistStatus] = useState<"loading" | "ready" | "signed-out" | "error">("loading");
   const [watchlistMessage, setWatchlistMessage] = useState("");
+  const [analystData, setAnalystData] = useState<AnalystResearch | null>(null);
+  const [analystStatus, setAnalystStatus] = useState<"loading" | "ready" | "unavailable" | "error">("loading");
+  const [analystMessage, setAnalystMessage] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -142,6 +169,25 @@ export default function MarketDashboard() {
     setWatchInput(""); setMessage(""); setSymbol(next);
   }
   const selectedTicker = symbol.split(":").pop() || symbol;
+  useEffect(() => {
+    const controller = new AbortController();
+    setAnalystStatus("loading");
+    setAnalystMessage("");
+    setAnalystData(null);
+    fetch(`/api/markets/analyst?ticker=${encodeURIComponent(selectedTicker)}`, { cache: "no-store", signal: controller.signal })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Analyst data is unavailable.");
+        setAnalystData(data as AnalystResearch);
+        setAnalystStatus("ready");
+      })
+      .catch(error => {
+        if (controller.signal.aborted) return;
+        setAnalystMessage(error instanceof Error ? error.message : "Analyst data is unavailable.");
+        setAnalystStatus("error");
+      });
+    return () => controller.abort();
+  }, [selectedTicker]);
   const analystUrl = `https://finance.yahoo.com/quote/${encodeURIComponent(selectedTicker)}/analysis/`;
   const quoteUrl = `https://finance.yahoo.com/quote/${encodeURIComponent(selectedTicker)}/`;
   function openSymbol(event: FormEvent<HTMLFormElement>) {
@@ -163,7 +209,19 @@ export default function MarketDashboard() {
     <section className="ctMarketsSection"><div className="ctMarketsSectionHead"><div><span>DAILY MARKET MOVERS</span><h2>Top gainers, losers & active stocks</h2><p>See which U.S. stocks are moving most during the current market session.</p></div></div><div className="ctMarketsPanel"><TradingViewEmbed src="https://s3.tradingview.com/external-embedding/embed-widget-hotlists.js" config={moversConfig} height={450} label="top gaining, losing and active stocks"/></div></section>
     <section className="ctMarketsSection"><div className="ctMarketsSectionHead"><div><span>MARKET MOMENTUM</span><h2>Stock market heatmap</h2><p>Compare company performance by sector and market capitalization.</p></div></div><div className="ctMarketsPanel"><TradingViewEmbed src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" config={{dataSource:"SPX500",blockSize:"market_cap_basic",blockColor:"change",grouping:"sector",locale:"en",symbolUrl:"",colorTheme:"light",exchanges:[],hasTopBar:false,isDataSetEnabled:false,isZoomEnabled:true,hasSymbolTooltip:true,isMonoSize:false,width:"100%",height:"100%"}} height={540} label="stock market heatmap"/></div></section>
     <section className="ctMarketsSection ctSelectedStockNews"><div className="ctMarketsSectionHead"><div><span>NEWS FOR THE SELECTED STOCK</span><h2>{selectedTicker} news & company updates</h2><p>Headlines and market stories related to {selectedTicker}. This feed changes when you select another stock.</p></div><small>TradingView news feed</small></div><div className="ctMarketsPanel"><TradingViewEmbed key={"news-"+symbol} src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" config={{feedMode:"symbol",symbol,displayMode:"regular",colorTheme:"light",isTransparent:false,locale:"en",width:"100%",height:650}} height={670} label={selectedTicker+" stock-specific financial news"}/></div></section>
-    <section className="ctMarketsSection"><div className="ctMarketsSectionHead"><div><span>WALL STREET VIEW</span><h2>{selectedTicker} analyst coverage & recommendations</h2><p>Review analyst consensus, rating changes, earnings estimates and price targets from an external financial-data provider.</p></div></div><div className="ctAnalystCoverage"><article><span>ANALYST RESEARCH</span><h3>Ratings, price targets & estimates</h3><p>Open the latest available analyst coverage for {selectedTicker}, including buy / hold / sell recommendations, consensus estimates and recent target changes where published.</p><a href={analystUrl} target="_blank" rel="noopener noreferrer">View {selectedTicker} analyst coverage on Yahoo Finance ↗</a></article><article><span>COMPANY QUOTE & HISTORY</span><h3>Price, performance & company details</h3><p>Check the latest displayed quote, historical performance, key statistics and company information for {selectedTicker}.</p><a href={quoteUrl} target="_blank" rel="noopener noreferrer">Open {selectedTicker} quote on Yahoo Finance ↗</a></article></div><p className="ctAnalystNote">Analyst opinions are third-party research, not guarantees or Connect recommendations. Coverage, target dates and availability vary by company. Connect does not generate or endorse analyst ratings.</p></section>
+    <section className="ctMarketsSection"><div className="ctMarketsSectionHead"><div><span>WALL STREET VIEW</span><h2>{selectedTicker} analyst coverage & recommendations</h2><p>Review analyst consensus, rating changes, earnings estimates and price targets from an external financial-data provider.</p></div></div><div className="ctAnalystLivePanel">
+      {analystStatus === "loading" ? <p className="ctMarketLoading">Loading analyst consensus and recent rating changes for {selectedTicker}…</p> : analystStatus === "error" ? <div className="ctAnalystUnavailable" role="status"><strong>Live analyst figures are not available</strong><p>{analystMessage}</p><a href={analystUrl} target="_blank" rel="noopener noreferrer">View external analyst research ↗</a></div> : analystData ? <>
+        <div className="ctAnalystDataMeta"><span>{analystData.source}</span><small>Data retrieved {new Date(analystData.fetchedAt).toLocaleString()}</small></div>
+        {analystData.consensus ? <><div className="ctAnalystSummary">
+          <article><span>CONSENSUS VIEW</span><strong>{(analystData.consensus.consensus_rating || "Not rated").replaceAll("_"," ").toUpperCase()}</strong><small>{analystData.consensus.ratings_contributors ?? "—"} contributing analysts</small></article>
+          <article><span>AVERAGE PRICE TARGET</span><strong>{typeof analystData.consensus.consensus_price_target === "number" ? new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(analystData.consensus.consensus_price_target) : "Not available"}</strong><small>{analystData.consensus.price_target_contributors ?? 0} target contributors</small></article>
+          <article><span>PRICE TARGET RANGE</span><strong>{typeof analystData.consensus.low_price_target === "number" && typeof analystData.consensus.high_price_target === "number" ? new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(analystData.consensus.low_price_target)+" – "+new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(analystData.consensus.high_price_target) : "Not available"}</strong><small>Low to high published target</small></article>
+        </div><div className="ctAnalystDistribution" aria-label="Analyst recommendation distribution">
+          {([["Strong buy",analystData.consensus.strong_buy_ratings],["Buy",analystData.consensus.buy_ratings],["Hold",analystData.consensus.hold_ratings],["Sell",analystData.consensus.sell_ratings],["Strong sell",analystData.consensus.strong_sell_ratings]] as [string,number|undefined][]).map(([label,value])=><div key={label}><span>{label}</span><strong>{value ?? 0}</strong></div>)}
+        </div></> : <p className="ctAnalystNoData">No analyst consensus is currently published for {selectedTicker}.</p>}
+        <div className="ctAnalystChanges"><h3>Recent analyst rating & target changes</h3>{analystData.ratings.length ? analystData.ratings.map((item,index)=><article key={item.date+"-"+item.firm+"-"+index}><div><strong>{item.firm || item.analyst || "Research firm"}</strong><small>{item.date ? new Date(item.date).toLocaleDateString() : "Date unavailable"}</small></div><p>{item.ratingAction ? item.ratingAction.replaceAll("_"," ") : "Rating update"}{item.previousRating && item.rating ? ": "+item.previousRating+" → "+item.rating : item.rating ? ": "+item.rating : ""}</p>{typeof item.priceTarget === "number" && <small>Target {item.priceTargetAction || "set"}: {new Intl.NumberFormat("en-US",{style:"currency",currency:item.currency || "USD"}).format(item.priceTarget)}{typeof item.previousPriceTarget === "number" ? " (previously "+new Intl.NumberFormat("en-US",{style:"currency",currency:item.currency || "USD"}).format(item.previousPriceTarget)+")" : ""}</small>}</article>) : <p className="ctAnalystNoData">No recent rating changes found for this ticker.</p>}</div>
+      </> : null}
+    </div><div className="ctAnalystCoverage"><article><span>EXTERNAL ANALYST RESEARCH</span><h3>More coverage & estimates</h3><p>Open additional analyst research, earnings estimates and coverage details for {selectedTicker}.</p><a href={analystUrl} target="_blank" rel="noopener noreferrer">View {selectedTicker} analyst coverage on Yahoo Finance ↗</a></article><article><span>COMPANY QUOTE & HISTORY</span><h3>Price, performance & company details</h3><p>Check the latest displayed quote, historical performance, key statistics and company information for {selectedTicker}.</p><a href={quoteUrl} target="_blank" rel="noopener noreferrer">Open {selectedTicker} quote on Yahoo Finance ↗</a></article></div><p className="ctAnalystNote">Analyst opinions are third-party research, not guarantees or Connect recommendations. Consensus is an aggregation of published third-party ratings, not advice from Connect. Data availability and update frequency depend on provider coverage and subscription.</p></section>
     <aside className="ctMarketsDisclaimer"><strong>Market information notice</strong><p>Financial data is supplied by TradingView and its data providers. Availability, pricing delay, exchange coverage and market status vary by instrument and region. Connect does not execute trades, provide personalized investment advice, or guarantee data accuracy. Information is for general educational purposes only. Always verify details with an authorized financial data provider before making decisions.</p><small>Widgets retain TradingView branding and attribution. <a href="https://www.tradingview.com/widget/" target="_blank" rel="noopener noreferrer">About TradingView widgets ↗</a></small></aside>
     <footer className="ctMarketsFooter"><Link href="/">Connect</Link><span>© {new Date().getFullYear()} Techcyber LLC</span><div><Link href="/news">News</Link><Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link></div></footer>
   </main>;
