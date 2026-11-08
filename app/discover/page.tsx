@@ -54,7 +54,7 @@ export default function DiscoverPage() {
     return () => { cancelled = true; };
   }, []);
 
-  return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
+  return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
     <section className="authCard discoverCard"><div className="eyebrow">CONNECT · FIND YOUR COMMUNITY</div><h1>Discover members</h1><p>Explore profiles shared by verified adult members. People who have blocked you or whom you have blocked are hidden.</p>
       <form className="discoverFilters" onSubmit={event => { event.preventDefault(); void loadProfiles(); }}>
         <label>Search<input value={query} onChange={event => setQuery(event.target.value)} placeholder="Name, bio, handle, or place" maxLength={60}/></label>
