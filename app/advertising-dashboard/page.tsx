@@ -76,7 +76,7 @@ export default function AdvertisingDashboardPage() {
 
   const filtered = useMemo(() => campaigns.filter(campaign => {
     const query = search.trim().toLowerCase();
-    const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region].some(value => (value || "").toLowerCase().includes(query));
+    const matchesText = !query || [campaign.campaign_name, campaign.company, campaign.country, campaign.region, campaign.objective, campaign.placement, campaign.audience_interests, campaign.geo_targets].some(value => (value || "").toLowerCase().includes(query));
     const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
     const metricsVerified = campaign.metrics_status === "verified_events";
     const matchesMetrics = metricsFilter === "all" || (metricsFilter === "verified" && metricsVerified) || (metricsFilter === "unverified" && !metricsVerified);
@@ -172,7 +172,7 @@ export default function AdvertisingDashboardPage() {
         <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks only</small></article>
       </div>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
-        <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
+        <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search campaign, company, location, objective or interests" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
         <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
         <label>Metrics verification<select value={metricsFilter} onChange={event => setMetricsFilter(event.target.value)}><option value="all">All metrics</option><option value="verified">Verified metrics</option><option value="unverified">Not verified</option></select></label>
