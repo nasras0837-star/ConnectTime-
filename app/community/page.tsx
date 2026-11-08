@@ -102,8 +102,8 @@ export default function CommunityPage() {
   }
 
   return <main className="communityPage">
-    <header className="communityHeader"><Link href="/" className="communityBrand">◉ ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link><Link href="/groups">Groups</Link><Link href="/account">Account</Link></nav></header>
-    <section className="communityHero"><span>THE CONNECTTIME COMMUNITY</span><h1>Ideas, stories & <em>real connections.</em></h1><p>A place for conversation, creativity, good-faith debate and shared interests. Adults 18+; harassment and intimidation are not allowed.</p></section>
+    <header className="communityHeader"><Link href="/" className="communityBrand">◉ Connect</Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link><Link href="/groups">Groups</Link><Link href="/account">Account</Link></nav></header>
+    <section className="communityHero"><span>THE CONNECT COMMUNITY</span><h1>Ideas, stories & <em>real connections.</em></h1><p>A place for conversation, creativity, good-faith debate and shared interests. Adults 18+; harassment and intimidation are not allowed.</p></section>
     <section className="communityLayout">
       <div className="communityMain">
         <form className="communityComposer" onSubmit={publish}>
@@ -123,6 +123,6 @@ export default function CommunityPage() {
       </div>
       <aside className="communitySidebar"><div><span>COMMUNITY STANDARDS</span><h3>Open expression. No intimidation.</h3><p>Debate, criticism, satire, political and social viewpoints, and unpopular opinions are welcome. Threats, targeted harassment, stalking, doxxing, blackmail and privacy violations are not.</p><Link href="/safety">Visit Safety Center ↗</Link></div><div><span>MORE TO EXPLORE</span><Link href="/news">News & current affairs ↗</Link><Link href="/free-tv">Free TV directory ↗</Link><Link href="/events">Community events ↗</Link><Link href="/groups">Explore groups ↗</Link><Link href="/discover">Find members ↗</Link></div></aside>
     </section>
-    <footer className="communityFooter">ConnectTime · <Link href="/legal/terms">Terms</Link> · <Link href="/legal/privacy">Privacy</Link> · Adults 18+</footer>
+    <footer className="communityFooter">Connect · <Link href="/legal/terms">Terms</Link> · <Link href="/legal/privacy">Privacy</Link> · Adults 18+</footer>
   </main>;
 }
