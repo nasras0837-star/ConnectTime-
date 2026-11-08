@@ -962,3 +962,5 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 .ctHomeBrand{display:inline-flex;align-items:center;line-height:0}
 .ctHomeLogo{display:block;width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 5px 14px #04143b55)}
 @media(max-width:700px){.ctHomeLogo{width:70px;height:70px}}
+
+.adBrandMark,.mark{background:#050b3e url('/connect-logo.svg') center/cover no-repeat!important;color:transparent!important;text-shadow:none!important;border:1px solid #39c8ff!important}
