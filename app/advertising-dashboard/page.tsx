@@ -34,6 +34,7 @@ const scheduleStatus = (campaign: Campaign, now = Date.now()) => {
   const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
   const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
   if (!Number.isFinite(start) || !Number.isFinite(end)) return "Unscheduled";
+  if (end < start) return "Invalid schedule";
   if (end < now) return "Ended";
   if (start > now) return "Upcoming";
   return "Currently scheduled";
@@ -105,11 +106,13 @@ export default function AdvertisingDashboardPage() {
     const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
     const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
     const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
+    const invalidSchedule = hasSchedule && end < start;
     const matchesSchedule = scheduleFilter === "all" ||
       (scheduleFilter === "unscheduled" && !hasSchedule) ||
-      (scheduleFilter === "upcoming" && hasSchedule && start > now) ||
-      (scheduleFilter === "current" && hasSchedule && start <= now && end >= now) ||
-      (scheduleFilter === "ended" && hasSchedule && end < now);
+      (scheduleFilter === "invalid" && invalidSchedule) ||
+      (scheduleFilter === "upcoming" && hasSchedule && !invalidSchedule && start > now) ||
+      (scheduleFilter === "current" && hasSchedule && !invalidSchedule && start <= now && end >= now) ||
+      (scheduleFilter === "ended" && hasSchedule && !invalidSchedule && end < now);
     return matchesText && matchesStatus && matchesSchedule && matchesMetrics && matchesBudget;
   }), [campaigns, search, statusFilter, scheduleFilter, metricsFilter, budgetFilter, now]);
 
@@ -145,8 +148,9 @@ export default function AdvertisingDashboardPage() {
     if (campaign.metrics_status !== "verified_events") result.unverifiedMetrics += 1;
     if ((Number(campaign.lifetime_cap_minor) || 0) > 0 && (Number(campaign.spend_minor) || 0) > (Number(campaign.lifetime_cap_minor) || 0)) result.overCap += 1;
     if (scheduleStatus(campaign, now) === "Unscheduled") result.unscheduled += 1;
+    if (scheduleStatus(campaign, now) === "Invalid schedule") result.invalidSchedules += 1;
     return result;
-  }, { unverifiedMetrics: 0, overCap: 0, unscheduled: 0 }), [filtered, now]);
+  }, { unverifiedMetrics: 0, overCap: 0, unscheduled: 0, invalidSchedules: 0 }), [filtered, now]);
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
 
   const copyCampaignId = async (id: string) => {
@@ -208,11 +212,11 @@ export default function AdvertisingDashboardPage() {
         <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified-event campaigns only</small></article>
         <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks only</small></article>
       </div>
-      <div className="ctCampaignNotice" aria-live="polite"><strong>Filtered data-quality review:</strong> {dataQuality.unverifiedMetrics} campaign(s) without verified delivery metrics · {dataQuality.overCap} campaign(s) over lifetime cap · {dataQuality.unscheduled} campaign(s) without a complete schedule. These counts reflect the current filters.</div>
+      <div className="ctCampaignNotice" aria-live="polite"><strong>Filtered data-quality review:</strong> {dataQuality.unverifiedMetrics} campaign(s) without verified delivery metrics · {dataQuality.overCap} campaign(s) over lifetime cap · {dataQuality.unscheduled} campaign(s) without a complete schedule · {dataQuality.invalidSchedules} campaign(s) with an end date before their start date. These counts reflect the current filters.</div>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search campaign, company, location, objective or interests" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
-        <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option></select></label>
+        <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option><option value="invalid">Invalid date range</option></select></label>
         <label>Metrics verification<select value={metricsFilter} onChange={event => setMetricsFilter(event.target.value)}><option value="all">All metrics</option><option value="verified">Verified metrics</option><option value="unverified">Not verified</option></select></label>
         <label>Budget status<select value={budgetFilter} onChange={event => setBudgetFilter(event.target.value)}><option value="all">All budget statuses</option><option value="over_cap">Over lifetime cap</option><option value="within_cap">Within lifetime cap</option><option value="no_cap">No lifetime cap</option></select></label>
         <label>Sort campaigns<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}><option value="newest">Newest start date</option><option value="oldest">Oldest start date</option><option value="spend_high">Highest recorded spend</option><option value="spend_low">Lowest recorded spend</option><option value="ctr_high">Highest verified CTR</option></select></label>
