@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
 
 type Station = {
   id: string;
@@ -45,7 +46,22 @@ export default function RadioStationFinder() {
   }
 
   useEffect(() => {
-    void searchStations();
+    let active = true;
+    async function loadPopularStations() {
+      setLoading(true);
+      try {
+        const response = await fetch("/api/radio?limit=8&sort=clickcount", { cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Radio search is temporarily unavailable.");
+        if (active) setStations(Array.isArray(data.stations) ? data.stations as Station[] : []);
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "Could not load radio stations.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+    void loadPopularStations();
+    return () => { active = false; };
   }, []);
 
   async function playStation(station: Station) {
