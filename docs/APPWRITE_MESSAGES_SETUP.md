@@ -1,4 +1,4 @@
-# ConnectTime private messaging — Appwrite setup
+# Connect private messaging — Appwrite setup
 
 Create a `messages` table in the existing database referenced by `APPWRITE_DATABASE_ID`. Do not create another database. Set Netlify environment variable `APPWRITE_MESSAGES_TABLE_ID` to its exact table ID.
 
