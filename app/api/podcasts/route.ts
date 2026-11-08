@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ID, InputFile, Query, Storage } from "node-appwrite";
+import { Client, ID, InputFile, Query, Storage } from "node-appwrite";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 
@@ -18,7 +18,7 @@ function services() {
   const apiKey = process.env.APPWRITE_API_KEY;
   if (!showsTableId || !episodesTableId || !bucketId || !endpoint || !projectId || !apiKey) throw new Error("Podcast storage is not configured.");
   const { tablesDB, databaseId } = communitySafetyStore();
-  const storage = new Storage(new (require("node-appwrite").Client)().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
+  const storage = new Storage(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
   return { tablesDB, databaseId, showsTableId, episodesTableId, bucketId, storage };
 }
 
