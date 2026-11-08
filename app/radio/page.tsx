@@ -42,9 +42,19 @@ export default function RadioPage(){
  useEffect(()=>{
   if(!savedOnly||saved.length===0)return;
   let active=true;
-  fetch("/api/radio?ids="+encodeURIComponent(saved.join(",")),{cache:"no-store"})
-   .then(async res=>{const data=await res.json();if(!res.ok)throw new Error(data.error||"Could not load saved stations");if(active)setFavoriteStations(Array.isArray(data.stations)?data.stations:[]);})
-   .catch(e=>{if(active)setError(e instanceof Error?e.message:"Could not load saved stations");});
+  const loadFavorites=async()=>{
+   try{
+    const batches=Array.from({length:Math.ceil(saved.length/100)},(_,index)=>saved.slice(index*100,(index+1)*100));
+    const results=await Promise.all(batches.map(async ids=>{
+     const response=await fetch("/api/radio?ids="+encodeURIComponent(ids.join(",")),{cache:"no-store"});
+     const data=await response.json();
+     if(!response.ok)throw new Error(data.error||"Could not load saved stations");
+     return Array.isArray(data.stations)?data.stations as Station[]:[];
+    }));
+    if(active)setFavoriteStations(results.flat());
+   }catch(error){if(active){setFavoriteStations([]);setError(error instanceof Error?error.message:"Could not load saved stations");}}
+  };
+  void loadFavorites();
   return()=>{active=false;};
  },[saved,savedOnly]);
 
