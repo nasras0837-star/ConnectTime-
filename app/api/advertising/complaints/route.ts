@@ -40,6 +40,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true, reference: row.$id, message: "Your report has been received for review. A report does not itself determine infringement." }, { status: 201 });
   } catch (error) {
     console.error("Advertising complaint storage failed", error instanceof Error ? error.message : "unknown");
-    return NextResponse.json({ error: "The reporting service is not configured or is temporarily unavailable. Please contact ConnectTime support." }, { status: 503 });
+    return NextResponse.json({ error: "The reporting service is not configured or is temporarily unavailable. Please contact Connect support." }, { status: 503 });
   }
 }
