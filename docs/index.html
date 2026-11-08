@@ -314,6 +314,15 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #6b2f
 .ctRadioLaunchButton{display:inline-flex!important;align-items:center;justify-content:center;background:linear-gradient(110deg,#00b9ff,#5d55ff 55%,#d92aa9)!important;color:#fff!important;border:2px solid #a7efff!important;border-radius:12px!important;padding:13px 18px!important;font-size:15px!important;font-weight:950!important;text-shadow:0 1px 2px #0005!important;box-shadow:0 5px 16px #0003!important}
 .ctRadioLaunchButton:hover,.ctRadioLaunchButton:focus-visible{filter:brightness(1.15);outline:3px solid #fff!important;outline-offset:3px}
 @media(max-width:560px){.ctRadioLaunch{align-items:flex-start}.ctRadioLaunchButton{width:100%;text-align:center}}
+
+/* Group meeting CTA — stronger contrast and accessible hierarchy */
+.ctGroupMeetingCta{display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-top:16px;padding:25px 26px;border:1px solid #76d9f4;border-radius:20px;background:linear-gradient(120deg,#082f55 0%,#075b83 52%,#174b83 100%);box-shadow:0 14px 32px #075b8329}
+.ctGroupMeetingTitle{display:block;color:#fff;font-size:clamp(20px,2.5vw,27px);font-weight:950;line-height:1.2;letter-spacing:-.45px;text-shadow:0 2px 8px #001c3c66}
+.ctGroupMeetingCopy{margin:8px 0 0!important;color:#e4f7ff!important;font-size:15px!important;line-height:1.55!important;font-weight:650}
+.ctGroupMeetingButton{background:linear-gradient(110deg,#fff,#e2f8ff)!important;color:#07527c!important;border:2px solid #a8edff;padding:15px 22px;font-size:14px;box-shadow:0 8px 22px #001d3e55;white-space:nowrap}
+.ctGroupMeetingButton:hover{background:#d9f6ff!important;box-shadow:0 12px 28px #001d3e66}
+.ctGroupMeetingButton:focus-visible{outline:3px solid #ffe66d;outline-offset:4px}
+@media(max-width:620px){.ctGroupMeetingCta{padding:21px 17px;gap:16px}.ctGroupMeetingCopy{font-size:14px!important}.ctGroupMeetingButton{width:100%;white-space:normal}}
 </style>
 
 <style id="connecttime-hero-people-background">
@@ -510,7 +519,7 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   <article class="topic"><span>🎥</span><h3>See and hear everyone</h3><p>Meet face-to-face with group video and audio in one shared meeting room.</p></article>
   <article class="topic"><span>🔗</span><h3>One private invitation</h3><p>Create a meeting room and share its unique invitation link with the people you trust.</p></article>
  </div>
- <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffd9;padding:22px;border-radius:18px;border:1px solid #fff;margin-top:16px"><div><b style="font-size:16px">Bring your people together</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Start a group meeting or join one using an invitation link.</p></div><a class="btn" href="https://connect-web-7ypt.onrender.com/meetings" target="_blank" rel="noopener noreferrer">Open group meetings ↗</a></div>
+ <div class="ctGroupMeetingCta"><div class="ctGroupMeetingText"><b class="ctGroupMeetingTitle">Bring your people together</b><p class="ctGroupMeetingCopy">Start a group meeting or join one using an invitation link.</p></div><a class="btn ctGroupMeetingButton" href="https://connect-web-7ypt.onrender.com/meetings" target="_blank" rel="noopener noreferrer">Open group meetings ↗</a></div>
  <div class="notice"><b>Availability:</b> Group meetings use the configured LiveKit video service and require an eligible signed-in account. Camera, microphone, and network permissions are controlled by your browser. Meeting availability depends on production service configuration.</div>
 </section>
 
