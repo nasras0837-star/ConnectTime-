@@ -109,11 +109,11 @@ export default function DatingLikesPage() {
   const selectedItems = tab === "received" ? data.received : tab === "matches" ? data.matches : data.sent.map(profile => ({ id: profile.handle, profile, matched: false, createdAt: "" }));
 
   return <main className="authShell">
-    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/dating">Discover dating</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
+    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/dating">Discover dating</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
     <section className="authCard friendsCard datingInboxPage">
-      <div className="eyebrow">CONNECTTIME DATING · YOUR CONNECTIONS</div>
+      <div className="eyebrow">CONNECT DATING · YOUR CONNECTIONS</div>
       <h1>Likes & matches</h1>
-      <p>See who is interested, like someone back to make a mutual match, and decide who you want to add to your ConnectTime circle.</p>
+      <p>See who is interested, like someone back to make a mutual match, and decide who you want to add to your Connect circle.</p>
       {error && <p className="message" role="alert">{error}</p>}
       {notice && <p className="message" role="status">{notice}</p>}
       <div className="datingInboxTabs" role="tablist" aria-label="Dating inbox">
@@ -143,6 +143,6 @@ export default function DatingLikesPage() {
       <p className="switch"><Link href="/dating">Back to dating discovery</Link> · <Link href="/friends">Manage friend connections</Link> · <button className="friendRefresh" onClick={() => void refresh()}>Refresh inbox</button></p>
       <p className="datingInboxFootnote">Private messages remain available after a friend request is accepted. You can manage accepted connections in Friends.</p>
     </section>
-    <footer className="plannedFeatureFooter">ConnectTime · Mutual interest, meaningful connections.</footer>
+    <footer className="plannedFeatureFooter">Connect · Mutual interest, meaningful connections.</footer>
   </main>;
 }
