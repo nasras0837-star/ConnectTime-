@@ -109,7 +109,7 @@ export default function AdvertisingDashboardPage() {
       (reviewFilter === "pending" && (review === "pending" || campaign.status === "pending_review")) ||
       (reviewFilter === "approved" && review === "approved") ||
       (reviewFilter === "rejected" && review === "rejected") ||
-      (reviewFilter === "not_recorded" && !review);
+      (reviewFilter === "not_recorded" && !review && campaign.status !== "pending_review");
     const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
     const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
     const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
@@ -158,6 +158,14 @@ export default function AdvertisingDashboardPage() {
     if (scheduleStatus(campaign, now) === "Invalid schedule") result.invalidSchedules += 1;
     return result;
   }, { unverifiedMetrics: 0, overCap: 0, unscheduled: 0, invalidSchedules: 0 }), [filtered, now]);
+  const reviewSummary = useMemo(() => filtered.reduce((result, campaign) => {
+    const review = (campaign.human_review_status || "").toLowerCase();
+    if (review === "pending" || campaign.status === "pending_review") result.pending += 1;
+    else if (review === "approved") result.approved += 1;
+    else if (review === "rejected") result.rejected += 1;
+    else result.notRecorded += 1;
+    return result;
+  }, { pending: 0, approved: 0, rejected: 0, notRecorded: 0 }), [filtered]);
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
 
   const copyCampaignId = async (id: string) => {
@@ -220,6 +228,12 @@ export default function AdvertisingDashboardPage() {
         <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks only</small></article>
       </div>
       <div className="ctCampaignNotice" aria-live="polite"><strong>Filtered data-quality review:</strong> {dataQuality.unverifiedMetrics} campaign(s) without verified delivery metrics · {dataQuality.overCap} campaign(s) over lifetime cap · {dataQuality.unscheduled} campaign(s) without a complete schedule · {dataQuality.invalidSchedules} campaign(s) with an end date before their start date. These counts reflect the current filters.</div>
+      <section className="ctAdKpis" aria-label="Human review summary">
+        <article><span>AWAITING HUMAN REVIEW</span><strong>{reviewSummary.pending}</strong><small>Filtered campaigns awaiting a decision</small></article>
+        <article><span>APPROVED BY HUMAN REVIEW</span><strong>{reviewSummary.approved}</strong><small>Review status recorded as approved</small></article>
+        <article><span>REJECTED BY HUMAN REVIEW</span><strong>{reviewSummary.rejected}</strong><small>Review status recorded as rejected</small></article>
+        <article><span>REVIEW NOT RECORDED</span><strong>{reviewSummary.notRecorded}</strong><small>No human-review decision recorded</small></article>
+      </section>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search campaign, company, location, objective or interests" /></label>
         <label>Campaign status<select value={statusFilter} onChange={event => setStatusFilter(event.target.value)}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{label(status)}</option>)}</select></label>
