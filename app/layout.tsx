@@ -22,6 +22,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const configured = Boolean(projectId && isValidAppwriteEndpoint(endpoint));
-  const session = configured ? await createNextServerHelpers({ endpoint, projectId: projectId! }).readSessionCookie() : null;
+  const session = configured ? await createNextServerHelpers({ endpoint: endpoint!, projectId: projectId! }).readSessionCookie() : null;
   return <html lang="en"><body><Providers session={session}>{children}<ConnectAssistant /></Providers></body></html>;
 }
