@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isEligible } from "../lib/access-policy";
+import { isEligible, isMissingAccessRecord } from "../lib/access-policy";
 
 describe("member eligibility", () => {
   it("requires verified adult AND active account", () => {
@@ -17,5 +17,16 @@ describe("member eligibility", () => {
     [{}],
   ])("denies incomplete or non-active access records", (record) => {
     expect(isEligible(record as never)).toBe(false);
+  });
+});
+
+describe("missing member-access record handling", () => {
+  it("treats Appwrite 404 as a missing first-time member record", () => {
+    expect(isMissingAccessRecord({ code: 404 })).toBe(true);
+  });
+  it("does not classify other Appwrite failures as a missing record", () => {
+    expect(isMissingAccessRecord({ code: 500 })).toBe(false);
+    expect(isMissingAccessRecord(new Error("network unavailable"))).toBe(false);
+    expect(isMissingAccessRecord(null)).toBe(false);
   });
 });
