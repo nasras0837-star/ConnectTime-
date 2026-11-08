@@ -953,3 +953,12 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 .ctHomeFeatureHighlights a:hover{text-decoration:underline;text-underline-offset:4px;color:#fff}
 .ctHomeFeatureHighlights span{color:#83e7ff;font-size:18px;font-weight:1000;text-shadow:0 0 12px #8deaff90}
 @media(max-width:560px){.ctHomeFeatureHighlights{justify-content:center;gap:8px 10px;margin-top:20px;padding:13px 12px}.ctHomeFeatureHighlights a{font-size:12px}.ctHomeFeatureHighlights span{font-size:14px}}
+
+
+/* Official Connect logo replacement across shared application headers and marks */
+.ctBrandMark{background:#050b3e url('/connect-logo.svg') center/cover no-repeat!important;color:transparent!important;text-shadow:none!important;border:1px solid #39c8ff!important}
+.ctBrandMark:before{display:none!important}
+.ctLogoImage,.ctVideoLogo,.eventsBrand .ctLogoImage,.createBrand .ctLogoImage{content:url('/connect-logo.svg');object-fit:contain}
+.ctHomeBrand{display:inline-flex;align-items:center;line-height:0}
+.ctHomeLogo{display:block;width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 5px 14px #04143b55)}
+@media(max-width:700px){.ctHomeLogo{width:70px;height:70px}}
