@@ -121,6 +121,8 @@ export async function POST(request: Request, context: { params: Promise<{ postId
       s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocksTableId, queries: [Query.equal("blocker_user_id", String(post.author_user_id)), Query.equal("blocked_user_id", user.$id), Query.limit(1)] })
     ]);
     if (blockedByViewer.rows.length || blockedByAuthor.rows.length) return NextResponse.json({ error: "You cannot interact with this post." }, { status: 403 });
+    const postAuthorProfile = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", String(post.author_user_id || "")), Query.limit(1)] });
+    if (!postAuthorProfile.rows[0] || !await canViewProfile(s, user.$id, String(post.author_user_id || ""), postAuthorProfile.rows[0].visibility)) return NextResponse.json({ error: "Post not found." }, { status: 404 });
     if (type === "comment") {
       const ownProfile = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", user.$id), Query.limit(1)] });
       if (!ownProfile.rows[0] || !["public", "members", "friends"].includes(String(ownProfile.rows[0].visibility || ""))) return NextResponse.json({ error: "Set your profile visibility to Public, Signed-in members, or Friends before commenting." }, { status: 403 });
