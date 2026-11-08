@@ -103,6 +103,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "This report has already been closed." }, { status: 409 });
     }
 
+    let previousContentStatus = "";
     if (action === "remove_content") {
       if (report.target_type !== "post" || !report.content_reference) {
         return NextResponse.json({ error: "Content removal is currently supported only for reported community posts." }, { status: 400 });
@@ -115,6 +116,8 @@ export async function PATCH(request: Request) {
           if (report.reported_user_id && post.author_user_id !== report.reported_user_id) {
             return NextResponse.json({ error: "The reported content owner does not match the report. No action was taken." }, { status: 409 });
           }
+          previousContentStatus = typeof post.status === "string" ? post.status : "";
+          if (!previousContentStatus || previousContentStatus === "removed") return NextResponse.json({ error: "The post has no restorable prior status. No moderation action was recorded." }, { status: 409 });
           await s.tablesDB.updateRow({ databaseId: s.databaseId, tableId, rowId: String(post.$id), data: { status: "removed", updated_at: new Date().toISOString() } });
           removed = true;
           break;
@@ -150,6 +153,7 @@ export async function PATCH(request: Request) {
         reviewed_at: now,
         resolution_note: resolutionNote,
         action_taken: action,
+        ...(action === "remove_content" ? { previous_content_status: previousContentStatus } : {}),
       },
     });
     await recordAudit({ moderator_user_id: auth.user.$id, event_type: "report_decision", target_user_id: typeof report.reported_user_id === "string" ? report.reported_user_id : undefined, report_id: reportId, action, outcome: status, note: resolutionNote, created_at: now });
