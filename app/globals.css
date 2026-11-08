@@ -1210,6 +1210,10 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
  .ctHomeSmartAds{grid-template-columns:auto minmax(0,1fr)}
  .ctHomeSmartAds>a{grid-column:2}
 }
+.ctHome{overflow:clip}
+@media(max-width:900px){
+ .ctHomeSmartAds>a{grid-column:1/-1;justify-self:start}
+}
 @media(max-width:560px){
  .ctHomeHeader{padding:10px 12px}
  .ctHomeHeader nav{gap:10px 13px}
