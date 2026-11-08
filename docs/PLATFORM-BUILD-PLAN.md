@@ -1,8 +1,8 @@
-# ConnectTime full-platform build plan
+# Connect full-platform build plan
 
 ## Product direction
 
-ConnectTime is an international, web-first social community. It is separate from Pleasure and Flirt. The first release is web-only; native mobile apps are not part of this phase.
+Connect is an international, web-first social community. It is separate from Pleasure and Flirt. The first release is web-only; native mobile apps are not part of this phase.
 
 ## Existing repository foundation
 
@@ -48,7 +48,7 @@ GitHub Pages publishes only `docs/` as a static preview. The full application mu
 
 ### 7. Marketplace and creator media
 - Marketplace listings, seller profiles, product media, search, saved items, order records, dispute/refund workflows, and fraud controls.
-- ConnectTime Video Tube supports creator channels, video metadata, moderation status, playlists, views, and reporting.
+- Connect Video Tube supports creator channels, video metadata, moderation status, playlists, views, and reporting.
 - Uploads and publishing stay disabled until moderation and storage lifecycle are validated.
 - Payment provider and seller payout model must be selected before payment code is enabled. Never store card data.
 
