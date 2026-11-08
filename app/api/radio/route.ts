@@ -47,7 +47,7 @@ export async function GET(request: Request) {
       codec: String(s.codec || ""), bitrate: Number(s.bitrate || 0), homepage: safeHttpsUrl(s.homepage),
       streamUrl: safeHttpsUrl(s.url_resolved), votes: Number(s.votes || 0),
     })) : [];
-    return NextResponse.json({ stations, count: stations.length, source: "Radio Browser community directory" }, { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
+    return NextResponse.json({ stations, count: stations.length, source: "Radio Browser community directory" }, { headers: { "Cache-Control": "private, no-store" } });
   } catch {
     return NextResponse.json({ error: "Live radio directory is temporarily unavailable. Please retry." }, { status: 502 });
   }
