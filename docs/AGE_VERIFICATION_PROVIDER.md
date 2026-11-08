@@ -4,7 +4,7 @@
 
 **Yoti Age Verification Service is the selected provider for sandbox evaluation**, subject to Techcyber LLC completing vendor onboarding, privacy/legal review, pricing review, and approval of the production contract. This is not evidence that a Yoti account, API credentials, or production service has been activated.
 
-The initial integration target is an **OVER 18** check. Prefer privacy-preserving age-threshold proof that returns only whether the threshold was met. Do not request or store a user's exact age unless a documented product/legal requirement makes it necessary.
+The initial integration target is an **OVER 18** check. Prefer privacy-preserving age-threshold proof that returns only whether the threshold was met. Do not request or store a user's exact age unless a rowed product/legal requirement makes it necessary.
 
 Yoti's production Age Verification API and its isolated sandbox use different authentication and session endpoints. Do not mix the two flows. The production API uses the Yoti Hub API key as a bearer token. The sandbox requires a short-lived OAuth access token obtained by signing a PS384 client-assertion JWT with the Yoti service private key:
 - Sandbox introduction: https://developers.yoti.com/age-verification/sandbox-introduction
@@ -30,8 +30,8 @@ Yoti's production Age Verification API and its isolated sandbox use different au
 
 ### Result and notification handling
 
-- Yoti documents the notification payload with `session_key`, `reference_id`, `state`, `sequence_number`, `timestamp`, and `signature`.
-- Verify the notification signature over the exact canonicalized payload as specified by Yoti, using the official published Yoti Age Verification public key and RSA-PSS/SHA-256. Exclude the `signature` and `sequence_number` fields exactly as documented. Do not invent a signature format or use a generic HMAC comparison.
+- Yoti rows the notification payload with `session_key`, `reference_id`, `state`, `sequence_number`, `timestamp`, and `signature`.
+- Verify the notification signature over the exact canonicalized payload as specified by Yoti, using the official published Yoti Age Verification public key and RSA-PSS/SHA-256. Exclude the `signature` and `sequence_number` fields exactly as rowed. Do not invent a signature format or use a generic HMAC comparison.
 - Enforce timestamp/replay windows, notification ID/evidence ID idempotency, expected SDK/service, session mapping, and reference mapping. Handle retries and multiple sequence numbers safely.
 - After a valid notification, retrieve the session result server-to-server from Yoti's result endpoint and verify its session ID, configured type `OVER`, threshold 18, SDK ID, and terminal state. Do not use the deprecated notification `result` boolean as the sole decision.
 - Only a verified `COMPLETE` result for the expected OVER-18 session may set `adult_status=verified`. `FAIL`, `ERROR`, `CANCELLED`, `EXPIRED`, pending, unknown states, invalid signatures, mismatched sessions, or provider outages must never set verified.
@@ -53,7 +53,7 @@ After Yoti onboarding and sandbox access are approved, configure these as server
 - `YOTI_SDK_ID`
 - `YOTI_PRIVATE_KEY_PEM`
 - `YOTI_SANDBOX_ENABLED=true` (explicit sandbox opt-in)
-- `APPWRITE_YOTI_SESSIONS_COLLECTION_ID`
+- `APPWRITE_YOTI_SESSIONS_TABLE_ID`
 
 Do not add these variables with a `NEXT_PUBLIC_` prefix. Do not commit credentials or ask users to paste them into chat. The sandbox uses a private-key-signed OAuth client assertion; the production API key is separate and is not used by this sandbox adapter.
 
@@ -61,12 +61,12 @@ The session endpoint remains disabled unless all Appwrite settings are present, 
 
 ### Sandbox session storage
 
-Configure a private Appwrite collection using the access database:
-- Document ID: Yoti session UUID.
+Configure a private Appwrite table using the access database:
+- Row ID: Yoti session UUID.
 - Attributes: `provider` (string), `environment` (string), `user_id` (string), `reference_id` (string), `status` (string), and `expires_at` (datetime/string).
 - Add an index on `user_id` to support the per-user session creation limit (maximum three sessions in a rolling 15-minute window).
 - Deny all client read/write permissions. The server API key alone may create and read these records.
-- Set `APPWRITE_YOTI_SESSIONS_COLLECTION_ID` to this collection ID.
+- Set `APPWRITE_YOTI_SESSIONS_TABLE_ID` to this table ID.
 
 The session route creates an authenticated sandbox session, enforces a maximum of three sessions per user in a rolling 15-minute window, and persists the user/session mapping before returning the sandbox URL. The sandbox result route checks ownership, retrieves the Yoti result, and updates only the sandbox session record. If Appwrite persistence fails, the session route returns a generic 503 and does not disclose the hosted URL.
 
@@ -83,4 +83,4 @@ The session route creates an authenticated sandbox session, enforces a maximum o
 
 ## Current implementation status
 
-The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Vendor credentials, Appwrite session collection setup, live sandbox execution, signed notification handling, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
+The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Vendor credentials, Appwrite session table setup, live sandbox execution, signed notification handling, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
