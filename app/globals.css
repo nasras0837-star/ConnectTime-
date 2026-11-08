@@ -879,3 +879,16 @@
 .ctSportsDisclaimer{margin:15px 0 0;color:#8296a3;font-size:9px;line-height:1.6}
 @media(max-width:850px){.ctSportsLeagueGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.ctSportsScores{margin:22px 12px;padding:18px 13px}.ctSportsHead{display:block}.ctSportsUpdated{display:inline-block;margin-top:10px}.ctSportsLeagueGrid{grid-template-columns:1fr}}
+
+/* Connect electric-blue globe background — shared across application routes */
+body{
+  color:#f5f8ff;
+  background-color:#020827!important;
+  background-image:linear-gradient(90deg,rgba(2,8,39,.90) 0%,rgba(2,8,39,.74) 48%,rgba(2,8,39,.48) 100%),url("https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/docs/connect-globe-background.svg")!important;
+  background-position:center top!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+}
+.vibrantHome,.socialHome{background:transparent!important;color:#f5f8ff}
+@media(max-width:700px){body{background-attachment:scroll!important}}
