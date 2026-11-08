@@ -890,3 +890,21 @@
 @media(max-width:950px){.ctAccountGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:680px){.ctAccountPage{padding:0 14px 22px}.ctAccountHeader{min-height:70px;align-items:flex-start;padding:12px 0;flex-direction:column;gap:9px}.ctAccountBrand img{width:38px;height:38px}.ctAccountHeader nav{gap:14px}.ctAccountHeader nav a{font-size:10px}.ctAccountWelcome{padding:30px 0 19px;align-items:flex-start;flex-direction:column}.ctAccountWelcome h1{font-size:38px}.ctAccountMember{width:100%}.ctAccountStatus{align-items:flex-start;padding:16px;flex-wrap:wrap}.ctAccountStatus>a{margin-left:62px}.ctAccountQuick{grid-template-columns:1fr;gap:9px}.ctAccountGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ctAccountCard{min-height:178px;padding:14px}.ctAccountCard h3{font-size:13px}.ctAccountSectionHead{align-items:flex-start;flex-direction:column}.ctAccountLocked{padding:17px;gap:12px}.ctAccountFooter{align-items:flex-start;flex-direction:column}.ctAccountFooter>div{margin-left:0}}
 @media(max-width:390px){.ctAccountGrid{grid-template-columns:1fr}.ctAccountCard{min-height:150px}}
+
+
+/* ConnectTime radio: single, accessible player and active station state */
+.radioHeader .radioBrand{display:flex;align-items:center;gap:9px}
+.radioHeader .radioBrand img{width:44px;height:44px;object-fit:contain}
+.radioPlayerBar{display:grid;grid-template-columns:54px minmax(170px,1fr) minmax(220px,440px);align-items:center;gap:15px;padding:17px 19px;margin:20px 0 24px;border:1px solid #d8e8f0;border-radius:17px;background:linear-gradient(110deg,#fff,#eef8fc);box-shadow:0 9px 25px #173f5d0b}
+.radioPlayerDisc{display:grid;place-items:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#087eb9,#14527e);color:#fff;font-size:25px;box-shadow:0 6px 15px #087eb933}
+.radioPlayerInfo{min-width:0}
+.radioPlayerInfo small,.radioPlayerInfo strong,.radioPlayerInfo span{display:block}
+.radioPlayerInfo small{color:#0786b8;font-size:9px;font-weight:950;letter-spacing:1.4px}
+.radioPlayerInfo strong{overflow:hidden;margin:5px 0;color:#193d59;font-size:14px;text-overflow:ellipsis;white-space:nowrap}
+.radioPlayerInfo span{color:#8194a4;font-size:10px}
+.radioPlayerBar audio{width:100%;height:40px}
+.radioListenButton{width:100%;margin:12px 0 4px;padding:11px 13px;border:0;border-radius:10px;background:#087eb9;color:#fff;font-size:11px;font-weight:900;cursor:pointer}
+.radioListenButton:disabled{opacity:.55;cursor:wait}
+.radioCard.isPlaying{border-color:#64bad6;box-shadow:0 0 0 3px #64bad61b,0 9px 24px #173f5d0b}
+.radioCard.isPlaying .radioListenButton{background:#135a7b}
+@media(max-width:650px){.radioPlayerBar{grid-template-columns:45px minmax(0,1fr);gap:11px;padding:14px}.radioPlayerDisc{width:42px;height:42px}.radioPlayerBar audio{grid-column:1/-1}.radioPlayerInfo strong{font-size:12px}}
