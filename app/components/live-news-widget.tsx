@@ -13,7 +13,7 @@ type Article = {
   category: string;
 };
 
-const topics = ["For You", "Nearby", "World", "Politics", "Sports", "Entertainment", "Business", "Technology"];
+const topics = ["For You", "Nearby", "World", "Politics", "Sports", "Music", "Gaming", "Entertainment", "Business", "Technology"];
 
 export default function LiveNewsWidget() {
   const [topic, setTopic] = useState("For You");
