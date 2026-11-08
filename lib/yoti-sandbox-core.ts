@@ -1,4 +1,4 @@
-import { createPrivateKey, constants, sign } from "node:crypto";
+import { createPrivateKey, constants, randomUUID, sign } from "node:crypto";
 
 const AUTH_URL = "https://auth.api.yoti.com/v1/oauth/token";
 
@@ -10,7 +10,7 @@ export type YotiSandboxConfig = {
 export function buildYotiClientAssertion(
   config: YotiSandboxConfig,
   nowSeconds = Math.floor(Date.now() / 1000),
-  jti = cryptoRandomId(),
+  jti = randomUUID(),
 ): string {
   if (!config.sdkId || !config.privateKeyPem) {
     throw new Error("Yoti sandbox credentials are not configured");
@@ -63,6 +63,3 @@ function encodeBase64Url(value: object): string {
   return Buffer.from(JSON.stringify(value)).toString("base64url");
 }
 
-function cryptoRandomId(): string {
-  return Buffer.from(globalThis.crypto.getRandomValues(new Uint8Array(16))).toString("hex");
-}
