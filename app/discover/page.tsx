@@ -54,7 +54,7 @@ export default function DiscoverPage() {
     return () => { cancelled = true; };
   }, []);
 
-  return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.png" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
+  return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.png" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
     <section className="authCard discoverCard"><div className="eyebrow">CONNECT · FIND YOUR COMMUNITY</div><h1>Discover members</h1><p>Explore profiles shared by verified adult members. People who have blocked you or whom you have blocked are hidden.</p>
       <form className="discoverFilters" onSubmit={event => { event.preventDefault(); void loadProfiles(); }}>
         <label>Search<input value={query} onChange={event => setQuery(event.target.value)} placeholder="Name, bio, handle, or place" maxLength={60}/></label>
@@ -66,6 +66,6 @@ export default function DiscoverPage() {
       {loading ? <p role="status">Loading member profiles…</p> : !error && profiles.length === 0 ? <p>No discoverable profiles matched. Members must create a profile and choose Public or Signed-in members visibility.</p> : <div className="discoverGrid">{profiles.map(profile => <article className="discoverMember" key={profile.handle}><div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div><h2>{profile.displayName}</h2><p className="discoverHandle">@{profile.handle}</p><p>{profile.bio || "This member hasn’t added a bio yet."}</p><p className="discoverLocation">{[profile.region, profile.country].filter(Boolean).join(", ")}</p>{profile.interests.length > 0 && <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>}<button className="discoverConnectButton" disabled={!!sending} onClick={() => void sendRequest(profile.handle)}>{sending === profile.handle ? "Sending…" : "Add friend"}</button></article>)}</div>}
       <p className="switch"><Link href="/profile">Edit my profile</Link> · <Link href="/friends">Friend requests</Link> · <Link href="/safety">Safety Center</Link></p>
     </section>
-    <footer className="plannedFeatureFooter">ConnectTime · Your people. Your passions. Your ConnectTime.</footer>
+    <footer className="plannedFeatureFooter">Connect · Your people. Your passions. Your Connect.</footer>
   </main>;
 }
