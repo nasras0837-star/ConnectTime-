@@ -834,3 +834,59 @@
 .ctAdInterestField label{display:flex;align-items:center;gap:7px;font-size:10px;color:#456176}
 .ctAdInterestField input{accent-color:#087eb9}
 @media(max-width:760px){.ctAdDashboardTop{align-items:flex-start;flex-direction:column}.ctAdKpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ctAdCampaignTools{grid-template-columns:1fr}.ctAdAudience{grid-template-columns:1fr}.ctAdInterestField>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* ConnectTime member dashboard */
+.ctAccountPage{min-height:100vh;padding:0 clamp(16px,4vw,58px) 28px;background:radial-gradient(ellipse at 8% 0%,#e7f4ff 0,transparent 34%),radial-gradient(ellipse at 94% 10%,#e9f5ff 0,transparent 28%),#f5f8fc;color:#17324b}
+.ctAccountHeader{max-width:1260px;min-height:82px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #e2eaf1}
+.ctAccountBrand{display:flex;align-items:center;gap:10px;color:#153c5a;text-decoration:none;font:900 21px Manrope,Arial,sans-serif;letter-spacing:-.7px}
+.ctAccountBrand img{width:48px;height:48px;object-fit:contain}
+.ctAccountBrand>span>span{color:#168bc1}
+.ctAccountBrand small{display:block;margin-top:3px;color:#7890a2;font:600 9px Arial,sans-serif;letter-spacing:.1px}
+.ctAccountHeader nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.ctAccountHeader nav a,.ctAccountFooter a{color:#526e83;text-decoration:none;font-size:12px;font-weight:800}
+.ctAccountHeader nav a:hover,.ctAccountFooter a:hover{color:#087eb9}
+.ctAccountWelcome,.ctAccountStatus,.ctAccountQuick,.ctAccountFeatures,.ctAccountLocked,.ctAccountFooter{max-width:1260px;margin-left:auto;margin-right:auto}
+.ctAccountWelcome{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:48px 0 27px}
+.ctAccountEyebrow{display:block;color:#0b84ba;font-size:9px;font-weight:950;letter-spacing:1.8px}
+.ctAccountWelcome h1{margin:10px 0 8px;color:#153b58;font:850 clamp(34px,5vw,53px)/1.05 Manrope,Arial,sans-serif;letter-spacing:-2.4px}
+.ctAccountWelcome p,.ctAccountStatus p,.ctAccountSectionHead p,.ctAccountLocked p{margin:0;color:#6c8294;font-size:13px;line-height:1.7}
+.ctAccountMember{display:flex;align-items:center;gap:12px;padding:12px 17px;border:1px solid #e1eaf2;border-radius:16px;background:#ffffffc9;box-shadow:0 8px 24px #183d5908}
+.ctAccountAvatar{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#d9f5ff,#dce8ff);color:#087eb9;font-size:18px;font-weight:900}
+.ctAccountMember strong,.ctAccountMember small{display:block}.ctAccountMember strong{font-size:12px;color:#25465f}.ctAccountMember small{margin-top:4px;color:#8194a4;font-size:10px}
+.ctAccountStatus{display:flex;align-items:center;gap:16px;padding:20px 22px;border:1px solid #e4eaf1;border-radius:18px;background:#fff;box-shadow:0 10px 28px #183d5908}
+.ctAccountStatus.isActive{border-color:#cce9dc;background:linear-gradient(110deg,#fff,#f3fbf7)}
+.ctAccountStatusIcon{display:grid;place-items:center;flex:0 0 46px;height:46px;border-radius:14px;background:#edf4ff;color:#316bc0;font-size:22px;font-weight:900}
+.ctAccountStatus.isActive .ctAccountStatusIcon{background:#e2f7ec;color:#18885b}
+.ctAccountStatus h2{margin:5px 0 4px;color:#203f59;font:800 17px Manrope,Arial,sans-serif;letter-spacing:-.5px}
+.ctAccountStatus p{font-size:11px}
+.ctAccountStatus>a{margin-left:auto;color:#087eb9;font-size:11px;font-weight:900;text-decoration:none;white-space:nowrap}
+.ctAccountQuick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:16px}
+.ctAccountQuick>a{display:flex;align-items:center;gap:12px;padding:17px 18px;border:1px solid #e3eaf1;border-radius:15px;background:#ffffffd9;color:#25455f;text-decoration:none;box-shadow:0 7px 20px #183d5906}
+.ctAccountQuick>a>span{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#edf6fc;font-size:18px}
+.ctAccountQuick strong,.ctAccountQuick small{display:block}.ctAccountQuick strong{font-size:12px}.ctAccountQuick small{margin-top:4px;color:#8495a4;font-size:10px}.ctAccountQuick>a>b{margin-left:auto;color:#1887bd}
+.ctAccountFeatures{padding-top:39px}
+.ctAccountSectionHead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:16px}
+.ctAccountSectionHead h2,.ctAccountLocked h2{margin:7px 0 5px;color:#173b58;font:850 26px Manrope,Arial,sans-serif;letter-spacing:-1px}
+.ctAccountSectionHead p{font-size:11px}
+.ctAccountSectionHead>a{color:#087eb9;text-decoration:none;font-size:11px;font-weight:900}
+.ctAccountGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.ctAccountCard{display:flex;flex-direction:column;min-height:190px;padding:18px;border:1px solid #e2eaf1;border-radius:16px;background:#fff;color:#1c3e58;text-decoration:none;box-shadow:0 8px 22px #183d5907;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.ctAccountCard:hover{transform:translateY(-3px);border-color:#bddcec;box-shadow:0 13px 28px #183d5912}
+.ctAccountCardIcon{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:#eaf6fc;font-size:20px}
+.ctAccountCard h3{margin:14px 0 6px;font:800 15px Manrope,Arial,sans-serif;letter-spacing:-.3px}
+.ctAccountCard p{margin:0 0 15px;color:#75899a;font-size:10px;line-height:1.6}
+.ctAccountCard>b{display:flex;justify-content:space-between;align-items:center;margin-top:auto;color:#087eb9;font-size:10px}
+.ctAccountLocked{display:flex;gap:18px;align-items:flex-start;margin-top:28px;padding:24px;border:1px solid #dce9f1;border-radius:19px;background:linear-gradient(110deg,#fff,#f1f8fc)}
+.ctAccountLockedIcon{display:grid;place-items:center;flex:0 0 48px;height:48px;border-radius:15px;background:#e5f2fa;font-size:23px}
+.ctAccountLocked h2{font-size:21px}
+.ctAccountLocked p{max-width:740px;font-size:11px}
+.ctAccountLocked>div>div{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.ctAccountLocked a{display:inline-flex;padding:10px 14px;border-radius:10px;background:#087eb9;color:white;text-decoration:none;font-size:10px;font-weight:900}
+.ctAccountLocked a+a{border:1px solid #cbdce8;background:white;color:#42657e}
+.ctAccountFooter{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:36px;padding-top:18px;border-top:1px solid #e1eaf1;color:#8295a4;font-size:10px}
+.ctAccountFooter>div{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
+.ctAccountFooter form{margin:0}
+@media(max-width:950px){.ctAccountGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.ctAccountPage{padding:0 14px 22px}.ctAccountHeader{min-height:70px;align-items:flex-start;padding:12px 0;flex-direction:column;gap:9px}.ctAccountBrand img{width:38px;height:38px}.ctAccountHeader nav{gap:14px}.ctAccountHeader nav a{font-size:10px}.ctAccountWelcome{padding:30px 0 19px;align-items:flex-start;flex-direction:column}.ctAccountWelcome h1{font-size:38px}.ctAccountMember{width:100%}.ctAccountStatus{align-items:flex-start;padding:16px;flex-wrap:wrap}.ctAccountStatus>a{margin-left:62px}.ctAccountQuick{grid-template-columns:1fr;gap:9px}.ctAccountGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ctAccountCard{min-height:178px;padding:14px}.ctAccountCard h3{font-size:13px}.ctAccountSectionHead{align-items:flex-start;flex-direction:column}.ctAccountLocked{padding:17px;gap:12px}.ctAccountFooter{align-items:flex-start;flex-direction:column}.ctAccountFooter>div{margin-left:0}}
+@media(max-width:390px){.ctAccountGrid{grid-template-columns:1fr}.ctAccountCard{min-height:150px}}
