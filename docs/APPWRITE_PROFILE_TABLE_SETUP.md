@@ -1,4 +1,4 @@
-# ConnectTime profile table setup
+# Connect profile table setup
 
 Create this table in the existing Appwrite database (do not create a second database).
 
