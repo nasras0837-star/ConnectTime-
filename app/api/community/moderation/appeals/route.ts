@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Client, Databases, ID, Query } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { communitySafetyStore, currentCommunityMember, sameOrigin, cleanText } from "@/lib/community-safety";
 
 export const runtime = "nodejs";
