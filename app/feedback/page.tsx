@@ -57,14 +57,14 @@ export default function FeedbackPage() {
   const buttonStyle = { border: 0, borderRadius: 10, padding: "13px 20px", background: "#6958d2", color: "white", fontWeight: 700, cursor: busy ? "wait" : "pointer", marginTop: 20, opacity: busy ? 0.7 : 1 } as const;
 
   return <main className="authShell">
-    <Link className="logo ctAuthLogo" href="/" aria-label="ConnectTime home"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage" /></Link>
+    <Link className="logo ctAuthLogo" href="/" aria-label="Connect home"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage" /></Link>
     <section className="authCard" style={{ width: "min(100%, 680px)" }}>
-      <div className="eyebrow">HELP SHAPE CONNECTTIME</div>
+      <div className="eyebrow">HELP SHAPE CONNECT</div>
       <h1>Share your feedback</h1>
-      <p>Tell us how ConnectTime is working for you. Your rating helps us understand the experience, and your ideas help us decide what to improve next.</p>
+      <p>Tell us how Connect is working for you. Your rating helps us understand the experience, and your ideas help us decide what to improve next.</p>
       <form onSubmit={submit}>
         <fieldset style={{ border: 0, padding: 0, margin: "20px 0 0" }}>
-          <legend style={{ fontWeight: 700, marginBottom: 12 }}>How would you rate ConnectTime? <span aria-hidden="true">*</span></legend>
+          <legend style={{ fontWeight: 700, marginBottom: 12 }}>How would you rate Connect? <span aria-hidden="true">*</span></legend>
           <div role="radiogroup" aria-label="Rating from 1 to 5" style={{ display: "flex", flexWrap: "wrap", gap: 9 }}>
             {[1, 2, 3, 4, 5].map(value => <button key={value} type="button" role="radio" aria-checked={rating === value} onClick={() => setRating(value)} disabled={busy} style={{ minWidth: 54, minHeight: 48, borderRadius: 10, border: rating === value ? "2px solid #6958d2" : "1px solid #d9dbe7", background: rating === value ? "#f0edff" : "white", color: "#25213d", fontWeight: 800, fontSize: 18, cursor: "pointer" }}>{value}</button>)}
           </div>
@@ -86,7 +86,7 @@ export default function FeedbackPage() {
       </form>
       <p role="status" aria-live="polite" style={{ marginTop: 16 }}>{status}</p>
       <p style={{ fontSize: 12, color: "#777", lineHeight: 1.6 }}>Please do not include passwords, payment details, government ID numbers, or other sensitive personal information. Feedback is associated with your signed-in account so we can understand member experience; it is not displayed publicly.</p>
-      <p className="switch"><Link href="/">← Back to ConnectTime</Link></p>
+      <p className="switch"><Link href="/">← Back to Connect</Link></p>
     </section>
   </main>;
 }
