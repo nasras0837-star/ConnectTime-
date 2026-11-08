@@ -15,9 +15,12 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Read the one-time recovery token after hydration to keep server/client markup consistent.
+    /* eslint-disable react-hooks/set-state-in-effect */
     const params = new URLSearchParams(window.location.search);
     setUserId(params.get("userId") || "");
     setSecret(params.get("secret") || "");
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
