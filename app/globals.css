@@ -929,3 +929,9 @@
 .freeTvClearFilters:hover{border-color:#178e91;background:#eaf7f6;color:#126b70}
 @media(min-width:1000px){.freeTvControls{grid-template-columns:minmax(220px,2fr) 1fr 1fr 1fr auto}}
 @media(max-width:600px){.freeTvControls label:nth-child(4){grid-column:1/-1}.freeTvClearFilters{grid-column:1/-1;width:100%}}
+
+/* Free TV live result summary */
+.freeTvResultSummary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 16px;color:#647b8b;font-size:13px}
+.freeTvResultSummary strong{color:#153e58;font-size:16px}
+.freeTvResultSummary button{border:0;background:transparent;color:#087f88;font:700 12px inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media(max-width:520px){.freeTvResultSummary{align-items:flex-start;flex-direction:column;gap:5px}}
