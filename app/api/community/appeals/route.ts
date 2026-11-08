@@ -18,7 +18,8 @@ export async function GET() {
     return NextResponse.json({ error: "Your appeals are unavailable or not configured." }, { status: 503 });
   }
 }
-\nexport async function POST(request: Request) {
+
+export async function POST(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
   const user = await currentCommunityMember();
   if (!user) return NextResponse.json({ error: "Sign in before submitting an appeal." }, { status: 401 });
