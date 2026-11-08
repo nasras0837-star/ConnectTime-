@@ -28,7 +28,7 @@ Set:
 
 Create a private member-access collection as described in `APPWRITE_AUTHORIZATION.md`. Document IDs must equal the Appwrite user ID. Only trusted server-side code and the eventual verified provider webhook may change eligibility or account status. A missing record or unavailable service must deny protected access.
 
-**Important:** an age-verification provider is not yet selected/configured. The verification session endpoint intentionally remains unavailable until a real provider and signed webhook workflow are implemented. Do not manually mark real members verified as a shortcut.
+**Important:** Connect uses Veriff. Configure the private verification records table and server-only `VERIFF_BASE_URL`, `VERIFF_API_KEY`, `VERIFF_SHARED_SECRET`, and `VERIFF_CALLBACK_URL` values as documented in `VERIFF-AGE-VERIFICATION-SETUP.md`. Do not manually mark real members verified as a shortcut.
 
 ## Step 3 — Create private tables in the existing Appwrite database
 
@@ -45,6 +45,7 @@ Set `APPWRITE_DATABASE_ID` to the existing database. Create only the tables need
 | Community blocks/reports/appeals | `APPWRITE_COMMUNITY_BLOCKS_TABLE_ID`, `APPWRITE_COMMUNITY_REPORTS_TABLE_ID`, `APPWRITE_COMMUNITY_APPEALS_TABLE_ID` | `community-safety-backend-setup.md` |
 | Groups/members/posts | `APPWRITE_COMMUNITY_GROUPS_TABLE_ID`, `APPWRITE_COMMUNITY_GROUP_MEMBERS_TABLE_ID`, `APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID` | `APPWRITE_COMMUNITY_GROUPS_SETUP.md` |
 | Free TV watchlist | `APPWRITE_FREE_TV_WATCHLIST_TABLE_ID` | `APPWRITE_FREE_TV_WATCHLIST_SETUP.md` |
+| Verification records | `APPWRITE_VERIFICATION_RECORDS_TABLE_ID` | `VERIFF-AGE-VERIFICATION-SETUP.md` |
 
 Use the exact column IDs, types, sizes, required flags, and indexes in each guide. Do not guess a schema from the UI. Keep all tables private and access them through server-side APIs.
 
