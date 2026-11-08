@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
@@ -62,7 +63,7 @@ export default async function AccountPage() {
     <main className="ctAccountPage">
       <header className="ctAccountHeader">
         <Link href="/" className="ctAccountBrand" aria-label="ConnectTime home">
-          <img src="/connecttime-logo.svg" alt="" width="48" height="48" />
+          <Image src="/connecttime-logo.svg" alt="" width={48} height={48} priority />
           <span>Connect<span>Time</span><small>Your people. Your passions. Your ConnectTime.</small></span>
         </Link>
         <nav aria-label="Account navigation">
