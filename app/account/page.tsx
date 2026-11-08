@@ -71,6 +71,7 @@ export default async function AccountPage() {
         <nav aria-label="Account navigation">
           <Link href="/">Home</Link>
           <Link href="/profile">Edit profile</Link>
+          <Link href="/settings">Settings</Link>
           <Link href="/safety">Safety center</Link>
         </nav>
       </header>
@@ -99,6 +100,7 @@ export default async function AccountPage() {
         <Link href="/profile"><span>👤</span><div><strong>Your profile</strong><small>Update your details and interests</small></div><b>→</b></Link>
         <Link href="/safety"><span>🛡️</span><div><strong>Safety & blocking</strong><small>Manage blocks and report community concerns</small></div><b>→</b></Link>
         <Link href="/feedback"><span>💡</span><div><strong>Share feedback</strong><small>Help shape ConnectTime</small></div><b>→</b></Link>
+        <Link href="/settings"><span>⚙️</span><div><strong>Settings</strong><small>Device preferences and account privacy shortcuts</small></div><b>→</b></Link>
       </section>
 
       {decision.allowed ? (
