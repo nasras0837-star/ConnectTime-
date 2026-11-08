@@ -1,4 +1,4 @@
-# ConnectTime profile discovery setup
+# Connect profile discovery setup
 
 This feature uses the existing Appwrite database and the existing profile, block, and member-access tables. It does not create a new database.
 
