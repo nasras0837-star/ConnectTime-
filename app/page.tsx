@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LiveInterestFeed from "./components/live-interest-feed";
+import LiveNewsArticles from "./components/live-news-articles";
 
 const destinations = [
   { icon: "❤️", title: "Dating & mutual likes", description: "Find compatible adults by age, interests, location and relationship goals. Like someone and connect when the interest is mutual.", href: "/dating", action: "Explore dating" },
@@ -30,6 +31,7 @@ export default function HomePage() {
     <section className="ctHomeSmartAds"><div className="ctHomeAdIcon">✦</div><div><span>FOR BUSINESSES, CREATORS & ORGANIZATIONS</span><h2>Smart advertising that helps you reach the right audience.</h2><p>Explore campaign planning built around audience interests, geographic reach and your marketing goals. Review your campaign options and submit it for approval before launch.</p><div className="ctHomeAdPills"><b>Interest-led planning</b><b>Regional reach</b><b>Campaign insights</b></div></div><Link href="/advertise">Explore smart advertising <span>→</span></Link></section>
     <section className="ctHomeGrid">{destinations.map(item=><article className="ctHomeCard" key={item.title}><span className="ctHomeCardIcon">{item.icon}</span><h3>{item.title}</h3><p>{item.description}</p><Link href={item.href}>{item.action} <span>→</span></Link></article>)}</section>
     <div id="live-interest" className="ctHomeLiveFeed"><LiveInterestFeed /></div>
+    <LiveNewsArticles />
     <section className="ctHomeFeatureBand"><div><span>BUILT AROUND YOUR INTERESTS</span><h2>Follow what you love.<br/><em>Find what inspires you.</em></h2><p>Personalize your live-interest feed, explore topics from around the world and discover new communities at your own pace.</p><Link href="/news">Explore your interests →</Link></div><div className="ctHomeFeatureTiles"><div>🌍<b>Global news</b><small>Perspectives from around the world</small></div><div>🏟️<b>Sports & culture</b><small>Follow the topics you care about</small></div><div>🎥<b>Video discovery</b><small>Find media from official sources</small></div><div>🤝<b>Shared interests</b><small>Connect with your communities</small></div></div></section>
     <section className="ctHomeFinal"><span>YOUR PEOPLE. YOUR PASSIONS. YOUR CONNECTTIME.</span><h2>Bring your world together.</h2><p>Create your account and explore an all-in-one destination for connection and media.</p><Link href="/register">Register Now <span>→</span></Link><small>Adults 18+. Some features are in development and availability varies by region and provider.</small></section>
     <footer className="ctHomeFooter"><Link href="/">ConnectTime</Link><span>© {new Date().getFullYear()} Techcyber LLC</span><div><Link href="/safety">Safety</Link><Link href="/feedback">Feedback</Link><Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link><Link href="/account">Account</Link></div></footer>
