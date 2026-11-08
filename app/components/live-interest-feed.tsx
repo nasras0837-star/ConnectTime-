@@ -23,7 +23,7 @@ const feeds: Feed[] = [
   { id: "npr-music", title: "NPR Music", publisher: "NPR", topic: "Music", country: "United States", url: "https://www.youtube.com/@nprmusic", note: "Official music performances, interviews and sessions; not a continuous live channel." }
 ];
 
-const storageKey = "connecttime-live-feed-preferences";
+const storageKey = "connect-live-feed-preferences";
 
 export default function LiveInterestFeed() {
   const [selected, setSelected] = useState<Topic[]>(["News", "Sports", "Entertainment"]);
@@ -49,7 +49,7 @@ export default function LiveInterestFeed() {
             if (active) {
               setSelected(remote);
               localStorage.setItem(storageKey, JSON.stringify(remote));
-              setSyncStatus("Synced to your ConnectTime account");
+              setSyncStatus("Synced to your Connect account");
             }
           }
         } else if (response.status === 401) {
@@ -78,14 +78,14 @@ export default function LiveInterestFeed() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ topics: next })
     }).then(response => {
-      if (response.ok) setSyncStatus("Synced to your ConnectTime account");
+      if (response.ok) setSyncStatus("Synced to your Connect account");
       else if (response.status === 401) setSyncStatus("Saved on this device · sign in to sync");
       else setSyncStatus("Saved on this device · account sync unavailable");
     }).catch(() => setSyncStatus("Saved on this device · account sync unavailable"));
   }
 
   return <section className="ctLiveInterest" aria-labelledby="ct-live-interest-title">
-    <div className="ctLiveInterestHead"><div><span className="ctLiveEyebrow">YOUR PERSONAL LIVE FEED</span><h2 id="ct-live-interest-title">Watch what you&apos;re into</h2><p>Choose your interests. ConnectTime brings together official live channels and broadcaster video hubs.</p></div><span className="ctLiveCount">◉ Curated sources</span></div>
+    <div className="ctLiveInterestHead"><div><span className="ctLiveEyebrow">YOUR PERSONAL LIVE FEED</span><h2 id="ct-live-interest-title">Watch what you&apos;re into</h2><p>Choose your interests. Connect brings together official live channels and broadcaster video hubs.</p></div><span className="ctLiveCount">◉ Curated sources</span></div>
     <div className="ctLiveTopics" role="group" aria-label="Choose live feed interests">{topics.map(topic => <button key={topic} type="button" onClick={() => toggle(topic)} className={selected.includes(topic) ? "active" : ""} aria-pressed={selected.includes(topic)}>{topic}</button>)}</div><p className="ctLiveSyncStatus" role="status">{syncStatus}</p>
     {!ready ? <p className="ctLiveNote">Loading your interests…</p> : visible.length ? <div className="ctLiveGrid">{visible.map(feed => <article className="ctLiveCard" key={feed.id}>
       <div className="ctLiveCardTop"><span>● {feed.topic}</span><span>{feed.country}</span></div>
@@ -93,6 +93,6 @@ export default function LiveInterestFeed() {
       {feed.channelId ? <>{loaded.includes(feed.id) ? <div className="ctLivePlayer"><iframe src={`https://www.youtube-nocookie.com/embed/live_stream?channel=${feed.channelId}`} title={feed.title} loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen/></div> : <button className="ctLivePlay" type="button" onClick={() => setLoaded(current => [...current, feed.id])}>▶ Load official live player</button>}</> : <a className="ctLivePlay" href={feed.url} target="_blank" rel="noopener noreferrer">Open official video feed ↗</a>}
       <a className="ctLiveSource" href={feed.url} target="_blank" rel="noopener noreferrer">Broadcaster&apos;s official site ↗</a>
     </article>)}</div> : <div className="ctLiveEmpty">Choose one or more topics above to build your live feed.</div>}
-    <p className="ctLiveDisclaimer">Streams are published by their respective rights holders. A player may be offline, unavailable in your country, or disabled for embedding. Sports games and some entertainment programmes require a paid subscription; ConnectTime does not bypass regional or subscription restrictions. Players load only when you choose to open them.</p>
+    <p className="ctLiveDisclaimer">Streams are published by their respective rights holders. A player may be offline, unavailable in your country, or disabled for embedding. Sports games and some entertainment programmes require a paid subscription; Connect does not bypass regional or subscription restrictions. Players load only when you choose to open them.</p>
   </section>;
 }
