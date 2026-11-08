@@ -1444,3 +1444,49 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .communityFooter{max-width:1180px;margin:24px auto 0;padding:20px 0;border-top:1px solid #e8e0f1;color:#958ba8;font-size:11px}
 @media(max-width:850px){.communityLayout,.groupsLayout{grid-template-columns:1fr}.communitySidebar{order:2}}
 @media(max-width:600px){.friendEntry{align-items:flex-start;flex-wrap:wrap}.friendEntryActions{width:100%;margin-left:55px;justify-content:flex-start}.communityHeader{align-items:flex-start;flex-direction:column;padding:14px}.communityHeader nav{gap:12px}.communityHero{margin-top:18px;border-radius:18px}.groupCard{align-items:flex-start;flex-direction:column}.groupCardActions{width:100%}.datingSelectionBar{align-items:flex-start}.datingSelectionBar>span{width:100%}}
+
+
+/* ConnectTime Video Tube — signature experience */
+.videoShell{max-width:none;min-height:100vh;padding:0 clamp(14px,3vw,34px) 28px;background:radial-gradient(ellipse at 4% 0%,#efe1ff 0,transparent 34%),radial-gradient(ellipse at 98% 7%,#deebff 0,transparent 33%),linear-gradient(145deg,#faf7ff,#f4f7ff 60%,#fff5fb);color:#30234f}
+.videoHeader{max-width:1320px;height:auto;min-height:76px;margin:0 auto;padding:10px 20px;border:1px solid #ffffffd9;border-radius:0 0 20px 20px;background:#ffffffd6;box-shadow:0 10px 32px #4931780c;backdrop-filter:blur(16px)}
+.videoBrand{display:flex;align-items:center}.ctVideoLogo{width:138px;height:70px;object-fit:contain}
+.videoHeader nav{gap:10px}.videoHeader nav a{padding:10px 13px;border-radius:10px;color:#685b82;font-size:12px;font-weight:800}.videoHeader nav a:hover{background:#f1eaff;color:#793bc5}
+.videoIntro{max-width:1180px;margin:26px auto 18px;padding:clamp(28px,4vw,48px);border-radius:26px;background:linear-gradient(115deg,#32106d,#7030c6 54%,#dc35a8);color:#fff;box-shadow:0 20px 48px #7538db2b}
+.videoEyebrow{color:#f5caff;font-size:10px;font-weight:900;letter-spacing:1.8px}
+.videoIntro h1{max-width:760px;font-size:clamp(38px,5.5vw,66px);letter-spacing:-2.5px;line-height:1.02;margin:15px 0}
+.videoIntro h1 span{background:linear-gradient(90deg,#d5c5ff,#ffc5e8);background-clip:text;color:transparent}
+.videoIntro>p{max-width:690px;color:#f0e4ff;font-size:14px;line-height:1.75}
+.videoSearch{max-width:760px;margin-top:24px;padding:6px;border:1px solid #ffffff80;border-radius:14px;background:#ffffffed;box-shadow:0 10px 28px #210a4933}
+.videoSearch input{padding:12px 14px;color:#38275d;background:transparent;font-size:13px}
+.videoSearch input:focus{outline:3px solid #c8a8ff70;border-radius:9px}
+.videoSearch button{border:0;border-radius:10px;padding:11px 17px;background:linear-gradient(110deg,#7538db,#dc35a8);color:#fff;font-size:12px;font-weight:850;cursor:pointer}
+.searchHistory{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}.searchHistory span{color:#f2dfff;font-size:10px;font-weight:800}
+.searchHistory button{padding:6px 10px;border:1px solid #ffffff55;border-radius:30px;background:#ffffff1a;color:#fff;font-size:10px;cursor:pointer}
+.videoFeed{max-width:1180px;margin:0 auto}
+.videoFilters{display:flex;gap:8px;overflow-x:auto;padding:9px 2px 14px;scrollbar-width:thin}
+.videoFilters button{flex:0 0 auto;padding:9px 14px;border:1px solid #e8def5;border-radius:30px;background:#ffffffd9;color:#726486;font-size:11px;font-weight:800;cursor:pointer}
+.videoFilters button.selected{border-color:transparent;background:linear-gradient(105deg,#7538db,#dc35a8);color:#fff;box-shadow:0 7px 16px #963dd52b}
+.interestNote{margin:4px 0 16px;color:#9288a5;font-size:11px}
+.videoGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.videoCard{border:1px solid #ebe4f6;border-radius:19px;background:#ffffffed;box-shadow:0 9px 28px #4931780b;transition:transform .2s,box-shadow .2s}
+.videoCard:hover{transform:translateY(-3px);box-shadow:0 17px 34px #49317818}
+.videoFrame{border-radius:18px 18px 0 0;overflow:hidden;background:linear-gradient(135deg,#28134e,#483071)}
+.videoMeta{padding:17px 18px 19px}
+.videoCategory{display:inline-flex;padding:5px 9px;border-radius:30px;background:#f0e7ff;color:#8144c5;font-size:9px;font-weight:900;letter-spacing:.7px}
+.videoMeta h2{margin:9px 0 5px;color:#39285e;font:800 17px Manrope,sans-serif;letter-spacing:-.4px}
+.videoMeta>p{margin:0 0 8px;color:#968ca7;font-size:10px}
+.videoMeta>small{display:block;min-height:35px;color:#766d88;font-size:11px;line-height:1.6}
+.videoActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid #f0ebf6}
+.videoActions button{padding:8px 10px;border:1px solid #e8e0f2;border-radius:9px;background:#f8f5fc;color:#71558e;font-size:10px;font-weight:800;cursor:pointer}
+.videoActions button:hover{border-color:#cdb3ed;background:#f1e8ff}
+.videoActions button.liked{border-color:#f3c9e5;background:#fff0f8;color:#c13e91}
+.videoActions button:disabled{opacity:.65;cursor:default}
+.emptyVideos{padding:30px;border:1px dashed #d9c9ef;border-radius:16px;background:#ffffffa8;text-align:center;color:#817794;font-size:13px}
+.recommendationInfo{margin:24px 0 14px;padding:20px;border:1px solid #e9e0f4;border-radius:17px;background:linear-gradient(110deg,#f4edff,#eef5ff)}
+.recommendationInfo strong{color:#4d3675;font:800 14px Manrope,sans-serif}
+.recommendationInfo p{color:#807691;font-size:11px;line-height:1.7}
+.recommendationInfo button{padding:9px 12px;border:1px solid #dfd1f0;border-radius:9px;background:#fff;color:#7944b3;font-size:10px;font-weight:800;cursor:pointer}
+.feedDisclaimer{padding:13px 15px;border-radius:12px;background:#fff;border:1px solid #eee8f6;color:#938aa4;font-size:10px;line-height:1.6}
+.videoFooter{max-width:1180px;margin:24px auto 0;padding:18px 0;border-top:1px solid #e9e1f5;color:#958ba8;font-size:11px}
+@media(max-width:900px){.videoGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.videoShell{padding:0 12px 20px}.videoHeader{padding:9px 12px}.ctVideoLogo{width:116px;height:58px}.videoHeader nav{gap:2px}.videoHeader nav a{padding:8px;font-size:11px}.videoIntro{margin-top:17px;padding:23px 17px;border-radius:19px}.videoIntro h1{font-size:clamp(35px,10vw,48px);letter-spacing:-1.8px}.videoSearch{gap:4px}.videoSearch button{padding:10px 12px}.videoGrid{grid-template-columns:1fr;gap:13px}.videoMeta{padding:15px}.videoActions button{flex:1}.recommendationInfo{padding:16px}}
