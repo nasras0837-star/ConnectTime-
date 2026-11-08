@@ -1599,3 +1599,38 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .marketplaceFooter{max-width:1180px;margin:24px auto 0;padding:18px 0;border-top:1px solid #e9e1f5;color:#958ba8;font-size:11px}
 @media(max-width:800px){.marketplaceFeatureGrid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.marketplacePage{padding:0 12px 20px}.marketplaceHeader{align-items:flex-start;flex-direction:column;padding:10px 14px}.marketplaceHeader nav{gap:2px}.marketplaceHeader nav a{padding:8px;font-size:10px}.marketplaceHero{margin-top:17px;padding:23px 17px;border-radius:19px}.marketplaceHero h1{font-size:clamp(35px,10vw,48px);letter-spacing:-1.8px}.marketplaceFeatureGrid{grid-template-columns:1fr}.marketplaceSafety{align-items:flex-start;flex-direction:column;padding:18px}}
+
+
+/* ConnectTime homepage radio station finder */
+.ctRadioFinder{max-width:1180px;margin:28px auto;padding:clamp(22px,3.5vw,38px);border:1px solid #e7ddf4;border-radius:24px;background:radial-gradient(ellipse at 100% 0%,#fce4f4 0,transparent 35%),linear-gradient(125deg,#fff 0%,#f5f0ff 52%,#edf5ff 100%);box-shadow:0 18px 46px #49317812;color:#39285e}
+.ctRadioFinderTop{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.ctRadioFinderEyebrow{color:#9650c6;font-size:10px;font-weight:900;letter-spacing:1.7px}
+.ctRadioFinderTop h2{margin:7px 0;color:#39285e;font-size:clamp(25px,3vw,36px);letter-spacing:-1.3px}
+.ctRadioFinderTop h2 em{font-style:normal;background:linear-gradient(90deg,#7538db,#dc35a8);background-clip:text;color:transparent}
+.ctRadioFinderTop p{margin:0;color:#807691;font-size:12px;line-height:1.7}
+.ctRadioFinderIcon{flex:0 0 64px;width:64px;height:64px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(135deg,#7538db,#dc35a8);color:#fff;font-size:32px;box-shadow:0 10px 24px #963dd52b}
+.ctRadioFinderSearch{display:flex;align-items:center;gap:11px;margin:22px 0 14px;padding:8px 9px 8px 15px;border:1px solid #e5dced;border-radius:14px;background:#ffffffed}
+.ctRadioFinderSearch>span{color:#9b55c9;font-size:24px;line-height:1}
+.ctRadioFinderSearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#39285e;font:500 13px 'DM Sans',sans-serif}
+.ctRadioFinderSearch button,.ctRadioPlayButton{border:0;border-radius:10px;background:linear-gradient(105deg,#7538db,#dc35a8);color:#fff;font-size:11px;font-weight:900;cursor:pointer}
+.ctRadioFinderSearch button{padding:12px 16px;white-space:nowrap}
+.ctRadioFinderSearch button:disabled{opacity:.65;cursor:wait}
+.ctRadioFinderResults{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ctRadioStation{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid #ebe4f6;border-radius:14px;background:#ffffffdf}
+.ctRadioStation.isPlaying{border-color:#b78be5;background:#faf5ff}
+.ctRadioStationMark{flex:0 0 38px;width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#eee2ff,#ffe1f3);color:#8747c5;font-size:20px}
+.ctRadioStationDetails{display:grid;gap:4px;flex:1;min-width:0}
+.ctRadioStationDetails strong{overflow:hidden;color:#39285e;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.ctRadioStationDetails span{overflow:hidden;color:#8b829d;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.ctRadioPlayButton{flex:0 0 36px;width:36px;height:36px;font-size:13px}
+.ctRadioFinderEmpty,.ctRadioFinderNotice,.ctRadioFinderError{grid-column:1/-1;margin:4px 0;padding:12px 14px;border-radius:11px;background:#fff;color:#807691;font-size:11px}
+.ctRadioFinderError{background:#fff0f2;color:#a33d5b}
+.ctRadioFinderNotice{background:#f4edff;color:#76518e}
+.ctRadioNowPlaying{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:16px;padding:14px 16px;border:1px solid #e8def5;border-radius:14px;background:#ffffffd9}
+.ctRadioNowPlaying>div{display:grid;gap:4px;min-width:0}
+.ctRadioNowPlaying small{color:#9a52c8;font-size:9px;font-weight:900;letter-spacing:1px}
+.ctRadioNowPlaying strong{overflow:hidden;color:#39285e;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.ctRadioNowPlaying audio{width:min(390px,52%);height:38px}
+.ctRadioBrowseLink{display:inline-flex;gap:7px;margin-top:15px;color:#8747c5;font-size:11px;font-weight:900}
+.ctRadioFinderDisclaimer{display:block;margin-top:9px;color:#9389a7;font-size:9px;line-height:1.6}
+@media(max-width:650px){.ctRadioFinder{margin:20px 12px;padding:19px;border-radius:18px}.ctRadioFinderResults{grid-template-columns:1fr}.ctRadioFinderTop{align-items:flex-start}.ctRadioFinderIcon{flex-basis:48px;width:48px;height:48px;border-radius:15px;font-size:25px}.ctRadioFinderSearch{flex-wrap:wrap}.ctRadioFinderSearch input{width:calc(100% - 40px);flex:1}.ctRadioFinderSearch button{width:100%}.ctRadioNowPlaying{align-items:stretch;flex-direction:column}.ctRadioNowPlaying audio{width:100%}}
