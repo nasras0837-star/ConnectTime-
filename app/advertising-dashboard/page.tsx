@@ -40,6 +40,7 @@ export default function AdvertisingDashboardPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [scheduleFilter, setScheduleFilter] = useState("all");
   const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
   const loadCampaigns = async () => {
     setError("");
@@ -48,6 +49,7 @@ export default function AdvertisingDashboardPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not load campaigns.");
       setCampaigns(data.campaigns || []);
+      setLastUpdated(new Date().toISOString());
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Campaigns are unavailable.");
     } finally {
@@ -59,7 +61,7 @@ export default function AdvertisingDashboardPage() {
     let active = true;
     fetch("/api/advertising/campaigns", { cache: "no-store" })
       .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Could not load campaigns."); return data; })
-      .then(data => { if (active) setCampaigns(data.campaigns || []); })
+      .then(data => { if (active) { setCampaigns(data.campaigns || []); setLastUpdated(new Date().toISOString()); } })
       .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : "Campaigns are unavailable."); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
@@ -109,7 +111,7 @@ export default function AdvertisingDashboardPage() {
         {(search.trim() || statusFilter !== "all" || scheduleFilter !== "all") && <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); }}>Clear filters</button>}
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
-      {!loading && !error && campaigns.length > 0 && <p className="ctCampaignResultCount" aria-live="polite">Showing {filtered.length} of {campaigns.length} campaigns</p>}
+      {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length} of ${campaigns.length} campaigns` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{filtered.map(campaign => {
         const impressions = Number(campaign.impressions_count) || 0;
         const clicks = Number(campaign.clicks_count) || 0;
