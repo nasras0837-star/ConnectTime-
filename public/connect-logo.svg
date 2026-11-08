@@ -24,6 +24,6 @@
  <circle cx="152" cy="47" r="39" fill="#fff"/><path d="M89 177c4-52 29-85 63-85s59 33 63 85c-34 33-92 34-126 0z" fill="#fff"/>
  <circle cx="250" cy="72" r="34" fill="#ff319f"/><path d="M199 170c4-42 24-68 51-68s47 26 51 68c-28 26-75 28-102 0z" fill="#f01894"/>
 </g>
-<text x="600" y="730" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="100" font-weight="800" letter-spacing="-5" fill="#fff">Connect<tspan fill="url(#time)">Time</tspan></text>
+<text x="600" y="730" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="112" font-weight="800" letter-spacing="-5" fill="#fff">Connect</text>
 <path d="M310 755Q600 690 895 750" fill="none" stroke="#d61bfa" stroke-width="9" stroke-linecap="round"/>
 </svg>
