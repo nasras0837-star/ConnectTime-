@@ -1,8 +1,8 @@
-# ConnectTime Community Guidelines
+# Connect Community Guidelines
 
 ## Freedom of expression
 
-ConnectTime supports freedom of expression and lively, good-faith discussion. Members may share opinions, criticism, personal experiences, humor, art, political and social viewpoints, and unpopular ideas, provided their expression follows the law and these guidelines. Disagreement, criticism, satire, or a viewpoint someone dislikes is not harassment by itself.
+Connect supports freedom of expression and lively, good-faith discussion. Members may share opinions, criticism, personal experiences, humor, art, political and social viewpoints, and unpopular ideas, provided their expression follows the law and these guidelines. Disagreement, criticism, satire, or a viewpoint someone dislikes is not harassment by itself.
 
 ## Harassment and intimidation are prohibited
 
@@ -12,7 +12,7 @@ Challenge claims, arguments, public actions, and ideas without targeting a perso
 
 ## Privacy, consent, and safety
 
-Do not publish another person's private contact details, home address, financial or identity information, private messages, or intimate imagery without permission. Non-consensual intimate content, sexual exploitation, and any sexual content involving minors are prohibited. ConnectTime is an adults-only 18+ community.
+Do not publish another person's private contact details, home address, financial or identity information, private messages, or intimate imagery without permission. Non-consensual intimate content, sexual exploitation, and any sexual content involving minors are prohibited. Connect is an adults-only 18+ community.
 
 ## Moderation principles
 
