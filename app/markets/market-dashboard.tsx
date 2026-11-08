@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 type WidgetProps = { src: string; config: Record<string, unknown>; height: number; label: string };
 function TradingViewEmbed({ src, config, height, label }: WidgetProps) {
@@ -25,10 +25,10 @@ function TradingViewEmbed({ src, config, height, label }: WidgetProps) {
     script.type = "text/javascript";
     script.src = src;
     script.async = true;
-    script.textContent = JSON.stringify(config);
+    script.textContent = configJson;
     root.append(widget, attribution, script);
     return () => { root.replaceChildren(); };
-  }, [src, config]);
+  }, [src, configJson]);
   return <div className="ctMarketWidget" style={{ height }} aria-label={label} ref={host}><div className="ctMarketLoading">Loading {label}…</div></div>;
 }
 
@@ -88,7 +88,7 @@ export default function MarketDashboard() {
   const [search, setSearch] = useState("");
   const [symbol, setSymbol] = useState("NASDAQ:AAPL");
   const [message, setMessage] = useState("");
-  function openSymbol(event: React.FormEvent<HTMLFormElement>) {
+  function openSymbol(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const raw = search.trim().toUpperCase().replace(/\s+/g, "");
     if (!/^[A-Z0-9._-]{1,15}$/.test(raw)) {
