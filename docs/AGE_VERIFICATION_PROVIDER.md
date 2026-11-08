@@ -49,10 +49,12 @@ Yoti's production Age Verification API and its isolated sandbox use different au
 
 After Yoti onboarding and sandbox access are approved, configure these as server-only Netlify environment variables:
 
-- `YOTI_API_KEY`
 - `YOTI_SDK_ID`
+- `YOTI_PRIVATE_KEY_PEM`
+- `YOTI_SANDBOX_ENABLED=true` (explicit sandbox opt-in)
+- `APPWRITE_YOTI_SESSIONS_COLLECTION_ID`
 
-Do not add either variable with a `NEXT_PUBLIC_` prefix. Do not commit credentials or ask users to paste them into chat. The notification verifier must use Yoti's official published Age Verification public key, pinned and reviewed in code/configuration according to Yoti's current documentation; do not accept a public key supplied by the webhook.
+Do not add these variables with a `NEXT_PUBLIC_` prefix. Do not commit credentials or ask users to paste them into chat. The sandbox uses a private-key-signed OAuth client assertion; the production API key is separate and is not used by this sandbox adapter.
 
 The session endpoint remains disabled unless all Appwrite settings are present, Yoti sandbox credentials are configured, and `YOTI_SANDBOX_ENABLED=true`. Sandbox results must be stored separately from production member-access state and must never set `adult_status=verified`. The sandbox session adapter creates an isolated sandbox session and persists its session-to-user mapping before returning the sandbox UI URL. It does not retrieve results, verify notifications, or update production member-access status. The sandbox endpoint is not a production verification integration.
 
