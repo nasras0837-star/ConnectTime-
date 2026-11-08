@@ -1,6 +1,6 @@
 # Appwrite Events Table Setup
 
-Create a **private** table named `events` in the existing ConnectTime Appwrite database. Do not create a second database or enable public client access. Set `APPWRITE_EVENTS_TABLE_ID` in Netlify (server-side only).
+Create a **private** table named `events` in the existing Connect Appwrite database. Do not create a second database or enable public client access. Set `APPWRITE_EVENTS_TABLE_ID` in Netlify (server-side only).
 
 Required columns (types):
 - `title` string 90, required
