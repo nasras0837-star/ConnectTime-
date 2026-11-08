@@ -1,4 +1,4 @@
-# ConnectTime friend requests — Appwrite setup
+# Connect friend requests — Appwrite setup
 
 Create a new table named `friend_requests` in the existing Appwrite database configured by `APPWRITE_DATABASE_ID`. Do not create another database.
 
