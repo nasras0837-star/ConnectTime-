@@ -176,7 +176,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #087e
  window.addEventListener('resize',()=>{if(window.matchMedia('(min-width: 621px)').matches)closeMenu()});
  launch.addEventListener('click',()=>setOpen(launch.getAttribute('aria-expanded')!=='true'));
  close.addEventListener('click',()=>setOpen(false));
- clear.addEventListener('click',()=>{pendingAnswerTimers.forEach(timer=>clearTimeout(timer));pendingAnswerTimers.clear();msgs.replaceChildren(...initialMessages);clear.disabled=true;msgs.scrollTop=0});
+ clear.addEventListener('click',()=>{pendingAnswerTimers.forEach(timer=>clearTimeout(timer));pendingAnswerTimers.clear();msgs.replaceChildren(...initialMessages);clear.disabled=true;msgs.scrollTop=0;input.value='';updateInputState();input.focus()});
  document.addEventListener('click',event=>{if(launch.getAttribute('aria-expanded')==='true'&&!panel.contains(event.target)&&!launch.contains(event.target))setOpen(false,false)});
  panel.addEventListener('keydown',event=>{if(event.key==='Escape'&&launch.getAttribute('aria-expanded')==='true'){event.preventDefault();setOpen(false)}});
  const updateInputState=()=>{const remaining=500-input.value.length;count.textContent=remaining+' characters remaining';send.disabled=!input.value.trim()};
