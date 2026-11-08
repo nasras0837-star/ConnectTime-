@@ -13,6 +13,32 @@ async function moderator(request?: Request) {
   return { user };
 }
 
+
+async function auditAppeal(event: { moderator_user_id: string; appellant_user_id: string; appeal_id: string; outcome: string; note: string; created_at: string }) {
+  const tableId = process.env.APPWRITE_MODERATION_AUDIT_TABLE_ID;
+  if (!tableId) { console.error("Moderation audit table is not configured."); return; }
+  try {
+    const { tablesDB, databaseId } = communitySafetyStore();
+    await tablesDB.createRow({ databaseId, tableId, rowId: "unique()", data: {
+      moderator_user_id: event.moderator_user_id, event_type: "appeal_decision",
+      target_user_id: event.appellant_user_id, report_id: event.appeal_id,
+      action: "appeal_review", outcome: event.outcome, note: event.note, created_at: event.created_at,
+    }});
+  } catch (error) { console.error("Appeal audit write failed", error instanceof Error ? error.message : "unknown"); }
+}
+async function notifyAppellant(userId: string, appealId: string, outcome: string, createdAt: string) {
+  const tableId = process.env.APPWRITE_NOTIFICATIONS_TABLE_ID;
+  if (!tableId) { console.error("Moderation notification table is not configured."); return; }
+  try {
+    const { tablesDB, databaseId } = communitySafetyStore();
+    const messages: Record<string,string> = { upheld: "Your Connect appeal was reviewed. The original moderation decision remains in place.", overturned: "Your Connect appeal was reviewed and the original decision was overturned. Contact support if you need assistance.", dismissed: "Your Connect appeal was reviewed and dismissed." };
+    await tablesDB.createRow({ databaseId, tableId, rowId: "unique()", data: {
+      recipient_user_id: userId, type: "appeal", message: messages[outcome] || "Your Connect appeal is being reviewed.",
+      reference_id: appealId, is_read: false, created_at: createdAt,
+    }});
+  } catch (error) { console.error("Appeal notification write failed", error instanceof Error ? error.message : "unknown"); }
+}
+
 function config() {
   const tableId = process.env.APPWRITE_COMMUNITY_APPEALS_TABLE_ID;
   if (!tableId) throw new Error("Appeals table is not configured.");
@@ -56,6 +82,9 @@ export async function PATCH(request: Request) {
     const updated = await s.tablesDB.updateRow({ databaseId: s.databaseId, tableId: s.tableId, rowId: appealId, data: {
       status, reviewer_user_id: auth.user.$id, reviewed_at: new Date().toISOString(), review_note: note,
     }});
+    const now = new Date().toISOString();
+    await auditAppeal({ moderator_user_id: auth.user.$id, appellant_user_id: String(existing.appellant_user_id || ""), appeal_id: appealId, outcome: status, note, created_at: now });
+    if (["upheld", "overturned", "dismissed"].includes(status) && typeof existing.appellant_user_id === "string" && existing.appellant_user_id) await notifyAppellant(existing.appellant_user_id, appealId, status, now);
     return NextResponse.json({ updated: true, appeal: updated }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     return NextResponse.json({ error: "The appeal decision could not be saved. Check the Appwrite schema and permissions." }, { status: 503 });
