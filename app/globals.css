@@ -1576,3 +1576,26 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .eventsHostCta h2{color:#39285e;font-size:20px}.eventsHostCta p{color:#817794;font-size:11px}
 @media(max-width:900px){.newsGrid,.eventGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.newsHero{grid-template-columns:1fr .55fr}}
 @media(max-width:600px){.newsPage,.eventsPage{padding:0 12px 20px}.newsHeader,.eventsHeader{align-items:flex-start;flex-direction:column;padding:10px 14px}.newsBrand img,.eventsHeader .ctLogoImage{width:116px;height:58px}.newsHeader nav,.eventsHeader nav{gap:3px}.newsHeader nav a,.eventsHeader nav a{padding:8px;font-size:11px}.newsHero,.eventsHero{margin-top:17px;padding:23px 17px;border-radius:19px}.newsHero{grid-template-columns:1fr}.newsHeroArt{min-height:140px}.newsHeroArt>span{font-size:76px}.newsHeading,.eventsSectionHead{align-items:stretch;flex-direction:column}.newsSearch{min-width:0}.newsGrid,.eventGrid{grid-template-columns:1fr}.newsCardVisual{height:170px}.eventForm{grid-template-columns:1fr}.eventForm .eventWide{grid-column:auto}.eventsSectionHead>button{align-self:flex-start}}
+
+/* ConnectTime Marketplace preview */
+.marketplacePage{min-height:100vh;padding:0 clamp(14px,3vw,34px) 28px;background:radial-gradient(ellipse at 4% 0%,#efe1ff 0,transparent 34%),radial-gradient(ellipse at 98% 7%,#deebff 0,transparent 33%),linear-gradient(145deg,#faf7ff,#f4f7ff 60%,#fff5fb);color:#30234f}
+.marketplaceHeader{max-width:1320px;min-height:76px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid #ffffffd9;border-radius:0 0 20px 20px;background:#ffffffd6;box-shadow:0 10px 32px #4931780c;backdrop-filter:blur(16px)}
+.marketplaceBrand{display:flex;align-items:center;gap:9px;color:#7138c9;font:900 20px Manrope,sans-serif}.marketplaceBrand:first-letter{font-size:27px}
+.marketplaceHeader nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.marketplaceHeader nav a{padding:10px 12px;border-radius:10px;color:#685b82;font-size:11px;font-weight:800}.marketplaceHeader nav a:hover{background:#f1eaff;color:#793bc5}.marketplaceHeader nav .marketplaceJoin{background:linear-gradient(105deg,#7538db,#dc35a8);color:#fff}
+.marketplaceHero{max-width:1180px;margin:26px auto 20px;padding:clamp(28px,4vw,48px);border-radius:26px;background:linear-gradient(115deg,#32106d,#7030c6 54%,#dc35a8);color:#fff;box-shadow:0 20px 48px #7538db2b}
+.marketplaceHero>span,.marketplaceSectionTitle>span,.marketplaceSafety>div>span{color:#f5caff;font-size:10px;font-weight:900;letter-spacing:1.7px}
+.marketplaceHero h1{font-size:clamp(38px,5.5vw,66px);line-height:1.02;letter-spacing:-2.5px;margin:15px 0}.marketplaceHero h1 em{font-style:normal;background:linear-gradient(90deg,#d5c5ff,#ffc5e8);background-clip:text;color:transparent}
+.marketplaceHero>p{max-width:690px;color:#f0e4ff;font-size:14px;line-height:1.75}
+.marketplaceStatus{display:inline-flex;margin-top:12px;padding:9px 13px;border:1px solid #ffffff60;border-radius:30px;background:#ffffff1b;color:#fff;font-size:10px;font-weight:800}
+.marketplaceContent{max-width:1180px;margin:0 auto}
+.marketplaceSectionTitle{text-align:center;margin:30px auto 22px}.marketplaceSectionTitle>span{color:#9a52c8}.marketplaceSectionTitle h2{margin:8px 0;color:#39285e;font-size:clamp(25px,3vw,36px);letter-spacing:-1.2px}.marketplaceSectionTitle p{color:#827994;font-size:12px}
+.marketplaceFeatureGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.marketplaceFeature{padding:22px;border:1px solid #ebe4f6;border-radius:18px;background:#ffffffed;box-shadow:0 9px 28px #4931780b}
+.marketplaceFeature>div{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(135deg,#eee2ff,#ffe1f3);font-size:24px}
+.marketplaceFeature h3{margin:14px 0 6px;color:#39285e;font:800 17px Manrope,sans-serif}.marketplaceFeature p{margin:0;color:#807691;font-size:12px;line-height:1.7}
+.marketplaceSafety{display:flex;align-items:center;justify-content:space-between;gap:22px;margin:22px 0;padding:24px;border:1px solid #e9e0f4;border-radius:18px;background:linear-gradient(110deg,#f4edff,#eef5ff 55%,#ffeafa)}
+.marketplaceSafety>div>span{color:#9a52c8}.marketplaceSafety h2{margin:7px 0;color:#39285e;font-size:21px}.marketplaceSafety p{max-width:720px;color:#807691;font-size:11px;line-height:1.7}
+.marketplaceSafety>a{flex:0 0 auto;padding:11px 14px;border-radius:10px;background:linear-gradient(105deg,#7538db,#dc35a8);color:#fff;font-size:10px;font-weight:900}
+.marketplaceFooter{max-width:1180px;margin:24px auto 0;padding:18px 0;border-top:1px solid #e9e1f5;color:#958ba8;font-size:11px}
+@media(max-width:800px){.marketplaceFeatureGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.marketplacePage{padding:0 12px 20px}.marketplaceHeader{align-items:flex-start;flex-direction:column;padding:10px 14px}.marketplaceHeader nav{gap:2px}.marketplaceHeader nav a{padding:8px;font-size:10px}.marketplaceHero{margin-top:17px;padding:23px 17px;border-radius:19px}.marketplaceHero h1{font-size:clamp(35px,10vw,48px);letter-spacing:-1.8px}.marketplaceFeatureGrid{grid-template-columns:1fr}.marketplaceSafety{align-items:flex-start;flex-direction:column;padding:18px}}
