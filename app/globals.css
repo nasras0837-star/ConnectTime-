@@ -908,3 +908,18 @@
 .radioCard.isPlaying{border-color:#64bad6;box-shadow:0 0 0 3px #64bad61b,0 9px 24px #173f5d0b}
 .radioCard.isPlaying .radioListenButton{background:#135a7b}
 @media(max-width:650px){.radioPlayerBar{grid-template-columns:45px minmax(0,1fr);gap:11px;padding:14px}.radioPlayerDisc{width:42px;height:42px}.radioPlayerBar audio{grid-column:1/-1}.radioPlayerInfo strong{font-size:12px}}
+
+
+/* Free TV channel identity and regional browsing */
+.freeTvRegionShortcuts{display:flex;gap:8px;overflow-x:auto;padding:3px 0 8px;margin:0 0 14px;scrollbar-width:thin}
+.freeTvRegionShortcuts button{flex:0 0 auto;border:1px solid #dce8ed;border-radius:999px;padding:9px 13px;background:#fff;color:#557182;font:700 11px 'DM Sans',sans-serif;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.freeTvRegionShortcuts button:hover,.freeTvRegionShortcuts button.active{background:#155c7c;border-color:#155c7c;color:#fff}
+.freeTvIdentity{display:flex;align-items:center;gap:12px;margin:14px 0 2px}
+.freeTvChannelMark{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:14px;background:linear-gradient(145deg,#e0f2fb,#d9f3eb);border:1px solid #d9e9ee;color:#176b85;font:800 13px Manrope,sans-serif;letter-spacing:-.4px}
+.freeTvIdentity>div{display:grid;gap:3px}
+.freeTvCountryFlag{font-size:20px;line-height:1.1}
+.freeTvCountryName{font-size:10px;font-weight:700;color:#78909c}
+.freeTvCard h3{margin-top:10px}
+.freeTvCard>a:last-child{margin-top:2px;justify-content:center;width:100%;text-align:center}
+.freeTvCard>a:last-child:hover{background:#d9edf0}
+@media(max-width:600px){.freeTvRegionShortcuts{margin-right:-14px;padding-right:14px}.freeTvChannelMark{width:44px;height:44px;flex-basis:44px}}
