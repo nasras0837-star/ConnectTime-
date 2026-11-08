@@ -86,8 +86,10 @@ export default function AdvertisingDashboardPage() {
   const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
     result.cap += Number(campaign.lifetime_cap_minor) || 0;
-    result.impressions += Number(campaign.impressions_count) || 0;
-    result.clicks += Number(campaign.clicks_count) || 0;
+    if (campaign.metrics_status === "verified_events") {
+      result.impressions += Number(campaign.impressions_count) || 0;
+      result.clicks += Number(campaign.clicks_count) || 0;
+    }
     return result;
   }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [filtered]);
   const ctr = totals.impressions > 0 ? totals.clicks / totals.impressions * 100 : 0;
@@ -101,8 +103,8 @@ export default function AdvertisingDashboardPage() {
       <div className="ctAdKpis">
         <article><span>MATCHING CAMPAIGNS</span><strong>{filtered.length}</strong><small>{filtered.filter(c => c.status === "pending_review").length} awaiting review</small></article>
         <article><span>FILTERED RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>For campaigns matching your filters</small></article>
-        <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified events for matching campaigns</small></article>
-        <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks</small></article>
+        <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified-event campaigns only</small></article>
+        <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks only</small></article>
       </div>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
@@ -113,15 +115,16 @@ export default function AdvertisingDashboardPage() {
       </section>
       {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length} of ${campaigns.length} campaigns` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
       {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{filtered.map(campaign => {
-        const impressions = Number(campaign.impressions_count) || 0;
-        const clicks = Number(campaign.clicks_count) || 0;
+        const metricsVerified = campaign.metrics_status === "verified_events";
+        const impressions = metricsVerified ? Number(campaign.impressions_count) || 0 : 0;
+        const clicks = metricsVerified ? Number(campaign.clicks_count) || 0 : 0;
         const spend = Number(campaign.spend_minor) || 0;
         const cap = Number(campaign.lifetime_cap_minor) || 0;
         const spendPercent = cap > 0 ? Math.min(100, spend / cap * 100) : 0;
         const campaignCtr = impressions > 0 ? clicks / impressions * 100 : 0;
         return <article className="ctCampaignCard" key={campaign.$id}>
           <div className="ctCampaignTitle"><div><span>{campaign.company || "Advertiser"}</span><h2>{campaign.campaign_name || "Untitled campaign"}</h2></div><b className={campaign.status === "approved" || campaign.status === "active" ? "ctAdStatus positive" : "ctAdStatus"}>{label(campaign.status)}</b></div>
-          <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>RECORDED SPEND</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>IMPRESSIONS</small><strong>{number(impressions)}</strong></div><div><small>CLICKS</small><strong>{number(clicks)}</strong></div><div><small>CTR</small><strong>{pct(campaignCtr)}</strong></div></div>
+          <div className="ctCampaignMetrics"><div><small>DAILY BUDGET</small><strong>{money(campaign.daily_budget_minor)}</strong></div><div><small>TOTAL SPEND CAP</small><strong>{money(campaign.lifetime_cap_minor)}</strong></div><div><small>RECORDED SPEND</small><strong>{money(campaign.spend_minor)}</strong></div><div><small>VERIFIED IMPRESSIONS</small><strong>{metricsVerified ? number(impressions) : "Not verified"}</strong></div><div><small>VERIFIED CLICKS</small><strong>{metricsVerified ? number(clicks) : "Not verified"}</strong></div><div><small>VERIFIED CTR</small><strong>{metricsVerified ? pct(campaignCtr) : "Not available"}</strong></div></div>
           <div className="ctAdSpendTrack" aria-label={`Spend cap used: ${spendPercent.toFixed(1)} percent`}><span style={{ width: `${spendPercent}%` }} /></div><div className="ctAdSpendCaption"><span>{money(spend)} recorded</span><span>{money(Math.max(0, cap - spend))} remaining of cap</span></div>
           <div className="ctAdAudience"><div><small>OBJECTIVE & PLACEMENT</small><strong>{label(campaign.objective)} · {label(campaign.placement)}</strong></div><div><small>TARGET AUDIENCE</small><strong>{campaign.country || "Country not set"} · {campaign.region || "Region not set"}</strong>{campaign.geo_targets && <span>{campaign.geo_targets}</span>}{campaign.audience_interests && <span>Interests: {campaign.audience_interests.split(",").filter(Boolean).join(" · ")}</span>}</div><div><small>SCHEDULE</small><strong>{date(campaign.starts_at)} – {date(campaign.ends_at)}</strong></div></div>
           <div className="ctCampaignMeta"><span>AI screen: {label(campaign.moderation_status)}</span><span>Human review: {label(campaign.human_review_status)}</span><span>Payment: {label(campaign.payment_status)}</span><span>Metrics: {campaign.metrics_status === "verified_events" ? "Verified events" : campaign.metrics_status === "temporarily_unavailable" ? "Temporarily unavailable" : "Not active"}</span></div>
