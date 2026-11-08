@@ -75,7 +75,7 @@ const countryFlags: Record<string, string> = {
   "United States":"🇺🇸", Canada:"🇨🇦", "United Kingdom":"🇬🇧", Ireland:"🇮🇪", Germany:"🇩🇪", France:"🇫🇷", Italy:"🇮🇹", Netherlands:"🇳🇱", Portugal:"🇵🇹", Spain:"🇪🇸", Australia:"🇦🇺", India:"🇮🇳", Japan:"🇯🇵", Singapore:"🇸🇬", "South Korea":"🇰🇷", Taiwan:"🇹🇼", Thailand:"🇹🇭", Indonesia:"🇮🇩", "New Zealand":"🇳🇿", Malaysia:"🇲🇾", Brazil:"🇧🇷", Argentina:"🇦🇷", Mexico:"🇲🇽", Chile:"🇨🇱", Colombia:"🇨🇴", "South Africa":"🇿🇦", Nigeria:"🇳🇬", Uganda:"🇺🇬", Kenya:"🇰🇪", Qatar:"🇶🇦", "United Arab Emirates":"🇦🇪", "Saudi Arabia":"🇸🇦", Global:"🌐",
 };
 const regionShortcuts = ["Global","North America","Europe","Latin America","Asia-Pacific","Africa","Middle East"];
-const languages = ["All languages", ...Array.from(new Set(channels.flatMap(channel => channel.language.split(/\\s*\\/\\s*/).map(value => value.trim())))).sort((a,b) => a.localeCompare(b))];
+const languages = ["All languages", ...Array.from(new Set(channels.flatMap(channel => channel.language.split(/\s*\/\s*/).map(value => value.trim())))).sort((a,b) => a.localeCompare(b))];
 function channelMark(channel: Channel) {
   return channel.name.split(/\s+/).map(part => part[0]).join("").slice(0, 3).toUpperCase();
 }
@@ -121,10 +121,10 @@ export default function FreeTvPage() {
     const matchesRegion = region === "All regions" || channel.region === region || channel.region === "Global";
     const matchesCountry = country === "All countries" || channel.country === country || channel.country === "Global";
     const matchesCategory = category === "All" || channel.category === category;
-    const matchesLanguage = language === "All languages" || channel.language.split(/\\s*\\/\\s*/).some(value => value.trim() === language);
+    const matchesLanguage = language === "All languages" || channel.language.split(/\s*\/\s*/).some(value => value.trim() === language);
     const term = query.trim().toLowerCase();
     const matchesQuery = !term || [channel.name,channel.country,channel.region,channel.language,channel.description].join(" ").toLowerCase().includes(term);
-    return matchesRegion && matchesCountry && matchesCategory && matchesQuery;
+    return matchesRegion && matchesCountry && matchesCategory && matchesLanguage && matchesQuery;
   }),[region,country,category,query]);
   const visibleChannels = useMemo(() => {
     const result = showSavedOnly ? filtered.filter(channel => watchlist.includes(channel.id)) : [...filtered];
