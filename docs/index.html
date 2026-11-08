@@ -306,6 +306,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #6b2f
 .ctPublicSportsDot.live{background:#ff4d68!important;box-shadow:0 0 0 4px #ff4d6838!important}
 .ctPublicSportsEmpty{color:#fff!important;background:#123b70!important;font-size:14px!important;font-weight:850!important}
 @media(max-width:560px){.ctPublicSportsLeague{padding:16px!important}.ctPublicSportsTeam{font-size:16px!important}.ctPublicSportsTeam strong{font-size:27px!important}.ctPublicSportsGameStatus{font-size:12px!important}}
+
+/* Radio launch CTA: high-contrast and accessible */
+.ctRadioLaunch{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(120deg,#061b43,#123f82 55%,#452078)!important;padding:clamp(20px,3vw,28px)!important;border-radius:20px!important;border:1px solid #62c8ff!important;margin-top:16px!important;box-shadow:0 12px 30px #06152c55,inset 0 1px #ffffff20!important}
+.ctRadioLaunchTitle{display:block;color:#fff!important;font-size:clamp(20px,2.2vw,27px)!important;font-weight:950!important;line-height:1.25!important;letter-spacing:-.3px;text-shadow:0 2px 8px #0008!important}
+.ctRadioLaunchCopy{margin:8px 0 0!important;color:#e5f4ff!important;font-size:clamp(14px,1.3vw,16px)!important;font-weight:700!important;line-height:1.55!important}
+.ctRadioLaunchButton{display:inline-flex!important;align-items:center;justify-content:center;background:linear-gradient(110deg,#00b9ff,#5d55ff 55%,#d92aa9)!important;color:#fff!important;border:2px solid #a7efff!important;border-radius:12px!important;padding:13px 18px!important;font-size:15px!important;font-weight:950!important;text-shadow:0 1px 2px #0005!important;box-shadow:0 5px 16px #0003!important}
+.ctRadioLaunchButton:hover,.ctRadioLaunchButton:focus-visible{filter:brightness(1.15);outline:3px solid #fff!important;outline-offset:3px}
+@media(max-width:560px){.ctRadioLaunch{align-items:flex-start}.ctRadioLaunchButton{width:100%;text-align:center}}
 </style>
 
 <style id="connecttime-hero-people-background">
@@ -432,7 +440,7 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   <div class="ctRadioNowPlaying"><div><b>Now playing</b><span id="ctRadioNowPlayingName">Choose a station from the results.</span></div><audio id="ctRadioAudio" controls preload="none" aria-label="Selected radio station audio player">Your browser does not support audio playback.</audio></div>
   <p class="ctRadioFinderNote">Streams are provided by independent broadcasters. Some stations may be offline, geo-restricted, or block playback in certain browsers. Connect does not host or rebroadcast these streams.</p>
  </div>
- <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#ffffffd9;padding:22px;border-radius:18px;border:1px solid #fff;margin-top:16px"><div><b style="font-size:16px">Ready to listen around the world?</b><p style="margin:5px 0 0;color:#668293;font-size:12px">Open Connect Radio to browse stations and start listening.</p></div><a class="btn" href="https://connect-web-7ypt.onrender.com/radio" target="_blank" rel="noopener noreferrer">Open Connect Radio ↗</a></div> <div class="notice"><b>Availability and rights:</b> Radio streams are provided by independent broadcasters and may be unavailable, geo-restricted, interrupted, or contain advertising. Connect links to public station streams and does not host or rebroadcast music. Music platform catalogs, free listening options, and licensing terms vary by country and release.</div></section>
+ <div class="ctRadioLaunch"><div><b class="ctRadioLaunchTitle">Ready to listen around the world?</b><p class="ctRadioLaunchCopy">Open Connect Radio to browse stations and start listening.</p></div><a class="btn ctRadioLaunchButton" href="https://connect-web-7ypt.onrender.com/radio" target="_blank" rel="noopener noreferrer">Open Connect Radio ↗</a></div> <div class="notice"><b>Availability and rights:</b> Radio streams are provided by independent broadcasters and may be unavailable, geo-restricted, interrupted, or contain advertising. Connect links to public station streams and does not host or rebroadcast music. Music platform catalogs, free listening options, and licensing terms vary by country and release.</div></section>
 
 <section class="ctPublicSports" id="sports-scores" aria-labelledby="ctPublicSportsTitle">
  <div class="ctPublicSportsHead"><div><span class="eyebrow">CONNECT · SPORTS DESK</span><h2 id="ctPublicSportsTitle">Scores, games &amp; matchups.</h2><p>Follow game-day action across major leagues, right from your ConnectTime homepage.</p></div><span class="ctPublicSportsRefresh" id="ctPublicSportsStatus" aria-live="polite">Loading scores…</span></div>
