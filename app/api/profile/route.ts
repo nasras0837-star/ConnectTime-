@@ -80,8 +80,9 @@ export async function PUT(request: Request) {
       country,
       region,
       interests: interests.join(", "),
-      ...(age !== null ? { age } : {}),
-      ...(gender ? { gender } : {}),
+      // Persist empty values too, so members can clear optional dating fields.
+      age,
+      gender,
       interested_in: interestedIn,
       relationship_goal: relationshipGoal,
       visibility,
@@ -98,7 +99,12 @@ export async function PUT(request: Request) {
     const row = await tablesDB.createRow({ databaseId, tableId, rowId: ID.custom(user.$id), data: { ...data, created_at: new Date().toISOString() } });
     return NextResponse.json({ saved: true, profile: row }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("Profile save failed", error instanceof Error ? error.message : "unknown");
+    const message = error instanceof Error ? error.message : "";
+    // The database unique index is the final guard against concurrent handle claims.
+    if (/unique|duplicate|already exists|conflict/i.test(message)) {
+      return NextResponse.json({ error: "That username is already in use. Please choose another." }, { status: 409 });
+    }
+    console.error("Profile save failed", message || "unknown");
     return NextResponse.json({ error: "Profile could not be saved. Check that the Appwrite profiles table and columns are configured." }, { status: 503 });
   }
 }
