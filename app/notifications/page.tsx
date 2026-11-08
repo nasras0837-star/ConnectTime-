@@ -81,11 +81,11 @@ export default function NotificationsPage() {
   const unread = items.filter(item => !item.read).length;
   return <main className="authShell">
     <header className="plannedFeatureHeader">
-      <Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link>
+      <Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link>
       <nav><Link href="/">Home</Link><Link href="/account">Account</Link><Link href="/friends">Friends</Link><Link href="/dating/likes">Dating</Link><Link href="/messages">Messages</Link></nav>
     </header>
     <section className="authCard notificationsCard">
-      <div className="eyebrow">YOUR CONNECTTIME UPDATES</div>
+      <div className="eyebrow">YOUR CONNECT UPDATES</div>
       <h1>Notifications</h1>
       <p>Dating likes, mutual matches, friend requests, connection updates, private messages and community group chat activity appear here. {unread} unread.</p>
       {error && <p className="message" role="alert">{error}</p>}
@@ -113,6 +113,6 @@ export default function NotificationsPage() {
       </p>
       <p className="datingInboxFootnote">Notifications refresh automatically while this page is open. You can also refresh manually at any time.</p>
     </section>
-    <footer className="plannedFeatureFooter">ConnectTime · Your people. Your passions. Your ConnectTime.</footer>
+    <footer className="plannedFeatureFooter">Connect · Your people. Your passions. Your Connect.</footer>
   </main>;
 }
