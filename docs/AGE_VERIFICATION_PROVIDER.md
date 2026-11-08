@@ -56,6 +56,17 @@ Do not add either variable with a `NEXT_PUBLIC_` prefix. Do not commit credentia
 
 The session endpoint remains disabled unless all Appwrite settings are present, Yoti sandbox credentials are configured, and `YOTI_SANDBOX_ENABLED=true`. Sandbox results must be stored separately from production member-access state and must never set `adult_status=verified`. The sandbox session adapter creates an isolated sandbox session and persists its session-to-user mapping before returning the sandbox UI URL. It does not retrieve results, verify notifications, or update production member-access status. The sandbox endpoint is not a production verification integration.
 
+### Sandbox session storage
+
+Configure a private Appwrite collection using the access database:
+- Document ID: Yoti session UUID.
+- Attributes: `provider` (string), `environment` (string), `user_id` (string), `reference_id` (string), `status` (string), and `expires_at` (datetime/string).
+- Add an index on `user_id` to support the per-user session creation limit (maximum three sessions in a rolling 15-minute window).
+- Deny all client read/write permissions. The server API key alone may create and read these records.
+- Set `APPWRITE_YOTI_SESSIONS_COLLECTION_ID` to this collection ID.
+
+The current session route creates an authenticated sandbox session and persists the user/session mapping before returning the sandbox URL. If Appwrite persistence fails, the route returns a generic 503 and does not disclose the hosted URL.
+
 ## Tests and release gates
 
 - Valid signed OVER-18 notification and matching fetched COMPLETE result updates only the correct user's access record.
@@ -69,4 +80,4 @@ The session endpoint remains disabled unless all Appwrite settings are present, 
 
 ## Current implementation status
 
-The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in. Vendor credentials, Appwrite session collection, sandbox execution, result retrieval, signed webhook, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
+The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Vendor credentials, Appwrite session collection, sandbox execution, result retrieval, signed webhook, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
