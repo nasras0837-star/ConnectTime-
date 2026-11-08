@@ -1,4 +1,4 @@
-name: ConnectTime security checks
+name: Connect security checks
 
 on:
   push:
