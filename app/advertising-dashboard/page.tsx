@@ -178,7 +178,7 @@ export default function AdvertisingDashboardPage() {
       <div className="ctCampaignNotice"><strong>Preview / approval status:</strong> Campaign drafts are not published or charged. Impressions and clicks are shown only when verified delivery events are configured. AI screening is not final approval; human review and secure billing are still required before launch.</div>
       <div className="ctAdKpis">
         <article><span>MATCHING CAMPAIGNS</span><strong>{filtered.length}</strong><small>{filtered.filter(c => c.status === "pending_review").length} awaiting review</small></article>
-        <article><span>FILTERED RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>For campaigns matching your filters</small></article>
+        <article><span>FILTERED RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>{money(totals.cap)} combined lifetime caps · {totals.cap > 0 ? `${Math.min(100, totals.spend / totals.cap * 100).toFixed(1)}% of cap recorded` : "No lifetime caps recorded"}</small></article>
         <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified-event campaigns only</small></article>
         <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks only</small></article>
       </div>
