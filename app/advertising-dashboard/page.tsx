@@ -55,6 +55,7 @@ export default function AdvertisingDashboardPage() {
   const [scheduleFilter, setScheduleFilter] = useState("all");
   const [metricsFilter, setMetricsFilter] = useState("all");
   const [budgetFilter, setBudgetFilter] = useState("all");
+  const [reviewFilter, setReviewFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("newest");
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
@@ -103,6 +104,12 @@ export default function AdvertisingDashboardPage() {
       (budgetFilter === "over_cap" && cap > 0 && spend > cap) ||
       (budgetFilter === "within_cap" && cap > 0 && spend <= cap) ||
       (budgetFilter === "no_cap" && cap <= 0);
+    const review = (campaign.human_review_status || "").toLowerCase();
+    const matchesReview = reviewFilter === "all" ||
+      (reviewFilter === "pending" && (review === "pending" || campaign.status === "pending_review")) ||
+      (reviewFilter === "approved" && review === "approved") ||
+      (reviewFilter === "rejected" && review === "rejected") ||
+      (reviewFilter === "not_recorded" && !review);
     const start = campaign.starts_at ? Date.parse(campaign.starts_at) : Number.NaN;
     const end = campaign.ends_at ? Date.parse(campaign.ends_at) : Number.NaN;
     const hasSchedule = Number.isFinite(start) && Number.isFinite(end);
@@ -113,8 +120,8 @@ export default function AdvertisingDashboardPage() {
       (scheduleFilter === "upcoming" && hasSchedule && !invalidSchedule && start > now) ||
       (scheduleFilter === "current" && hasSchedule && !invalidSchedule && start <= now && end >= now) ||
       (scheduleFilter === "ended" && hasSchedule && !invalidSchedule && end < now);
-    return matchesText && matchesStatus && matchesSchedule && matchesMetrics && matchesBudget;
-  }), [campaigns, search, statusFilter, scheduleFilter, metricsFilter, budgetFilter, now]);
+    return matchesText && matchesStatus && matchesSchedule && matchesMetrics && matchesBudget && matchesReview;
+  }), [campaigns, search, statusFilter, scheduleFilter, metricsFilter, budgetFilter, reviewFilter, now]);
 
   const sortedCampaigns = useMemo(() => [...filtered].sort((a, b) => {
     const dateA = Date.parse(a.starts_at || "") || 0;
@@ -219,13 +226,14 @@ export default function AdvertisingDashboardPage() {
         <label>Campaign schedule<select value={scheduleFilter} onChange={event => setScheduleFilter(event.target.value)}><option value="all">All schedules</option><option value="upcoming">Upcoming</option><option value="current">Currently scheduled</option><option value="ended">Ended</option><option value="unscheduled">Missing schedule</option><option value="invalid">Invalid date range</option></select></label>
         <label>Metrics verification<select value={metricsFilter} onChange={event => setMetricsFilter(event.target.value)}><option value="all">All metrics</option><option value="verified">Verified metrics</option><option value="unverified">Not verified</option></select></label>
         <label>Budget status<select value={budgetFilter} onChange={event => setBudgetFilter(event.target.value)}><option value="all">All budget statuses</option><option value="over_cap">Over lifetime cap</option><option value="within_cap">Within lifetime cap</option><option value="no_cap">No lifetime cap</option></select></label>
+        <label>Human review<select value={reviewFilter} onChange={event => setReviewFilter(event.target.value)}><option value="all">All review statuses</option><option value="pending">Awaiting review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="not_recorded">Not recorded</option></select></label>
         <label>Sort campaigns<select value={sortOrder} onChange={event => setSortOrder(event.target.value)}><option value="newest">Newest start date</option><option value="oldest">Oldest start date</option><option value="spend_high">Highest recorded spend</option><option value="spend_low">Lowest recorded spend</option><option value="ctr_high">Highest verified CTR</option></select></label>
-        {(search.trim() || statusFilter !== "all" || scheduleFilter !== "all" || metricsFilter !== "all" || budgetFilter !== "all") && <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); setBudgetFilter("all"); }}>Clear filters</button>}
+        {(search.trim() || statusFilter !== "all" || scheduleFilter !== "all" || metricsFilter !== "all" || budgetFilter !== "all" || reviewFilter !== "all") && <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); setBudgetFilter("all"); setReviewFilter("all"); }}>Clear filters</button>}
         <button type="button" onClick={exportCampaigns} disabled={loading || !!error || filtered.length === 0}>↓ Export filtered CSV ({filtered.length})</button>
         <button type="button" onClick={() => { setRefreshing(true); void loadCampaigns(); }} disabled={refreshing || loading}>{refreshing ? "Refreshing…" : "↻ Refresh data"}</button>
       </section>
       {!loading && !error && <p className="ctCampaignResultCount" aria-live="polite">{campaigns.length > 0 ? `Showing ${filtered.length} of ${campaigns.length} campaigns` : "Campaign list loaded"}{lastUpdated ? ` · Data refreshed ${new Date(lastUpdated).toLocaleString()}` : ""}</p>}
-      {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); setBudgetFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{sortedCampaigns.map(campaign => {
+      {loading ? <div className="ctCampaignEmpty">Loading your campaigns…</div> : error ? <div className="ctCampaignEmpty" role="alert">{error}<p><Link href="/login">Sign in</Link> if you are not already signed in, and confirm your verified member access is configured.</p></div> : campaigns.length === 0 ? <div className="ctCampaignEmpty">You have no saved campaigns yet. <Link href="/advertise">Create your first campaign ↗</Link></div> : filtered.length === 0 ? <div className="ctCampaignEmpty">No campaigns match these filters. Try another search or status. <button type="button" onClick={() => { setSearch(""); setStatusFilter("all"); setScheduleFilter("all"); setMetricsFilter("all"); setBudgetFilter("all"); setReviewFilter("all"); }}>Clear all filters</button></div> : <div className="ctCampaignList">{sortedCampaigns.map(campaign => {
         const metricsVerified = campaign.metrics_status === "verified_events";
         const impressions = metricsVerified ? Number(campaign.impressions_count) || 0 : 0;
         const clicks = metricsVerified ? Number(campaign.clicks_count) || 0 : 0;
