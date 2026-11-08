@@ -125,7 +125,7 @@ export default function FreeTvPage() {
     const term = query.trim().toLowerCase();
     const matchesQuery = !term || [channel.name,channel.country,channel.region,channel.language,channel.description].join(" ").toLowerCase().includes(term);
     return matchesRegion && matchesCountry && matchesCategory && matchesLanguage && matchesQuery;
-  }),[region,country,category,query]);
+  }),[region,country,category,language,query]);
   const visibleChannels = useMemo(() => {
     const result = showSavedOnly ? filtered.filter(channel => watchlist.includes(channel.id)) : [...filtered];
     if (sort === "name") result.sort((a,b) => a.name.localeCompare(b.name));
