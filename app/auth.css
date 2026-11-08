@@ -5,3 +5,14 @@
 
 .meetingsShell{max-width:680px}.meetingsCard{gap:19px}.meetingFeatureList{display:grid;gap:12px;padding:4px 0}.meetingFeatureList>div{display:flex;align-items:center;gap:13px;padding:13px;border:1px solid #e9eaf1;border-radius:12px;background:#fbfbfe}.meetingFeatureList>div>span{font-size:25px}.meetingFeatureList section{display:grid;gap:3px}.meetingFeatureList strong{font-size:14px;color:#25283b}.meetingFeatureList small{font-size:12px;color:#737990}.meetingAction{display:grid;gap:12px;padding:17px;border:1px solid #e9eaf1;border-radius:13px}.meetingAction .eyebrow{font-size:10px;letter-spacing:1.2px;color:#6958d2;font-weight:800}.meetingAction label,.meetingInvitePanel label{display:grid;gap:7px;font-size:13px;font-weight:600;color:#555b71}.meetingAction input,.meetingInvitePanel input{width:100%;border:1px solid #dfe1ea;border-radius:9px;padding:12px;font:inherit}.meetingPrimary,.meetingSecondary{padding:13px 16px;border-radius:9px;color:#fff;background:#315cce}.meetingSecondary{background:#252b45}.meetingInvitePanel{display:grid;gap:12px;padding:17px;border:1px solid #b9c9ff;border-radius:13px;background:#f5f7ff}.meetingInvitePanel>strong{font-size:17px}.meetingInvitePanel>p{font-size:13px;line-height:1.5;color:#656b80;margin:0}.meetingInviteActions{display:flex;flex-wrap:wrap;gap:9px}.meetingInviteActions button{flex:1}.meetingsShell .plannedFeatureHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}.meetingsShell .plannedFeatureHeader nav{display:flex;gap:13px;flex-wrap:wrap;font-size:13px}.meetingsShell .plannedFeatureHeader nav a{color:#555b71}
 @media(max-width:520px){.meetingsShell .plannedFeatureHeader{align-items:flex-start;flex-direction:column}.meetingInviteActions{flex-direction:column}}
+
+
+/* Electric-blue globe theme for authentication and meeting screens */
+.authCard,.meetingAction,.meetingInvitePanel,.meetingFeatureList>div{background:rgba(5,19,57,.9)!important;border-color:#28549a!important;color:#f5f8ff!important}
+.authCard h1,.meetingInvitePanel>strong,.meetingFeatureList strong{color:#f5f8ff!important}
+.authCard>p,.authCard label,.authCard small,.meetingFeatureList small,.meetingInvitePanel>p,.meetingAction label{color:#c1d6f5!important}
+.authCard input:not([type=checkbox]),.meetingAction input,.meetingInvitePanel input{background:#071b4b!important;color:#fff!important;border-color:#3865a5!important}
+.authCard .message{background:#0b347c!important;color:#e8f5ff!important}
+.authCard .switch a,.meetingAction .eyebrow{color:#65eaff!important}
+.meetingPrimary,.meetingSecondary{background:linear-gradient(110deg,#087eae,#1765ed)!important;color:#fff!important}
+
