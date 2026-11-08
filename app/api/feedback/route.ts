@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ submitted: true, reference: row.$id, message: "Thank you. Your feedback has been received." }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("ConnectTime feedback submission failed", error instanceof Error ? error.message : "unknown");
+    console.error("Connect feedback submission failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "The feedback service is not configured or is temporarily unavailable. Your response was not submitted." }, { status: 503 });
   }
 }
