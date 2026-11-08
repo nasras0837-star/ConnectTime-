@@ -42,6 +42,7 @@ Set `APPWRITE_DATABASE_ID` to the existing database. Create only the tables need
 | Friend requests | `APPWRITE_FRIEND_REQUESTS_TABLE_ID` | `APPWRITE_FRIEND_REQUESTS_SETUP.md` |
 | Notifications | `APPWRITE_NOTIFICATIONS_TABLE_ID` | `APPWRITE_NOTIFICATIONS_SETUP.md` |
 | Private messages | `APPWRITE_MESSAGES_TABLE_ID` | `APPWRITE_MESSAGES_SETUP.md` |
+| Community group chat | `APPWRITE_COMMUNITY_GROUP_MESSAGES_TABLE_ID` | `GROUP_CHAT_SETUP.md` |
 | Community posts/comments/reactions | `APPWRITE_COMMUNITY_POSTS_TABLE_ID`, `APPWRITE_COMMUNITY_COMMENTS_TABLE_ID`, `APPWRITE_COMMUNITY_REACTIONS_TABLE_ID` | `APPWRITE_COMMUNITY_POSTS_SETUP.md` |
 | Community blocks/reports/appeals | `APPWRITE_COMMUNITY_BLOCKS_TABLE_ID`, `APPWRITE_COMMUNITY_REPORTS_TABLE_ID`, `APPWRITE_COMMUNITY_APPEALS_TABLE_ID` | `community-safety-backend-setup.md` |
 | Groups/members/posts | `APPWRITE_COMMUNITY_GROUPS_TABLE_ID`, `APPWRITE_COMMUNITY_GROUP_MEMBERS_TABLE_ID`, `APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID` | `APPWRITE_COMMUNITY_GROUPS_SETUP.md` |
@@ -82,7 +83,8 @@ A passing build or security workflow does not prove that Appwrite tables, secret
 - Veriff integration code is implemented, but production credentials, Appwrite verification table, webhook registration, and end-to-end test decisions still need configuration and verification.
 - Backend environment variables and table IDs have not been confirmed configured in Render.
 - Group owner approval, invitations, and group moderation are incomplete.
-- Messaging is request/refresh based, not real-time; no attachments or group chats.
+- Private messaging supports one-to-one text, unread counts, basic read receipts, reporting, and request/refresh updates; it is not WebSocket/push real-time and has no attachments, typing indicators, reactions, or edit/delete.
+- Community group text chat is implemented separately; its Appwrite messages table and end-to-end membership/block tests must be configured before use.
 - Notifications are in-app only; no email, push, or real-time delivery.
 - Photo/video uploads and public publishing remain disabled pending a tested quarantine/moderation pipeline.
 - Advertising payment, ad delivery, and verified impression counting are not confirmed operational.
