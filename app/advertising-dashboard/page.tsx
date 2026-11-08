@@ -226,11 +226,13 @@ export default function AdvertisingDashboardPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "connecttime-campaign-report.csv";
+    const reportDate = new Date().toISOString().slice(0, 10);
+    link.download = `connecttime-campaign-report-${reportDate}.csv`;
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    // Keep the object URL alive briefly so browsers can begin the download.
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   return <main className="adMarketplace">
