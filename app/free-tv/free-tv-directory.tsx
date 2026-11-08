@@ -69,29 +69,68 @@ const channels: Channel[] = [
 ];
 
 const regions = ["All regions","Global","North America","Europe","Latin America","Asia-Pacific","Africa","Middle East"];
-const countries = ["All countries","United States","Canada","United Kingdom","Ireland","Germany","France","Italy","Netherlands","Portugal","Spain","Australia","India","Japan","Singapore","South Korea","Taiwan","Thailand","Indonesia","New Zealand","Malaysia","Brazil","Argentina","Mexico","Chile","Colombia","South Africa","Nigeria","Uganda","Kenya","Qatar","United Arab Emirates","Saudi Arabia"];
+const countries = ["All countries", ...Array.from(new Set(channels.map(channel => channel.country))).sort((a,b) => a.localeCompare(b))];
+
+const countryFlags: Record<string, string> = {
+  "United States":"🇺🇸", Canada:"🇨🇦", "United Kingdom":"🇬🇧", Ireland:"🇮🇪", Germany:"🇩🇪", France:"🇫🇷", Italy:"🇮🇹", Netherlands:"🇳🇱", Portugal:"🇵🇹", Spain:"🇪🇸", Australia:"🇦🇺", India:"🇮🇳", Japan:"🇯🇵", Singapore:"🇸🇬", "South Korea":"🇰🇷", Taiwan:"🇹🇼", Thailand:"🇹🇭", Indonesia:"🇮🇩", "New Zealand":"🇳🇿", Malaysia:"🇲🇾", Brazil:"🇧🇷", Argentina:"🇦🇷", Mexico:"🇲🇽", Chile:"🇨🇱", Colombia:"🇨🇴", "South Africa":"🇿🇦", Nigeria:"🇳🇬", Uganda:"🇺🇬", Kenya:"🇰🇪", Qatar:"🇶🇦", "United Arab Emirates":"🇦🇪", "Saudi Arabia":"🇸🇦", Global:"🌐",
+};
+const regionShortcuts = ["Global","North America","Europe","Latin America","Asia-Pacific","Africa","Middle East"];
+const languages = ["All languages", ...Array.from(new Set(channels.flatMap(channel => channel.language.split(/\s*\/\s*/).map(value => value.trim())))).sort((a,b) => a.localeCompare(b))];
+function channelMark(channel: Channel) {
+  return channel.name.split(/\s+/).map(part => part[0]).join("").slice(0, 3).toUpperCase();
+}
 
 export default function FreeTvPage() {
   const [region,setRegion] = useState("All regions");
   const [country,setCountry] = useState("All countries");
   const [category,setCategory] = useState("All");
+  const [language,setLanguage] = useState("All languages");
   const [query,setQuery] = useState("");
+  const [sort,setSort] = useState<"featured"|"name"|"country"|"language">("featured");
   const [watchlist,setWatchlist] = useState<string[]>([]);
   const [watchlistReady,setWatchlistReady] = useState(false);
   const [watchlistError,setWatchlistError] = useState("");
+  const [watchlistAccess,setWatchlistAccess] = useState<"loading"|"member"|"signin"|"verify"|"error">("loading");
   const [watchlistBusy,setWatchlistBusy] = useState<string | null>(null);
   const [showSavedOnly,setShowSavedOnly] = useState(false);
+  const [recentlyViewed,setRecentlyViewed] = useState<string[]>([]);
+  const [recentReady,setRecentReady] = useState(false);
+  const [showRecentOnly,setShowRecentOnly] = useState(false);
+  useEffect(() => {
+    let active = true;
+    void Promise.resolve().then(() => {
+      if (!active) return;
+      try {
+        const stored = window.localStorage.getItem("connecttime-free-tv-recent");
+        const parsed: unknown = stored ? JSON.parse(stored) : [];
+        if (Array.isArray(parsed)) setRecentlyViewed(parsed.filter((id): id is string => typeof id === "string" && channels.some(channel => channel.id === id)).slice(0, 12));
+      } catch { /* Recent history is optional when browser storage is unavailable. */ }
+      finally { if (active) setRecentReady(true); }
+    });
+    return () => { active = false; };
+  }, []);
+  useEffect(() => {
+    if (!recentReady) return;
+    try { window.localStorage.setItem("connecttime-free-tv-recent", JSON.stringify(recentlyViewed)); }
+    catch { /* Browsing remains available when browser storage is unavailable. */ }
+  }, [recentlyViewed, recentReady]);
+  function recordRecentlyViewed(channelId: string) {
+    setRecentlyViewed(current => [channelId, ...current.filter(id => id !== channelId)].slice(0, 12));
+  }
   useEffect(() => {
     let active = true;
     fetch("/api/free-tv/watchlist", { cache: "no-store" }).then(async response => {
       const data = await response.json();
+      if (response.status === 401) { if (active) setWatchlistAccess("signin"); return; }
+      if (response.status === 403) { if (active) setWatchlistAccess("verify"); return; }
       if (!response.ok) throw new Error(data.error || "Watchlist is unavailable.");
-      if (active) setWatchlist(Array.isArray(data.watchlist) ? data.watchlist : []);
-    }).catch(error => { if (active) setWatchlistError(error instanceof Error ? error.message : "Watchlist is unavailable."); })
+      if (active) { setWatchlist(Array.isArray(data.watchlist) ? data.watchlist : []); setWatchlistAccess("member"); }
+    }).catch(error => { if (active) { setWatchlistError(error instanceof Error ? error.message : "Watchlist is unavailable."); setWatchlistAccess("error"); } })
       .finally(() => { if (active) setWatchlistReady(true); });
     return () => { active = false; };
   }, []);
   async function toggleSaved(channelId: string) {
+    if (watchlistAccess !== "member") return;
     setWatchlistBusy(channelId); setWatchlistError("");
     const saved = watchlist.includes(channelId);
     try {
@@ -106,19 +145,32 @@ export default function FreeTvPage() {
     const matchesRegion = region === "All regions" || channel.region === region || channel.region === "Global";
     const matchesCountry = country === "All countries" || channel.country === country || channel.country === "Global";
     const matchesCategory = category === "All" || channel.category === category;
+    const matchesLanguage = language === "All languages" || channel.language.split(/\s*\/\s*/).some(value => value.trim() === language);
     const term = query.trim().toLowerCase();
     const matchesQuery = !term || [channel.name,channel.country,channel.region,channel.language,channel.description].join(" ").toLowerCase().includes(term);
-    return matchesRegion && matchesCountry && matchesCategory && matchesQuery;
-  }),[region,country,category,query]);
+    return matchesRegion && matchesCountry && matchesCategory && matchesLanguage && matchesQuery;
+  }),[region,country,category,language,query]);
+  const visibleChannels = useMemo(() => {
+    let result = showSavedOnly ? filtered.filter(channel => watchlist.includes(channel.id)) : [...filtered];
+    if (showRecentOnly) result = result.filter(channel => recentlyViewed.includes(channel.id));
+    if (showRecentOnly) result.sort((a,b) => recentlyViewed.indexOf(a.id) - recentlyViewed.indexOf(b.id));
+    if (sort === "name") result.sort((a,b) => a.name.localeCompare(b.name));
+    if (sort === "country") result.sort((a,b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name));
+    if (sort === "language") result.sort((a,b) => a.language.localeCompare(b.language) || a.name.localeCompare(b.name));
+    return result;
+  }, [filtered,showSavedOnly,showRecentOnly,watchlist,recentlyViewed,sort]);
+  const clearFilters = () => { setQuery(""); setRegion("All regions"); setCountry("All countries"); setCategory("All"); setLanguage("All languages"); setShowSavedOnly(false); setShowRecentOnly(false); setSort("featured"); };
   return <main className="freeTvPage">
     <header className="freeTvHeader"><Link href="/" className="freeTvBrand"><span>◉</span> ConnectTime</Link><nav><Link href="/">Home</Link><Link href="/news">News</Link><Link href="/videos">Video Tube</Link><Link className="freeTvJoin" href="/register">Register Now</Link></nav></header>
     <section className="freeTvHero"><span className="freeTvEyebrow">CONNECTTIME · FREE TV</span><h1>Local voices.<br/><em>World-wide viewing.</em></h1><p>Discover free official news and entertainment channels from participating broadcasters around the world. Choose a region, find a channel, and watch on the broadcaster&apos;s own service.</p><div className="freeTvHeroStats"><span>🌍 Regional discovery</span><span>📰 Local & world news</span><span>🎭 Free entertainment</span><span>🔗 Official broadcaster links</span></div></section>
     <section className="freeTvDirectory">
-      <div className="freeTvSectionHead"><div><span>CHANNEL GUIDE</span><h2>Find something to watch</h2><p>ConnectTime links to the broadcaster. It does not host, record or rebroadcast TV streams. Official destination links receive a scheduled technical check; regional rights and actual live playback still require broadcaster confirmation.</p></div><span className="freeTvCount">{filtered.length} channels</span></div>
-      <div className="freeTvWatchlistBar"><button type="button" onClick={() => setShowSavedOnly(false)} aria-pressed={!showSavedOnly}>All channels</button><button type="button" onClick={() => setShowSavedOnly(true)} aria-pressed={showSavedOnly}>★ My watchlist ({watchlist.length})</button><span>{watchlistReady ? "Personal watchlist" : "Loading saved channels…"}</span></div>{watchlistError && <p className="freeTvWatchlistMessage" role="status">{watchlistError} You can still browse the directory.</p>}<div className="freeTvControls"><label>Search channels<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search by channel, country or language"/></label><label>Region<select value={region} onChange={e=>setRegion(e.target.value)}>{regions.map(v=><option key={v}>{v}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}>{countries.map(v=><option key={v}>{v}</option>)}</select></label></div>
+      <div className="freeTvSectionHead"><div><span>CHANNEL GUIDE</span><h2>Find something to watch</h2><p>ConnectTime links to the broadcaster. It does not host, record or rebroadcast TV streams. Official destination links receive a scheduled technical check; regional rights and actual live playback still require broadcaster confirmation.</p></div><span className="freeTvCount">{visibleChannels.length} channels</span></div>
+      <div className="freeTvWatchlistBar"><button type="button" onClick={() => { setShowSavedOnly(false); setShowRecentOnly(false); }} aria-pressed={!showSavedOnly && !showRecentOnly}>All channels</button><button type="button" onClick={() => { setShowSavedOnly(true); setShowRecentOnly(false); }} aria-pressed={showSavedOnly && !showRecentOnly}>★ My watchlist ({watchlist.length})</button><button type="button" onClick={() => { setShowRecentOnly(true); setShowSavedOnly(false); }} aria-pressed={showRecentOnly}>◷ Recently viewed ({recentlyViewed.length})</button><span>{watchlistAccess === "signin" ? "Sign in to save channels" : watchlistAccess === "verify" ? "Verified adult members can save channels" : watchlistAccess === "error" ? "Watchlist unavailable; browsing remains open" : watchlistReady ? "Personal watchlist" : "Loading saved channels…"}</span>{watchlistAccess === "signin" && <Link href="/login">Sign in</Link>}{watchlistAccess === "verify" && <Link href="/account">Verify account</Link>}</div>{watchlistError && <p className="freeTvWatchlistMessage" role="status">{watchlistError} You can still browse the directory.</p>}<div className="freeTvControls"><label>Search channels<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search by channel, country or language"/></label><label>Region<select value={region} onChange={e=>setRegion(e.target.value)}>{regions.map(v=><option key={v}>{v}</option>)}</select></label><label>Country<select value={country} onChange={e=>{const nextCountry=e.target.value;setCountry(nextCountry);if(nextCountry!=="All countries"){const match=channels.find(channel=>channel.country===nextCountry);if(match)setRegion(match.region);}}}>{countries.map(v=><option key={v}>{v}</option>)}</select></label><label>Sort<select value={sort} onChange={e=>setSort(e.target.value as "featured"|"name"|"country"|"language")}><option value="featured">Featured order</option><option value="name">Channel name</option><option value="country">Country</option><option value="language">Language</option></select></label><label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}>{languages.map(value=><option key={value}>{value}</option>)}</select></label><button type="button" className="freeTvClearFilters" onClick={clearFilters}>Reset filters</button></div>
+      <div className="freeTvRegionShortcuts" aria-label="Browse by region">{regionShortcuts.map(item=><button type="button" key={item} className={region===item?"active":""} aria-pressed={region===item} onClick={()=>{setRegion(region===item?"All regions":item);setCountry("All countries");}}>{item}</button>)}</div>
       <div className="freeTvTabs" role="group" aria-label="Filter by channel type">{["All","News","Entertainment"].map(v=><button key={v} className={category===v?"active":""} onClick={()=>setCategory(v)} aria-pressed={category===v}>{v==="All"?"🌐":v==="News"?"📰":"🎬"} {v}</button>)}</div>
-      <div className="freeTvGrid">{filtered.map(channel=><article className="freeTvCard" key={channel.id}><div className="freeTvCardTop"><span className={channel.category==="News"?"newsType":"entertainmentType"}>{channel.category==="News"?"📰 News":"🎭 Entertainment"}</span><span>{channel.region}</span></div><h3>{channel.name}</h3><div className="freeTvMeta">{channel.country} · {channel.language}</div><p>{channel.description}</p><div className="freeTvAccess">✓ {channel.access}</div><button type="button" className="freeTvSaveButton" onClick={() => toggleSaved(channel.id)} disabled={!watchlistReady || watchlistBusy === channel.id}>{watchlistBusy === channel.id ? "Saving…" : watchlist.includes(channel.id) ? "★ Saved · Remove" : "☆ Save to watchlist"}</button><a href={channel.url} target="_blank" rel="noopener noreferrer">Watch / visit official service ↗</a></article>)}</div>
-      {filtered.length===0&&<div className="freeTvEmpty">No channels match those filters. Try a wider region or another search.</div>}
+      <div className="freeTvResultSummary" aria-live="polite"><span><strong>{visibleChannels.length}</strong> {visibleChannels.length===1?"channel":"channels"} shown{showSavedOnly?" in your watchlist":showRecentOnly?" recently viewed":""}</span>{(query.trim()||region!=="All regions"||country!=="All countries"||category!=="All"||language!=="All languages"||showSavedOnly||showRecentOnly)&&<button type="button" onClick={clearFilters}>Clear all filters</button>}</div>
+      <div className="freeTvGrid">{visibleChannels.map(channel=><article className="freeTvCard" key={channel.id}><div className="freeTvCardTop"><span className={channel.category==="News"?"newsType":"entertainmentType"}>{channel.category==="News"?"📰 News":"🎭 Entertainment"}</span><span>{channel.region}</span></div><div className="freeTvIdentity"><span className="freeTvChannelMark" aria-hidden="true">{channelMark(channel)}</span><div><span className="freeTvCountryFlag" aria-hidden="true">{countryFlags[channel.country] || "📺"}</span><span className="freeTvCountryName">{channel.country}</span></div></div><h3>{channel.name}</h3><div className="freeTvMeta">{channel.country} · {channel.language}</div><p>{channel.description}</p><div className="freeTvAccess">✓ {channel.access}</div>{watchlistAccess === "member" ? <button type="button" className="freeTvSaveButton" onClick={() => toggleSaved(channel.id)} disabled={!watchlistReady || watchlistBusy === channel.id}>{watchlistBusy === channel.id ? "Saving…" : watchlist.includes(channel.id) ? "★ Saved · Remove" : "☆ Save to watchlist"}</button> : watchlistAccess === "error" ? <button type="button" className="freeTvSaveButton" disabled>Watchlist temporarily unavailable</button> : <Link className="freeTvSaveButton" href={watchlistAccess === "verify" ? "/account" : "/register"}>{watchlistAccess === "verify" ? "Verify to save" : "Register to save"}</Link>}<a href={channel.url} target="_blank" rel="noopener noreferrer" onClick={() => recordRecentlyViewed(channel.id)}>Watch / visit official service ↗</a></article>)}</div>
+      {visibleChannels.length===0&&<div className="freeTvEmpty" role="status" aria-live="polite"><p>{showRecentOnly ? "You have not opened any channels yet. Choose an official broadcaster link to start your recent-viewed list." : showSavedOnly ? watchlistAccess === "member" ? "No saved channels match those filters yet." : "Sign in and complete adult verification to create your personal watchlist." : "No channels match those filters. Try a wider region or another search."}</p><button type="button" onClick={clearFilters}>Clear filters and show all channels</button></div>}
     </section>
     <section className="freeTvLocal"><div><span>YOUR LOCAL PUBLIC TV</span><h2>Start with your own region</h2><p>Some public broadcasters restrict live television to their local service area or country. Use the official station finder or broadcaster website to see what is available where you live.</p></div><a href="https://www.pbs.org/stations/" target="_blank" rel="noopener noreferrer">Find a US PBS station ↗</a></section>
     <section className="freeTvNotice"><b>Availability and rights notice</b><p>“Free” means the broadcaster currently offers an official free viewing option; it does not guarantee every programme is free, available in every country, or playable without an account. Geo-blocking, advertising, registration, schedules and terms are controlled by each broadcaster and may change. ConnectTime does not bypass regional restrictions. Channel names and marks belong to their respective owners. Contact ConnectTime to request a correction or removal.</p></section>

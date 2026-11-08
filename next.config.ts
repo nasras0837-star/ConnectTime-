@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
               // Allow Appwrite Cloud endpoints without opening every HTTPS host.
               "connect-src 'self' https://*.cloud.appwrite.io wss://*.cloud.appwrite.io",
               "media-src 'self' blob: https:",
-              "frame-src 'self'",
+              "frame-src 'self' https://www.youtube-nocookie.com",
             ].join("; "),
           },
           { key: "X-Frame-Options", value: "DENY" },
