@@ -94,6 +94,15 @@ export async function POST(request: Request) {
     if (adSubmission.advertiser_user_id !== user.$id) {
       return NextResponse.json({ error: "This ad submission does not belong to your advertiser account." }, { status: 403 });
     }
+    // Enforce the screening gate server-side; the browser must never be able to
+    // turn a rejected, unreviewed, or rights-unconfirmed submission into a campaign.
+    if (adSubmission.status !== "manual_review_required" || adSubmission.rights_confirmed !== true) {
+      return NextResponse.json({
+        error: "Only ads that passed the initial safety screen and include confirmed creative rights can enter the human-review queue.",
+        paymentAllowed: false,
+        deliveryAllowed: false,
+      }, { status: 409 });
+    }
     const row = await tablesDB.createRow({
       databaseId, tableId, rowId: ID.unique(),
       data: {
