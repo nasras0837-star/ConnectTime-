@@ -1,4 +1,4 @@
-# ConnectTime community text posts — Appwrite setup
+# Connect community text posts — Appwrite setup
 
 Create a `community_posts` table in the existing database referenced by `APPWRITE_DATABASE_ID`. Do not create another database. Set the server environment variable `APPWRITE_COMMUNITY_POSTS_TABLE_ID` to the exact table ID.
 
