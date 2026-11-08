@@ -1,10 +1,24 @@
 import { NextResponse } from "next/server";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { communitySafetyStore, cleanText, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request) {
+
+export async function GET() {
+  const user = await currentCommunityMember();
+  if (!user) return NextResponse.json({ error: "Sign in to view your appeals." }, { status: 401 });
+  try {
+    const tableId = process.env.APPWRITE_COMMUNITY_APPEALS_TABLE_ID;
+    if (!tableId) throw new Error("Appeals table is not configured.");
+    const { tablesDB, databaseId } = communitySafetyStore();
+    const result = await tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("appellant_user_id", user.$id), Query.orderDesc("created_at"), Query.limit(100)] });
+    return NextResponse.json({ appeals: result.rows.map(row => ({ id:String(row.$id), status:String(row.status||"received"), createdAt:String(row.created_at||""), reference:String(row.enforcement_reference||"") })) }, { headers: { "Cache-Control": "no-store" } });
+  } catch {
+    return NextResponse.json({ error: "Your appeals are unavailable or not configured." }, { status: 503 });
+  }
+}
+\nexport async function POST(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
   const user = await currentCommunityMember();
   if (!user) return NextResponse.json({ error: "Sign in before submitting an appeal." }, { status: 401 });
