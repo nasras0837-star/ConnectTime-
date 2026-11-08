@@ -1,4 +1,4 @@
-# ConnectTime account settings
+# Connect account settings
 
 Create this table in the existing Appwrite database (do not create another database).
 
