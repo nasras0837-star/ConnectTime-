@@ -42,6 +42,7 @@ Set `APPWRITE_COMMUNITY_REPORTS_TABLE_ID` to this table ID.
 | reviewed_at | Text | 40 | No |
 | resolution_note | Text | 1000 | No |
 | action_taken | Text | 30 | No |
+| previous_content_status | Text | 30 | No |
 
 Create indexes on `status + created_at` and `created_at` for moderator queue ordering.
 
@@ -115,7 +116,7 @@ Use disposable staging accounts/data only. Record the run ID, expected response,
 2. **Report lifecycle:** submit report as member A; verify reporter identity is session-derived; member B cannot read the report; moderator sees it; invalid status/action and missing resolution note return 400; same-origin failure returns 403; closed report cannot be edited (409).
 3. **Enforcement integrity:** removal only affects a post whose author matches reported member; mismatched author returns 409 and leaves content unchanged. Suspension changes only the targeted access record; no Auth user deletion.
 4. **Appeal ownership:** member B cannot submit an appeal referencing member A's report (must be rejected); member A can submit; GET returns only A's appeals; moderator can review; final decisions cannot be overwritten.
-5. **Restoration:** only overturned appeals are eligible; report reference and appellant/target match; action must match original action_taken; account must currently be suspended or post currently removed and owned by appellant; malformed/short justification returns 400; duplicate/incorrect action returns 409; successful restoration writes audit entry; unrelated restrictions remain.
+5. **Restoration:** only overturned appeals are eligible; report reference and appellant/target match; action must match original action_taken; post must still be removed, owned by appellant, and have a recorded prior status; account reinstatement is disabled pending an enforcement ledger; malformed/short justification returns 400; duplicate/incorrect action returns 409; successful restoration writes audit entry; the exact prior post status is restored; duplicate restoration is rejected.
 6. **Audit/notifications:** audit table records moderator, target, case, outcome, note, timestamp; audit endpoint is moderator-only. Member inbox only shows notifications for its recipient; notifications contain no reporter identity or internal moderator notes.
 7. **Failure / cleanup:** missing tables/columns and Appwrite outage produce controlled errors; inspect partial writes; remove synthetic reports/posts/appeals/notifications after tests; confirm no staging test data reached production.
 
