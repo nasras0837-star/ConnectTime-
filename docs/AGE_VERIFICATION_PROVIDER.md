@@ -69,4 +69,4 @@ Until the Yoti sandbox SDK ID and private key are configured and the sandbox ada
 
 ## Current implementation status
 
-The provider decision is recorded for sandbox evaluation only. Vendor onboarding and credentials, the Yoti sandbox session adapter, sandbox result retrieval, signature-verified webhook, persistent session/event storage, and end-to-end tests are not yet implemented. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
+The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in. Vendor credentials, Appwrite session collection, sandbox execution, result retrieval, signed webhook, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
