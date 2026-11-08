@@ -1,6 +1,6 @@
 # Connect private messaging — Appwrite setup
 
-Create a `messages` table in the existing database referenced by `APPWRITE_DATABASE_ID`. Do not create another database. Set Netlify environment variable `APPWRITE_MESSAGES_TABLE_ID` to its exact table ID.
+Create a `messages` table in the existing database referenced by `APPWRITE_DATABASE_ID`. Do not create another database. Set the Render environment variable `APPWRITE_MESSAGES_TABLE_ID` to its exact table ID.
 
 Keep the table private. Do not grant public table or row permissions. All operations use the server-only `APPWRITE_API_KEY`.
 
@@ -36,9 +36,11 @@ Required existing configuration:
 - The API resolves recipients by handle; it does not accept client-supplied user IDs.
 - Messages are plain text, limited to 2,000 characters, and rendered as text (not HTML).
 - Each member can only access conversations in which they are a participant.
-- The recipient can mark only messages in their own conversation as read.
+- The recipient can mark only messages in their own conversation as read; senders see a basic Sent/Read receipt.
 - Inbox and conversation responses are private and sent with no-store caching.
 - Sending is throttled to 20 messages per member per rolling minute as a basic application-level control; this is not a distributed rate limiter and should be supplemented with edge/WAF protection before public launch.
 - Recipients can submit a private report against an individual message through the existing community report workflow.
-- This first release is request/refresh based; it does not include WebSocket or push delivery, attachments, group chats, or message edit/delete.
+- Private inboxes support starting a conversation by handle, conversation previews, unread counts, read receipts, message reporting, and automatic refresh while the page is visible.
+- Delivery is request/refresh based (about every 8 seconds), not WebSocket or push delivery. Typing indicators, message edit/delete, reactions, voice/video calls, and file/photo attachments are not implemented in private messages.
+- Community group chat is a separate feature with its own `APPWRITE_COMMUNITY_GROUP_MESSAGES_TABLE_ID` table and `/groups/:groupId` discussion page. See `GROUP_CHAT_SETUP.md`.
 - Keep the feature unavailable until the table and all required environment variables are configured.
