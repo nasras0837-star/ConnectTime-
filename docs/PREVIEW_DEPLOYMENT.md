@@ -1,11 +1,11 @@
-# Deploy ConnectTime to Netlify
+# Deploy Connect to Netlify
 
-The current ConnectTime application is the Next.js 16 app in the repository root. Use Netlify for the full application. The GitHub Pages workflow publishes only `docs/`, which is a separate static visual preview.
+The current Connect application is the Next.js 16 app in the repository root. Use Netlify for the full application. The GitHub Pages workflow publishes only `docs/`, which is a separate static visual preview.
 
 ## 1. Connect the GitHub repository
 
-1. Open the [ConnectTime Netlify deploy dashboard](https://app.netlify.com/projects/connecttime-sm/deploys).
-2. If the site is not linked to GitHub yet, choose **Add new project** / **Import an existing project** and select `nasras0837-star/ConnectTime-`.
+1. Open the [Connect Netlify deploy dashboard](https://app.netlify.com/projects/connecttime-sm/deploys).
+2. If the site is not linked to GitHub yet, choose **Add new project** / **Import an existing project** and select `nasras0837-star/Connect-`.
 3. Select `main` as the production branch.
 4. Set the base directory to the repository root (leave it blank).
 5. Use these build settings:
@@ -20,7 +20,7 @@ The repository's `netlify.toml` supplies the build command, publish directory, a
 
 For a visual-only preview, Appwrite variables may be left unset; account features will remain unavailable. For live AI responses, add `OPENAI_API_KEY` as a server-side environment variable in Netlify. Never paste the key into chat, source files, or GitHub.
 
-When the dedicated ConnectTime Appwrite project is ready, add the variables from `.env.example` in Netlify → Site configuration → Environment variables. Keep `APPWRITE_API_KEY` and all verification secrets server-only. Do not prefix them with `NEXT_PUBLIC_`.
+When the dedicated Connect Appwrite project is ready, add the variables from `.env.example` in Netlify → Site configuration → Environment variables. Keep `APPWRITE_API_KEY` and all verification secrets server-only. Do not prefix them with `NEXT_PUBLIC_`.
 
 Any environment-variable change requires a new deploy before it reaches the live site and its functions.
 
