@@ -1,10 +1,10 @@
-# ConnectTime backend setup and release checklist
+# Connect backend setup and release checklist
 
-This checklist consolidates the Appwrite setup for the existing ConnectTime Next.js application. It is a configuration guide, not proof that the production backend is connected.
+This checklist consolidates the Appwrite setup for the existing Connect Next.js application. It is a configuration guide, not proof that the production backend is connected.
 
 ## Important project boundaries
 
-- Use the existing ConnectTime Appwrite project and database. Do not create another database just to satisfy an optional feature.
+- Use the existing Connect Appwrite project and database. Do not create another database just to satisfy an optional feature.
 - Deploy the Next.js application to Netlify for server-rendered pages and API routes. GitHub Pages publishes only the static `docs/` preview and cannot run authentication, API routes, or Appwrite server code.
 - The current public preview URLs are `https://connecttime-sm.netlify.app` (Netlify) and `https://nasras0837-star.github.io/ConnectTime-/` (static Pages preview). A configured URL is not evidence that the latest code is deployed.
 - Keep `APPWRITE_API_KEY` and all provider secrets server-only. Never use a `NEXT_PUBLIC_` prefix for secrets.
@@ -50,7 +50,7 @@ Use the exact column IDs, types, sizes, required flags, and indexes in each guid
 
 ## Step 4 — Configure hosting
 
-In Netlify, connect the GitHub repository `nasras0837-star/ConnectTime-`:
+In Netlify, connect the GitHub repository `nasras0837-star/Connect-`:
 - Production branch: `main`
 - Base directory: repository root
 - Build command: `npm run build`
