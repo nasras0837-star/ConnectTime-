@@ -165,6 +165,29 @@ footer{border-color:#e9e1f5;color:#9389a7}
 @media(max-width:560px){.ctPublicSports{padding:19px 13px;border-radius:22px}.ctPublicSportsHead{display:block}.ctPublicSportsRefresh{display:inline-block;margin-top:10px}.ctPublicSportsGrid{grid-template-columns:1fr}}
 
 \n
+
+/* Electric Blue + Vibrant Globe visual refresh */
+:root{--ink:#f4f8ff;--muted:#b7d2f5;--blue:#168cff;--teal:#00e5ff;--pink:#ff22a6;--line:#254a9b;--paper:#06133d}
+body{color:#f4f8ff;background:radial-gradient(ellipse at 50% -8%,#164dcb 0,transparent 42%),radial-gradient(ellipse at 95% 25%,#4a16a5 0,transparent 28%),#030a2a}
+.brand span{background:linear-gradient(90deg,#65eaff,#8c9cff 55%,#ff66d5);background-clip:text;color:transparent}
+.nav{color:#c4d8ff}.nav a:hover{color:#ff65d4}
+.btn{background:linear-gradient(110deg,#087cff,#00d9ff 65%,#20e7d0);box-shadow:0 10px 28px #007bff55}.btn:hover{box-shadow:0 16px 34px #00aaff66}.btn.pink{background:linear-gradient(110deg,#a72cff,#ff169d)}.btn.ghost{background:#07194bd9;color:#c7f5ff!important;border-color:#3d7cff;box-shadow:none}
+.hero{padding-top:52px}.heroEyebrow{color:#6cecff}.hero h1 em{background:linear-gradient(95deg,#35dcff,#9b8cff 48%,#ff55cb);background-clip:text;color:transparent}
+.heroArt{background:radial-gradient(circle at 65% 35%,#0b75ff 0,#0734a4 32%,#041044 68%);border:1px solid #3b8dff;box-shadow:0 25px 75px #006bff44;}
+.heroArt:before{width:420px;height:420px;right:-100px;top:-110px;background:radial-gradient(circle at 32% 28%,#8ffcff 0,#2c9fff 12%,#1456db 38%,#061a69 72%);box-shadow:inset -35px -25px 65px #01082e,0 0 45px #00c8ff66;animation:globePulse 7s ease-in-out infinite alternate}
+.heroArt:after{width:420px;height:420px;left:-170px;bottom:-230px;background:radial-gradient(circle,#00d9ff44,transparent 68%);animation:blueAura 8s ease-in-out infinite alternate}
+.orb{width:340px;height:340px;right:0;top:45px;border:2px solid #62eaffaa;box-shadow:0 0 0 18px #32aaff18,0 0 0 38px #32aaff10,0 0 48px #00cfff55;animation:orbitGlow 6s ease-in-out infinite alternate}
+.centerLogo{inset:100px 95px 90px;background:#04123c88;border:1px solid #6cecff66;backdrop-filter:blur(8px);box-shadow:0 20px 55px #0008;transform:rotate(-3deg);animation:logoFloat 6s ease-in-out infinite}.centerLogo img{filter:drop-shadow(0 0 18px #35dfff88)}
+.float{background:#061849e8;border:1px solid #4d9aff;color:#eaf8ff;box-shadow:0 14px 35px #0005}.float small{color:#9fc9ff}.f3{color:#ff7bdc}.spark{color:#7cf5ff;text-shadow:0 0 18px #00d9ff}
+.proof{color:#b8d4ff}.proof b{color:#4df4dc}
+.metrics{background:linear-gradient(105deg,#07164b,#073e9b 60%,#075b9d);border:1px solid #246cff;box-shadow:0 15px 34px #001b5b66}.metrics b{color:#63f5ff}
+.head h2,.community h2{color:#f6f8ff}.head p,.community p{color:#b5cff3}.tile{background:linear-gradient(145deg,#0b1d50,#08143c);border-color:#234b98;box-shadow:0 9px 25px #0002}.tile:hover{box-shadow:0 17px 32px #007aff33;border-color:#39bfff}.tile h3{color:#f3f8ff}.tile p{color:#a9c6ed}.ico{background:#103c88!important;color:#70eaff}.tile:nth-child(4n+2) .ico{background:#55216f!important;color:#ff8add}.tile:nth-child(4n+3) .ico{background:#075d64!important;color:#6affdc}.tile:nth-child(4n) .ico{background:#382477!important;color:#bda2ff}
+.panel{background:linear-gradient(125deg,#08194d,#10246c 52%,#35135d);border-color:#254d9b}.panelTop p{color:#b1c9f0}.topic{background:#091947dd;border-color:#294b94}.topic h3{color:#f4f8ff}.topic p{color:#a9c6ed}
+.post{background:#081746;border-color:#244b94;box-shadow:0 10px 28px #0003}.post p{color:#bdd2f2}.postTop small,.stats{color:#91b1df}
+.notice{color:#b7d2f5;background:#081747;border-color:#234b94}footer{border-color:#234b94;color:#91b1df}
+.join{background:linear-gradient(110deg,#0758d8,#007eae 58%,#7616b5);box-shadow:0 18px 40px #001b5b66}
+@keyframes globePulse{to{transform:translate(-8px,12px) scale(1.04);filter:saturate(1.3)}}@keyframes blueAura{to{transform:translate(30px,-18px) scale(1.12)}}@keyframes orbitGlow{to{box-shadow:0 0 0 26px #32aaff20,0 0 0 52px #32aaff12,0 0 65px #00cfff88;transform:rotate(8deg)}}@keyframes logoFloat{50%{transform:translateY(-8px) rotate(-1deg)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 
 <style id="connecttime-hero-people-background">
