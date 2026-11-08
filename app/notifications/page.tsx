@@ -9,7 +9,7 @@ function destination(type: string, referenceId?: string) {
   if (type === "dating_like" || type === "dating_match") return { href: "/dating/likes", label: "View dating activity" };
   if (type === "new_message") return { href: "/messages", label: "Open messages" };
   if (type === "group_message") return { href: referenceId ? `/groups/${encodeURIComponent(referenceId)}` : "/groups", label: "Open group chat" };
-  if (type === "friend_request" || type === "friend_accepted" || type === "friend_acceptance") return { href: "/friends", label: "View friends" };
+  if (type === "friend_request" || type === "friend_accepted" || type === "friend_acceptance") return { href: "/friends", label: "View friends" };\n  if (type === "moderation" || type === "appeal") return { href: "/safety", label: "Open Safety Center" };
   return { href: "/account", label: "View account" };
 }
 
@@ -18,7 +18,7 @@ function category(type: string) {
   if (type === "new_message") return "Private message";
   if (type === "group_message") return "Community group chat";
   if (type === "friend_request") return "Friend request";
-  if (type === "friend_accepted" || type === "friend_acceptance") return "Connection update";
+  if (type === "friend_accepted" || type === "friend_acceptance") return "Connection update";\n  if (type === "moderation") return "Trust & Safety";\n  if (type === "appeal") return "Appeal update";
   return "Account activity";
 }
 
@@ -87,7 +87,7 @@ export default function NotificationsPage() {
     <section className="authCard notificationsCard">
       <div className="eyebrow">YOUR CONNECT UPDATES</div>
       <h1>Notifications</h1>
-      <p>Dating likes, mutual matches, friend requests, connection updates, private messages and community group chat activity appear here. {unread} unread.</p>
+      <p>Dating likes, mutual matches, friend requests, connection updates, private messages, community group chat activity, and Safety Center report/appeal updates appear here. {unread} unread.</p>
       {error && <p className="message" role="alert">{error}</p>}
       {loading ? <p role="status">Loading notifications…</p> : items.length === 0 ? <p className="notificationEmpty">You’re all caught up. New activity will appear here.</p> :
         <div className="notificationList" aria-live="polite">
