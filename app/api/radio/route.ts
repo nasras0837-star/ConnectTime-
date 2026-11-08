@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   if (name) search.set("name", name);
   try {
     const response = await fetch(`https://de1.api.radio-browser.info/json/stations/search?${search.toString()}`, {
-      headers: { "User-Agent": "ConnectTime/1.0 (community radio directory)", Accept: "application/json" },
+      headers: { "User-Agent": "Connect/1.0 (community radio directory)", Accept: "application/json" },
       signal: AbortSignal.timeout(10000),
       cache: "no-store",
     });
