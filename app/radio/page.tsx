@@ -17,7 +17,7 @@ const languages=["Arabic","Bengali","Chinese","English","French","German","Hindi
 
 export default function RadioPage(){
  const audioRef=useRef<HTMLAudioElement>(null);
- const [region,setRegion]=useState("All regions"),[country,setCountry]=useState(""),[language,setLanguage]=useState(""),[query,setQuery]=useState("");
+ const [region,setRegion]=useState("All regions"),[country,setCountry]=useState(""),[language,setLanguage]=useState(""),[query,setQuery]=useState(""),[sort,setSort]=useState("clickcount");
  const [stations,setStations]=useState<Station[]>([]),[favoriteStations,setFavoriteStations]=useState<Station[]>([]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(""),[playing,setPlaying]=useState<string|null>(null),[playingName,setPlayingName]=useState(""),[streamUrl,setStreamUrl]=useState(""),[loadingId,setLoadingId]=useState("");
  const [saved,setSaved]=useState<string[]>([]),[savedOnly,setSavedOnly]=useState(false),[favoritesLoaded,setFavoritesLoaded]=useState(false);
@@ -26,14 +26,14 @@ export default function RadioPage(){
  const search=useCallback(async()=>{
   setLoading(true);setError("");
   try{
-   const p=new URLSearchParams({limit:"100"});
+   const p=new URLSearchParams({limit:"100",sort});
    if(country)p.set("country",country);if(language)p.set("language",language);if(query.trim())p.set("q",query.trim());
    const res=await fetch("/api/radio?"+p.toString(),{cache:"no-store"});const data=await res.json();
    if(!res.ok)throw new Error(data.error||"Could not load stations");
    setStations(Array.isArray(data.stations)?data.stations:[]);
   }catch(e){setError(e instanceof Error?e.message:"Radio search failed");setStations([]);}
   finally{setLoading(false);}
- },[country,language,query]);
+ },[country,language,query,sort]);
 
  useEffect(()=>{const timer=window.setTimeout(()=>{void search();},350);return()=>window.clearTimeout(timer);},[search]);
  useEffect(()=>{let active=true;void Promise.resolve().then(()=>{if(!active)return;try{const raw=window.localStorage.getItem("connecttime-radio-favorites");if(raw){const parsed=JSON.parse(raw);if(Array.isArray(parsed))setSaved(parsed.filter((id):id is string=>typeof id==="string").slice(0,500));}}catch{/* Browser storage may be unavailable. */}finally{if(active)setFavoritesLoaded(true);}});return()=>{active=false;}},[]);
@@ -86,7 +86,7 @@ export default function RadioPage(){
   <section className="radioMain">
    <div className="radioHeading"><div><span>LIVE RADIO DIRECTORY</span><h2>Find your frequency</h2><p>Powered by Radio Browser&apos;s community-maintained station listings. Streams and licensing are provided by broadcasters, not ConnectTime.</p></div><button onClick={()=>{setLoading(true);void search();}} disabled={loading}>{loading?"Searching…":"↻ Refresh"}</button></div>
    <div className="radioPlayerBar"><div className="radioPlayerDisc">♫</div><div className="radioPlayerInfo"><small>NOW PLAYING</small><strong>{playingName||"Choose a station to start listening"}</strong><span>{playingName?"Live internet radio stream":"One player keeps your listening in one place."}</span></div><audio ref={audioRef} controls preload="none" onPlay={()=>setError("")} onPause={()=>setPlaying(null)} onError={()=>{if(streamUrl)setError("This stream stopped or could not be decoded. Try another station.");}} aria-label="ConnectTime radio player">Your browser does not support audio playback.</audio></div>
-   <div className="radioFilters"><label>Region<select value={region} onChange={e=>{setRegion(e.target.value);setCountry("");}}><option>All regions</option>{regions.map(r=><option key={r.name}>{r.name}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}><option value="">All countries</option>{countryOptions.map(code=><option value={code} key={code}>{code}</option>)}</select></label><label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="">All languages</option>{languages.map(l=><option key={l}>{l}</option>)}</select></label><label className="radioSearch">Station / genre<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search jazz, reggae, news…"/></label></div>
+   <div className="radioFilters"><label>Region<select value={region} onChange={e=>{setRegion(e.target.value);setCountry("");}}><option>All regions</option>{regions.map(r=><option key={r.name}>{r.name}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}><option value="">All countries</option>{countryOptions.map(code=><option value={code} key={code}>{code}</option>)}</select></label><label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="">All languages</option>{languages.map(l=><option key={l}>{l}</option>)}</select></label><label>Sort stations<select value={sort} onChange={e=>setSort(e.target.value)}><option value="clickcount">Most listened</option><option value="votes">Community favorites</option><option value="bitrate">Highest bitrate</option><option value="name">Alphabetical</option></select></label><label className="radioSearch">Station / genre<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search jazz, reggae, news…"/></label></div>
    <div className="radioToolbar"><button onClick={()=>setSavedOnly(false)} aria-pressed={!savedOnly}>All results ({stations.length})</button><button onClick={()=>setSavedOnly(true)} aria-pressed={savedOnly}>★ Favorites ({saved.length})</button><small>{favoritesLoaded?"Favorites saved on this device":"Loading favorites…"}</small></div>
    {error&&<div className="radioAlert" role="alert">{error} <button onClick={()=>{setLoading(true);void search();}}>Retry</button></div>}
    {loading&&!savedOnly&&<div className="radioEmpty" role="status">Finding stations around the world…</div>}
