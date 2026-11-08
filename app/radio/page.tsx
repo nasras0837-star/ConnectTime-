@@ -21,7 +21,7 @@ export default function RadioPage(){
  const [stations,setStations]=useState<Station[]>([]),[favoriteStations,setFavoriteStations]=useState<Station[]>([]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(""),[playing,setPlaying]=useState<string|null>(null),[playingName,setPlayingName]=useState(""),[streamUrl,setStreamUrl]=useState(""),[loadingId,setLoadingId]=useState("");
  const [saved,setSaved]=useState<string[]>([]),[savedOnly,setSavedOnly]=useState(false),[favoritesLoaded,setFavoritesLoaded]=useState(false);
- const [favoritesError,setFavoritesError]=useState(""),[favoriteRetry,setFavoriteRetry]=useState(0);
+ const [favoritesError,setFavoritesError]=useState(""),[favoriteRetry,setFavoriteRetry]=useState(0),[favoritesLoading,setFavoritesLoading]=useState(false);
  const countryOptions=useMemo(()=>regions.find(r=>r.name===region)?.codes||[],[region]);
 
  const search=useCallback(async()=>{
@@ -44,6 +44,7 @@ export default function RadioPage(){
   if(!savedOnly||saved.length===0)return;
   let active=true;
   setFavoritesError("");
+  setFavoritesLoading(true);
   const loadFavorites=async()=>{
    try{
     const batches=Array.from({length:Math.ceil(saved.length/100)},(_,index)=>saved.slice(index*100,(index+1)*100));
@@ -55,6 +56,7 @@ export default function RadioPage(){
     }));
     if(active)setFavoriteStations(results.flat());
    }catch(error){if(active){setFavoriteStations([]);setFavoritesError(error instanceof Error?error.message:"Could not load saved stations");}}
+   finally{if(active)setFavoritesLoading(false);}
   };
   void loadFavorites();
   return()=>{active=false;};
@@ -94,7 +96,7 @@ export default function RadioPage(){
    {loading&&!savedOnly&&<div className="radioEmpty" role="status">Finding stations around the world…</div>}
    {savedOnly&&saved.length===0&&<div className="radioEmpty">You have not saved any stations yet. Switch to All results and tap ☆ to save a station.</div>}
    {((!loading&&!savedOnly)||(savedOnly&&saved.length>0&&favoriteStations.length>0))&&<div className="radioGrid">{list.map(s=><article className={playing===s.id?"radioCard isPlaying":"radioCard"} key={s.id}><div className="radioCardTop"><span>📻 {s.country||"International"}</span><button aria-label={saved.includes(s.id)?"Remove favorite":"Save favorite"} onClick={()=>toggleSave(s.id)}>{saved.includes(s.id)?"★":"☆"}</button></div><h3>{s.name}</h3><p>{[s.language,s.tags].filter(Boolean).join(" · ")||"Radio station"}</p><div className="radioMeta">{s.codec||"Stream"}{s.bitrate?" · "+s.bitrate+" kbps":""}{s.votes?" · "+s.votes+" community votes":""}</div><button className="radioListenButton" onClick={()=>void playStation(s)} disabled={loadingId===s.id}>{loadingId===s.id?"Connecting…":playing===s.id?"Ⅱ Pause":"▶ Listen live"}</button>{s.homepage&&<div className="radioLinks"><a href={s.homepage} target="_blank" rel="noopener noreferrer">Station website ↗</a></div>}</article>)}</div>}
-   {savedOnly&&saved.length>0&&favoriteStations.length===0&&<div className="radioEmpty" role="status">{favoritesError?<>Saved stations could not be loaded. <button type="button" onClick={()=>setFavoriteRetry(value=>value+1)}>Retry loading favorites</button></>:"Loading your saved stations…"}</div>}
+   {savedOnly&&saved.length>0&&favoriteStations.length===0&&<div className="radioEmpty" role="status">{favoritesLoading?"Loading your saved stations…":favoritesError?<>Saved stations could not be loaded. <button type="button" onClick={()=>setFavoriteRetry(value=>value+1)}>Retry loading favorites</button></>:"Your saved stations are no longer available in the directory."}</div>}
    {!loading&&!savedOnly&&!error&&list.length===0&&<div className="radioEmpty">No stations found. Try another country, language or genre.</div>}
    <p className="radioRights">Station availability, stream reliability, advertisements, content and music licensing are controlled by each broadcaster. ConnectTime links to publicly listed streams and does not own, rebroadcast, or guarantee rights to station content. Some stations may be unavailable in certain countries.</p>
   </section>
