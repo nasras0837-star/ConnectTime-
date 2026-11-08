@@ -1013,3 +1013,101 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   .ctSportsScores .ctSportsTeam strong{font-size:22px!important}
   .ctSportsScores .ctSportsLeague{padding:14px!important}
 }
+
+
+
+/* Connect Video Tube — match the vibrant Connect homepage theme */
+.videoShell{
+  max-width:none;
+  min-height:100vh;
+  padding:0 clamp(16px,4vw,58px);
+  color:#21164c;
+  background:
+    radial-gradient(ellipse at 8% 0%,#fce5ff 0,transparent 34%),
+    radial-gradient(ellipse at 95% 12%,#d9e8ff 0,transparent 30%),
+    linear-gradient(135deg,#faf7ff,#f4f7ff 55%,#fff6fb);
+}
+.videoHeader{
+  max-width:1500px;margin:0 auto;
+  border-bottom:1px solid #e9def9;
+  background:#ffffffb8;
+  backdrop-filter:blur(18px);
+}
+.videoHeader nav a{color:#51436f;font-weight:700}
+.videoHeader nav a:hover{color:#7c3aed}
+.videoIntro{
+  max-width:1500px;margin:0 auto;padding:72px 0 38px;
+}
+.videoEyebrow{
+  display:inline-flex;align-items:center;
+  padding:9px 15px;border-radius:30px;
+  color:#fff;background:linear-gradient(110deg,#7c3aed,#ed0aab);
+  box-shadow:0 7px 20px #c084fc55;
+  font-weight:800;letter-spacing:1.8px;
+}
+.videoIntro h1{
+  color:#21164c;font-weight:850;letter-spacing:-2.2px;
+}
+.videoIntro h1 span{
+  background:linear-gradient(90deg,#7b2ff7,#f107a3,#2488ef);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.videoIntro>p{max-width:760px;color:#625779;font-size:17px;line-height:1.75}
+.videoSearch{
+  border:1px solid #e6dcfa;border-radius:18px;
+  background:#ffffffed;box-shadow:0 12px 32px #5630a014;
+}
+.videoSearch input{color:#21164c}
+.videoSearch input::placeholder{color:#8d83a5}
+.videoSearch button{
+  border-radius:13px;background:linear-gradient(110deg,#7c3aed,#ed0aab);
+  box-shadow:0 6px 16px #c084fc55;
+}
+.searchHistory{color:#625779}
+.searchHistory button{
+  color:#604b83;border-color:#e6dcfa;background:#ffffffc9;
+}
+.videoFeed{max-width:1500px;margin:0 auto}
+.videoFilters button{
+  color:#66567f;background:#eee8fb;border:1px solid #e5dafa;
+  font-weight:750;
+}
+.videoFilters button.selected{
+  color:#fff;background:linear-gradient(110deg,#7c3aed,#ed0aab);
+  border-color:transparent;box-shadow:0 7px 18px #c084fc55;
+}
+.interestNote{color:#72648d;font-weight:600}
+.videoCard{
+  background:#ffffffed;border:1px solid #e9def9;border-radius:20px;
+  box-shadow:0 10px 30px #5630a010;
+}
+.videoMeta h2{color:#251849;font-weight:800}
+.videoMeta p,.videoMeta small{color:#716687}
+.videoCategory{color:#8739d8}
+.videoActions button,.recommendationInfo button{
+  color:#604b83;background:#f7f2ff;border-color:#e6dcfa;
+}
+.videoActions button.liked{
+  color:#b42375;background:#fff0f8;border-color:#f5c6df;
+}
+.recommendationInfo{
+  background:linear-gradient(135deg,#fff,#f8f1ff);
+  border:1px solid #e9def9;border-radius:18px;
+  box-shadow:0 10px 28px #5630a00d;
+}
+.recommendationInfo strong{color:#28194e}
+.recommendationInfo p,.feedDisclaimer{color:#716687}
+.recommendationInfo button{
+  color:white;background:linear-gradient(110deg,#7c3aed,#ed0aab);
+  border:0;
+}
+.emptyVideos{color:#625779}
+.videoFooter{
+  max-width:1500px;margin:28px auto 0;padding:24px 0;
+  color:#716687;border-top:1px solid #e9def9;
+}
+@media(max-width:700px){
+  .videoShell{padding:0 16px}
+  .videoIntro{padding-top:48px}
+  .videoIntro h1{letter-spacing:-1.3px}
+}
