@@ -46,8 +46,9 @@ export async function GET(request: Request) {
   const language = clean(params.get("language"), 60);
   const name = clean(params.get("q"), 100);
   const limit = Math.min(100, Math.max(10, Number(params.get("limit")) || 50));
+  const offset = Math.min(5000, Math.max(0, Number(params.get("offset")) || 0));
   const sort = clean(params.get("sort"), 20);
-  const search = new URLSearchParams({ hidebroken: "true", is_https: "true", order: allowedSort.has(sort) ? sort : "clickcount", reverse: "true", limit: String(limit) });
+  const search = new URLSearchParams({ hidebroken: "true", is_https: "true", order: allowedSort.has(sort) ? sort : "clickcount", reverse: "true", limit: String(limit), offset: String(offset) });
   if (/^[A-Z]{2}$/.test(country)) search.set("countrycode", country);
   if (language) search.set("language", language);
   if (name) search.set("name", name);
