@@ -411,6 +411,7 @@
 .newsHeading p,.newsSectionIntro p{font-size:11px;color:#89839a;margin:0}
 .newsSearch{display:flex;align-items:center;gap:8px;width:min(100%,300px);padding:5px 12px;border:1px solid #e8e3ef;border-radius:12px;background:white;color:#9c65c0;font-size:21px}
 .newsSearch input{width:100%;min-width:0;border:0;outline:0;padding:8px 0;font:11px 'DM Sans',sans-serif;color:#34294e}
+.newsRefresh{flex:0 0 auto;border:1px solid #e8e3ef;border-radius:12px;padding:11px 15px;background:#fff;color:#7548b6;font:800 11px 'DM Sans',sans-serif;cursor:pointer;transition:transform .2s,background .2s}.newsRefresh:hover:not(:disabled){transform:translateY(-2px);background:#f7f1ff}.newsRefresh:disabled{cursor:wait;opacity:.65}
 .newsTabs{display:flex;gap:9px;overflow-x:auto;padding:8px 0 22px}
 .newsTabs button{display:flex;align-items:center;gap:8px;flex:0 0 auto;border:1px solid #e9e3f0;border-radius:24px;padding:10px 15px;background:#ffffffd9;color:#746b86;font-size:10px;font-weight:850;cursor:pointer;transition:transform .2s,background .2s}
 .newsTabs button span{font-size:16px}
