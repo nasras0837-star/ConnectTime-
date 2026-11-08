@@ -834,3 +834,23 @@
 .ctAdInterestField label{display:flex;align-items:center;gap:7px;font-size:10px;color:#456176}
 .ctAdInterestField input{accent-color:#087eb9}
 @media(max-width:760px){.ctAdDashboardTop{align-items:flex-start;flex-direction:column}.ctAdKpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ctAdCampaignTools{grid-template-columns:1fr}.ctAdAudience{grid-template-columns:1fr}.ctAdInterestField>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* Live current-news article feed on the homepage */
+.ctLiveNewsArticles{max-width:1200px;margin:34px auto;padding:clamp(20px,3vw,32px);border:1px solid #e7def5;border-radius:26px;background:linear-gradient(135deg,#f8f4ff,#edf5ff 55%,#fff0f7);color:#30234f}
+.ctLiveNewsArticlesHead{display:flex;justify-content:space-between;align-items:flex-end;gap:18px}
+.ctLiveNewsArticlesHead h2{margin:8px 0;font-size:clamp(27px,3.8vw,40px);line-height:1.08;letter-spacing:-1.5px}
+.ctLiveNewsArticlesHead p{max-width:650px;margin:0;color:#776d8b;font-size:13px;line-height:1.7}
+.ctLiveNewsArticlesHead>button,.ctLiveNewsArticleFilters button{border:1px solid #e3d8f3;border-radius:999px;background:#fff;color:#67458e;padding:9px 13px;font:inherit;font-size:11px;font-weight:800;cursor:pointer}
+.ctLiveNewsArticlesHead>button:disabled{opacity:.55;cursor:wait}
+.ctLiveNewsArticleFilters{display:flex;flex-wrap:wrap;gap:8px;margin:19px 0 10px}
+.ctLiveNewsArticleFilters button.active{background:linear-gradient(110deg,#7538db,#3985e6);border-color:transparent;color:white}
+.ctLiveNewsArticleStatus{min-height:22px;color:#776d8b;font-size:11px}
+.ctLiveNewsArticleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.ctLiveNewsArticleCard{min-width:0;padding:17px;border:1px solid #e9e1f5;border-radius:17px;background:#ffffffeb;box-shadow:0 8px 22px #4931780a}
+.ctLiveNewsArticleMeta{display:flex;justify-content:space-between;gap:10px;color:#8a7c9f;font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.5px}
+.ctLiveNewsArticleCard h3{margin:10px 0 7px;color:#342451;font-size:16px;line-height:1.4}
+.ctLiveNewsArticleCard p{margin:0;color:#776d8b;font-size:11px;line-height:1.65}
+.ctLiveNewsArticleCard a{display:inline-flex;margin-top:13px;color:#7540c4;font-size:11px;font-weight:900}
+.ctLiveNewsArticleDisclaimer{margin:17px 0 0;color:#817691;font-size:10px;line-height:1.7}
+@media(max-width:650px){.ctLiveNewsArticles{margin:22px 12px;padding:18px 13px}.ctLiveNewsArticlesHead{display:block}.ctLiveNewsArticlesHead>button{margin-top:12px}.ctLiveNewsArticleGrid{grid-template-columns:1fr}.ctLiveNewsArticleMeta{font-size:8px}}
