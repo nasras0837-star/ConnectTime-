@@ -1,4 +1,4 @@
-# ConnectTime notifications — Appwrite setup
+# Connect notifications — Appwrite setup
 
 Create a table named `notifications` in the existing database referenced by `APPWRITE_DATABASE_ID`. Do not create another database. Set Netlify environment variable `APPWRITE_NOTIFICATIONS_TABLE_ID` to its exact table ID.
 
