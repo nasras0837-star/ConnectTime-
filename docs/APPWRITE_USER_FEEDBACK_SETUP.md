@@ -1,6 +1,6 @@
-# ConnectTime user feedback — Appwrite setup
+# Connect user feedback — Appwrite setup
 
-Create a private `user_feedback` table in the existing ConnectTime Appwrite database. Do not create a second database.
+Create a private `user_feedback` table in the existing Connect Appwrite database. Do not create a second database.
 
 - Set server environment variable `APPWRITE_USER_FEEDBACK_TABLE_ID` to the actual table ID.
 - Keep the table private; do not grant client-side read/write permissions.
