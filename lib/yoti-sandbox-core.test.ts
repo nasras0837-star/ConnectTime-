@@ -7,6 +7,7 @@ import {
 import {
   buildYotiClientAssertion,
   buildYotiSandboxSessionRequest,
+  isYotiSandboxOver18Pass,
 } from "./yoti-sandbox-core";
 
 describe("Yoti sandbox client assertion", () => {
@@ -65,5 +66,38 @@ describe("Yoti sandbox session request", () => {
 
   it("rejects an empty reference", () => {
     expect(() => buildYotiSandboxSessionRequest("")).toThrow();
+  });
+});
+
+describe("Yoti sandbox outcome policy", () => {
+  const expected = {
+    sessionId: "session-123",
+    sdkId: "sdk-123",
+    referenceId: "opaque-ref",
+  };
+  const valid = {
+    id: expected.sessionId,
+    sdk_id: expected.sdkId,
+    type: "OVER",
+    status: "COMPLETE",
+    reference_id: expected.referenceId,
+  };
+
+  it("accepts only a matching completed OVER session in the sandbox", () => {
+    expect(isYotiSandboxOver18Pass(valid, expected)).toBe(true);
+  });
+
+  it.each(["FAIL", "ERROR", "CANCELLED", "EXPIRED", "PENDING", "IN_PROGRESS", "UNKNOWN"])(
+    "does not treat %s as a pass",
+    (status) => {
+      expect(isYotiSandboxOver18Pass({ ...valid, status }, expected)).toBe(false);
+    },
+  );
+
+  it("rejects a session, SDK, type, or reference mismatch", () => {
+    expect(isYotiSandboxOver18Pass({ ...valid, id: "other" }, expected)).toBe(false);
+    expect(isYotiSandboxOver18Pass({ ...valid, sdk_id: "other" }, expected)).toBe(false);
+    expect(isYotiSandboxOver18Pass({ ...valid, type: "AGE" }, expected)).toBe(false);
+    expect(isYotiSandboxOver18Pass({ ...valid, reference_id: "other" }, expected)).toBe(false);
   });
 });
