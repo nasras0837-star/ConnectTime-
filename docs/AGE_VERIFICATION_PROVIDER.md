@@ -43,6 +43,7 @@ Yoti's production Age Verification API and its isolated sandbox use different au
 - `POST /api/verification/session`: authenticated, rate-limited; creates a Yoti session and returns its hosted URL.
 - `POST /api/verification/webhook`: public HTTPS endpoint; accepts only cryptographically verified Yoti notifications and is idempotent.
 - `GET /api/verification/status`: authenticated; returns only the current user's minimal status.
+- `GET /api/verification/sandbox/[sessionId]`: authenticated, owner-scoped sandbox-only result polling; returns a minimal simulated outcome and never writes to `member_access`.
 - Callback/return route: informational only; it must never mark a user verified based on browser-supplied parameters.
 
 ## Environment configuration
@@ -67,7 +68,7 @@ Configure a private Appwrite collection using the access database:
 - Deny all client read/write permissions. The server API key alone may create and read these records.
 - Set `APPWRITE_YOTI_SESSIONS_COLLECTION_ID` to this collection ID.
 
-The current session route creates an authenticated sandbox session and persists the user/session mapping before returning the sandbox URL. If Appwrite persistence fails, the route returns a generic 503 and does not disclose the hosted URL.
+The session route creates an authenticated sandbox session, enforces a maximum of three sessions per user in a rolling 15-minute window, and persists the user/session mapping before returning the sandbox URL. The sandbox result route checks ownership, retrieves the Yoti result, and updates only the sandbox session record. If Appwrite persistence fails, the session route returns a generic 503 and does not disclose the hosted URL.
 
 ## Tests and release gates
 
@@ -82,4 +83,4 @@ The current session route creates an authenticated sandbox session and persists 
 
 ## Current implementation status
 
-The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Vendor credentials, Appwrite session collection, sandbox execution, result retrieval, signed webhook, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
+The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Vendor credentials, Appwrite session collection setup, live sandbox execution, signed notification handling, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
