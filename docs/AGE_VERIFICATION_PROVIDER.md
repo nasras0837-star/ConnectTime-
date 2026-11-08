@@ -63,9 +63,10 @@ The session endpoint remains disabled unless all Appwrite settings are present, 
 
 Configure a private Appwrite table using the access database:
 - Row ID: Yoti session UUID.
-- Attributes: `provider` (string), `environment` (string), `user_id` (string), `reference_id` (string), `status` (string), and `expires_at` (datetime/string).
+- Attributes: `provider` (string), `environment` (string), `user_id` (string), `reference_id` (string), `status` (string), and `expires_at` (datetime).
 - Add an index on `user_id` to support the per-user session creation limit (maximum three sessions in a rolling 15-minute window).
-- Deny all client read/write permissions. The server API key alone may create and read these records.
+- Enable Row Security and leave all client/table and row permissions empty. The server API key alone performs row operations.
+- Ensure the server API key has the `rows.read` and `rows.write` scopes required by TablesDB.
 - Set `APPWRITE_YOTI_SESSIONS_TABLE_ID` to this table ID.
 
 The session route creates an authenticated sandbox session, enforces a maximum of three sessions per user in a rolling 15-minute window, and persists the user/session mapping before returning the sandbox URL. The sandbox result route checks ownership, retrieves the Yoti result, and updates only the sandbox session record. If Appwrite persistence fails, the session route returns a generic 503 and does not disclose the hosted URL.
@@ -83,4 +84,4 @@ The session route creates an authenticated sandbox session, enforces a maximum o
 
 ## Current implementation status
 
-The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Vendor credentials, Appwrite session table setup, live sandbox execution, signed notification handling, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
+The provider decision is recorded for sandbox evaluation only. The authenticated sandbox session-creation adapter and PS384 OAuth client assertion are implemented behind an explicit environment opt-in, with a per-user limit of three session requests per rolling 15-minute window. Appwrite table creation, columns, user_id index, and Row Security have been completed by the operator; the table ID environment variable and server API key row scopes still require configuration and validation. Vendor credentials, live sandbox execution, signed notification handling, and end-to-end tests remain pending. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
