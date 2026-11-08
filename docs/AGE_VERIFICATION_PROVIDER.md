@@ -4,7 +4,7 @@
 
 **Yoti Age Verification Service is the selected provider for sandbox evaluation**, subject to Techcyber LLC completing vendor onboarding, privacy/legal review, pricing review, and approval of the production contract. This is not evidence that a Yoti account, API credentials, or production service has been activated.
 
-The initial integration target is an **OVER 18** check. Prefer privacy-preserving age-threshold proof that returns only whether the threshold was met. Do not request or store a user's exact age unless a rowed product/legal requirement makes it necessary.
+The initial integration target is an **OVER 18** check. Prefer privacy-preserving age-threshold proof that returns only whether the threshold was met. Do not request or store a user's exact age unless a documented product/legal requirement makes it necessary.
 
 Yoti's production Age Verification API and its isolated sandbox use different authentication and session endpoints. Do not mix the two flows. The production API uses the Yoti Hub API key as a bearer token. The sandbox requires a short-lived OAuth access token obtained by signing a PS384 client-assertion JWT with the Yoti service private key:
 - Sandbox introduction: https://developers.yoti.com/age-verification/sandbox-introduction
@@ -30,8 +30,8 @@ Yoti's production Age Verification API and its isolated sandbox use different au
 
 ### Result and notification handling
 
-- Yoti rows the notification payload with `session_key`, `reference_id`, `state`, `sequence_number`, `timestamp`, and `signature`.
-- Verify the notification signature over the exact canonicalized payload as specified by Yoti, using the official published Yoti Age Verification public key and RSA-PSS/SHA-256. Exclude the `signature` and `sequence_number` fields exactly as rowed. Do not invent a signature format or use a generic HMAC comparison.
+- Yoti documents the notification payload with `session_key`, `reference_id`, `state`, `sequence_number`, `timestamp`, and `signature`.
+- Verify the notification signature over the exact canonicalized payload as specified by Yoti, using the official published Yoti Age Verification public key and RSA-PSS/SHA-256. Exclude the `signature` and `sequence_number` fields exactly as documented. Do not invent a signature format or use a generic HMAC comparison.
 - Enforce timestamp/replay windows, notification ID/evidence ID idempotency, expected SDK/service, session mapping, and reference mapping. Handle retries and multiple sequence numbers safely.
 - After a valid notification, retrieve the session result server-to-server from Yoti's result endpoint and verify its session ID, configured type `OVER`, threshold 18, SDK ID, and terminal state. Do not use the deprecated notification `result` boolean as the sole decision.
 - Only a verified `COMPLETE` result for the expected OVER-18 session may set `adult_status=verified`. `FAIL`, `ERROR`, `CANCELLED`, `EXPIRED`, pending, unknown states, invalid signatures, mismatched sessions, or provider outages must never set verified.
