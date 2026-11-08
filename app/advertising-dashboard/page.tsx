@@ -149,12 +149,8 @@ export default function AdvertisingDashboardPage() {
   const pageCampaigns = useMemo(() => sortedCampaigns.slice((currentPage - 1) * pageSize, currentPage * pageSize), [sortedCampaigns, currentPage, pageSize]);
 
   useEffect(() => {
-    setPage(1);
-  }, [search, statusFilter, scheduleFilter, metricsFilter, budgetFilter, reviewFilter, sortOrder, pageSize]);
-
-  useEffect(() => {
-    if (page !== currentPage) setPage(currentPage);
-  }, [page, currentPage]);
+    if (page > pageCount) setPage(pageCount);
+  }, [page, pageCount]);
 
   const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
