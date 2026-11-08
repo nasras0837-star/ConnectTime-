@@ -39,7 +39,7 @@ export default function GroupInvitationsPage() {
   }
 
   return <main className="communityPage">
-    <header className="communityHeader"><Link href="/" className="communityBrand">◉ ConnectTime</Link><nav><Link href="/groups">All groups</Link><Link href="/community">Community</Link><Link href="/account">Account</Link></nav></header>
+    <header className="communityHeader"><Link href="/" className="communityBrand">◉ Connect</Link><nav><Link href="/groups">All groups</Link><Link href="/community">Community</Link><Link href="/account">Account</Link></nav></header>
     <section className="communityHero"><span>YOUR COMMUNITY</span><h1>Group invitations</h1><p>Review invitations from community group owners. Only verified adult members in good standing can accept.</p></section>
     <section className="groupDiscussionWrap">
       <div className="communityFeedHead"><div><span>INVITATION INBOX</span><h2>You're invited</h2></div><button type="button" onClick={() => void refresh()}>Refresh</button></div>
@@ -47,6 +47,6 @@ export default function GroupInvitationsPage() {
       {loading ? <p className="communityEmpty">Loading invitations…</p> : invitations.length ? invitations.map(invitation => <article className="groupCard" key={invitation.id}><div><span className="groupPrivacy">{invitation.privacy.toUpperCase()}</span><h3>{invitation.groupName}</h3><p>{invitation.description || "A community group would like you to join its conversations."}</p></div><div className="groupCardActions"><button type="button" disabled={busy === invitation.id} onClick={() => void respond(invitation, "accept")}>{busy === invitation.id ? "Please wait…" : "Accept invitation"}</button><button className="secondary" type="button" disabled={busy === invitation.id} onClick={() => void respond(invitation, "decline")}>Decline</button></div></article>) : <div className="communityEmpty">No pending group invitations. Explore communities to find your people.</div>}
       <p><Link href="/groups">Explore community groups →</Link></p>
     </section>
-    <footer className="communityFooter"><Link href="/legal/terms">Terms</Link> · <Link href="/safety">Safety Center</Link> · ConnectTime</footer>
+    <footer className="communityFooter"><Link href="/legal/terms">Terms</Link> · <Link href="/safety">Safety Center</Link> · Connect</footer>
   </main>;
 }
