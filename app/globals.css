@@ -1299,3 +1299,74 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .ctHomeFeatureBand{border-radius:22px}
   .ctHomeFinal{border-radius:22px;padding:42px 18px}
 }
+
+
+/* ConnectTime member experience polish — profile, discovery and messaging */
+.authShell{min-height:100vh;padding:0 clamp(14px,3vw,34px) 28px;background:radial-gradient(ellipse at 5% 0%,#f4dfff 0,transparent 34%),radial-gradient(ellipse at 100% 8%,#dceaff 0,transparent 32%),linear-gradient(145deg,#f9f6ff 0%,#f4f7ff 54%,#fff5fb 100%)}
+.plannedFeatureHeader{max-width:1320px;margin:0 auto 28px;padding:14px 22px;min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid #ffffffd9;border-radius:0 0 22px 22px;background:#ffffffc9;box-shadow:0 10px 35px #45317b0d;backdrop-filter:blur(18px)}
+.plannedFeatureHeader nav{display:flex;align-items:center;gap:clamp(12px,2vw,25px);flex-wrap:wrap;font-size:13px;font-weight:700;color:#655a82}
+.plannedFeatureHeader nav a:hover{color:#8b35df}
+.ctAuthLogo{display:inline-flex;align-items:center}
+.ctLogoImage{width:138px;height:70px;object-fit:contain}
+.authCard{width:min(100%,920px);margin:0 auto;padding:clamp(22px,4vw,42px);border:1px solid #ffffff;background:#ffffffed;border-radius:26px;box-shadow:0 22px 65px #4c338f14}
+.authCard h1{font-size:clamp(34px,5vw,52px);line-height:1.08;letter-spacing:-2px;color:#2c2054;margin:12px 0}
+.authCard>p{color:#77718d;line-height:1.7}
+.authCard label{display:grid;gap:8px;margin:16px 0;color:#43385f;font-size:13px;font-weight:700}
+.authCard input,.authCard textarea,.authCard select{width:100%;min-width:0;border:1px solid #e6e0f2;border-radius:12px;background:#fcfbff;padding:13px 14px;color:#30264d;font:500 14px 'DM Sans',sans-serif;outline:none;transition:border-color .18s,box-shadow .18s}
+.authCard input:focus,.authCard textarea:focus,.authCard select:focus{border-color:#9b65ed;box-shadow:0 0 0 4px #a78bfa25}
+.authCard button,.discoverConnectButton{border:0;border-radius:12px;background:linear-gradient(105deg,#7538db,#dc35a8);color:white;padding:12px 18px;font:700 13px 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 8px 18px #963dd52b;transition:transform .18s,box-shadow .18s}
+.authCard button:hover,.discoverConnectButton:hover{transform:translateY(-1px);box-shadow:0 12px 24px #963dd53d}
+.authCard button:disabled,.discoverConnectButton:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.authCard .switch{padding-top:18px;border-top:1px solid #eee9f6;font-size:13px}
+.authCard .switch a,.authCard a{color:#813fce;font-weight:700}
+.authCard .eyebrow{color:#963ed0}
+.authCard .message{padding:12px 15px;border-radius:12px;background:#f5efff;color:#5b3b88;font-size:13px}
+.discoverCard{max-width:1120px}
+.discoverFilters{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;align-items:end;gap:12px;padding:18px;margin:24px 0;background:linear-gradient(120deg,#f6efff,#eef5ff);border:1px solid #e9defb;border-radius:18px}
+.discoverFilters label{margin:0}
+.discoverGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0}
+.discoverMember{position:relative;overflow:hidden;padding:22px;border:1px solid #ece5f7;border-radius:19px;background:linear-gradient(155deg,#fff 0%,#fcfaff 100%);box-shadow:0 9px 28px #4931780c}
+.discoverMember:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#8b5cf6,#ec4899,#38bdf8)}
+.discoverAvatar{width:54px;height:54px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(135deg,#e8dcff,#ffdef1);color:#7935bd;font:800 22px Manrope,sans-serif}
+.discoverMember h2{font-size:20px;letter-spacing:-.6px;margin:13px 0 2px}
+.discoverMember p{font-size:13px;line-height:1.6;color:#77718d}
+.discoverMember .discoverHandle{margin:0;color:#9b61d0;font-weight:700}
+.discoverMember .discoverLocation{font-size:12px;color:#928ba4}
+.discoverTags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 16px}
+.discoverTags span{padding:6px 10px;border-radius:30px;background:#f2eaff;color:#7950a8;font-size:11px;font-weight:700}
+.messagesCard{max-width:1120px}
+.messagesLayout{display:grid;grid-template-columns:minmax(230px,.75fr) minmax(0,1.7fr);gap:16px;margin:25px 0}
+.messageInbox,.messageThread{min-width:0;border:1px solid #ebe4f6;border-radius:18px;background:#fff;overflow:hidden}
+.messageInbox{padding:17px;background:linear-gradient(160deg,#faf7ff,#f5f8ff)}
+.messageInbox h2{font-size:18px;letter-spacing:-.5px;margin:0 0 13px}
+.conversationChoice{display:grid;width:100%;gap:4px;text-align:left;margin:8px 0;padding:13px;border:1px solid #eee8f6!important;border-radius:13px!important;background:#ffffff!important;color:#42365f!important;box-shadow:none!important}
+.conversationChoice.selected{border-color:#b99aef!important;background:#f2eaff!important}
+.conversationChoice strong{font-size:13px}
+.conversationChoice span,.conversationChoice small{font-size:11px;color:#89819d}
+.conversationChoice em{font-size:10px;color:#a23bd0;font-style:normal;font-weight:800}
+.messageThread{display:flex;flex-direction:column;min-height:480px}
+.messageThread>header{display:grid;gap:4px;padding:17px 20px;background:linear-gradient(100deg,#f5edff,#eff6ff);border-bottom:1px solid #eee8f6}
+.messageThread>header strong{font:800 16px Manrope,sans-serif;color:#38275f}
+.messageThread>header span{font-size:11px;color:#89819d}
+.messageHistory{flex:1;display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:20px;max-height:520px;overflow:auto;background:radial-gradient(ellipse at 100% 0%,#f6f0ff 0,transparent 42%),#fff}
+.messageBubble{align-self:flex-start;max-width:82%;padding:12px 14px;border:1px solid #eee8f6;border-radius:15px 15px 15px 4px;background:#f8f6fc}
+.messageBubble.mine{align-self:flex-end;background:linear-gradient(120deg,#f0e8ff,#ffeaf5);border-color:#ead9fb;border-radius:15px 15px 4px 15px}
+.messageBubble p{margin:0;color:#41365d;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.messageBubble time{display:block;margin-top:7px;color:#9b93aa;font-size:10px}
+.messageReportButton{margin-top:7px!important;padding:5px 8px!important;background:transparent!important;color:#9c4a76!important;box-shadow:none!important;border:1px solid #efd6e4!important;font-size:10px!important}
+.messageThread form{padding:16px 18px;border-top:1px solid #eee8f6;background:#fcfbff}
+.messageThread form label{margin:0 0 8px}
+.messageThread form>div{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px}
+.messageThread form small{color:#928ba4}
+.messageThread form button{padding:10px 15px}
+.messageReportForm{background:#fff7fb!important}
+.messageReportForm>strong{font:800 14px Manrope,sans-serif;color:#7f315e}
+.messageReportForm>p{font-size:12px;color:#8b7181}
+.messageReportForm>div{justify-content:flex-start!important}
+.messageThreadEmpty{margin:auto;padding:35px;text-align:center}
+.messageThreadEmpty h2{font-size:22px}
+.messageThreadEmpty p{font-size:13px;color:#88819b}
+.messageThreadEmpty a{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:10px;background:#f0e8ff;color:#793cc2;font-size:12px;font-weight:800}
+.plannedFeatureFooter{max-width:1120px;margin:24px auto 0;padding:20px 0;text-align:center;color:#9990ad;font-size:11px}
+@media(max-width:850px){.discoverFilters{grid-template-columns:1fr 1fr}.discoverGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.messagesLayout{grid-template-columns:1fr}.messageInbox{max-height:260px;overflow:auto}.messageThread{min-height:420px}}
+@media(max-width:560px){.authShell{padding:0 12px 20px}.plannedFeatureHeader{align-items:flex-start;flex-direction:column;padding:12px 16px}.plannedFeatureHeader nav{gap:12px;font-size:12px}.ctLogoImage{width:120px;height:58px}.authCard{padding:20px 16px;border-radius:19px}.discoverFilters,.discoverGrid{grid-template-columns:1fr}.messageHistory{padding:14px}.messageBubble{max-width:94%}}
