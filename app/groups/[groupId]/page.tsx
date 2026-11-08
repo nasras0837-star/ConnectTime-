@@ -132,7 +132,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
   }
 
   return <main className="communityPage">
-    <header className="communityHeader"><Link href="/" className="communityBrand">◉ ConnectTime</Link><nav><Link href="/groups">All groups</Link><Link href="/community">Community</Link><Link href="/account">Account</Link></nav></header>
+    <header className="communityHeader"><Link href="/" className="communityBrand">◉ Connect</Link><nav><Link href="/groups">All groups</Link><Link href="/community">Community</Link><Link href="/account">Account</Link></nav></header>
     <section className="communityHero"><span>GROUP DISCUSSION</span><h1>{group?.name || "Community group"}</h1><p>{group?.description || "A shared space for discussion."}</p></section>
     <section className="groupDiscussionWrap"><Link href="/groups">← Back to groups</Link>
       {error && <p className="communityError" role="alert">{error}</p>}{notice && <p className="communityNotice" role="status">{notice}</p>}
@@ -146,7 +146,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       </section>}
       {isOwner && <section className="groupOwnerRequests">
         <div className="communityFeedHead"><div><span>GROUP ADMINISTRATION</span><h2>Invite a member</h2></div></div>
-        <form className="communityComposer" onSubmit={inviteMember}><label>Member handle<input value={inviteHandle} onChange={e => setInviteHandle(e.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required placeholder="Enter their ConnectTime handle" /></label><div className="communityComposerFoot"><span>Invitations are limited to discoverable, verified adult members.</span><button type="submit" disabled={inviteBusy}>{inviteBusy ? "Sending…" : "Send invitation"}</button></div></form>
+        <form className="communityComposer" onSubmit={inviteMember}><label>Member handle<input value={inviteHandle} onChange={e => setInviteHandle(e.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required placeholder="Enter their Connect handle" /></label><div className="communityComposerFoot"><span>Invitations are limited to discoverable, verified adult members.</span><button type="submit" disabled={inviteBusy}>{inviteBusy ? "Sending…" : "Send invitation"}</button></div></form>
         <h3>Pending invitations ({groupInvitations.length})</h3>
         {groupInvitations.length ? groupInvitations.map(invitation => <article className="friendEntry" key={invitation.id}><div className="friendEntryCopy"><strong>{invitation.displayName}</strong><span>@{invitation.handle} · Awaiting response</span></div></article>) : <p className="communityEmpty">No outstanding invitations.</p>}
       </section>}
@@ -172,6 +172,6 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
       <div className="communityFeedHead"><div><span>GROUP CONVERSATION</span><h2>Recent discussions</h2></div><button type="button" onClick={() => void refresh()}>Refresh</button></div>
       {loading ? <p className="communityEmpty">Loading discussion…</p> : posts.length ? <div className="communityPosts">{posts.map(post => <article className="communityPost" key={post.id}><div className="communityPostHead"><div className="communityAvatar">{(post.author.displayName || "M").slice(0,1).toUpperCase()}</div><div><b>{post.author.displayName}</b><span>@{post.author.handle} · {new Date(post.createdAt).toLocaleString()}</span></div></div><p>{post.body}</p></article>)}</div> : <div className="communityEmpty">No discussions yet. Start the conversation.</div>}
     </section>
-    <footer className="communityFooter">ConnectTime · <Link href="/safety">Safety Center</Link></footer>
+    <footer className="communityFooter">Connect · <Link href="/safety">Safety Center</Link></footer>
   </main>;
 }
