@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
-import { Client, Databases } from "node-appwrite";
+import { Client, Databases, Query } from "node-appwrite";
 
 import { createYotiSandboxSession } from "@/lib/yoti-sandbox";
 
@@ -32,9 +32,21 @@ export async function POST() {
       );
     }
 
-    const session = await createYotiSandboxSession();
     const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
     const databases = new Databases(client);
+    const recent = await databases.listDocuments(databaseId, collectionId, [
+      Query.equal("user_id", user.$id),
+      Query.greaterThanEqual("$createdAt", new Date(Date.now() - 15 * 60 * 1000).toISOString()),
+      Query.limit(3),
+    ]);
+    if (recent.total >= 3) {
+      return NextResponse.json(
+        { error: "verification_rate_limited" },
+        { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": "900" } },
+      );
+    }
+
+    const session = await createYotiSandboxSession();
 
     // Persist the user/session binding before returning the hosted URL.
     // This collection must be private and writable only by this server API key.
