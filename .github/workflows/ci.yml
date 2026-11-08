@@ -1,4 +1,4 @@
-name: ConnectTime CI
+name: Connect CI
 
 on:
   push:
