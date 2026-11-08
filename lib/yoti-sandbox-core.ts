@@ -10,7 +10,7 @@ export type YotiSandboxConfig = {
 export function buildYotiClientAssertion(
   config: YotiSandboxConfig,
   nowSeconds = Math.floor(Date.now() / 1000),
-  jti = randomUUID(),
+  jti: string = randomUUID(),
 ): string {
   if (!config.sdkId || !config.privateKeyPem) {
     throw new Error("Yoti sandbox credentials are not configured");
@@ -63,7 +63,21 @@ function encodeBase64Url(value: object): string {
   return Buffer.from(JSON.stringify(value)).toString("base64url");
 }
 
-
-export function isYotiSandboxOver18Pass(result: { id?: string; sdk_id?: string; type?: string; status?: string; reference_id?: string }, expected: { sessionId: string; sdkId: string; referenceId: string }): boolean {
-  return result.id === expected.sessionId && result.sdk_id === expected.sdkId && result.type === "OVER" && result.reference_id === expected.referenceId && result.status === "COMPLETE";
+export function isYotiSandboxOver18Pass(
+  result: {
+    id?: string;
+    sdk_id?: string;
+    type?: string;
+    status?: string;
+    reference_id?: string;
+  },
+  expected: { sessionId: string; sdkId: string; referenceId: string },
+): boolean {
+  return (
+    result.id === expected.sessionId &&
+    result.sdk_id === expected.sdkId &&
+    result.type === "OVER" &&
+    result.reference_id === expected.referenceId &&
+    result.status === "COMPLETE"
+  );
 }
