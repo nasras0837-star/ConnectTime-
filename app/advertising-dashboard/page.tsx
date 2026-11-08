@@ -97,7 +97,8 @@ export default function AdvertisingDashboardPage() {
 
   const filtered = useMemo(() => campaigns.filter(campaign => {
     const query = search.trim().toLowerCase();
-    const matchesText = !query || [campaign.$id, campaign.campaign_name, campaign.company, campaign.country, campaign.region, campaign.objective, campaign.placement, campaign.audience_interests, campaign.geo_targets].some(value => (value || "").toLowerCase().includes(query));
+    const searchableValues = [campaign.$id, campaign.campaign_name, campaign.company, campaign.country, campaign.region, campaign.objective, campaign.placement, campaign.audience_interests, campaign.geo_targets, campaign.status, campaign.moderation_status, campaign.human_review_status, campaign.payment_status, campaign.metrics_status, scheduleStatus(campaign, now)];
+    const matchesText = !query || searchableValues.some(value => (value || "").toLowerCase().includes(query));
     const matchesStatus = statusFilter === "all" || (campaign.status || "draft") === statusFilter;
     const metricsVerified = campaign.metrics_status === "verified_events";
     const matchesMetrics = metricsFilter === "all" || (metricsFilter === "verified" && metricsVerified) || (metricsFilter === "unverified" && !metricsVerified);
