@@ -854,3 +854,28 @@
 .ctLiveNewsArticleCard a{display:inline-flex;margin-top:13px;color:#7540c4;font-size:11px;font-weight:900}
 .ctLiveNewsArticleDisclaimer{margin:17px 0 0;color:#817691;font-size:10px;line-height:1.7}
 @media(max-width:650px){.ctLiveNewsArticles{margin:22px 12px;padding:18px 13px}.ctLiveNewsArticlesHead{display:block}.ctLiveNewsArticlesHead>button{margin-top:12px}.ctLiveNewsArticleGrid{grid-template-columns:1fr}.ctLiveNewsArticleMeta{font-size:8px}}
+
+
+/* Homepage live sports scoreboard */
+.ctSportsScores{max-width:1200px;margin:30px auto;padding:clamp(20px,3vw,30px);border:1px solid #dce9ef;border-radius:23px;background:linear-gradient(135deg,#f0f8fc,#eef8f5 58%,#f8fbff);color:#1d3d53}
+.ctSportsHead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
+.ctSportsEyebrow{font-size:9px;letter-spacing:1.7px;font-weight:900;color:#167b91}
+.ctSportsHead h2{margin:8px 0;font-size:clamp(25px,3.5vw,36px);letter-spacing:-1.3px}
+.ctSportsHead p{margin:0;color:#6f8796;font-size:12px;line-height:1.6}
+.ctSportsUpdated{white-space:nowrap;color:#698493;font-size:10px;font-weight:750}
+.ctSportsLeagueGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.ctSportsLeague{min-width:0;padding:15px;border:1px solid #dce9ef;border-radius:15px;background:#ffffffd9}
+.ctSportsLeagueHead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid #eaf0f3}
+.ctSportsLeagueHead strong{font:900 13px Manrope,sans-serif;color:#176b84;letter-spacing:.4px}
+.ctSportsLeagueHead a{font-size:9px;font-weight:800;color:#18849a}
+.ctSportsGame{padding:11px 0;border-bottom:1px solid #edf2f4}
+.ctSportsGame:last-child{border-bottom:0;padding-bottom:0}
+.ctSportsGameStatus{display:flex;align-items:center;gap:6px;margin-bottom:7px;color:#8497a3;font-size:9px;font-weight:750}
+.ctSportsLiveDot,.ctSportsStatusDot{width:6px;height:6px;border-radius:50%;background:#a5b4bd}
+.ctSportsLiveDot{background:#e34e57;box-shadow:0 0 0 3px #e34e571a}
+.ctSportsTeam{display:flex;justify-content:space-between;gap:10px;padding:3px 0;color:#35566a;font-size:11px}
+.ctSportsTeam strong{font-variant-numeric:tabular-nums;color:#183c54}
+.ctSportsEmpty{padding:25px;border:1px dashed #cbdde5;border-radius:14px;background:#ffffffa8;color:#708897;text-align:center;font-size:12px;line-height:1.6}
+.ctSportsDisclaimer{margin:15px 0 0;color:#8296a3;font-size:9px;line-height:1.6}
+@media(max-width:850px){.ctSportsLeagueGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.ctSportsScores{margin:22px 12px;padding:18px 13px}.ctSportsHead{display:block}.ctSportsUpdated{display:inline-block;margin-top:10px}.ctSportsLeagueGrid{grid-template-columns:1fr}}
