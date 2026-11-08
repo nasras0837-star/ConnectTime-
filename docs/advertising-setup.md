@@ -1,4 +1,4 @@
-# ConnectTime advertising review setup
+# Connect advertising review setup
 
 The advertising endpoints use Appwrite **TablesDB** (tables and rows). Your existing database is the TablesDB database shown in the Appwrite Console. Until the two tables and server credentials are configured, the endpoints fail closed and do not accept ads for payment or publication.
 
@@ -123,7 +123,7 @@ The campaign API also depends on the existing member-access environment variable
 
 ## Advertiser refund policy and campaign acknowledgement
 
-Before a campaign draft can be saved, the advertiser must actively acknowledge the advertising payment and refund policy. The server independently enforces the acknowledgement and records `refund_policy_accepted` and `refund_policy_accepted_at`. The policy applies to valid advertising charges for service already delivered; it does not waive refunds required by applicable law, confirmed duplicate/erroneous charges, or cases where ConnectTime fails to provide the paid service. This is a proposed operational policy and must be reviewed by counsel for each launch market before any payment collection begins.
+Before a campaign draft can be saved, the advertiser must actively acknowledge the advertising payment and refund policy. The server independently enforces the acknowledgement and records `refund_policy_accepted` and `refund_policy_accepted_at`. The policy applies to valid advertising charges for service already delivered; it does not waive refunds required by applicable law, confirmed duplicate/erroneous charges, or cases where Connect fails to provide the paid service. This is a proposed operational policy and must be reviewed by counsel for each launch market before any payment collection begins.
 
 ## Campaign performance metrics
 
@@ -163,7 +163,7 @@ The signed JSON body must include `campaignId`, unique `eventId` (16–64 letter
 
 Advertiser dashboard counts are derived from the private event table's valid rows, not client-supplied counters. The event ID is the idempotency key. The delivery service must create an impression only after the published viewability threshold is met; a page render, ad request, or preview is not automatically an impression.
 
-**Important: this is a secure event-ingestion foundation, not a live ad network.** ConnectTime does not yet have an ad-serving placement, a trusted delivery worker that signs these events, payment authorization, atomic budget reservations, or an invalid-traffic detection pipeline. No current campaign is payment-authorized, and the review API does not enable payment. Therefore no real impressions/clicks are expected yet and campaign drafts remain ineligible for delivery. Do not set a campaign's payment status to authorized manually just to test this endpoint. Build and sandbox-test the ad-serving and billing systems before activating it.
+**Important: this is a secure event-ingestion foundation, not a live ad network.** Connect does not yet have an ad-serving placement, a trusted delivery worker that signs these events, payment authorization, atomic budget reservations, or an invalid-traffic detection pipeline. No current campaign is payment-authorized, and the review API does not enable payment. Therefore no real impressions/clicks are expected yet and campaign drafts remain ineligible for delivery. Do not set a campaign's payment status to authorized manually just to test this endpoint. Build and sandbox-test the ad-serving and billing systems before activating it.
 
 
 ## Smart audience planning and advertiser dashboard
@@ -172,4 +172,4 @@ The campaign builder supports optional broad interest categories (arts & enterta
 
 The advertiser dashboard now includes campaign search and status filters, aggregate campaign/spend/impression/click/CTR summaries, per-campaign spend-cap progress, target region/country/city text, selected interests, placement/objective, and campaign schedule. CTR is calculated as verified clicks divided by verified impressions; spend progress uses recorded spend against the advertiser's campaign cap. Empty/unconfigured metrics remain zero and are explicitly labeled as inactive or unverified.
 
-**Targeting limitation:** these interest selections are planning metadata only. ConnectTime does not yet use them to select or personalize ad delivery. Geographic city/radius fields are also saved as advertiser targeting instructions, not proof of geofenced delivery. Do not market these options as active targeting until a privacy-reviewed audience eligibility and ad-serving system enforces them.
+**Targeting limitation:** these interest selections are planning metadata only. Connect does not yet use them to select or personalize ad delivery. Geographic city/radius fields are also saved as advertiser targeting instructions, not proof of geofenced delivery. Do not market these options as active targeting until a privacy-reviewed audience eligibility and ad-serving system enforces them.
