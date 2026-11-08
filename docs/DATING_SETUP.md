@@ -1,10 +1,10 @@
-# ConnectTime Dating setup
+# Connect Dating setup
 
 The dating experience is available at `/dating`. It reuses the existing verified-member profile discovery and block controls.
 
 ## Required Appwrite configuration
 
-Set `APPWRITE_DATING_LIKES_TABLE_ID` to a new table in the existing ConnectTime Appwrite database. Do not create another database.
+Set `APPWRITE_DATING_LIKES_TABLE_ID` to a new table in the existing Connect Appwrite database. Do not create another database.
 
 Create these columns in the existing profiles table (`APPWRITE_PROFILES_TABLE_ID`):
 
