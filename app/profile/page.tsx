@@ -27,6 +27,19 @@ export default function ProfilePage() {
 
   function update(key: keyof Profile, value: string) { setProfile(current => ({ ...current, [key]: value })); }
 
+  const completenessFields = [
+    Boolean(profile.handle?.trim()),
+    Boolean(profile.display_name?.trim()),
+    Boolean(profile.bio?.trim()),
+    Boolean(profile.country?.trim()),
+    Boolean(profile.interests?.trim()),
+    Boolean(profile.gender),
+    Boolean(profile.relationship_goal),
+  ];
+  const completeness = Math.round(completenessFields.filter(Boolean).length / completenessFields.length * 100);
+  const previewName = profile.display_name?.trim() || profile.handle?.trim() || "Your display name";
+  const previewInterests = (profile.interests || "").split(",").map(item => item.trim()).filter(Boolean).slice(0, 4);
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setSaving(true); setMessage(""); setError("");
     try {
@@ -44,6 +57,16 @@ export default function ProfilePage() {
   return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connecttime-logo.svg" alt="ConnectTime" width={180} height={117} className="ctLogoImage"/></Link><form className="authCard" onSubmit={submit}>
     <div className="eyebrow">YOUR CONNECTTIME IDENTITY</div><h1>Edit your profile</h1>
     <p>Choose what other members can see. Your precise location and verification documents are never displayed here.</p>
+    {!loading && !error && <section aria-label="Profile completion" style={{ background: "#f4f7ff", border: "1px solid #e1e8fb", borderRadius: 14, padding: 16, margin: "18px 0" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}><strong>Profile completeness</strong><strong>{completeness}%</strong></div>
+      <div role="progressbar" aria-label="Profile completeness" aria-valuemin={0} aria-valuemax={100} aria-valuenow={completeness} style={{ height: 8, background: "#dce4f8", borderRadius: 99, overflow: "hidden", margin: "10px 0" }}><div style={{ width: `${completeness}%`, height: "100%", background: "#3157d5", borderRadius: 99, transition: "width .2s" }}/></div>
+      <small style={{ color: "#5c6680" }}>Add a bio and interests to help people understand what you enjoy. This meter is a guide, not a verification badge.</small>
+    </section>}
+    {!loading && !error && <section aria-label="Profile preview" style={{ border: "1px solid #e5e8f2", borderRadius: 16, padding: 18, marginBottom: 20 }}>
+      <span className="eyebrow">LIVE PREVIEW</span><div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 10 }}><span aria-hidden="true" style={{ width: 48, height: 48, display: "grid", placeItems: "center", borderRadius: "50%", background: "#e8edff", color: "#3157d5", fontWeight: 800, fontSize: 20 }}>{previewName.slice(0,1).toUpperCase()}</span><div><strong>{previewName}</strong><div style={{ color: "#68728a", fontSize: 13 }}>{profile.country || "Country not set"}{profile.region ? ` · ${profile.region}` : ""}</div></div></div>
+      {profile.bio && <p style={{ lineHeight: 1.55 }}>{profile.bio}</p>}{previewInterests.length > 0 && <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{previewInterests.map(item => <span key={item} style={{ background: "#f1f4fb", borderRadius: 99, padding: "5px 10px", fontSize: 12 }}>{item}</span>)}</div>}
+      <small style={{ display: "block", marginTop: 12, color: "#68728a" }}>Preview only. Actual visibility follows your saved privacy setting and member-access rules.</small>
+    </section>}
     {loading ? <p role="status">Loading your profile…</p> : error ? <div role="alert" className="message"><p>{error}</p><p>If you are not signed in, log in and return to profile setup. If profile storage is unavailable, try again after the service is configured.</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div> : <>
       <label>Username / handle<input value={profile.handle || ""} onChange={e => update("handle", e.target.value)} placeholder="your_handle" minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required/><small>3–24 letters, numbers, or underscores.</small></label>
       <label>Display name<input value={profile.display_name || ""} onChange={e => update("display_name", e.target.value)} maxLength={80} required/></label>
