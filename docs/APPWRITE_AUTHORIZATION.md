@@ -4,7 +4,8 @@
 - `lib/access-policy.ts`: member eligible only if `adult_status=verified` AND `account_status=active`.
 - `lib/member-access.ts`: server resolves logged-in Appwrite user and reads their server-owned access document. Missing config, record, or any Appwrite error denies access.
 - `GET /api/member-access` and `GET /api/verification/status`: minimal no-store endpoints.
-- `POST /api/verification/session`: authenticated but intentionally returns 503 until vendor is configured; never fabricates verification.
+- `POST /api/verification/session`: creates a Veriff hosted session for the authenticated user and stores its session ID in a private verification table.
+- `POST /api/verification/webhook`: verifies Veriff HMAC-SHA256 over the raw body, binds the decision to a stored session and user, and updates member eligibility only for an approved decision with a valid date of birth showing age 18 or older.
 - Account page reflects server authorization. Unit tests cover eligibility/denial.
 
 ## Access collection
