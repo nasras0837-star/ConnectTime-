@@ -54,7 +54,7 @@ export default function EventsPage() {
 
   return (
     <main className="eventsPage">
-      <header className="eventsHeader"><Link href="/" className="eventsBrand" aria-label="ConnectTime home"><Image src="/connecttime-logo.svg" alt="ConnectTime" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">ConnectTime TV</Link><Link href="/signup" className="eventsJoin">Join free ↗</Link></nav></header>
+      <header className="eventsHeader"><Link href="/" className="eventsBrand" aria-label="Connect home"><Image src="/connect-logo.svg" alt="Connect" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">Connect TV</Link><Link href="/signup" className="eventsJoin">Join free ↗</Link></nav></header>
       <section className="eventsHero"><span className="eventsEyebrow">YOUR CITY. YOUR COMMUNITY. YOUR MOMENT.</span><h1>Make plans.<br/><em>Meet the world.</em></h1><p>Discover what&apos;s happening near you, find events in places you dream of visiting, and bring people together around something you love.</p><div className="eventsHeroActions"><button type="button" onClick={() => { setShowForm(true); setNotice(""); }}>＋ Promote an event</button><a href="#discover-events">Explore events ↓</a></div><div className="eventsPills"><span>📍 Local meetups</span><span>🎵 Music & culture</span><span>🤝 Community gatherings</span><span>🌎 Across the globe</span></div></section>
       <section className="eventsMain" id="discover-events">
         <p className="eventsPreviewNotice" role="note">Member event directory. Events submitted by members remain private until reviewed and approved by moderators. Sign in with an independently verified adult account to browse.</p>
@@ -81,7 +81,7 @@ export default function EventsPage() {
         {!loading && !error && visible.length === 0 && <div className="eventsEmpty">No approved events match that search yet. Try another place or category—or submit an event for review.</div>}
       </section>
       <section className="eventsHostCta"><div><span>BRING PEOPLE TOGETHER</span><h2>Have something happening?</h2><p>From a neighborhood meetup to a festival, workshop, game night, or cultural celebration—give your event a place to be discovered.</p></div><button type="button" onClick={() => { setShowForm(true); setNotice(""); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Promote your event ↗</button></section>
-      <footer className="eventsFooter">ConnectTime Events · Discover locally. Connect globally. · Adults 18+</footer>
+      <footer className="eventsFooter">Connect Events · Discover locally. Connect globally. · Adults 18+</footer>
     </main>
   );
 }
