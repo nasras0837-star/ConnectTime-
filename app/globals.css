@@ -964,3 +964,52 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 @media(max-width:700px){.ctHomeLogo{width:70px;height:70px}}
 
 .adBrandMark,.mark{background:#050b3e url('/connect-logo.svg') center/cover no-repeat!important;color:transparent!important;text-shadow:none!important;border:1px solid #39c8ff!important}
+
+
+/* SPORTS SCOREBOARD — high-contrast team names and scores */
+.ctSportsScores{
+  background:linear-gradient(135deg,#061a43 0%,#082d63 55%,#073b68 100%)!important;
+  color:#ffffff!important;
+  border:2px solid #36bdf2!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.32),0 0 0 1px rgba(99,220,255,.12)!important;
+}
+.ctSportsScores :is(h2,.ctSportsHead h2){color:#ffffff!important;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.ctSportsScores .ctSportsEyebrow{color:#70efff!important;font-weight:950!important}
+.ctSportsScores .ctSportsHead p{color:#e3f3ff!important;font-size:14px!important;font-weight:600!important}
+.ctSportsScores .ctSportsUpdated{color:#d5f4ff!important;font-weight:800!important}
+.ctSportsScores .ctSportsLeague{
+  background:linear-gradient(160deg,#102f61 0%,#0a214b 100%)!important;
+  border:1px solid #4a91d4!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 8px 20px rgba(0,0,0,.2)!important;
+}
+.ctSportsScores .ctSportsLeagueHead{border-bottom:1px solid #4778ad!important}
+.ctSportsScores .ctSportsLeagueHead strong{color:#8ff3ff!important;font-size:15px!important;font-weight:950!important}
+.ctSportsScores .ctSportsLeagueHead a{color:#ffffff!important;font-size:11px!important;font-weight:900!important;text-decoration:underline;text-underline-offset:3px}
+.ctSportsScores .ctSportsGame{border-bottom:1px solid #345b8c!important}
+.ctSportsScores .ctSportsGameStatus{color:#d4e8ff!important;font-size:11px!important;font-weight:800!important}
+.ctSportsScores .ctSportsTeam{
+  color:#ffffff!important;
+  font-size:clamp(13px,1.2vw,15px)!important;
+  font-weight:850!important;
+  line-height:1.45!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.4);
+}
+.ctSportsScores .ctSportsTeam span{color:#ffffff!important;font-weight:850!important}
+.ctSportsScores .ctSportsTeam strong{
+  color:#fff36b!important;
+  font-size:clamp(19px,2vw,23px)!important;
+  font-weight:1000!important;
+  min-width:2ch;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  text-shadow:0 2px 8px rgba(0,0,0,.45);
+}
+.ctSportsScores .ctSportsLiveDot{background:#ff5268!important;box-shadow:0 0 0 4px rgba(255,82,104,.2)!important}
+.ctSportsScores .ctSportsStatusDot{background:#8edcff!important}
+.ctSportsScores .ctSportsEmpty{background:#102f61!important;border:1px dashed #78bce9!important;color:#ffffff!important;font-weight:700!important}
+.ctSportsScores .ctSportsDisclaimer{color:#c5e3ff!important;font-size:10px!important}
+@media(max-width:560px){
+  .ctSportsScores .ctSportsTeam{font-size:14px!important}
+  .ctSportsScores .ctSportsTeam strong{font-size:22px!important}
+  .ctSportsScores .ctSportsLeague{padding:14px!important}
+}
