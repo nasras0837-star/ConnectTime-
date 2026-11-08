@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 type Competitor = { team?: { displayName?: string; abbreviation?: string; logo?: string }; score?: string; winner?: boolean };
 type Event = {
   id: string;
@@ -73,7 +71,7 @@ export default async function SportsScores() {
       ) : (
         <div className="ctSportsEmpty">No current games or scores are available right now. Check a league scoreboard for its upcoming schedule.</div>
       )}
-      <p className="ctSportsDisclaimer">Scores and game details are provided by ESPN's public scoreboard feeds. Coverage and update timing may vary. ConnectTime is not affiliated with ESPN.</p>
+      <p className="ctSportsDisclaimer">Scores and game details are provided by ESPN&apos;s public scoreboard feeds. Coverage and update timing may vary. ConnectTime is not affiliated with ESPN.</p>
     </section>
   );
 }
