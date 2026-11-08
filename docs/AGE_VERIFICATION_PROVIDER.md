@@ -1,27 +1,68 @@
 # ConnectTime adult verification integration
 
-## Provider selection
-Provider has not yet been contracted or configured. The integration is provider-neutral until an approved vendor is selected. Do not accept a checkbox, date of birth, client request, or uploaded image as verified adult status.
+## Provider decision
 
-## Required verification flow
-1. Signed-in user requests verification from a server endpoint.
-2. Server creates a provider verification session tied to the authenticated Appwrite user ID using server credentials.
-3. Browser redirects/opens provider's hosted verification flow; ConnectTime does not collect ID scans or face biometrics itself.
-4. Provider sends a signed webhook to a server endpoint.
-5. Webhook handler validates signature against raw request bytes, timestamp/replay window, event ID/idempotency, expected environment, and final adult result.
-6. Server maps provider subject/session to the initiating Appwrite user (never trust a user ID supplied in the webhook body without matching the server-created session).
-7. Server updates the access document through a least-privilege server key: adult_status=verified only on provider-confirmed adult pass; otherwise rejected/review/pending. Account remains pending until moderation/activation policy is satisfied.
-8. Record minimal audit metadata only (provider event ID, status, timestamp, decision); do not store identity images, ID numbers, or biometric templates unless a documented legal necessity and vendor design require it.
-9. Return generic responses; never expose provider secrets or verification artifacts.
+**Yoti Age Verification Service is the selected provider for sandbox evaluation**, subject to Techcyber LLC completing vendor onboarding, privacy/legal review, pricing review, and approval of the production contract. This is not evidence that a Yoti account, API credentials, or production service has been activated.
 
-## Endpoint contract (implementation pending provider choice)
-- POST /api/verification/session: authenticated; rate limited; creates a server-side provider session and returns only its hosted URL/session reference.
-- POST /api/verification/webhook: public network endpoint, but cryptographically authenticated by provider signature; idempotent and replay resistant.
-- GET /api/verification/status: authenticated; returns only the member's status.
+The initial integration target is an **OVER 18** check. Prefer privacy-preserving age-threshold proof that returns only whether the threshold was met. Do not request or store a user's exact age unless a documented product/legal requirement makes it necessary.
 
-## Tests/release gates
-- Invalid signature, expired timestamp, duplicate event, wrong environment, unknown session, underage result, inconclusive result, and provider outage never set verified.
-- Valid adult pass changes only the correct user record.
+Yoti's hosted Age Verification API supports server-created sessions, a hosted user flow, result retrieval, and notifications:
+- API reference: https://developers.yoti.com/age-verification-api
+- Create a session: https://developers.yoti.com/age-verification/create-a-session
+- Results: https://developers.yoti.com/age-verification/results
+- Notifications and signature verification: https://developers.yoti.com/age-verification/notifications
+
+## Integration contract
+
+### Session creation
+
+1. Require an authenticated Appwrite user. Apply per-user and per-IP rate limits.
+2. Create an opaque, random, single-use internal reference mapped server-side to the Appwrite user ID. Do not put email, name, or other personal information in Yoti's reference_id.
+3. Create a Yoti session server-to-server using `POST https://age.yoti.com/api/v1/sessions`, with `Authorization: Bearer <YOTI_API_KEY>`, `Yoti-Sdk-Id: <YOTI_SDK_ID>`, and JSON content type.
+4. Configure `type: OVER`, threshold 18, short session TTL, and only methods approved in the vendor contract and privacy review. Do not enable age estimation as the sole verification method for access to ConnectTime's protected social features.
+5. Supply HTTPS callback and notification URLs. Keep the Yoti session ID and internal reference mapped to the initiating user in a private server-owned store.
+6. Return only the hosted Yoti URL and an opaque session reference to the signed-in user. Never expose API credentials.
+7. Redirect the user to Yoti's hosted flow. A browser redirect or query parameter is not proof of a pass.
+
+### Result and notification handling
+
+- Yoti documents the notification payload with `session_key`, `reference_id`, `state`, `sequence_number`, `timestamp`, and `signature`.
+- Verify the notification signature over the exact canonicalized payload as specified by Yoti, using the official published Yoti Age Verification public key and RSA-PSS/SHA-256. Exclude the `signature` and `sequence_number` fields exactly as documented. Do not invent a signature format or use a generic HMAC comparison.
+- Enforce timestamp/replay windows, notification ID/evidence ID idempotency, expected SDK/service, session mapping, and reference mapping. Handle retries and multiple sequence numbers safely.
+- After a valid notification, retrieve the session result server-to-server from Yoti's result endpoint and verify its session ID, configured type `OVER`, threshold 18, SDK ID, and terminal state. Do not use the deprecated notification `result` boolean as the sole decision.
+- Only a verified `COMPLETE` result for the expected OVER-18 session may set `adult_status=verified`. `FAIL`, `ERROR`, `CANCELLED`, `EXPIRED`, pending, unknown states, invalid signatures, mismatched sessions, or provider outages must never set verified.
+- A successful age result does not activate the account. Keep `account_status=pending` until the separate account activation/moderation policy is satisfied.
+- Store only minimal audit metadata (provider, session reference, event/evidence ID, decision, timestamp). Do not store ID scans, face images, biometric templates, exact birth date, or exact age in ConnectTime's member-access record.
+
+### Endpoint contract
+
+- `POST /api/verification/session`: authenticated, rate-limited; creates a Yoti session and returns its hosted URL.
+- `POST /api/verification/webhook`: public HTTPS endpoint; accepts only cryptographically verified Yoti notifications and is idempotent.
+- `GET /api/verification/status`: authenticated; returns only the current user's minimal status.
+- Callback/return route: informational only; it must never mark a user verified based on browser-supplied parameters.
+
+## Environment configuration
+
+After Yoti onboarding and sandbox access are approved, configure these as server-only Netlify environment variables:
+
+- `YOTI_API_KEY`
+- `YOTI_SDK_ID`
+
+Do not add either variable with a `NEXT_PUBLIC_` prefix. Do not commit credentials or ask users to paste them into chat. The notification verifier must use Yoti's official published Age Verification public key, pinned and reviewed in code/configuration according to Yoti's current documentation; do not accept a public key supplied by the webhook.
+
+Until the Yoti sandbox credentials and integration are configured, the session endpoint must continue returning 503. The existing `AGE_VERIFICATION_PROVIDER` placeholder is not a live integration switch.
+
+## Tests and release gates
+
+- Valid signed OVER-18 notification and matching fetched COMPLETE result updates only the correct user's access record.
+- Valid FAIL, ERROR, CANCELLED, EXPIRED, pending, and unknown states never verify.
+- Invalid signature, modified body, stale timestamp, replayed notification, duplicate evidence, wrong SDK ID, unknown session, mismatched reference, and provider outage never verify.
+- A callback URL or browser-supplied session ID alone never verifies.
 - User cannot edit their own adult/account status through client APIs.
-- Logs contain no ID image, ID number, face image, biometric template, or provider secret.
-- Test provider sandbox and staging before production. Production restricted features remain unavailable until provider is selected, credentials are configured, and webhook tests pass.
+- Account activation remains separate from adult verification.
+- Logs contain no API key, ID image, ID number, exact age, face image, or biometric template.
+- Run vendor sandbox, staging, cross-user isolation, and failure-path tests before enabling any protected production feature.
+
+## Current implementation status
+
+The provider decision is recorded for sandbox evaluation only. Vendor onboarding, credentials, the Yoti session adapter, signature-verified webhook, persistent session/event storage, and end-to-end tests are not yet implemented. The existing verification session endpoint intentionally remains unavailable. Protected ConnectTime member features must remain fail-closed until all release gates pass.
