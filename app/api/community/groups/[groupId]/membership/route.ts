@@ -38,6 +38,8 @@ export async function DELETE(request: Request, context: { params: Promise<{ grou
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
   const user = await currentCommunityMember();
   if (!user) return NextResponse.json({ error: "Sign in to leave a group." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
   const { groupId } = await context.params;
   const membersTableId = process.env.APPWRITE_COMMUNITY_GROUP_MEMBERS_TABLE_ID;
   if (!membersTableId) return NextResponse.json({ error: "Group storage is not configured." }, { status: 503 });
