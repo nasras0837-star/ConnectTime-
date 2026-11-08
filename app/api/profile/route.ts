@@ -23,7 +23,7 @@ export async function GET() {
     return NextResponse.json({ profile: row }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     if (typeof error === "object" && error !== null && "code" in error && error.code === 404) {
-      return NextResponse.json({ profile: null }, { headers: { "Cache-Control": "no-store" } });
+      return NextResponse.json({ profile: { display_name: user.name || "" } }, { headers: { "Cache-Control": "no-store" } });
     }
     console.error("Profile lookup failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Profile storage is not configured or is unavailable." }, { status: 503 });
