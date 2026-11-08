@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 type WidgetProps = { src: string; config: Record<string, unknown>; height: number; label: string };
 function TradingViewEmbed({ src, config, height, label }: WidgetProps) {
   const host = useRef<HTMLDivElement>(null);
+  const configJson = JSON.stringify(config);
   useEffect(() => {
     const root = host.current;
     if (!root) return;
