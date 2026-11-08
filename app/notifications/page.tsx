@@ -9,7 +9,8 @@ function destination(type: string, referenceId?: string) {
   if (type === "dating_like" || type === "dating_match") return { href: "/dating/likes", label: "View dating activity" };
   if (type === "new_message") return { href: "/messages", label: "Open messages" };
   if (type === "group_message") return { href: referenceId ? `/groups/${encodeURIComponent(referenceId)}` : "/groups", label: "Open group chat" };
-  if (type === "friend_request" || type === "friend_accepted" || type === "friend_acceptance") return { href: "/friends", label: "View friends" };\n  if (type === "moderation" || type === "appeal") return { href: "/safety", label: "Open Safety Center" };
+  if (type === "friend_request" || type === "friend_accepted" || type === "friend_acceptance") return { href: "/friends", label: "View friends" };
+  if (type === "moderation" || type === "appeal") return { href: "/safety", label: "Open Safety Center" };
   return { href: "/account", label: "View account" };
 }
 
@@ -18,7 +19,9 @@ function category(type: string) {
   if (type === "new_message") return "Private message";
   if (type === "group_message") return "Community group chat";
   if (type === "friend_request") return "Friend request";
-  if (type === "friend_accepted" || type === "friend_acceptance") return "Connection update";\n  if (type === "moderation") return "Trust & Safety";\n  if (type === "appeal") return "Appeal update";
+  if (type === "friend_accepted" || type === "friend_acceptance") return "Connection update";
+  if (type === "moderation") return "Trust & Safety";
+  if (type === "appeal") return "Appeal update";
   return "Account activity";
 }
 
