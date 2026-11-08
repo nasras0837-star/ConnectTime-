@@ -81,13 +81,13 @@ export default function AdvertisingDashboardPage() {
     return matchesText && matchesStatus && matchesSchedule;
   }), [campaigns, search, statusFilter, scheduleFilter]);
 
-  const totals = useMemo(() => campaigns.reduce((result, campaign) => {
+  const totals = useMemo(() => filtered.reduce((result, campaign) => {
     result.spend += Number(campaign.spend_minor) || 0;
     result.cap += Number(campaign.lifetime_cap_minor) || 0;
     result.impressions += Number(campaign.impressions_count) || 0;
     result.clicks += Number(campaign.clicks_count) || 0;
     return result;
-  }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [campaigns]);
+  }, { spend: 0, cap: 0, impressions: 0, clicks: 0 }), [filtered]);
   const ctr = totals.impressions > 0 ? totals.clicks / totals.impressions * 100 : 0;
   const statuses = Array.from(new Set(campaigns.map(campaign => campaign.status || "draft")));
 
@@ -97,10 +97,10 @@ export default function AdvertisingDashboardPage() {
       <div className="ctAdDashboardTop"><div><span className="adEyebrow">ADVERTISER CENTER</span><h1>Campaign performance</h1><p>Manage your campaign plans, review audience targeting, and monitor verified delivery metrics.</p></div><Link className="ctCampaignCreate" href="/advertise">＋ Create campaign</Link></div>
       <div className="ctCampaignNotice"><strong>Preview / approval status:</strong> Campaign drafts are not published or charged. Impressions and clicks are shown only when verified delivery events are configured. AI screening is not final approval; human review and secure billing are still required before launch.</div>
       <div className="ctAdKpis">
-        <article><span>CAMPAIGNS</span><strong>{campaigns.length}</strong><small>{campaigns.filter(c => c.status === "pending_review").length} awaiting review</small></article>
-        <article><span>RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>Verified spend records only</small></article>
-        <article><span>AD IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified delivery events</small></article>
-        <article><span>CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks</small></article>
+        <article><span>MATCHING CAMPAIGNS</span><strong>{filtered.length}</strong><small>{filtered.filter(c => c.status === "pending_review").length} awaiting review</small></article>
+        <article><span>FILTERED RECORDED SPEND</span><strong>{money(totals.spend)}</strong><small>For campaigns matching your filters</small></article>
+        <article><span>FILTERED IMPRESSIONS</span><strong>{number(totals.impressions)}</strong><small>Verified events for matching campaigns</small></article>
+        <article><span>FILTERED CLICK-THROUGH RATE</span><strong>{pct(ctr)}</strong><small>{number(totals.clicks)} verified clicks</small></article>
       </div>
       <section className="ctAdCampaignTools" aria-label="Campaign filters">
         <label>Search campaigns<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Search company, campaign or location" /></label>
