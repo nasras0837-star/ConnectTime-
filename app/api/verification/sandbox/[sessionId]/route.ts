@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
-import { Client, Databases } from "node-appwrite";
+import { Client, TablesDB } from "node-appwrite";
 
 import { getYotiSandboxSessionResult } from "@/lib/yoti-sandbox";
 
@@ -14,9 +14,9 @@ export async function GET(_request: Request, context: RouteContext) {
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const apiKey = process.env.APPWRITE_API_KEY;
   const databaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
-  const collectionId = process.env.APPWRITE_YOTI_SESSIONS_COLLECTION_ID;
+  const tableId = process.env.APPWRITE_YOTI_SESSIONS_TABLE_ID;
 
-  if (!endpoint || !projectId || !apiKey || !databaseId || !collectionId ||
+  if (!endpoint || !projectId || !apiKey || !databaseId || !tableId ||
       process.env.YOTI_SANDBOX_ENABLED !== "true") {
     return NextResponse.json(
       { error: "verification_unavailable" },
@@ -42,8 +42,8 @@ export async function GET(_request: Request, context: RouteContext) {
     }
 
     const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
-    const databases = new Databases(client);
-    const record = await databases.getDocument(databaseId, collectionId, sessionId);
+    const tablesDB = new TablesDB(client);
+    const record = await tablesDB.getRow({ databaseId, tableId, rowId: sessionId });
     if (record.user_id !== user.$id || record.provider !== "yoti" || record.environment !== "sandbox") {
       return NextResponse.json(
         { error: "session_not_found" },
@@ -59,9 +59,9 @@ export async function GET(_request: Request, context: RouteContext) {
       );
     }
 
-    await databases.updateDocument(databaseId, collectionId, sessionId, {
+    await tablesDB.updateRow({ databaseId, tableId, rowId: sessionId, data: {
       status: result.status.toLowerCase(),
-    });
+    } });
 
     return NextResponse.json(
       {
