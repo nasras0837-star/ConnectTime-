@@ -1111,3 +1111,54 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
   .videoIntro{padding-top:48px}
   .videoIntro h1{letter-spacing:-1.3px}
 }
+
+
+/* CONNECT SITEWIDE HOMEPAGE THEME — consistent background, typography and contrast on every route */
+:root{
+  --connect-bg:#020b2b;
+  --connect-panel:rgba(5,20,58,.90);
+  --connect-panel-strong:rgba(4,16,49,.96);
+  --connect-border:#285b9c;
+  --connect-text:#f5f9ff;
+  --connect-muted:#c4d9f4;
+  --connect-cyan:#72eaff;
+  --connect-blue:#087eae;
+}
+html,body{min-height:100%;}
+body{
+  color:var(--connect-text)!important;
+  background-color:var(--connect-bg)!important;
+  background-image:linear-gradient(105deg,rgba(2,8,39,.82),rgba(2,14,48,.58)),url("https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/docs/connect-globe-background.svg")!important;
+  background-position:center top!important;background-size:cover!important;background-repeat:no-repeat!important;background-attachment:fixed!important;
+  font-family:'DM Sans',Arial,sans-serif;
+}
+/* Page-level wrappers should reveal the shared globe canvas instead of introducing unrelated page backgrounds. */
+body :is(.ctHome,.radioPage,.socialHome,.videoShell,.marketPage,.datingPage,.discoverPage,.communityPage,.groupsPage,.messagesPage,.friendsPage,.eventsPage,.newsPage,.freeTvPage,.meetingsPage,.feedbackPage,.advertisePage,.accountPage,.profilePage,.safetyPage,.authPage,.loginPage,.registerPage){
+  background-color:transparent!important;
+  color:var(--connect-text)!important;
+}
+/* Shared page headers and navigation */
+body :is(.ctHomeHeader,.radioHeader,.marketHeader,.videoHeader,.header,.topbar,.pageHeader,.siteHeader){
+  color:var(--connect-text)!important;background:rgba(3,13,48,.88)!important;
+  border-color:var(--connect-border)!important;backdrop-filter:blur(16px);
+}
+body :is(.ctHomeHeader nav a,.radioHeader nav a,.marketHeader nav a,.videoHeader nav a,.header nav a,.topbar a,.pageHeader a,.siteHeader a){color:#e4f5ff!important}
+/* Consistent readable body copy, labels and headings across every route. */
+body :is(p,li,dd,dt,th,td,label,legend,figcaption,blockquote,summary,small,.muted,.eyebrow,.caption,.description,.helper,.meta,.subheading,.formHint,.statusText){color:var(--connect-muted)!important}
+body :is(h1,h2,h3,h4,h5,h6,strong,b,.title,.sectionTitle,.cardTitle){color:#fff!important}
+body :is(a,.textLink){color:var(--connect-cyan)!important}
+body :is(a:hover,.textLink:hover){color:#fff!important}
+/* Shared cards, panels, forms and content surfaces */
+body :is(.card,.panel,.feature,.authCard,.modal,.dialog,.formCard,.contentCard,.campaign,.ctCampaignCard,.radioCard,.radioEmpty,.radioAlert,.radioFreeMusic,.ctAdKpis article,.ctAdCampaignTools,.ctLiveNewsArticles,.ctLiveNewsArticleCard,.datingSelectionBar,.datingSelectMember,.eventsPreviewNotice){
+  background:var(--connect-panel)!important;border-color:var(--connect-border)!important;color:var(--connect-text)!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.20);
+}
+body :is(input,select,textarea){color:#fff!important;background:var(--connect-panel-strong)!important;border-color:#5285c7!important}
+body :is(input,select,textarea)::placeholder{color:#b9cce8!important;opacity:1}
+body :is(button,.button,[role=button]){color:#fff}
+body :is(.ctHomeCard,.ctHomeFeatureTiles>div,.ctHomeSmartAds,.ctHomeIntro,.ctHomeFinal){color:var(--connect-text)!important}
+body :is(.ctHomeCard,.ctHomeFeatureTiles>div,.ctHomeSmartAds){background:var(--connect-panel)!important;border-color:var(--connect-border)!important}
+body :is(.ctHomeCard p,.ctHomeSmartAds p,.ctHomeIntro p,.ctHomeFinal p){color:var(--connect-muted)!important}
+body :is(.ctHomeCard h3,.ctHomeSmartAds h2,.ctHomeIntro h2,.ctHomeFinal h2){color:#fff!important}
+body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9d4f5!important;border-color:var(--connect-border)!important}
+@media(max-width:700px){body{background-attachment:scroll!important}}
