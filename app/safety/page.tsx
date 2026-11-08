@@ -7,7 +7,10 @@ type BlockRow = { $id: string; blocked_user_id: string; created_at?: string };
 
 export default function SafetyCenterPage() {
   const [reportStatus, setReportStatus] = useState("");
-  const [appealStatus, setAppealStatus] = useState("");\n  const [appeals, setAppeals] = useState<Array<{id:string;status:string;createdAt:string;reference:string}>>([]);\n  const [appealsStatus, setAppealsStatus] = useState("");\n  const [loadingAppeals, setLoadingAppeals] = useState(false);
+  const [appealStatus, setAppealStatus] = useState("");
+  const [appeals, setAppeals] = useState<Array<{id:string;status:string;createdAt:string;reference:string}>>([]);
+  const [appealsStatus, setAppealsStatus] = useState("");
+  const [loadingAppeals, setLoadingAppeals] = useState(false);
   const [blockStatus, setBlockStatus] = useState("");
   const [blocked, setBlocked] = useState<BlockRow[]>([]);
   const [loadingBlocks, setLoadingBlocks] = useState(false);
@@ -54,7 +57,8 @@ export default function SafetyCenterPage() {
     } catch (error) { setAppealsStatus(error instanceof Error ? error.message : "Appeals unavailable."); }
     finally { setLoadingAppeals(false); }
   }
-\n  async function addBlock(event: FormEvent<HTMLFormElement>) {
+
+  async function addBlock(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBlockStatus("Blocking…");
     const formElement = event.currentTarget;
@@ -94,7 +98,8 @@ export default function SafetyCenterPage() {
     <div style={{ width: "min(100%, 820px)", padding: "0 14px 40px" }}>
       <header className="authCard">
         <div className="eyebrow">CONNECT · MEMBER SAFETY</div>
-        <h1>Safety Center</h1>\n        <p><Link href="/notifications">View notifications →</Link></p>
+        <h1>Safety Center</h1>
+        <p><Link href="/notifications">View notifications →</Link></p>
         <p>Speak freely and disagree openly. Harassment, intimidation, threats, stalking, and privacy violations are not acceptable.</p>
         <p><Link href="/community-guidelines">Read the Community Guidelines →</Link></p>
       </header>
