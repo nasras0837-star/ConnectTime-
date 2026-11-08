@@ -30,7 +30,7 @@ export function buildYotiClientAssertion(
   const signature = sign("sha384", Buffer.from(signingInput), {
     key: privateKey,
     padding: constants.RSA_PKCS1_PSS_PADDING,
-    saltLength: constants.RSA_PSS_SALTLEN_MAX_SIGN,
+    saltLength: constants.RSA_PSS_SALTLEN_DIGEST,
   });
 
   return `${signingInput}.${signature.toString("base64url")}`;
