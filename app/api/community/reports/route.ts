@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { communitySafetyStore, cleanText, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 import { ID } from "node-appwrite";
+import { checkMemberAccess } from "@/lib/member-access";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,6 +10,8 @@ export async function POST(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Request origin could not be verified." }, { status: 403 });
   const user = await currentCommunityMember();
   if (!user) return NextResponse.json({ error: "Sign in before submitting a safety report." }, { status: 401 });
+  const access = await checkMemberAccess();
+  if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required." }, { status: access.status });
   let body: Record<string, unknown>;
   try { body = await request.json() as Record<string, unknown>; } catch { return NextResponse.json({ error: "Invalid report." }, { status: 400 }); }
 
