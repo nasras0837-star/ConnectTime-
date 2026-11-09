@@ -1362,3 +1362,7 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .datingMatchFit{display:grid;gap:4px;margin:10px 0;padding:9px 10px;border:1px solid #cce9df;border-radius:10px;background:#f0faf6}
 .datingMatchFit strong{color:#16785b;font-size:11px;font-weight:900}
 .datingMatchFit span{color:#648477;font-size:9px;line-height:1.45}
+
+.datingLoadMore{display:flex;justify-content:center;margin:18px 0 8px}
+.datingLoadMore button{border:1px solid #b9d8e8;border-radius:11px;padding:12px 20px;background:#f1f8fc;color:#17658b;font-size:11px;font-weight:900;cursor:pointer}
+.datingLoadMore button:disabled{opacity:.55;cursor:wait}
