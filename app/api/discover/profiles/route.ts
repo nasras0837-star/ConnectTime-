@@ -42,7 +42,8 @@ export async function GET(request: Request) {
     const [profiles, outgoingBlocks, incomingBlocks, viewerProfiles] = await Promise.all([
       tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("visibility", ["public", "members"]), Query.orderDesc("$updatedAt"), Query.limit(100)] }),
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", viewer.$id), Query.limit(500)] }),
-      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] })
+      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] }),
+      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("user_id", [viewer.$id]), Query.limit(1)] })
     ]);
     const blocked = new Set<string>([
       ...outgoingBlocks.rows.map(row => String(row.blocked_user_id || "")),
@@ -72,7 +73,26 @@ export async function GET(request: Request) {
         if (country && !publicProfile.country.toLowerCase().includes(country)) return null;
         if (interest && !publicProfile.interests.some((item: string) => item.toLowerCase().includes(interest))) return null;
         if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
-        return publicProfile;
+        const sharedInterests = publicProfile.interests.filter((item: string) => viewerInterests.includes(item.toLowerCase()));
+        const reasons: string[] = [];
+        let score = 40;
+        if (sharedInterests.length) {
+          score += Math.min(30, sharedInterests.length * 10);
+          reasons.push(sharedInterests.length === 1 ? "1 shared interest" : sharedInterests.length + " shared interests");
+        }
+        if (viewerProfile?.country && String(viewerProfile.country).toLowerCase() === publicProfile.country.toLowerCase()) {
+          score += 12;
+          reasons.push("Same country");
+        }
+        if (viewerProfile?.region && String(viewerProfile.region).toLowerCase() === publicProfile.region.toLowerCase()) {
+          score += 8;
+          reasons.push("Same region");
+        }
+        if (viewerProfile?.relationship_goal && String(viewerProfile.relationship_goal) === publicProfile.relationshipGoal) {
+          score += 10;
+          reasons.push("Same relationship goal");
+        }
+        return { ...publicProfile, matchScore: Math.min(100, score), matchReasons: reasons };
       } catch {
         // Missing or unreadable eligibility records never make a profile discoverable.
         return null;
