@@ -11,7 +11,7 @@ type Payload = { verification?: Decision };
 const MEMBER_ACCESS_TABLE_ID = "member_access";
 
 function ageOnDate(dateOfBirth: string, today = new Date()) {
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(dateOfBirth)) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) return null;
   const [year, month, day] = dateOfBirth.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, day));
   if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
