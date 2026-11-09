@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 
 type Report = { id: string; reporterUserId: string; reportedUserId: string; targetType: string; contentReference: string; category: string; details: string; status: string; createdAt: string };
 type Closure = { id: string; userId: string; reason: string; status: string; requestedAt: string };
 type Queue = { reports: Report[]; closures: Closure[] };
 
-const panel: React.CSSProperties = { border: "1px solid #315b96", borderRadius: 14, background: "rgba(5,19,57,.94)", padding: 18, marginTop: 16 };
+const panel: CSSProperties = { border: "1px solid #315b96", borderRadius: 14, background: "rgba(5,19,57,.94)", padding: 18, marginTop: 16 };
 const muted: React.CSSProperties = { color: "#c1d6f5", fontSize: 12, lineHeight: 1.6, overflowWrap: "anywhere" };
 const button: React.CSSProperties = { border: "1px solid #5285c7", borderRadius: 8, background: "#0b347c", color: "#fff", padding: "8px 11px", fontSize: 11, fontWeight: 800, cursor: "pointer" };
 
