@@ -35,7 +35,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     let active = true;
     try {
       const savedLanguage = window.localStorage.getItem("connect-language");
-      const savedCountry = window.localStorage.getItem("connect-country");
+      const savedCountry = window.localStorage.getItem("connect-country-manual");
       if (savedLanguage && languages.some(item => item.code === savedLanguage)) setLanguageState(savedLanguage as LanguageCode);
       if (savedCountry && /^[A-Z]{2}$/.test(savedCountry)) setCountryCodeState(savedCountry);
       setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
@@ -43,7 +43,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     fetch("/api/region", { cache: "no-store" }).then(response => response.ok ? response.json() : Promise.reject())
       .then(data => {
         if (!active) return;
-        const savedCountry = window.localStorage.getItem("connect-country");
+        const savedCountry = window.localStorage.getItem("connect-country-manual");
         const selectedCountry = savedCountry && /^[A-Z]{2}$/.test(savedCountry) ? savedCountry : data.countryCode || "US";
         setCountryCodeState(selectedCountry);
         setTemperatureUnit(fahrenheitCountries.has(selectedCountry) ? "fahrenheit" : "celsius");
@@ -70,7 +70,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const next = /^[A-Z]{2}$/.test(value) ? value : "US";
     setCountryCodeState(next);
     setTemperatureUnit(fahrenheitCountries.has(next) ? "fahrenheit" : "celsius");
-    try { window.localStorage.setItem("connect-country", next); } catch { /* Session-only preference. */ }
+    try { window.localStorage.setItem("connect-country-manual", next); } catch { /* Session-only preference. */ }
     if (countryLanguage[next]) setLanguageState(countryLanguage[next]);
   };
   const countryName = regionCountries.find(item => item[0] === countryCode)?.[1] || countryCode;
