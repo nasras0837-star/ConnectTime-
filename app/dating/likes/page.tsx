@@ -15,6 +15,7 @@ export default function DatingLikesPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [tab, setTab] = useState<"received" | "matches" | "sent">("received");
+  const [search, setSearch] = useState("");
   const [friendState, setFriendState] = useState<FriendRequestData>({ incoming: [], outgoing: [], connections: [] });
 
   const refresh = useCallback(async (silent = false) => {
@@ -108,6 +109,11 @@ export default function DatingLikesPage() {
 
   const selectedItems = tab === "received" ? data.received : tab === "matches" ? data.matches : data.sent.map(profile => ({ id: profile.handle, profile, matched: false, createdAt: "" }));
 
+  const visibleItems = selectedItems.filter(item => {
+    const query = search.trim().toLowerCase();
+    return !query || item.profile.displayName.toLowerCase().includes(query) || item.profile.handle.toLowerCase().includes(query) || item.profile.country.toLowerCase().includes(query) || item.profile.interests.some(interest => interest.toLowerCase().includes(query));
+  });
+
   return <main className="authShell">
     <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/dating">Discover dating</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
     <section className="authCard friendsCard datingInboxPage">
@@ -121,8 +127,9 @@ export default function DatingLikesPage() {
         <button type="button" role="tab" aria-selected={tab === "matches"} onClick={() => setTab("matches")}>Mutual matches <span>{data.matches.length}</span></button>
         <button type="button" role="tab" aria-selected={tab === "sent"} onClick={() => setTab("sent")}>Likes sent <span>{data.sent.length}</span></button>
       </div>
-      {loading ? <p role="status">Loading your dating inbox…</p> : selectedItems.length ? <div className="datingInboxList">
-        {selectedItems.map(item => profileCard(item.profile,
+      <div className="datingInboxSearch"><label htmlFor="datingInboxSearch">Search your connections</label><input id="datingInboxSearch" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search by name, handle, country or interest…"/>{search && <button type="button" onClick={() => setSearch("")}>Clear</button>}</div>
+      {loading ? <p role="status">Loading your dating inbox…</p> : visibleItems.length ? <div className="datingInboxList">
+        {visibleItems.map(item => profileCard(item.profile,
           tab === "received" && !item.matched ? <>
             <button type="button" disabled={busy === item.id || !!busy} onClick={() => void likeBack(item.profile)}>♥ Like back</button>
             <button type="button" className="secondary" disabled={busy === item.id || !!busy} onClick={() => void dismiss(item.id)}>Dismiss</button>
