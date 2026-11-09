@@ -55,18 +55,18 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
     <div class="viewer-head">
       <div class="viewer-title" id="viewerTitle">Connect · Apps Watch</div>
       <div class="viewer-actions">
-        <a id="viewerExternal" href="https://www.netflix.com/" target="_blank" rel="noopener noreferrer">Open in new tab ↗</a>
+        <a id="viewerExternal" href="https://www.netflix.com/" target="_blank" rel="noopener noreferrer">Open official site ↗</a>
         <button class="viewer-close" id="viewerClose" type="button" aria-label="Close streaming window">Close ✕</button>
       </div>
     </div>
-    <p class="viewer-hint">Sign in only on the provider’s official page. If the player is blank or says it cannot be displayed, use “Open in new tab” — some services prohibit embedded viewing.</p>
+    <p class="viewer-hint">Your account and subscription stay with the streaming provider. Continue on its official website for sign-in and playback.</p>
     <iframe class="viewer-frame" id="providerFrame" title="Streaming service sign-in and playback" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    <div class="provider-fallback" id="providerFallback" hidden>
-      <div class="fallback-mark" aria-hidden="true">hulu</div>
-      <h2>Continue watching on Hulu</h2>
-      <p>Hulu does not allow its website to open inside the Connect window. Your Connect page is still here — open Hulu securely in a new tab, sign in directly with Hulu, and start watching.</p>
-      <a id="fallbackExternal" href="https://www.hulu.com/" target="_blank" rel="noopener noreferrer">Open Hulu securely ↗</a>
-      <small>Hulu sign-in and playback remain on Hulu. Connect never sees or stores your Hulu password.</small>
+    <div class="provider-fallback" id="providerFallback">
+      <div class="fallback-mark" id="fallbackMark" aria-hidden="true">TV</div>
+      <h2 id="fallbackHeading">Continue to your streaming service</h2>
+      <p id="fallbackMessage">For reliable sign-in and playback, open the provider’s official website in a new tab. Some streaming services restrict embedded windows, so this avoids the “refused to connect” screen.</p>
+      <a id="fallbackExternal" href="https://tv.apple.com/" target="_blank" rel="noopener noreferrer">Open official site ↗</a>
+      <small>Your sign-in and playback stay on the provider’s website. Connect never sees or stores your streaming password.</small>
     </div>
     <div class="viewer-foot">Connect does not receive your streaming password or control provider subscriptions, content availability, or playback.</div>
   </div>
@@ -80,12 +80,15 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
   const close=document.getElementById('viewerClose');
   const fallback=document.getElementById('providerFallback');
   const fallbackExternal=document.getElementById('fallbackExternal');
+  const fallbackMark=document.getElementById('fallbackMark');
+  const fallbackHeading=document.getElementById('fallbackHeading');
+  const fallbackMessage=document.getElementById('fallbackMessage');
   let lastFocus=null;
   function closeViewer(){
     viewer.hidden=true;
     frame.src='about:blank';
-    frame.hidden=false;
-    fallback.hidden=true;
+    frame.hidden=true;
+    fallback.hidden=false;
     if(lastFocus) lastFocus.focus();
   }
   document.querySelectorAll('.app-launch').forEach(function(button){
@@ -97,11 +100,14 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
       title.textContent='Connect · '+name;
       external.href=url;
       frame.title=name+' sign-in and playback';
-      const requiresExternalWindow = name === 'Hulu';
-      frame.hidden=requiresExternalWindow;
-      fallback.hidden=!requiresExternalWindow;
+      frame.hidden=true;
+      fallback.hidden=false;
+      fallbackMark.textContent=name==='Amazon Prime Video'?'prime':name==='YouTube TV'?'YT':name==='Paramount+'?'P+':name==='Disney+'?'D+':name==='Apple TV'?'tv+':name==='Netflix'?'N':name.toLowerCase();
+      fallbackHeading.textContent='Continue to '+name;
+      fallbackMessage.textContent='For reliable sign-in and playback, open '+name+' on its official website in a new tab. Some streaming services restrict embedded windows, so this avoids a blank player or “refused to connect” message.';
       fallbackExternal.href=url;
-      frame.src=requiresExternalWindow?'about:blank':url;
+      fallbackExternal.textContent='Open '+name+' securely ↗';
+      frame.src='about:blank';
       viewer.hidden=false;
       close.focus();
     });
