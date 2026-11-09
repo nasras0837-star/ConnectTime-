@@ -7,10 +7,20 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 function profileTable() {
-  const tableId = process.env.APPWRITE_PROFILES_TABLE_ID;
-  if (!tableId) throw new Error("Profiles table is not configured.");
+  const tableId = process.env.APPWRITE_PROFILES_TABLE_ID?.trim();
+  if (!tableId) throw new Error("APPWRITE_PROFILES_TABLE_ID is not configured.");
   const { tablesDB, databaseId } = communitySafetyStore();
   return { tablesDB, databaseId, tableId };
+}
+
+function isMissingProfileRow(error: unknown) {
+  if (!error || typeof error !== "object") return false;
+  const value = error as { code?: unknown; type?: unknown; message?: unknown };
+  if (value.type === "row_not_found") return true;
+  // Do not treat a missing database or table as an empty profile.
+  return value.code === 404 &&
+    typeof value.message === "string" &&
+    /row .*not found|requested row.*not found/i.test(value.message);
 }
 
 export async function GET() {
@@ -22,7 +32,7 @@ export async function GET() {
     if (row.user_id !== user.$id) return NextResponse.json({ error: "Profile ownership check failed." }, { status: 403 });
     return NextResponse.json({ profile: row }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    if (typeof error === "object" && error !== null && "code" in error && error.code === 404) {
+    if (isMissingProfileRow(error)) {
       return NextResponse.json({ profile: { display_name: user.name || "" } }, { headers: { "Cache-Control": "no-store" } });
     }
     console.error("Profile lookup failed", error instanceof Error ? error.message : "unknown");
@@ -93,12 +103,15 @@ export async function PUT(request: Request) {
       const row = await tablesDB.updateRow({ databaseId, tableId, rowId: user.$id, data });
       return NextResponse.json({ saved: true, profile: row }, { headers: { "Cache-Control": "no-store" } });
     } catch (error) {
-      if (!(typeof error === "object" && error !== null && "code" in error && error.code === 404)) throw error;
+      if (!isMissingProfileRow(error)) throw error;
     }
     const row = await tablesDB.createRow({ databaseId, tableId, rowId: ID.custom(user.$id), data: { ...data, created_at: new Date().toISOString() } });
     return NextResponse.json({ saved: true, profile: row }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === 409) {
+      return NextResponse.json({ error: "That username is already in use. Please choose another." }, { status: 409 });
+    }
     console.error("Profile save failed", error instanceof Error ? error.message : "unknown");
-    return NextResponse.json({ error: "Profile could not be saved. Check that the Appwrite profiles table and columns are configured." }, { status: 503 });
+    return NextResponse.json({ error: "Profile could not be saved. Check the Appwrite database, profiles table ID, required columns, and server API-key permissions." }, { status: 503 });
   }
 }
