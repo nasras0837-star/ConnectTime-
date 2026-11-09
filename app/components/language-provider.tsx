@@ -58,7 +58,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         }
       }).catch(() => {
         if (!active) return;
-        setTemperatureUnit("fahrenheit");
+        const fallbackCountry = TIMEZONE_COUNTRY[browserTimeZone] || "US";
+        setCountryCodeState(fallbackCountry);
+        setTemperatureUnit(fahrenheitCountries.has(fallbackCountry) ? "fahrenheit" : "celsius");
       }).finally(() => { if (active) setRegionReady(true); });
     return () => { active = false; };
   }, []);
