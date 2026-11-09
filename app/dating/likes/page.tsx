@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 
-type DatingProfile = { handle: string; displayName: string; country: string; age: number; gender: string; interests: string[] };
+type DatingProfile = { handle: string; displayName: string; country: string; region?: string; bio?: string; relationshipGoal?: string; age: number; gender: string; interests: string[] };
+const datingGoalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
 type IncomingLike = { id: string; createdAt: string; profile: DatingProfile; matched: boolean };
 type InboxData = { received: IncomingLike[]; sent: DatingProfile[]; matches: IncomingLike[] };
 type FriendRequestData = { incoming: { id: string; profile: { handle: string } }[]; outgoing: { profile: { handle: string } }[]; connections: { profile: { handle: string } }[] };
@@ -15,6 +16,7 @@ export default function DatingLikesPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [tab, setTab] = useState<"received" | "matches" | "sent">("received");
+  const [search, setSearch] = useState("");
   const [friendState, setFriendState] = useState<FriendRequestData>({ incoming: [], outgoing: [], connections: [] });
 
   const refresh = useCallback(async (silent = false) => {
@@ -99,7 +101,9 @@ export default function DatingLikesPage() {
       <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0, 1).toUpperCase()}</div>
       <div className="datingInboxCopy">
         <h3>{profile.displayName}, {profile.age}</h3>
-        <span>@{profile.handle}{profile.country ? " · " + profile.country : ""}</span>
+        <span>@{profile.handle}{[profile.region, profile.country].filter(Boolean).length ? " · " + [profile.region, profile.country].filter(Boolean).join(", ") : ""}</span>
+        {profile.relationshipGoal && <small className="datingProfileGoal">Looking for: {datingGoalLabels[profile.relationshipGoal] || profile.relationshipGoal}</small>}
+        {profile.bio && <p className="datingProfileBio">{profile.bio}</p>}
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
       </div>
       <div className="datingInboxActions">{actions}</div>
@@ -107,6 +111,11 @@ export default function DatingLikesPage() {
   );
 
   const selectedItems = tab === "received" ? data.received : tab === "matches" ? data.matches : data.sent.map(profile => ({ id: profile.handle, profile, matched: false, createdAt: "" }));
+
+  const visibleItems = selectedItems.filter(item => {
+    const query = search.trim().toLowerCase();
+    return !query || item.profile.displayName.toLowerCase().includes(query) || item.profile.handle.toLowerCase().includes(query) || item.profile.country.toLowerCase().includes(query) || item.profile.interests.some(interest => interest.toLowerCase().includes(query));
+  });
 
   return <main className="authShell">
     <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/dating">Discover dating</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
@@ -121,8 +130,9 @@ export default function DatingLikesPage() {
         <button type="button" role="tab" aria-selected={tab === "matches"} onClick={() => setTab("matches")}>Mutual matches <span>{data.matches.length}</span></button>
         <button type="button" role="tab" aria-selected={tab === "sent"} onClick={() => setTab("sent")}>Likes sent <span>{data.sent.length}</span></button>
       </div>
-      {loading ? <p role="status">Loading your dating inbox…</p> : selectedItems.length ? <div className="datingInboxList">
-        {selectedItems.map(item => profileCard(item.profile,
+      <div className="datingInboxSearch"><label htmlFor="datingInboxSearch">Search your connections</label><input id="datingInboxSearch" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search by name, handle, country or interest…"/>{search && <button type="button" onClick={() => setSearch("")}>Clear</button>}</div>
+      {loading ? <p role="status">Loading your dating inbox…</p> : visibleItems.length ? <div className="datingInboxList">
+        {visibleItems.map(item => profileCard(item.profile,
           tab === "received" && !item.matched ? <>
             <button type="button" disabled={busy === item.id || !!busy} onClick={() => void likeBack(item.profile)}>♥ Like back</button>
             <button type="button" className="secondary" disabled={busy === item.id || !!busy} onClick={() => void dismiss(item.id)}>Dismiss</button>

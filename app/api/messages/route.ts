@@ -131,6 +131,7 @@ export async function GET(request: Request) {
       conversations.push({
         peer: { handle: String(profile.handle || ""), displayName: String(profile.display_name || profile.handle || ""), country: String(profile.country || "") },
         preview: String(latest.body || "").slice(0, 120),
+        previewMine: latest.sender_user_id === user.$id,
         updatedAt: String(latest.created_at || ""),
         unreadCount: rows.filter(row => row.recipient_user_id === user.$id && row.sender_user_id === peerId && row.is_read !== true && row.is_read !== "true").length
       });
