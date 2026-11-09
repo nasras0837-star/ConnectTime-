@@ -44,13 +44,15 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  // Same-origin requests are valid in production, staging, preview, and local
-  // environments. Additional trusted test hosts must be listed explicitly in
-  // APP_ALLOWED_ORIGINS (comma-separated); wildcard origins are never accepted.
+  // Compare the browser Origin against the public host supplied by the
+  // reverse proxy. request.url can contain an internal origin on Render.
   if (!isTrustedAuthMutation({
     requestUrl: request.url,
     origin: request.headers.get("origin"),
     fetchSite: request.headers.get("sec-fetch-site"),
+    requestHost: request.headers.get("host"),
+    forwardedHost: request.headers.get("x-forwarded-host"),
+    forwardedProto: request.headers.get("x-forwarded-proto"),
     allowedOrigins: process.env.APP_ALLOWED_ORIGINS,
   })) return forbidden();
 
