@@ -207,7 +207,7 @@ export default function MarketDashboard() {
   useEffect(() => {
     if (!regionReady) return;
     if (marketCountries.some(item => item.code === memberCountryCode)) setCountryCode(memberCountryCode);
-    const languageMap: Record<string,string> = { en:"en",es:"es",fr:"fr",de:"de",pt:"pt",ja:"ja",zh:"zh_CN" };
+    const languageMap: Record<string,string> = { en:"en",es:"es",fr:"fr",de:"de",pt:"pt",ja:"ja",zh:"zh_CN",ko:"ko" };
     setLanguage(languageMap[memberLanguage] || "en");
   }, [regionReady, memberCountryCode, memberLanguage]);
 
