@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const regions = [
   { name: "Worldwide", countries: ["All countries"] },
@@ -96,7 +96,6 @@ export default function AdvertisePage() {
       setReviewing(false);
     }
   };
-  const countries = useMemo(() => regions.find((region) => region.name === selectedRegion)?.countries ?? [], [selectedRegion]);
   const dailyBudgetValue = Number(dailyBudget);
   const campaignBudgetValue = Number(campaignBudget);
   const budgetValid = Number.isFinite(dailyBudgetValue) && Number.isFinite(campaignBudgetValue) && dailyBudgetValue >= 1 && campaignBudgetValue >= dailyBudgetValue;
