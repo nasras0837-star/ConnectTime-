@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAppwrite } from "@appwrite.io/react";
+import { AuthenticatorType } from "appwrite";
 
 type MfaFactors = { totp?: boolean; email?: boolean; phone?: boolean };
 
@@ -62,7 +63,7 @@ export default function MfaPanel() {
   async function startAuthenticator() {
     setBusy(true); setError(""); setStatus("");
     try {
-      const result = await account.createMfaAuthenticator({ type: "totp" });
+      const result = await account.createMfaAuthenticator({ type: AuthenticatorType.Totp });
       setSecret(result.secret);
       setStatus("Add this account to your authenticator app, then enter its six-digit code.");
     } catch (e) { setError(e instanceof Error ? e.message : "Authenticator setup could not be started."); }
@@ -73,7 +74,7 @@ export default function MfaPanel() {
     if (!/^\d{6}$/.test(otp.trim())) { setError("Enter the six-digit code from your authenticator app."); return; }
     setBusy(true); setError(""); setStatus("");
     try {
-      await account.updateMfaAuthenticator({ type: "totp", otp: otp.trim() });
+      await account.updateMfaAuthenticator({ type: AuthenticatorType.Totp, otp: otp.trim() });
       setSecret(""); setOtp("");
       await refreshFactors();
       setStatus("Authenticator verified. Complete email verification as well, then enable MFA.");
