@@ -1366,3 +1366,24 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .datingLoadMore{display:flex;justify-content:center;margin:18px 0 8px}
 .datingLoadMore button{border:1px solid #b9d8e8;border-radius:11px;padding:12px 20px;background:#f1f8fc;color:#17658b;font-size:11px;font-weight:900;cursor:pointer}
 .datingLoadMore button:disabled{opacity:.55;cursor:wait}
+
+
+/* Polished Connect Dating discovery and member photos */
+.datingHeroTrust{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 8px}
+.datingHeroTrust span{padding:8px 11px;border:1px solid #cde4f0;border-radius:999px;background:#f3f9fd;color:#27617e;font-size:10px;font-weight:850}
+.datingPhotoFrame{position:relative;display:grid;place-items:center;min-height:210px;overflow:hidden;border-radius:13px;background:linear-gradient(135deg,#e7f2fb,#e9f6f2)}
+.datingPhotoFrame>img{width:100%;height:210px;object-fit:cover}
+.datingPhotoFrame>.discoverAvatar{width:78px;height:78px;border-radius:50%;font-size:32px}
+.datingPhotoFrame>span{position:absolute;left:10px;bottom:10px;padding:6px 9px;border-radius:99px;background:#102e48d9;color:#fff;font-size:9px;font-weight:850}
+.discoverMember{overflow:hidden}
+.datingProfileMeta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.datingProfileMeta>span{color:#6d8294;font-size:10px;font-weight:800;text-transform:capitalize}
+.datingInboxSearch{display:grid;gap:7px;margin:15px 0;color:#52677f;font-size:11px;font-weight:850}
+.datingInboxSearch input{width:100%;padding:12px 14px;border:1px solid #dce6f0;border-radius:11px;background:#fff;color:#1d3654;font:inherit;font-weight:500}
+.datingInboxPhoto{width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:15px;background:linear-gradient(135deg,#1e6fc4,#20a99c);color:#fff;font-size:24px;font-weight:900}
+.datingInboxPhoto img{width:100%;height:100%;object-fit:cover}
+.datingInboxCopy>p{margin:6px 0;color:#61788c;font-size:11px;line-height:1.5}
+.datingInboxCopy>small{display:block;margin-top:5px;color:#16816e;font-size:10px;font-weight:850}
+.datingProfilePhotoPreview{display:flex;align-items:center;gap:12px;margin:8px 0 16px;color:#71889b;font-size:11px}
+.datingProfilePhotoPreview img{width:76px;height:76px;border-radius:15px;object-fit:cover;border:1px solid #dce7ef}
+@media(max-width:620px){.datingPhotoFrame,.datingPhotoFrame>img{min-height:170px;height:170px}.datingInboxPhoto{width:56px;height:56px;flex-basis:56px}.datingHeroTrust{gap:6px}.datingHeroTrust span{font-size:9px;padding:7px 9px}}
