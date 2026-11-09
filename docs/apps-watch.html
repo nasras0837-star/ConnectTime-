@@ -34,23 +34,67 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
 .provider-fallback a{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:13px 20px;border-radius:12px;background:linear-gradient(100deg,#087fbd,#176bd2);color:#fff;font-weight:900;font-size:13px;box-shadow:0 8px 20px #087fbd30}
 .provider-fallback small{max-width:540px;color:#7890a0;font-size:11px;line-height:1.6}
 
+
+/* Apps Watch discovery experience */
+.sectionHead{align-items:flex-start}
+.section-intro{margin:7px 0 0;color:#668398;font-size:13px}
+.discovery-tools{margin:0 0 19px;padding:17px;border:1px solid #d6e9f2;border-radius:19px;background:#ffffffd9;box-shadow:0 12px 28px #0d52740a}
+.service-search{height:52px;display:flex;align-items:center;gap:12px;padding:0 15px;border:1px solid #c9dfeb;border-radius:13px;background:#f8fcff;color:#087fae}
+.service-search:focus-within{border-color:#168bd0;box-shadow:0 0 0 4px #168bd01a}
+.service-search>span{font-size:26px;line-height:1}
+.service-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#153b56;font:600 14px/1.3 inherit}
+.service-search input::placeholder{color:#8aa2b2;font-weight:500}
+.service-search kbd{padding:3px 7px;border:1px solid #d5e4ec;border-radius:6px;background:#fff;color:#7890a0;font:11px ui-monospace,monospace}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.filter-chip{display:inline-flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid #d6e6ee;border-radius:999px;background:#fff;color:#466a80;font:800 11px/1.2 inherit;cursor:pointer;transition:all .18s}
+.filter-chip span{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:#edf5fa;color:#628095;font-size:10px}
+.filter-chip:hover{border-color:#83c7e8;color:#087fae}
+.filter-chip.active{border-color:#087fc1;background:linear-gradient(100deg,#087fc1,#276bd0);color:#fff;box-shadow:0 6px 15px #087fc126}
+.filter-chip.active span{background:#ffffff2b;color:#fff}
+.results-status{margin:11px 2px 0;color:#7890a0;font-size:11px}
+.card[hidden]{display:none}
+.plan-pill{display:inline-flex;align-items:center;margin:0 0 9px;padding:5px 8px;border:1px solid #dbe9f1;border-radius:7px;background:#f1f7fb;color:#54748a;font-size:9px;font-weight:950;letter-spacing:.55px}
+.plan-pill.free-pill{border-color:#bce8d3;background:#eafaf1;color:#13754b}
+.empty-results{padding:38px 18px;border:1px dashed #bfd8e6;border-radius:18px;background:#ffffffb8;text-align:center}
+.empty-results[hidden]{display:none}
+.empty-results>div{font-size:30px;color:#1686bd}
+.empty-results h3{margin:6px 0;color:#153b56}
+.empty-results p{margin:0 0 14px;color:#70899a;font-size:13px}
+.empty-results button{padding:10px 14px;border:0;border-radius:10px;background:#087fc1;color:#fff;font-weight:850;cursor:pointer}
+.app-launch{padding:8px 12px;border:1px solid #b9ddeb;border-radius:9px;background:#f0f9ff;transition:all .18s}
+.app-launch:hover{background:#087fc1;color:#fff;border-color:#087fc1}
+.viewer-panel{max-width:900px;height:auto;min-height:360px;max-height:88vh}
+.viewer-hint{font-size:12px}
+@media(max-width:620px){.sectionHead{display:block}.sectionHead>small{display:block;margin-top:10px}.discovery-tools{padding:13px}.filter-row{gap:7px}.filter-chip{padding:8px 10px;font-size:10px}.service-search{height:48px}.service-search input{font-size:12px}.viewer-panel{min-height:400px}.provider-fallback{padding:22px}}
+@media(prefers-reduced-motion:reduce){.card,.filter-chip,.app-launch{transition:none}}
+
 </style></head><body><div class="shell">
 <header><a class="brand" href="index.html" aria-label="Connect homepage"><img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/public/connect-logo.svg?v=7893aa3" alt="Connect electric blue globe logo"><span>Connect</span></a><nav><a href="index.html">Home</a><a href="index.html#features">Explore Connect</a></nav></header>
 <main><section class="hero"><span class="eyebrow">YOUR STREAMING DESTINATION</span><h1>Apps <em>Watch</em></h1><p>One convenient place to open the streaming services you already use. Choose an app, sign in securely on its official website, and enjoy movies and shows with your own account.</p><div class="notice"><b>Your subscriptions stay yours.</b><span>Connect does not sell streaming subscriptions, store provider passwords, or unlock paid content. Each provider controls sign-in, playback, plans and regional availability.</span></div></section>
-<section class="section"><div class="sectionHead"><div><span class="eyebrow">STREAMING SERVICES</span><h2>Choose where to watch</h2></div><small>9 services</small></div><div class="grid">
-<article class="card"><div class="logo" style="--c:#252535"><b>tv+</b></div><div class="body"><h3>Apple TV</h3><p class="category">Apple Originals, films &amp; live sports</p><p class="note">An Apple TV subscription is required for subscription content; availability varies by region.</p><button class="open app-launch" type="button" data-app-url="https://tv.apple.com/" data-app-name="Apple TV">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#f5f5f5;color:#17334a"><b>▶ TV</b></div><div class="body"><h3>YouTube TV</h3><p class="category">Live TV, sports, news &amp; cloud DVR</p><p class="note">A YouTube TV membership is required; channel lineups and availability vary by location.</p><button class="open app-launch" type="button" data-app-url="https://tv.youtube.com/" data-app-name="YouTube TV">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#1ce783;color:#063d2b"><b>hulu</b></div><div class="body"><h3>Hulu</h3><p class="category">TV shows, movies &amp; originals</p><p class="note">A Hulu plan may be required. Plan and title availability vary.</p><button class="open app-launch" type="button" data-app-url="https://www.hulu.com/" data-app-name="Hulu">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#e50914"><b>N</b></div><div class="body"><h3>Netflix</h3><p class="category">Series, films &amp; documentaries</p><p class="note">Sign in with your Netflix account and active plan.</p><button class="open app-launch" type="button" data-app-url="https://www.netflix.com/" data-app-name="Netflix">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#6b36ff"><b>tubi</b></div><div class="body"><h3>Tubi</h3><p class="category">Free movies &amp; TV with ads</p><p class="note">Free, ad-supported viewing; no paid subscription required.</p><button class="open app-launch" type="button" data-app-url="https://tubitv.com/" data-app-name="Tubi">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#173b8f"><b>Disney+</b></div><div class="body"><h3>Disney+</h3><p class="category">Disney, Pixar, Marvel &amp; more</p><p class="note">A Disney+ subscription is required for subscription content.</p><button class="open app-launch" type="button" data-app-url="https://www.disneyplus.com/" data-app-name="Disney+">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#00a8e1"><b>prime</b></div><div class="body"><h3>Amazon Prime Video</h3><p class="category">Movies, series &amp; rentals</p><p class="note">Prime membership or a separate purchase/channel may be required for some titles.</p><button class="open app-launch" type="button" data-app-url="https://www.primevideo.com/" data-app-name="Amazon Prime Video">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#1765c1"><b>P+</b></div><div class="body"><h3>Paramount+</h3><p class="category">Shows, movies &amp; live sports</p><p class="note">A Paramount+ plan is required for subscription content.</p><button class="open app-launch" type="button" data-app-url="https://www.paramountplus.com/" data-app-name="Paramount+">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-<article class="card"><div class="logo" style="--c:#202033"><b>peacock</b></div><div class="body"><h3>Peacock</h3><p class="category">NBC shows, movies &amp; live events</p><p class="note">A Peacock plan may be required; available content depends on plan and region.</p><button class="open app-launch" type="button" data-app-url="https://www.peacocktv.com/" data-app-name="Peacock">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
-</div></section><section class="how"><h2>How Apps Watch works</h2><ol><li><b>Choose a streaming service.</b> Select one of the official providers above.</li><li><b>Sign in with the provider.</b> Your credentials are entered only on the provider’s own website or app.</li><li><b>Watch with your plan.</b> The provider verifies your subscription and decides what you can stream.</li></ol></section></main>
+<section class="section"><div class="sectionHead"><div><span class="eyebrow">STREAMING SERVICES</span><h2>Find your next watch</h2><p class="section-intro">Search your services or filter by how you like to watch.</p></div><small>9 services</small></div>
+<div class="discovery-tools">
+  <label class="service-search"><span aria-hidden="true">⌕</span><input id="serviceSearch" type="search" placeholder="Search services, shows, sports…" autocomplete="off" aria-label="Search streaming services"><kbd>/</kbd></label>
+  <div class="filter-row" role="group" aria-label="Filter streaming services">
+    <button class="filter-chip active" type="button" data-filter="all" aria-pressed="true">All services <span>9</span></button>
+    <button class="filter-chip" type="button" data-filter="free" aria-pressed="false">Free <span>1</span></button>
+    <button class="filter-chip" type="button" data-filter="subscription" aria-pressed="false">Subscription <span>8</span></button>
+    <button class="filter-chip" type="button" data-filter="live" aria-pressed="false">Live TV &amp; sports <span>3</span></button>
+  </div>
+  <p class="results-status" id="resultsStatus" aria-live="polite">Showing all 9 streaming services</p>
+</div><div class="grid" id="serviceGrid">
+<article class="card" data-category="subscription movies" data-service="apple tv"><div class="logo" style="--c:#252535"><b>tv+</b></div><div class="body"><h3>Apple TV</h3><span class="plan-pill">SUBSCRIPTION</span><p class="category">Apple Originals, films &amp; live sports</p><p class="note">An Apple TV subscription is required for subscription content; availability varies by region.</p><button class="open app-launch" type="button" data-app-url="https://tv.apple.com/" data-app-name="Apple TV">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription live" data-service="youtube tv"><div class="logo" style="--c:#f5f5f5;color:#17334a"><b>▶ TV</b></div><div class="body"><h3>YouTube TV</h3><span class="plan-pill">SUBSCRIPTION · LIVE TV</span><p class="category">Live TV, sports, news &amp; cloud DVR</p><p class="note">A YouTube TV membership is required; channel lineups and availability vary by location.</p><button class="open app-launch" type="button" data-app-url="https://tv.youtube.com/" data-app-name="YouTube TV">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription movies" data-service="hulu"><div class="logo" style="--c:#1ce783;color:#063d2b"><b>hulu</b></div><div class="body"><h3>Hulu</h3><span class="plan-pill">SUBSCRIPTION</span><p class="category">TV shows, movies &amp; originals</p><p class="note">A Hulu plan may be required. Plan and title availability vary.</p><button class="open app-launch" type="button" data-app-url="https://www.hulu.com/" data-app-name="Hulu">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription movies" data-service="netflix"><div class="logo" style="--c:#e50914"><b>N</b></div><div class="body"><h3>Netflix</h3><span class="plan-pill">SUBSCRIPTION</span><p class="category">Series, films &amp; documentaries</p><p class="note">Sign in with your Netflix account and active plan.</p><button class="open app-launch" type="button" data-app-url="https://www.netflix.com/" data-app-name="Netflix">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="free movies" data-service="tubi"><div class="logo" style="--c:#6b36ff"><b>tubi</b></div><div class="body"><h3>Tubi</h3><span class="plan-pill free-pill">FREE · AD-SUPPORTED</span><p class="category">Free movies &amp; TV with ads</p><p class="note">Free, ad-supported viewing; no paid subscription required.</p><button class="open app-launch" type="button" data-app-url="https://tubitv.com/" data-app-name="Tubi">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription movies" data-service="disney+"><div class="logo" style="--c:#173b8f"><b>Disney+</b></div><div class="body"><h3>Disney+</h3><span class="plan-pill">SUBSCRIPTION</span><p class="category">Disney, Pixar, Marvel &amp; more</p><p class="note">A Disney+ subscription is required for subscription content.</p><button class="open app-launch" type="button" data-app-url="https://www.disneyplus.com/" data-app-name="Disney+">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription movies" data-service="amazon prime video"><div class="logo" style="--c:#00a8e1"><b>prime</b></div><div class="body"><h3>Amazon Prime Video</h3><span class="plan-pill">SUBSCRIPTION</span><p class="category">Movies, series &amp; rentals</p><p class="note">Prime membership or a separate purchase/channel may be required for some titles.</p><button class="open app-launch" type="button" data-app-url="https://www.primevideo.com/" data-app-name="Amazon Prime Video">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription live movies" data-service="paramount+"><div class="logo" style="--c:#1765c1"><b>P+</b></div><div class="body"><h3>Paramount+</h3><span class="plan-pill">SUBSCRIPTION · LIVE TV</span><p class="category">Shows, movies &amp; live sports</p><p class="note">A Paramount+ plan is required for subscription content.</p><button class="open app-launch" type="button" data-app-url="https://www.paramountplus.com/" data-app-name="Paramount+">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+<article class="card" data-category="subscription live movies" data-service="peacock"><div class="logo" style="--c:#202033"><b>peacock</b></div><div class="body"><h3>Peacock</h3><span class="plan-pill">SUBSCRIPTION · LIVE TV</span><p class="category">NBC shows, movies &amp; live events</p><p class="note">A Peacock plan may be required; available content depends on plan and region.</p><button class="open app-launch" type="button" data-app-url="https://www.peacocktv.com/" data-app-name="Peacock">Connect &amp; watch <span aria-hidden="true">↗</span></button></div></article>
+</div><div class="empty-results" id="emptyResults" hidden><div aria-hidden="true">⌕</div><h3>No services found</h3><p>Try another search or choose a different filter.</p><button type="button" id="resetDiscovery">Clear search and filters</button></div></section><section class="how"><h2>How Apps Watch works</h2><ol><li><b>Choose a streaming service.</b> Select one of the official providers above.</li><li><b>Sign in with the provider.</b> Your credentials are entered only on the provider’s own website or app.</li><li><b>Watch with your plan.</b> The provider verifies your subscription and decides what you can stream.</li></ol></section></main>
 <footer><strong>Connect</strong><span>© 2026 Techcyber LLC</span><small>Streaming brands belong to their respective owners. Connect is not affiliated with or endorsed by these providers. Playback and catalogs vary by country, plan, device and title. Tubi is free and ad-supported; paid services require their applicable subscription or purchase.</small></footer>
 </div>
-<div class="viewer" id="appViewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+<div class="viewer" id="appViewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewerTitle" aria-describedby="viewerHint">
   <div class="viewer-panel">
     <div class="viewer-head">
       <div class="viewer-title" id="viewerTitle">Connect · Apps Watch</div>
@@ -59,7 +103,7 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
         <button class="viewer-close" id="viewerClose" type="button" aria-label="Close streaming window">Close ✕</button>
       </div>
     </div>
-    <p class="viewer-hint">Your account and subscription stay with the streaming provider. Continue on its official website for sign-in and playback.</p>
+    <p class="viewer-hint" id="viewerHint">Your account and subscription stay with the streaming provider. Continue on its official website for sign-in and playback.</p>
     <iframe class="viewer-frame" id="providerFrame" title="Streaming service sign-in and playback" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
     <div class="provider-fallback" id="providerFallback">
       <div class="fallback-mark" id="fallbackMark" aria-hidden="true">TV</div>
@@ -83,12 +127,21 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
   const fallbackMark=document.getElementById('fallbackMark');
   const fallbackHeading=document.getElementById('fallbackHeading');
   const fallbackMessage=document.getElementById('fallbackMessage');
+  const searchInput=document.getElementById('serviceSearch');
+  const cards=Array.from(document.querySelectorAll('#serviceGrid .card'));
+  const filterButtons=Array.from(document.querySelectorAll('.filter-chip'));
+  const resultsStatus=document.getElementById('resultsStatus');
+  const emptyResults=document.getElementById('emptyResults');
+  const resetDiscovery=document.getElementById('resetDiscovery');
+  let activeFilter='all';
   let lastFocus=null;
   function closeViewer(){
     viewer.hidden=true;
     frame.src='about:blank';
     frame.hidden=true;
     fallback.hidden=false;
+    document.body.style.overflow='';
+    document.querySelector('.shell').inert=false;
     if(lastFocus) lastFocus.focus();
   }
   document.querySelectorAll('.app-launch').forEach(function(button){
@@ -109,12 +162,63 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
       fallbackExternal.textContent='Open '+name+' securely ↗';
       frame.src='about:blank';
       viewer.hidden=false;
+      document.body.style.overflow='hidden';
+      document.querySelector('.shell').inert=true;
       close.focus();
     });
   });
   close.addEventListener('click',closeViewer);
   viewer.addEventListener('click',function(event){if(event.target===viewer) closeViewer();});
-  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!viewer.hidden) closeViewer();});
+  document.addEventListener('keydown',function(event){
+    if(event.key==='Escape'&&!viewer.hidden){closeViewer();return;}
+    if(event.key==='Tab'&&!viewer.hidden){
+      const focusable=[external,close];
+      const first=focusable[0],last=focusable[focusable.length-1];
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    }
+    if(event.key==='/'&&!viewer.hidden===false&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+      event.preventDefault();searchInput.focus();
+    }
+  });
+  function applyDiscovery(){
+    const term=searchInput.value.trim().toLowerCase();
+    let visible=0;
+    cards.forEach(function(card){
+      const matchesText=!term||card.textContent.toLowerCase().includes(term)||card.dataset.service.includes(term);
+      const cats=card.dataset.category.split(' ');
+      const matchesFilter=activeFilter==='all'||cats.includes(activeFilter);
+      const show=matchesText&&matchesFilter;
+      card.hidden=!show;
+      if(show) visible++;
+    });
+    emptyResults.hidden=visible!==0;
+    resultsStatus.textContent='Showing '+visible+' of 9 services'+(term?' for “'+searchInput.value.trim()+'”':'')+(activeFilter!=='all'?' · '+activeFilter:'');
+  }
+  searchInput.addEventListener('input',applyDiscovery);
+  filterButtons.forEach(function(button){
+    button.addEventListener('click',function(){
+      activeFilter=button.dataset.filter;
+      filterButtons.forEach(function(item){
+        const selected=item===button;
+        item.classList.toggle('active',selected);
+        item.setAttribute('aria-pressed',String(selected));
+      });
+      applyDiscovery();
+    });
+  });
+  resetDiscovery.addEventListener('click',function(){
+    searchInput.value='';
+    activeFilter='all';
+    filterButtons.forEach(function(item){
+      const selected=item.dataset.filter==='all';
+      item.classList.toggle('active',selected);
+      item.setAttribute('aria-pressed',String(selected));
+    });
+    applyDiscovery();
+    searchInput.focus();
+  });
+  applyDiscovery();
 })();
 </script>
 
