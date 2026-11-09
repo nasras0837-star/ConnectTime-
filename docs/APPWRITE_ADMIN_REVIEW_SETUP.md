@@ -11,7 +11,7 @@ Set these on the server deployment only:
 - `APPWRITE_ACCOUNT_CLOSURE_REQUESTS_TABLE_ID`: ID of the private account-closure requests table.
 - Existing Appwrite configuration: `NEXT_PUBLIC_APPWRITE_ENDPOINT`, `NEXT_PUBLIC_APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY`, and `APPWRITE_DATABASE_ID`.
 
-Keep the API key and allowlist out of browser-exposed variables. Do not use a `NEXT_PUBLIC_` prefix for either secret.
+Keep the API key and allowlist out of browser-exposed variables. Do not use a `NEXT_PUBLIC_` prefix for either secret. Redeploy or restart the server after changing the allowlist so the new staff configuration is active.
 
 ## Permissions and data
 
