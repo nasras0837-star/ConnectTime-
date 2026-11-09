@@ -30,7 +30,6 @@ export default function RegionalWeather() {
   const [data,setData] = useState<WeatherData|null>(null);
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState("");
-  const [refresh,setRefresh] = useState(0);
 
   useEffect(() => {
     // Reset a manually searched city when the member changes regional edition.
@@ -62,7 +61,7 @@ export default function RegionalWeather() {
       .catch(e=>{if(e.name!=="AbortError")setError(e instanceof Error?e.message:"Weather is unavailable.");})
       .finally(()=>{if(!controller.signal.aborted)setLoading(false);});
     return ()=>controller.abort();
-  },[countryCode,language,temperatureUnit,query,refresh]);
+  },[countryCode,language,temperatureUnit,query]);
 
   function searchCity(event:FormEvent<HTMLFormElement>){event.preventDefault();setQuery(city.trim());}
   const unit=temperatureUnit==="fahrenheit"?"°F":"°C";
