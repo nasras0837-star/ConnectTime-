@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Profile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string; matchScore?: number; matchReasons?: string[] };
 const goalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
@@ -16,7 +16,7 @@ export default function DatingPage() {
   const [minAge, setMinAge] = useState(18);
   const [maxAge, setMaxAge] = useState(80);
   const [loading, setLoading] = useState(true);
-  const [discoveryLoaded, setDiscoveryLoaded] = useState(false);
+  const discoveryLoaded = useRef(false);
   const [searching, setSearching] = useState(false);
   const [sending, setSending] = useState("");
   const [liked, setLiked] = useState<string[]>([]);
@@ -45,13 +45,13 @@ export default function DatingPage() {
     if (interest.trim()) params.set("interest", interest.trim());
     const query = params.toString();
     const timer = window.setTimeout(async () => {
-      if (!discoveryLoaded) setLoading(true);
+      if (!discoveryLoaded.current) setLoading(true);
       else setSearching(true);
       try {
         const response = await fetch("/api/discover/profiles" + (query ? "?" + query : ""), { cache: "no-store" });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Dating discovery is unavailable.");
-        if (active) { setProfiles(data.profiles || []); setDiscoveryLoaded(true); setError(""); }
+        if (active) { setProfiles(data.profiles || []); discoveryLoaded.current = true; setError(""); }
       } catch (e) {
         if (active) setError(e instanceof Error ? e.message : "Dating discovery is unavailable.");
       } finally {
@@ -59,7 +59,7 @@ export default function DatingPage() {
       }
     }, 250);
     return () => { active = false; window.clearTimeout(timer); };
-  }, [search, country, interest, discoveryLoaded]);
+  }, [search, country, interest]);
 
   const results = useMemo(() => {
     const query = search.trim().toLowerCase();
