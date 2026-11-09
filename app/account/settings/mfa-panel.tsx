@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppwrite } from "@appwrite.io/react";
 import { AuthenticatorType } from "appwrite";
 
@@ -19,7 +19,7 @@ export default function MfaPanel() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  async function refreshFactors() {
+  const refreshFactors = useCallback(async () => {
     const user = await account.get();
     const factors = await account.listMfaFactors() as MfaFactors;
     const verifiedEmail = Boolean(user.emailVerification);
@@ -29,7 +29,7 @@ export default function MfaPanel() {
     setPhoneVerified(Boolean(factors.phone));
     setMfaEnabled(enabled);
     return { emailVerified: verifiedEmail, factors, mfaEnabled: enabled };
-  }
+  }, [account, refreshFactors]);
 
   useEffect(() => {
     let active = true;
