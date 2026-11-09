@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Message = { id: string; body: string; createdAt: string; mine: boolean; read: boolean };
 type Peer = { handle: string; displayName: string; country: string };
@@ -20,6 +20,9 @@ export default function MessagesPage() {
   const [reportTarget, setReportTarget] = useState("");
   const [reportDetails, setReportDetails] = useState("");
   const [reportStatus, setReportStatus] = useState("");
+  const [conversationSearch, setConversationSearch] = useState("");
+  const [unreadOnly, setUnreadOnly] = useState(false);
+  const [conversationLoading, setConversationLoading] = useState(false);
 
   const loadInbox = useCallback(async () => {
     const response = await fetch("/api/messages", { cache: "no-store" });
@@ -30,6 +33,8 @@ export default function MessagesPage() {
 
   const openConversation = useCallback(async (selected: Peer) => {
     setPeer(selected);
+    setMessages([]);
+    setConversationLoading(true);
     setError("");
     try {
       const response = await fetch("/api/messages?with=" + encodeURIComponent(selected.handle), { cache: "no-store" });
@@ -40,6 +45,7 @@ export default function MessagesPage() {
       await fetch("/api/messages", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ peerHandle: selected.handle }) });
       await loadInbox();
     } catch (e) { setError(e instanceof Error ? e.message : "Conversation is unavailable."); }
+    finally { setConversationLoading(false); }
   }, [loadInbox]);
 
   useEffect(() => {
@@ -120,6 +126,14 @@ export default function MessagesPage() {
     }
   }
 
+  const visibleConversations = useMemo(() => {
+    const query = conversationSearch.trim().toLowerCase();
+    return conversations.filter(item =>
+      (!unreadOnly || item.unreadCount > 0) &&
+      (!query || item.peer.displayName.toLowerCase().includes(query) || item.peer.handle.toLowerCase().includes(query) || item.preview.toLowerCase().includes(query))
+    );
+  }, [conversations, conversationSearch, unreadOnly]);
+  const totalUnread = conversations.reduce((total, item) => total + item.unreadCount, 0);
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!peer || !draft.trim() || sending) return;
@@ -139,8 +153,8 @@ export default function MessagesPage() {
   return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.png" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/friends">Friends</Link><Link href="/account">Account</Link></nav></header>
     <section className="authCard messagesCard"><div className="eyebrow">YOUR PRIVATE CIRCLE</div><h1>Messages</h1><p>Private one-to-one messages are available between eligible members who are already connected.</p>
       {error && <p className="message" role="alert">{error}</p>}{notice && <p className="message" role="status">{notice}</p>}
-      <div className="messagesLayout"><aside className="messageInbox"><h2>Inbox</h2><form onSubmit={startConversation} className="messageStartForm"><label htmlFor="messageNewHandle">Start a conversation</label><div><input id="messageNewHandle" value={newHandle} onChange={event => setNewHandle(event.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" placeholder="Member handle" required/><button type="submit">Open</button></div><small>Only accepted connections can exchange private messages.</small></form>{loading ? <p>Loading conversations…</p> : conversations.length ? conversations.map(item => <button key={item.peer.handle} className={peer?.handle === item.peer.handle ? "conversationChoice selected" : "conversationChoice"} onClick={() => void openConversation(item.peer)}><strong>{item.peer.displayName}</strong><span>@{item.peer.handle}</span><small>{item.preview}</small>{item.unreadCount > 0 && <em>{item.unreadCount} new</em>}</button>) : <p className="friendEmpty">No conversations yet. Connect with a member to start a private conversation.</p>}</aside>
-        <section className="messageThread">{peer ? <><header><strong>{peer.displayName}</strong><span>@{peer.handle}{peer.country ? " · " + peer.country : ""}</span></header><div className="messageHistory" aria-live="polite">{messages.length ? messages.map(item => <article key={item.id} className={item.mine ? "messageBubble mine" : "messageBubble"}><p>{item.body}</p><time>{new Date(item.createdAt).toLocaleString()}</time>{item.mine && <small className="messageReadReceipt" aria-label={item.read ? "Read by recipient" : "Sent, not yet read"}>{item.read ? "Read" : "Sent"}</small>}{!item.mine && <button type="button" className="messageReportButton" onClick={() => { setReportTarget(item.id); setReportStatus(""); }}>Report message</button>}</article>) : <p className="friendEmpty">This is the beginning of your conversation.</p>}</div>{reportTarget && <form className="messageReportForm" onSubmit={reportMessage}><strong>Report this message</strong><p>Tell our safety team what is concerning. Reports are private.</p><textarea value={reportDetails} onChange={event => setReportDetails(event.target.value)} minLength={10} maxLength={3000} rows={3} placeholder="Describe the concern (at least 10 characters)." required/><div><button type="submit" disabled={reportDetails.trim().length < 10}>Submit report</button><button type="button" className="secondary" onClick={() => setReportTarget("")}>Cancel</button></div>{reportStatus && <p role="status">{reportStatus}</p>}</form>}<form onSubmit={sendMessage}><label htmlFor="messageDraft">Message</label><textarea id="messageDraft" value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} rows={3} placeholder="Write a respectful message…" required/><div><small>{draft.length}/2000</small><button type="submit" disabled={sending || !draft.trim()}>{sending ? "Sending…" : "Send message"}</button></div></form></> : <div className="messageThreadEmpty"><h2>Select a conversation</h2><p>Choose a connection from your inbox to view your messages.</p><Link href="/discover">Discover members</Link></div>}</section></div>
+      <div className="messagesLayout"><aside className="messageInbox"><div className="messageInboxHeading"><h2>Inbox</h2><span>{totalUnread ? totalUnread + " unread" : conversations.length + " chats"}</span></div><label className="messageSearchLabel" htmlFor="conversationSearch">Find a conversation</label><input id="conversationSearch" className="messageSearchInput" value={conversationSearch} onChange={event => setConversationSearch(event.target.value)} placeholder="Search name, handle or message…"/><div className="messageInboxFilters"><button type="button" aria-pressed={!unreadOnly} className={!unreadOnly ? "active" : ""} onClick={() => setUnreadOnly(false)}>All chats</button><button type="button" aria-pressed={unreadOnly} className={unreadOnly ? "active" : ""} onClick={() => setUnreadOnly(true)}>Unread only</button></div><form onSubmit={startConversation} className="messageStartForm"><label htmlFor="messageNewHandle">Start a conversation</label><div><input id="messageNewHandle" value={newHandle} onChange={event => setNewHandle(event.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" placeholder="Member handle" required/><button type="submit">Open</button></div><small>Only accepted connections can exchange private messages.</small></form>{loading ? <p>Loading conversations…</p> : visibleConversations.length ? visibleConversations.map(item => <button key={item.peer.handle} className={peer?.handle === item.peer.handle ? "conversationChoice selected" : "conversationChoice"} onClick={() => void openConversation(item.peer)}><strong>{item.peer.displayName}</strong><span>@{item.peer.handle}</span><small>{item.preview}</small>{item.unreadCount > 0 && <em>{item.unreadCount} new</em>}</button>) : <p className="friendEmpty">{conversations.length ? "No conversations match this search." : "No conversations yet. Connect with a member to start a private conversation."}</p>}</aside>
+        <section className="messageThread">{peer ? <><header><strong>{peer.displayName}</strong><span>@{peer.handle}{peer.country ? " · " + peer.country : ""}</span></header><div className="messageHistory" aria-live="polite">{conversationLoading ? <p className="friendEmpty">Loading conversation…</p> : messages.length ? messages.map(item => <article key={item.id} className={item.mine ? "messageBubble mine" : "messageBubble"}><p>{item.body}</p><time>{new Date(item.createdAt).toLocaleString()}</time>{item.mine && <small className="messageReadReceipt" aria-label={item.read ? "Read by recipient" : "Sent, not yet read"}>{item.read ? "Read" : "Sent"}</small>}{!item.mine && <button type="button" className="messageReportButton" onClick={() => { setReportTarget(item.id); setReportStatus(""); }}>Report message</button>}</article>) : <p className="friendEmpty">This is the beginning of your conversation.</p>}</div>{reportTarget && <form className="messageReportForm" onSubmit={reportMessage}><strong>Report this message</strong><p>Tell our safety team what is concerning. Reports are private.</p><textarea value={reportDetails} onChange={event => setReportDetails(event.target.value)} minLength={10} maxLength={3000} rows={3} placeholder="Describe the concern (at least 10 characters)." required/><div><button type="submit" disabled={reportDetails.trim().length < 10}>Submit report</button><button type="button" className="secondary" onClick={() => setReportTarget("")}>Cancel</button></div>{reportStatus && <p role="status">{reportStatus}</p>}</form>}<form onSubmit={sendMessage}><label htmlFor="messageDraft">Message</label><textarea id="messageDraft" value={draft} onChange={event => setDraft(event.target.value)} maxLength={2000} rows={3} placeholder="Write a respectful message…" required/><div><small>{draft.length}/2000</small><button type="submit" disabled={sending || !draft.trim()}>{sending ? "Sending…" : "Send message"}</button></div></form></> : <div className="messageThreadEmpty"><span className="messageWelcomeIcon" aria-hidden="true">✉</span><h2>Your conversations, together</h2><p>Select a chat to pick up where you left off, or find someone new to connect with.</p><div><Link href="/friends">Your friends</Link><Link href="/dating">Meet people</Link></div></div>}</section></div>
       <p className="switch"><Link href="/account">Back to account</Link> · <Link href="/safety">Safety Center</Link></p>
     </section><footer className="plannedFeatureFooter">Connect · Your people. Your passions. Your Connect.</footer>
   </main>;
