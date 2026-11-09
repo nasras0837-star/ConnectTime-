@@ -34,9 +34,13 @@ This document tracks controls to implement and verify. It is a checklist, not ce
 - Referrer-Policy strict-origin-when-cross-origin
 - Permissions-Policy: camera/microphone same-origin; geolocation disabled
 - HSTS (verify production HTTPS and includeSubDomains suitability)
+- Strict, Secure, HttpOnly Appwrite session cookie configured at the SSR handler
+- X-Permitted-Cross-Domain-Policies, Origin-Agent-Cluster, and Cross-Origin-Opener-Policy headers
 - poweredByHeader disabled
 
 ## Operational security
+- [ ] In Appwrite Console, verify email, enable session alerts, enforce strong password policy, review rate limits and allowed origins.
+- [ ] Verify MFA enrollment and challenge flows end-to-end with TOTP, verified email/phone factors, and recovery codes.
 - [ ] Require MFA for GitHub, hosting, Appwrite, and privileged staff accounts.
 - [ ] Protect main branch; require CI checks and review for production changes.
 - [ ] Run dependency audit, secret scanning, SAST, and security-header checks in CI.
