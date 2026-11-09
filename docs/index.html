@@ -700,6 +700,27 @@ body :is(a,button):focus-visible{outline:3px solid #63e8ff!important;outline-off
 @media(prefers-reduced-motion:reduce){.ctHeroProduct,.ctSocialPreviewCard,.featureDirectoryGroup .tile{transition:none!important}.ctHeroProduct:hover,.ctSocialPreviewCard:hover,.featureDirectoryGroup .tile:hover{transform:none!important}}
 
 </style>
+<style id="connect-no-white-backgrounds">
+
+/* User direction: absolutely no white page/card backgrounds — use dark surfaces throughout. */
+html,body{background:#050b20!important;background-image:radial-gradient(ellipse at 12% 8%,rgba(30,91,190,.24),transparent 38%),radial-gradient(ellipse at 88% 22%,rgba(112,35,150,.2),transparent 34%),linear-gradient(180deg,#050b20 0%,#08132f 52%,#070b20 100%)!important;color:#edf5ff!important}
+body *{background-color:transparent!important}
+body :is(h1,h2,h3,h4,h5,h6,p,li,small,label,span,strong,b,em,summary){color:#edf5ff}
+body :is(.panel,.tile,.topic,.post,.feed,.metrics,.join,.ctRightCard,.ctAppRightCard,.ctSocialPreview,.ctSocialPreviewCard,.ctHeroProduct,.ctHeroProductBar,.ctHeroProductBody,.ctHeroComposer,.ctHeroPost,.ctWeatherCard,.liveNewsCard,.ctFeedbackCard,.ctHomeMarketCard,.ctSignupCta){background:linear-gradient(145deg,rgba(13,29,65,.96),rgba(8,17,43,.98))!important;border-color:rgba(100,190,255,.28)!important;color:#edf5ff!important}
+.ctHeroProductBar{background:linear-gradient(90deg,#101f46,#17234d)!important}
+.ctHeroProductBody{background:#0b1735!important}
+.ctHeroComposer,.ctHeroPost{background:#111f43!important}
+.ctHeroPostVisual{background:radial-gradient(circle at 75% 15%,rgba(255,91,194,.22),transparent 40%),linear-gradient(120deg,#20245a,#123b61 55%,#45204e)!important}
+.ctSocialPreview{background:linear-gradient(125deg,#101d43,#102c4d 52%,#321b49)!important}
+.ctSocialPreviewCard{background:linear-gradient(145deg,#14254b,#101b3c)!important;border-color:rgba(129,193,255,.28)!important}
+.featureDirectoryGroup .tile{background:linear-gradient(145deg,#102b62,#0a1538)!important}
+body a:not(.btn){color:#79eaff}
+body input,body textarea,body select{background:#101d3d!important;color:#f4f8ff!important;border:1px solid rgba(117,190,255,.38)!important}
+body input::placeholder,body textarea::placeholder{color:#9aafd0!important}
+body .notice,body .eyebrow{color:#a8eaff!important}
+body .btn{color:#fff!important;-webkit-text-fill-color:#fff!important}
+
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a><div class="wrap">
