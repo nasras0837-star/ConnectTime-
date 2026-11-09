@@ -27,6 +27,7 @@ export async function GET(request: Request) {
   const search = (url.searchParams.get("q") || "").trim().slice(0, 60).toLowerCase();
   const country = (url.searchParams.get("country") || "").trim().slice(0, 80).toLowerCase();
   const interest = (url.searchParams.get("interest") || "").trim().slice(0, 32).toLowerCase();
+  const cursor = (url.searchParams.get("cursor") || "").trim().slice(0, 128);
   try {
     const profileTableId = process.env.APPWRITE_PROFILES_TABLE_ID;
     const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
@@ -39,8 +40,10 @@ export async function GET(request: Request) {
       throw new Error("Profile discovery storage is not fully configured.");
     }
     const { tablesDB, databaseId } = communitySafetyStore();
+    const profileQueries = [Query.equal("visibility", ["public", "members"]), Query.orderDesc("$updatedAt"), Query.limit(100)];
+    if (cursor) profileQueries.push(Query.cursorAfter(cursor));
     const [profiles, outgoingBlocks, incomingBlocks, viewerProfiles] = await Promise.all([
-      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("visibility", ["public", "members"]), Query.orderDesc("$updatedAt"), Query.limit(100)] }),
+      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: profileQueries }),
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", viewer.$id), Query.limit(500)] }),
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] }),
       tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("user_id", [viewer.$id]), Query.limit(1)] })
@@ -110,7 +113,7 @@ export async function GET(request: Request) {
         return null;
       }
     }));
-    return NextResponse.json({ profiles: eligible.filter(Boolean).sort((left, right) => (right?.matchScore || 0) - (left?.matchScore || 0)).slice(0, 60) }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ profiles: eligible.filter(Boolean).sort((left, right) => (right?.matchScore || 0) - (left?.matchScore || 0)).slice(0, 60), nextCursor: profiles.rows.length === 100 ? String(profiles.rows[profiles.rows.length - 1].$id) : null }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Profile discovery failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Profile discovery is not configured or is temporarily unavailable." }, { status: 503 });
