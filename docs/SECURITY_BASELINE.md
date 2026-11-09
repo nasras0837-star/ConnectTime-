@@ -56,4 +56,4 @@ This document tracks controls to implement and verify. It is a checklist, not ce
 - [ ] Production configuration reviewed; no secrets/debug endpoints exposed.
 
 ## Authentication architecture note
-Connect's current sign-in flow uses Appwrite Authentication with the Appwrite React SSR handler. MFA UI is being added for TOTP, verified email/phone challenges, and recovery codes. Verify the deployed Appwrite project configuration, domain allowlist, email delivery, MFA factors, session alerts, and server-side authorization before treating these controls as production-ready.
+Connect's current sign-in flow uses Appwrite Authentication with the Appwrite React SSR handler. MFA UI is added for TOTP enrollment, verified email/phone challenges, and one-time recovery codes; end-to-end deployment testing remains required. Verify the deployed Appwrite project configuration, domain allowlist, email delivery, MFA factors, session alerts, and server-side authorization before treating these controls as production-ready.
