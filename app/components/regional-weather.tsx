@@ -33,9 +33,18 @@ export default function RegionalWeather() {
   const [refresh,setRefresh] = useState(0);
 
   useEffect(() => {
+    // Reset a manually searched city when the member changes regional edition.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setQuery("");
+    setCity("");
+  }, [countryCode]);
+
+  useEffect(() => {
     const controller = new AbortController();
     const selectedCity = query.trim() || capitals[countryCode] || "Washington";
-    setLoading(true); setError("");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLoading(true);
+    setError("");
     const languageCode = language === "zh" ? "zh" : language;
     fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(selectedCity)+"&count=1&language="+encodeURIComponent(languageCode)+"&format=json",{signal:controller.signal})
       .then(r=>{if(!r.ok)throw new Error("Location lookup is unavailable.");return r.json();})
@@ -63,7 +72,7 @@ export default function RegionalWeather() {
     <form className="ctWeatherSearch" onSubmit={searchCity}><label htmlFor="ct-weather-city">City or town</label><input id="ct-weather-city" value={city} onChange={e=>setCity(e.target.value)} placeholder={"Search a city in "+countryName}/><button type="submit">Update location</button></form>
     {loading?<p role="status">Loading regional forecast…</p>:error?<p role="alert">{error}</p>:data&&<>
       <div className="ctWeatherCurrent"><div><span>{data.city}</span><strong>{weatherIcon(data.current.weather_code)} {Math.round(data.current.temperature_2m)}{unit}</strong><small>{weatherLabel(data.current.weather_code)}</small></div><div className="ctWeatherDetails"><span>Feels like <b>{Math.round(data.current.apparent_temperature)}{unit}</b></span><span>Humidity <b>{data.current.relative_humidity_2m}%</b></span><span>Wind <b>{Math.round(data.current.wind_speed_10m)} {windUnit}</b></span></div></div>
-      <div className="ctWeatherForecast">{data.daily.time.map((day,index)=><article key={day}><b>{new Date(day+"T12:00:00").toLocaleDateString(undefined,{weekday:"short"})}</b><span>{weatherIcon(data.daily.weather_code[index])}</span><strong>{Math.round(data.daily.temperature_2m_max[index])}° / {Math.round(data.daily.temperature_2m_min[index])}°</strong><small>Rain {data.daily.precipitation_probability_max[index] ?? 0}%</small></article>)}</div>
+      <div className="ctWeatherForecast">{data.daily.time.map((day,index)=><article key={day}><b>{new Date(day+"T12:00:00").toLocaleDateString(undefined,{weekday:"short"})}</b><span>{weatherIcon(data.daily.weather_code[index])}</span><strong>{Math.round(data.daily.temperature_2m_max[index])}{unit} / {Math.round(data.daily.temperature_2m_min[index])}{unit}</strong><small>Rain {data.daily.precipitation_probability_max[index] ?? 0}%</small></article>)}</div>
       <small className="ctWeatherAttribution">Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Location defaults to the country capital and can be changed above.</small>
     </>}
   </section>;
