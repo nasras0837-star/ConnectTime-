@@ -137,7 +137,7 @@ export default function MessagesPage() {
     finally { setSending(false); }
   }
 
-  return <main className="authShell"><ConnectSiteHeader />
+  return <main className="connectFeatureShell"><ConnectSiteHeader />
     <section className="authCard messagesCard"><div className="eyebrow">YOUR PRIVATE CIRCLE</div><h1>Messages</h1><p>Private one-to-one messages are available between eligible members who are already connected.</p>
       {error && <p className="message" role="alert">{error}</p>}{notice && <p className="message" role="status">{notice}</p>}
       <div className="messagesLayout"><aside className="messageInbox"><h2>Inbox</h2><form onSubmit={startConversation} className="messageStartForm"><label htmlFor="messageNewHandle">Start a conversation</label><div><input id="messageNewHandle" value={newHandle} onChange={event => setNewHandle(event.target.value)} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" placeholder="Member handle" required/><button type="submit">Open</button></div><small>Only accepted connections can exchange private messages.</small></form>{loading ? <p>Loading conversations…</p> : conversations.length ? conversations.map(item => <button key={item.peer.handle} className={peer?.handle === item.peer.handle ? "conversationChoice selected" : "conversationChoice"} onClick={() => void openConversation(item.peer)}><strong>{item.peer.displayName}</strong><span>@{item.peer.handle}</span><small>{item.preview}</small>{item.unreadCount > 0 && <em>{item.unreadCount} new</em>}</button>) : <p className="friendEmpty">No conversations yet. Connect with a member to start a private conversation.</p>}</aside>
