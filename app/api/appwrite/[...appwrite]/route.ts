@@ -6,7 +6,7 @@ function handlers() {
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const apiKey = process.env.APPWRITE_API_KEY;
   if (!endpoint || !projectId || !apiKey) return null;
-  return createAppwriteHandlers({ endpoint, projectId, apiKey, basePath: "/api/appwrite" });
+  return createAppwriteHandlers({ endpoint, projectId, apiKey, basePath: "/api/appwrite", cookieOptions: { secure: true, httpOnly: true, sameSite: "strict", path: "/" } });
 }
 
 async function unavailable() {
