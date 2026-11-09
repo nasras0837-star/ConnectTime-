@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import MfaPanel from "./mfa-panel";
 import { useEffect, useState } from "react";
 
 type Preferences = { friend_requests: boolean; friend_acceptances: boolean; private_messages: boolean; dating_likes: boolean; product_updates: boolean };
@@ -42,6 +43,7 @@ export default function SettingsPage() {
 
   return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><section className="authCard settingsCard">
     <div className="eyebrow">ACCOUNT CONTROL</div><h1>Account settings</h1><p>Manage your in-app notification preferences and profile privacy.</p>
+    <MfaPanel />
     <h2>Notifications</h2>
     {loading ? <p role="status">Loading settings…</p> : <div className="settingsChoices">{choices.map(([key, title, description]) => <label className="settingsChoice" key={key}><span><strong>{title}</strong><small>{description}</small></span><input type="checkbox" checked={settings[key]} onChange={e => setSettings(current => ({ ...current, [key]: e.target.checked }))}/></label>)}</div>}
     <button className="button" onClick={save} disabled={loading || saving || Boolean(error)}>{saving ? "Saving…" : "Save preferences"}</button>
