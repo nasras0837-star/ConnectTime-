@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type Profile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string; matchScore?: number; matchReasons?: string[] };
+type Profile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string; matchScore?: number | null; matchReasons?: string[] };
 const goalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
 
 export default function DatingPage() {
@@ -157,6 +157,7 @@ export default function DatingPage() {
         <h2>{profile.displayName}, {profile.age}</h2><p className="discoverHandle">@{profile.handle}</p>
         <p>{profile.bio || "Ready to meet new people."}</p><p className="discoverLocation">{[profile.region, profile.country].filter(Boolean).join(", ")}</p>
         <p><strong>{goalLabels[profile.relationshipGoal] || "Open to meeting"}</strong></p>
+        {typeof profile.matchScore === "number" && <div className="datingMatchFit"><strong>{profile.matchScore}% profile compatibility</strong>{profile.matchReasons?.length ? <span>{profile.matchReasons.join(" · ")}</span> : <span>No shared details found yet. Add interests and a relationship goal to improve recommendations.</span>}</div>}
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
         {!liked.includes(profile.handle) && <label className="datingSelectMember"><input type="checkbox" checked={selected.includes(profile.handle)} onChange={() => toggleSelected(profile.handle)} disabled={bulkSending}/> Select this person</label>}
         <button className="discoverConnectButton" disabled={!!sending || liked.includes(profile.handle)} onClick={() => void like(profile)}>{sending === profile.handle ? "Sending…" : liked.includes(profile.handle) ? "♥ Like sent" : "♡ Send a like"}</button>
