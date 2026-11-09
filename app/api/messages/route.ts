@@ -78,7 +78,7 @@ async function peerAccess(s: Services, viewerId: string, peerId: string, visibil
     blocked(s, viewerId, peerId),
     connected(s, viewerId, peerId)
   ]);
-  return ok && !isBlocked && canViewProfile(visibility, false, isConnected);
+  return ok && !isBlocked && isConnected && canViewProfile(visibility, false, isConnected);
 }
 
 function messageView(row: Record<string, unknown>, viewerId: string) {
