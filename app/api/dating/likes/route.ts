@@ -87,7 +87,7 @@ export async function GET() {
       if (!row || !eligibleIds.has(id) || !["public", "members"].includes(String(row.visibility)) || Number(row.age || 0) < 18 || !row.gender) return null;
       return {
         handle: String(row.handle || ""),
-        photoUrl: String(row.photo_url || ""),
+        photoUrl: row.photo_file_id ? "/api/profile/photo/" + encodeURIComponent(String(row.photo_file_id)) : String(row.photo_url || ""),
         bio: String(row.bio || ""),
         region: String(row.region || ""),
         relationshipGoal: String(row.relationship_goal || ""),
