@@ -3,6 +3,7 @@ import { Client, Databases, ID, Query, TablesDB } from "node-appwrite";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 import { isEligible } from "@/lib/access-policy";
+import { canViewProfile } from "@/lib/profile-visibility";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,10 +57,10 @@ async function profileByHandle(s: Services, handle: string) {
   const result = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("handle", handle), Query.limit(2)] });
   if (result.rows.length !== 1) return null;
   const row = result.rows[0];
-  if (!["public", "members"].includes(String(row.visibility || ""))) return null;
+  if (!["public", "members", "friends"].includes(String(row.visibility || ""))) return null;
   const userId = String(row.user_id || "");
   if (!userId) return null;
-  return { userId, handle: String(row.handle || ""), displayName: String(row.display_name || row.handle || ""), country: String(row.country || "") };
+  return { userId, handle: String(row.handle || ""), displayName: String(row.display_name || row.handle || ""), country: String(row.country || ""), visibility: String(row.visibility || "") };
 }
 
 async function connected(s: Services, a: string, b: string) {
@@ -70,14 +71,14 @@ async function connected(s: Services, a: string, b: string) {
   return ab.rows.length > 0 || ba.rows.length > 0;
 }
 
-async function peerAccess(s: Services, viewerId: string, peerId: string) {
+async function peerAccess(s: Services, viewerId: string, peerId: string, visibility: string) {
   if (!peerId || peerId === viewerId) return false;
   const [ok, isBlocked, isConnected] = await Promise.all([
     eligible(s, peerId),
     blocked(s, viewerId, peerId),
     connected(s, viewerId, peerId)
   ]);
-  return ok && !isBlocked && isConnected;
+  return ok && !isBlocked && canViewProfile(visibility, false, isConnected);
 }
 
 function messageView(row: Record<string, unknown>, viewerId: string) {
@@ -101,7 +102,7 @@ export async function GET(request: Request) {
     if (peerHandle) {
       if (!/^[a-z0-9_]{3,24}$/.test(peerHandle)) return NextResponse.json({ error: "Enter a valid member handle." }, { status: 400 });
       const peer = await profileByHandle(s, peerHandle);
-      if (!peer || !await peerAccess(s, user.$id, peer.userId)) return NextResponse.json({ error: "Messaging is available only between eligible connections." }, { status: 404 });
+      if (!peer || !await peerAccess(s, user.$id, peer.userId, peer.visibility)) return NextResponse.json({ error: "Messaging is available only between eligible connections." }, { status: 404 });
       const [sent, received] = await Promise.all([
         s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.messagesTableId, queries: [Query.equal("sender_user_id", user.$id), Query.equal("recipient_user_id", peer.userId), Query.orderAsc("created_at"), Query.limit(100)] }),
         s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.messagesTableId, queries: [Query.equal("sender_user_id", peer.userId), Query.equal("recipient_user_id", user.$id), Query.orderAsc("created_at"), Query.limit(100)] })
@@ -122,10 +123,9 @@ export async function GET(request: Request) {
     }
     const conversations = [];
     for (const [peerId, rows] of grouped) {
-      if (!await peerAccess(s, user.$id, peerId)) continue;
       const profileRows = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", peerId), Query.limit(1)] });
       const profile = profileRows.rows[0];
-      if (!profile || !["public", "members"].includes(String(profile.visibility || ""))) continue;
+      if (!profile || !await peerAccess(s, user.$id, peerId, String(profile.visibility || ""))) continue;
       rows.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
       const latest = rows[0];
       conversations.push({
