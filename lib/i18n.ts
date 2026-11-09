@@ -1,4 +1,4 @@
-export type LanguageCode = "en" | "es" | "fr" | "ar" | "pt" | "hi" | "zh" | "ur";
+export type LanguageCode = "en" | "es" | "fr" | "ar" | "pt" | "hi" | "zh" | "ur" | "de" | "ja" | "ko";
 
 export const languages: { code: LanguageCode; label: string; native: string; dir: "ltr" | "rtl" }[] = [
   { code: "en", label: "English", native: "English", dir: "ltr" },
@@ -9,9 +9,12 @@ export const languages: { code: LanguageCode; label: string; native: string; dir
   { code: "hi", label: "Hindi", native: "हिन्दी", dir: "ltr" },
   { code: "zh", label: "Chinese (Simplified)", native: "简体中文", dir: "ltr" },
   { code: "ur", label: "Urdu", native: "اردو", dir: "rtl" },
+  { code: "de", label: "German", native: "Deutsch", dir: "ltr" },
+  { code: "ja", label: "Japanese", native: "日本語", dir: "ltr" },
+  { code: "ko", label: "Korean", native: "한국어", dir: "ltr" },
 ];
 
-export const messages: Record<LanguageCode, Record<string, string>> = {
+export const messages = {
   en: {
     home:"Home", friends:"Friends", requests:"Friend Requests", messages:"Messages", videoChat:"Video Chat",
     dating:"Dating · 18+", marketplace:"Marketplace", forums:"Forums", chatRooms:"Chat Rooms", blogs:"Blogs",
@@ -184,4 +187,10 @@ export const messages: Record<LanguageCode, Record<string, string>> = {
     alreadyRegistered:"کیا آپ پہلے سے رجسٹرڈ ہیں؟", newToConnect:"کیا آپ Connect پر نئے ہیں؟",
     ageVerificationNote:"عمر کی تصدیق شناخت کی تصدیق نہیں ہے۔ مکمل رسائی اس وقت تک بند رہے گی جب تک کوئی قابلِ اعتماد تصدیقی سروس آزادانہ طور پر بالغ ہونے کی تصدیق نہ کر دے۔"
   },
-};
+} as Record<LanguageCode, Record<string, string>>;
+
+Object.assign(messages, {
+  de: { ...messages.en, home:"Startseite", friends:"Freunde", requests:"Freundschaftsanfragen", messages:"Nachrichten", videoChat:"Videoanruf", dating:"Dating · 18+", marketplace:"Marktplatz", forums:"Foren", chatRooms:"Chatrooms", blogs:"Blogs", videoTube:"Connect Video Tube", news:"Nachrichten & Stories", events:"Veranstaltungen", createPost:"Beitrag erstellen", live:"Live", advertise:"Werben", login:"Anmelden", joinFree:"Kostenlos beitreten ↗", search:"Personen, Beiträge und Gruppen suchen…", welcome:"Willkommen bei Connect", communityStarts:"Deine Community beginnt hier", createProfile:"Profil erstellen →", oneWorld:"EINE WELT. MILLIONEN MÖGLICHKEITEN.", heroLine1:"Lerne Menschen", heroLine2:"aus aller Welt kennen.", intro:"Verbinde dich mit Menschen auf der ganzen Welt, teile Interessen, entdecke neue Perspektiven und baue bedeutungsvolle Verbindungen auf.", freeProfile:"Kostenloses Profil erstellen ↗", exploreVideo:"Connect Video Tube entdecken", community:"DEINE COMMUNITY", latestConversations:"Neueste Gespräche", forYou:"Für dich", language:"Sprache", languageSaved:"Deine Spracheinstellung wird auf diesem Gerät gespeichert.", createAccount:"Konto erstellen", adultsOnly:"Connect ist für Erwachsene ab 18 Jahren.", displayName:"Anzeigename", emailAddress:"E-Mail-Adresse", countryWhereLive:"Wohnsitzland", password:"Passwort", confirm18:"Ich bestätige, dass ich mindestens 18 Jahre alt bin.", createAccountButton:"Konto erstellen", alreadyRegistered:"Bereits registriert?", newToConnect:"Neu bei Connect?" },
+  ja: { ...messages.en, home:"ホーム", friends:"友達", requests:"友達リクエスト", messages:"メッセージ", videoChat:"ビデオチャット", dating:"デート · 18+", marketplace:"マーケットプレイス", forums:"フォーラム", chatRooms:"チャットルーム", blogs:"ブログ", videoTube:"Connect 動画", news:"ニュースと記事", events:"イベント", createPost:"投稿を作成", live:"ライブ", advertise:"広告", login:"ログイン", joinFree:"無料で参加 ↗", search:"人、投稿、グループを検索…", welcome:"Connect へようこそ", communityStarts:"ここからコミュニティが始まります", createProfile:"プロフィールを作成 →", oneWorld:"ひとつの世界。無限の可能性。", heroLine1:"世界中の人々と", heroLine2:"つながろう。", intro:"世界中の人々とつながり、興味を共有し、新しい視点を発見して、有意義な関係を築きましょう。", freeProfile:"無料プロフィールを作成 ↗", exploreVideo:"Connect 動画を見る", community:"あなたのコミュニティ", latestConversations:"最新の会話", forYou:"おすすめ", language:"言語", languageSaved:"言語設定はこの端末に保存されます。", createAccount:"アカウントを作成", adultsOnly:"Connect は18歳以上の成人向けです。", displayName:"表示名", emailAddress:"メールアドレス", countryWhereLive:"居住国", password:"パスワード", confirm18:"18歳以上であることを確認します。", createAccountButton:"アカウントを作成", alreadyRegistered:"登録済みですか？", newToConnect:"Connect は初めてですか？" },
+  ko: { ...messages.en, home:"홈", friends:"친구", requests:"친구 요청", messages:"메시지", videoChat:"영상 채팅", dating:"데이트 · 18+", marketplace:"마켓플레이스", forums:"포럼", chatRooms:"채팅방", blogs:"블로그", videoTube:"Connect 동영상", news:"뉴스 및 스토리", events:"이벤트", createPost:"게시물 작성", live:"라이브", advertise:"광고", login:"로그인", joinFree:"무료 가입 ↗", search:"사람, 게시물, 그룹 검색…", welcome:"Connect에 오신 것을 환영합니다", communityStarts:"커뮤니티가 여기서 시작됩니다", createProfile:"프로필 만들기 →", oneWorld:"하나의 세계. 무한한 가능성.", heroLine1:"전 세계 사람들과", heroLine2:"연결하세요.", intro:"전 세계 사람들과 연결하고 관심사를 공유하며 새로운 관점을 발견하고 의미 있는 관계를 만들어 보세요.", freeProfile:"무료 프로필 만들기 ↗", exploreVideo:"Connect 동영상 둘러보기", community:"나의 커뮤니티", latestConversations:"최근 대화", forYou:"추천", language:"언어", languageSaved:"언어 설정이 이 기기에 저장됩니다.", createAccount:"계정 만들기", adultsOnly:"Connect는 만 18세 이상 성인을 위한 서비스입니다.", displayName:"표시 이름", emailAddress:"이메일 주소", countryWhereLive:"거주 국가", password:"비밀번호", confirm18:"만 18세 이상임을 확인합니다.", createAccountButton:"계정 만들기", alreadyRegistered:"이미 가입하셨나요?", newToConnect:"Connect가 처음이신가요?" }
+});
