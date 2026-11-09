@@ -147,6 +147,7 @@ const marketCopy: Record<string,MarketCopyEntry> = {
 const investmentAccounts = [
   { name: "E*TRADE", type: "Brokerage & retirement", mark: "E*", url: "https://us.etrade.com/etx/pxy/login" , countries:["US"]},
   { name: "Charles Schwab", type: "Brokerage & wealth management", mark: "CS", url: "https://www.schwab.com/" , countries:["US"]},
+  { name: "Binance.US", type: "Crypto exchange · US state availability varies", mark: "B", url: "https://www.binance.us/", countries:["US"]},
   { name: "Coinbase", type: "Crypto exchange", mark: "CB", url: "https://www.coinbase.com/signin" , countries:["US","GB","CA","AU","SG"]},
   { name: "Robinhood", type: "Stocks, options & crypto", mark: "RH", url: "https://robinhood.com/" , countries:["US","GB"]},
   { name: "Fidelity", type: "Brokerage & retirement", mark: "F", url: "https://www.fidelity.com/" , countries:["US","GB","CA"]},
