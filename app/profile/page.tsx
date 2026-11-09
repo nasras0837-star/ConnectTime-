@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 
-type Profile = { handle?: string; display_name?: string; bio?: string; country?: string; region?: string; interests?: string; photo_url?: string; photo_file_id?: string; visibility?: string; age?: number; gender?: string; interested_in?: string; relationship_goal?: string };
+type Profile = { user_id?: string; handle?: string; display_name?: string; bio?: string; country?: string; region?: string; interests?: string; photo_url?: string; photo_file_id?: string; visibility?: string; age?: number; gender?: string; interested_in?: string; relationship_goal?: string };
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [hasSavedProfile, setHasSavedProfile] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -21,6 +22,7 @@ export default function ProfilePage() {
         const savedProfile = data.profile || {};
         const signupCountry = new URLSearchParams(window.location.search).get("country") || "";
         setProfile({ ...savedProfile, country: savedProfile.country || signupCountry });
+        setHasSavedProfile(Boolean(savedProfile.user_id));
       })
       .catch(e => setError(e instanceof Error ? e.message : "Could not load profile."))
       .finally(() => setLoading(false));
@@ -64,7 +66,7 @@ export default function ProfilePage() {
       }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Profile could not be saved.");
-      setProfile(data.profile); setMessage("Your profile has been saved.");
+      setProfile(data.profile); setHasSavedProfile(true); setMessage("Your profile has been saved.");
     } catch (e) { setError(e instanceof Error ? e.message : "Profile could not be saved."); }
     finally { setSaving(false); }
   }
@@ -85,8 +87,8 @@ export default function ProfilePage() {
           {(profile.photo_file_id || profile.photo_url) ? <img src={profile.photo_file_id ? "/api/profile/photo/" + profile.photo_file_id : profile.photo_url} alt="Your profile photo" referrerPolicy="no-referrer"/> : <div className="profilePhotoPlaceholder">{(profile.display_name || "C").slice(0,1).toUpperCase()}</div>}
           <div><strong>{profile.photo_file_id || profile.photo_url ? "Photo added" : "Add a profile photo"}</strong><small>JPEG, PNG or WebP · up to 5 MB. Stored privately and shown only to eligible adult members who can view your profile.</small></div>
         </div>
-        <label>Choose a photo<input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploadingPhoto || !profile.handle} onChange={event => { const file = event.target.files?.[0]; void uploadPhoto(file); event.currentTarget.value = ""; }}/></label>
-        {!profile.handle && <small>Save your profile details first to enable photo uploads.</small>}
+        <label>Choose a photo<input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploadingPhoto || !hasSavedProfile} onChange={event => { const file = event.target.files?.[0]; void uploadPhoto(file); event.currentTarget.value = ""; }}/></label>
+        {!hasSavedProfile && <small>Save your profile details first to enable photo uploads.</small>}
         {uploadingPhoto && <p role="status">Updating your photo…</p>}
         {(profile.photo_file_id || profile.photo_url) && <button type="button" className="button secondary" disabled={uploadingPhoto} onClick={removePhoto}>Remove photo</button>}
       </section>
