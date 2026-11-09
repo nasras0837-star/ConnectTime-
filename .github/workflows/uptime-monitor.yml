@@ -25,32 +25,35 @@ jobs:
         run: |
           node <<'NODE'
           const fs = require("node:fs");
-          const base = process.env.SITE_URL;
-          const targets = [base, new URL("/api/auth/status", base).toString()];
-          const failures = [];
-          for (const target of targets) {
-            try {
-              const response = await fetch(target, {
-                redirect: "follow",
-                signal: AbortSignal.timeout(20000),
-                headers: { "user-agent": "Connect-Uptime-Monitor/1.0" },
-              });
-              if (!response.ok) failures.push(`${target} returned HTTP ${response.status}`);
-              else if (target.endsWith("/api/auth/status")) {
-                const body = await response.json();
-                if (typeof body.configured !== "boolean") failures.push("Auth status endpoint returned an unexpected response");
+          (async () => {
+            const base = process.env.SITE_URL;
+            const targets = [base, new URL("/api/auth/status", base).toString()];
+            const failures = [];
+            for (const target of targets) {
+              try {
+                const response = await fetch(target, {
+                  redirect: "follow",
+                  signal: AbortSignal.timeout(20000),
+                  headers: { "user-agent": "Connect-Uptime-Monitor/1.0" },
+                });
+                if (!response.ok) failures.push(`${target} returned HTTP ${response.status}`);
+                else if (target.endsWith("/api/auth/status")) {
+                  const body = await response.json();
+                  if (typeof body.configured !== "boolean") failures.push("Auth status endpoint returned an unexpected response");
+                }
+              } catch (error) {
+                failures.push(`${target} failed: ${error.name || "request error"}`);
               }
-            } catch (error) {
-              failures.push(`${target} failed: ${error.name || "request error"}`);
             }
-          }
-          const summary = failures.length ? failures.join("; ") : "Both public endpoints returned healthy responses.";
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `summary<<EOF\n${summary}\nEOF\n`);
-          if (failures.length) {
-            console.error(summary);
-            process.exit(1);
-          }
-          console.log(summary);
+            const summary = failures.length ? failures.join("; ") : "Both public endpoints returned healthy responses.";
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `summary<<EOF\n${summary}\nEOF\n`);
+            if (failures.length) {
+              console.error(summary);
+              process.exitCode = 1;
+            } else {
+              console.log(summary);
+            }
+          })();
           NODE
       - name: Open or retain an incident issue when checks fail
         if: steps.probe.outcome == 'failure'
