@@ -1550,3 +1550,35 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(max-width:700px){.vSidebar{background:rgba(4,24,69,.96)!important}.vSidebar>a{color:#e5f5ff}}
 @media(prefers-reduced-motion:reduce){body{background-attachment:scroll}}
 
+
+
+/* Sitewide electric-blue globe enforcement: dark surfaces and high-contrast text. */
+:root{color-scheme:dark!important;--ink:#f4f8ff;--muted:#c2d8f5;--line:#28549a;--paper:#04143d}
+html,body{min-height:100%;background-color:#04143d!important;background-image:linear-gradient(180deg,rgba(2,13,43,.70),rgba(3,20,61,.88)),url('/electric-blue-globe.svg')!important;background-size:cover!important;background-position:center top!important;background-attachment:fixed!important;color:#f4f8ff!important}
+body,body *{text-shadow:none}
+body :is(h1,h2,h3,h4,h5,h6,strong,b,label,legend,summary,th){color:#f4f8ff}
+body :is(p,li,small,em,figcaption,blockquote,.muted,.description,.subtitle){color:#c8dcfa}
+body :is(a,.textLink){color:#63e8ff}
+body :is(header,nav,aside,main,section,article,footer,form,fieldset,[class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],[class*="modal"],[class*="Modal"],[class*="tile"],[class*="Tile"],[class*="sidebar"],[class*="Sidebar"],[class*="composer"],[class*="Composer"],[class*="feed"],[class*="Feed"],[class*="menu"],[class*="Menu"]){background-color:rgba(4,19,57,.88)!important;border-color:#28549a!important;color:#f4f8ff}
+body :is(input,textarea,select,option){background:#071b4b!important;color:#fff!important;border:1px solid #3970bd!important;caret-color:#63e8ff}
+body :is(input,textarea,select)::placeholder{color:#a9c8f1!important;opacity:1}
+body :is(button,[role="button"],.button,[class*="btn"]){background-color:#075bba!important;color:#fff!important;border-color:#3d9cff!important}
+body :is(button,[role="button"],.button,[class*="btn"]:hover){filter:brightness(1.12)}
+body :is(table,tr,td,th){border-color:#28549a!important;color:#eaf4ff}
+body :focus-visible{outline:3px solid #63e8ff!important;outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){body{background-attachment:fixed!important}}
+
+
+/* Readability pass: consistent typography, sizing, spacing, and text contrast. */
+:root{font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html{font-size:16px}
+body{font-family:'DM Sans','Segoe UI',Arial,sans-serif!important;font-size:16px!important;font-weight:450;line-height:1.65!important;letter-spacing:.005em;color:#f4f8ff!important}
+body :is(h1,h2,h3,h4,h5,h6){font-family:Manrope,'Segoe UI',Arial,sans-serif!important;font-weight:800!important;line-height:1.18!important;letter-spacing:-.025em!important;color:#fff!important}
+body :is(p,li,dd,dt,blockquote,label,legend,figcaption){font-size:1rem;line-height:1.7!important;color:#d7e8ff!important}
+body :is(small,.small,.caption,[class*="caption"],[class*="meta"],[class*="Meta"]){font-size:max(.78rem,12px)!important;line-height:1.55!important;color:#c2d8f5!important}
+body :is(a,button,input,textarea,select){font-family:'DM Sans','Segoe UI',Arial,sans-serif!important;font-weight:600}
+body :is(input,textarea,select){font-size:16px!important;line-height:1.5!important}
+body :is(button,[role="button"],.button){font-size:14px!important;line-height:1.35!important}
+body :is(a,.textLink){text-underline-offset:3px}
+body :is(a,button):focus-visible{outline:3px solid #63e8ff!important;outline-offset:3px}
+@media(max-width:600px){html{font-size:16px}body{line-height:1.7!important}body :is(h1){line-height:1.12!important}}
