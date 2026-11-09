@@ -9,6 +9,7 @@ export function LanguageSwitcher() {
     <div className="ctLanguageControl">
       <label htmlFor="ct-region-country">🌍 <span>Region</span></label>
       <select id="ct-region-country" value={countryCode} onChange={event => setCountryCode(event.target.value)} aria-label="Choose your country or region">
+        <option value="AUTO">Auto-detect my region</option>
         {regionCountries.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
       </select>
       <label htmlFor="ct-language-select">🌐 <span>{t("language")}</span></label>
