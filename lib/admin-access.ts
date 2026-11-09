@@ -1,5 +1,6 @@
 import "server-only";
 import { currentCommunityMember } from "@/lib/community-safety";
+import { isConfiguredAdminUserId } from "@/lib/admin-policy";
 
 /**
  * Administrative access is granted only to explicitly configured Appwrite user IDs.
@@ -7,11 +8,8 @@ import { currentCommunityMember } from "@/lib/community-safety";
  */
 export async function currentConnectAdmin() {
   const user = await currentCommunityMember();
-  if (!user) return null;
-  const configured = process.env.CONNECT_ADMIN_USER_IDS;
-  if (!configured) return null;
-  const allowedIds = new Set(configured.split(",").map(value => value.trim()).filter(Boolean));
-  return allowedIds.has(user.$id) ? user : null;
+  if (!user || !isConfiguredAdminUserId(user.$id, process.env.CONNECT_ADMIN_USER_IDS || "")) return null;
+  return user;
 }
 
 export function isAdminAllowlistConfigured() {
