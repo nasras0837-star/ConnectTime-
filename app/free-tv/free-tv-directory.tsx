@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "@/app/components/language-provider";
 
 type Channel = {
   id: string;
@@ -72,6 +73,7 @@ const regions = ["All regions","Global","North America","Europe","Latin America"
 const countries = ["All countries","United States","Canada","United Kingdom","Ireland","Germany","France","Italy","Netherlands","Portugal","Spain","Australia","India","Japan","Singapore","South Korea","Taiwan","Thailand","Indonesia","New Zealand","Malaysia","Brazil","Argentina","Mexico","Chile","Colombia","South Africa","Nigeria","Uganda","Kenya","Qatar","United Arab Emirates","Saudi Arabia"];
 
 export default function FreeTvPage() {
+  const { countryName, regionReady } = useLanguage();
   const [region,setRegion] = useState("All regions");
   const [country,setCountry] = useState("All countries");
   const [category,setCategory] = useState("All");
@@ -81,6 +83,14 @@ export default function FreeTvPage() {
   const [watchlistError,setWatchlistError] = useState("");
   const [watchlistBusy,setWatchlistBusy] = useState<string | null>(null);
   const [showSavedOnly,setShowSavedOnly] = useState(false);
+  useEffect(() => {
+    if (!regionReady) return;
+    if (countries.includes(countryName)) {
+      setCountry(countryName);
+      const match = channels.find(channel => channel.country === countryName);
+      if (match) setRegion(match.region);
+    }
+  }, [regionReady, countryName]);
   useEffect(() => {
     let active = true;
     fetch("/api/free-tv/watchlist", { cache: "no-store" }).then(async response => {
