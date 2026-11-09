@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/app/components/language-provider";
 
 type WidgetProps = { src: string; config: Record<string, unknown>; height: number; label: string };
 type AnalystResearch = {
@@ -186,6 +187,7 @@ const investmentAccounts = [
 ];
 
 export default function MarketDashboard() {
+  const { countryCode: memberCountryCode, language: memberLanguage, regionReady, setCountryCode: setMemberCountryCode } = useLanguage();
   const [countryCode, setCountryCode] = useState("US");
   const [language, setLanguage] = useState("en");
   const selectedCountry = marketCountries.find(item => item.code === countryCode) || marketCountries[0];
@@ -201,6 +203,13 @@ export default function MarketDashboard() {
   const [analystData, setAnalystData] = useState<AnalystResearch | null>(null);
   const [analystStatus, setAnalystStatus] = useState<"loading" | "ready" | "unavailable" | "error">("loading");
   const [analystMessage, setAnalystMessage] = useState("");
+
+  useEffect(() => {
+    if (!regionReady) return;
+    if (marketCountries.some(item => item.code === memberCountryCode)) setCountryCode(memberCountryCode);
+    const languageMap: Record<string,string> = { en:"en",es:"es",fr:"fr",de:"de",pt:"pt",ja:"ja",zh:"zh_CN" };
+    setLanguage(languageMap[memberLanguage] || "en");
+  }, [regionReady, memberCountryCode, memberLanguage]);
 
   useEffect(() => { const activeCountry = marketCountries.find(item => item.code === countryCode) || marketCountries[0]; const first = activeCountry.stocks[0]?.[0] || "NASDAQ:AAPL"; setSymbol(first); setSearch(first); setMessage(""); }, [countryCode]);
 
@@ -282,7 +291,7 @@ export default function MarketDashboard() {
     setMessage("");
   }
   return <main className="ctMarketsPage" dir={language === "ar" ? "rtl" : "ltr"}>
-    <header className="ctMarketsHeader"><Link href="/" className="ctMarketsBrand"><img src="/connect-logo.svg" alt="Connect" /> <span>Connect <small>Markets</small></span></Link><div className="ctMarketsLocale"><label>{copy.country}<select aria-label={copy.country} value={countryCode} onChange={event=>setCountryCode(event.target.value)}>{marketCountries.map(item=><option value={item.code} key={item.code}>{item.name}</option>)}</select></label><label>{copy.language}<select aria-label={copy.language} value={language} onChange={event=>setLanguage(event.target.value)}>{languageOptions.map(item=><option value={item.code} key={item.code}>{item.label}</option>)}</select></label></div><nav><Link href="/">{copy.home}</Link><Link href="/news">{copy.news}</Link><Link href="/community">{copy.community}</Link><Link className="ctMarketsJoin" href="/register">{copy.register}</Link></nav></header>
+    <header className="ctMarketsHeader"><Link href="/" className="ctMarketsBrand"><img src="/connect-logo.svg" alt="Connect" /> <span>Connect <small>Markets</small></span></Link><div className="ctMarketsLocale"><label>{copy.country}<select aria-label={copy.country} value={countryCode} onChange={event=>{setCountryCode(event.target.value);setMemberCountryCode(event.target.value);}}>{marketCountries.map(item=><option value={item.code} key={item.code}>{item.name}</option>)}</select></label><label>{copy.language}<select aria-label={copy.language} value={language} onChange={event=>setLanguage(event.target.value)}>{languageOptions.map(item=><option value={item.code} key={item.code}>{item.label}</option>)}</select></label></div><nav><Link href="/">{copy.home}</Link><Link href="/news">{copy.news}</Link><Link href="/community">{copy.community}</Link><Link className="ctMarketsJoin" href="/register">{copy.register}</Link></nav></header>
     <section className="ctMarketsHero"><div><span className="ctMarketsEyebrow">CONNECT · {selectedCountry.name.toUpperCase()} · FINANCIAL MARKETS</span><h1>{copy.hero}<br/><em>{copy.hero2}</em></h1><p>{copy.intro}</p><div className="ctMarketsTags">{(copy.tags || marketCopy.en.tags).map(tag=><span key={tag}>{tag}</span>)}</div></div><div className="ctMarketsHeroArt" aria-hidden="true"><span>↗</span><b>MARKET<br/>WATCH</b><i>◒</i></div></section>
     <section className="ctMarketsTicker"><TradingViewEmbed src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" config={{...tickerConfig,symbols:selectedCountry.tickerSymbols,locale:language}} height={76} label="global market ticker" /></section>
     <section className="ctMarketsSection"><div className="ctMarketsSectionHead"><div><span>{selectedCountry.name.toUpperCase()} SNAPSHOT</span><h2>{copy.overview}</h2><p>{selectedCountry.name} indexes, leading local stocks, currencies and commodities.</p></div><small>Live or delayed by exchange and instrument</small></div><div className="ctMarketsPanel"><TradingViewEmbed src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" config={{...overviewConfig,locale:language,tabs:[{title:selectedCountry.name,symbols:selectedCountry.indices},{title:"Stocks",symbols:selectedCountry.stocks.map(([s,d])=>({s,d}))},...overviewConfig.tabs.slice(2)]}} height={590} label="market overview" /></div></section>
