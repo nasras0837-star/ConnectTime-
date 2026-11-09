@@ -72,7 +72,7 @@ export async function GET(request: Request) {
         if (!preferenceAllows(row.interested_in, viewerProfile?.gender)) return null;
         if (country && !publicProfile.country.toLowerCase().includes(country)) return null;
         if (interest && !publicProfile.interests.some((item: string) => item.toLowerCase().includes(interest))) return null;
-        if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
+        if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, publicProfile.gender, publicProfile.relationshipGoal, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
         const sharedInterests = publicProfile.interests.filter((item: string) => viewerInterests.includes(item.toLowerCase()));
         const reasons: string[] = [];
         let availableWeight = 0;
