@@ -30,7 +30,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ fil
     const profile = rows.rows[0];
     if (!profile || !profile.user_id) return new NextResponse("Not found", { status: 404 });
     const ownerId = String(profile.user_id);
-    if (ownerId !== viewer.$id && !["public", "members"].includes(String(profile.visibility))) return new NextResponse("Not found", { status: 404 });
+    if (ownerId !== viewer.$id && (!["public", "members"].includes(String(profile.visibility)) || Number(profile.age || 0) < 18 || !String(profile.gender || ""))) return new NextResponse("Not found", { status: 404 });
 
     if (ownerId !== viewer.$id) {
       const [outgoing, incoming] = await Promise.all([
