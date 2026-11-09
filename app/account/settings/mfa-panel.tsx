@@ -9,6 +9,7 @@ export default function MfaPanel() {
   const { account } = useAppwrite();
   const [emailVerified, setEmailVerified] = useState(false);
   const [totpVerified, setTotpVerified] = useState(false);
+  const [phoneVerified, setPhoneVerified] = useState(false);
   const [mfaEnabled, setMfaEnabled] = useState(false);
   const [secret, setSecret] = useState("");
   const [otp, setOtp] = useState("");
@@ -24,6 +25,7 @@ export default function MfaPanel() {
     const enabled = Boolean(user.mfa);
     setEmailVerified(verifiedEmail);
     setTotpVerified(Boolean(factors.totp));
+    setPhoneVerified(Boolean(factors.phone));
     setMfaEnabled(enabled);
     return { emailVerified: verifiedEmail, factors, mfaEnabled: enabled };
   }
@@ -104,7 +106,7 @@ export default function MfaPanel() {
     {secret && <div className="mfaSetup"><p><strong>Manual setup key</strong></p><code>{secret}</code><p>Enter this key in your authenticator app. Keep it private; anyone with this key can generate your codes.</p><label>Six-digit authenticator code<input inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g,"").slice(0,6))}/></label><button type="button" className="button" onClick={verifyAuthenticator} disabled={busy || otp.length!==6}>Verify authenticator</button></div>}
     <div className="settingsChoice"><span><strong>SMS or email sign-in challenge</strong><small>Available as additional factors after the phone number or email is verified in Appwrite.</small></span><span>{emailVerified ? "Email verified" : "Email pending"}</span></div>
     <p><strong>MFA status:</strong> {mfaEnabled ? "Enabled" : "Not enabled"}</p>
-    {!mfaEnabled && totpVerified && emailVerified && <button type="button" className="button" onClick={enableMfa} disabled={busy}>Enable multi-factor authentication</button>}
+    {!mfaEnabled && totpVerified && (emailVerified || phoneVerified) && <button type="button" className="button" onClick={enableMfa} disabled={busy}>Enable multi-factor authentication</button>}
     {recoveryCodes.length>0 && <div className="mfaRecovery"><h3>One-time recovery codes</h3><p>Save these now in a password manager or other secure location. Each code can be used once. They will not be shown again.</p><ul>{recoveryCodes.map(code=><li key={code}><code>{code}</code></li>)}</ul><button type="button" className="button" onClick={()=>navigator.clipboard.writeText(recoveryCodes.join("\n"))}>Copy recovery codes</button></div>}
     {status && <p role="status" className="message">{status}</p>}{error && <p role="alert" className="message">{error}</p>}
   </section>;
