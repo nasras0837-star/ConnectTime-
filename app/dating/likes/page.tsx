@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 
-type DatingProfile = { handle: string; displayName: string; country: string; age: number; gender: string; interests: string[] };
+type DatingProfile = { handle: string; displayName: string; country: string; region?: string; bio?: string; relationshipGoal?: string; age: number; gender: string; interests: string[] };
+const datingGoalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
 type IncomingLike = { id: string; createdAt: string; profile: DatingProfile; matched: boolean };
 type InboxData = { received: IncomingLike[]; sent: DatingProfile[]; matches: IncomingLike[] };
 type FriendRequestData = { incoming: { id: string; profile: { handle: string } }[]; outgoing: { profile: { handle: string } }[]; connections: { profile: { handle: string } }[] };
@@ -100,7 +101,9 @@ export default function DatingLikesPage() {
       <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0, 1).toUpperCase()}</div>
       <div className="datingInboxCopy">
         <h3>{profile.displayName}, {profile.age}</h3>
-        <span>@{profile.handle}{profile.country ? " · " + profile.country : ""}</span>
+        <span>@{profile.handle}{[profile.region, profile.country].filter(Boolean).length ? " · " + [profile.region, profile.country].filter(Boolean).join(", ") : ""}</span>
+        {profile.relationshipGoal && <small className="datingProfileGoal">Looking for: {datingGoalLabels[profile.relationshipGoal] || profile.relationshipGoal}</small>}
+        {profile.bio && <p className="datingProfileBio">{profile.bio}</p>}
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
       </div>
       <div className="datingInboxActions">{actions}</div>
