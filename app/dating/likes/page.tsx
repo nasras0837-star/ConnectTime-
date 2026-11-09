@@ -140,8 +140,8 @@ export default function DatingLikesPage() {
           item.id
         ))}
       </div> : <div className="datingInboxEmpty">
-        <strong>{tab === "received" ? "No likes received yet" : tab === "matches" ? "Your matches will appear here" : "You haven't sent any likes yet"}</strong>
-        <p>{tab === "received" ? "When someone likes your dating profile, you’ll see them here." : tab === "matches" ? "When you and another member like each other, you’ll find your match here." : "Explore profiles that share your interests and let someone know you’re interested."}</p>
+        <strong>{search.trim() ? "No connections match your search" : tab === "received" ? "No likes received yet" : tab === "matches" ? "Your matches will appear here" : "You haven’t sent any likes yet"}</strong>
+        <p>{search.trim() ? "Try another name, location or interest." : tab === "received" ? "When someone likes your dating profile, you’ll see them here." : tab === "matches" ? "When you and another member like each other, you’ll find your match here." : "Explore profiles that share your interests and let someone know you’re interested."}</p>
         <Link href="/dating">Discover people</Link>
       </div>}
       <p className="switch"><Link href="/dating">Back to dating discovery</Link> · <Link href="/friends">Manage friend connections</Link> · <button className="friendRefresh" onClick={() => void refresh()}>Refresh inbox</button></p>
