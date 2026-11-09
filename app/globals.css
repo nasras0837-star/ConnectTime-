@@ -1354,3 +1354,9 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .datingInboxSearch button{border:0;border-radius:8px;padding:9px 11px;background:#e6eff6;color:#45647d;font-size:10px;font-weight:850;cursor:pointer}
 @media(max-width:720px){.messageInboxFilters button{padding:9px 5px}.messageSearchInput{font-size:16px}}
 @media(max-width:620px){.datingInboxSearch{align-items:stretch;flex-direction:column}.datingInboxSearch input{width:100%;font-size:16px}}
+
+/* Dating profile context and conversation recency */
+.datingProfileGoal{display:block;margin:6px 0 0;color:#52718a;font-size:11px;font-weight:800}
+.datingProfileBio{margin:8px 0;color:#38566e;font-size:12px;line-height:1.55}
+.conversationChoice{position:relative;padding-right:66px}
+.conversationChoice .conversationTime{position:absolute;top:12px;right:10px;color:#91a9c2;font-size:10px;font-weight:700;white-space:nowrap}
