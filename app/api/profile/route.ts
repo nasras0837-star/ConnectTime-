@@ -86,7 +86,7 @@ export async function PUT(request: Request) {
       ...(gender ? { gender } : {}),
       interested_in: interestedIn,
       relationship_goal: relationshipGoal,
-      photo_url: photoUrl,
+      ...(photoUrl ? { photo_url: photoUrl } : {}),
       visibility,
       updated_at: new Date().toISOString(),
     };
