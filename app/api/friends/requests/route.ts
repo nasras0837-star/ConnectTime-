@@ -57,10 +57,11 @@ async function notifyUser(tablesDB: TablesDB, databaseId: string, recipientId: s
   }
 }
 
-async function profileFor(tablesDB: TablesDB, databaseId: string, tableId: string, userId: string) {
+async function profileFor(tablesDB: TablesDB, databaseId: string, tableId: string, userId: string, allowFriends = false) {
   try {
     const row = await tablesDB.getRow({ databaseId, tableId, rowId: userId });
-    if (!["public", "members"].includes(String(row.visibility))) return null;
+    const visibility = String(row.visibility || "");
+    if (!["public", "members"].includes(visibility) && !(allowFriends && visibility === "friends")) return null;
     return { handle: String(row.handle || ""), displayName: String(row.display_name || ""), country: String(row.country || "") };
   } catch { return null; }
 }
@@ -97,7 +98,7 @@ export async function GET() {
       const otherId = direction === "incoming" ? String(row.sender_user_id) : String(row.recipient_user_id);
       if (!otherId || await isBlocked(s.tablesDB, s.databaseId, s.blockTableId, user.$id, otherId)) return null;
       if (!await eligible(s.databases, s.accessDatabaseId, s.accessCollectionId, otherId)) return null;
-      const profile = await profileFor(s.tablesDB, s.databaseId, s.profileTableId, otherId);
+      const profile = await profileFor(s.tablesDB, s.databaseId, s.profileTableId, otherId, row.status === "accepted");
       if (!profile) return null;
       return { id: String(row.$id), direction, status: String(row.status), createdAt: String(row.created_at || ""), profile };
     };
