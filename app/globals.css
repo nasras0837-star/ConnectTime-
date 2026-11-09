@@ -1295,3 +1295,26 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .ctMarketsHeader nav{flex-wrap:wrap}
 @media(max-width:900px){.ctMarketsLocale{order:3;width:100%;margin:3px 0 0}.ctMarketsHeader nav{margin-left:auto}}
 @media(max-width:560px){.ctMarketsLocale{display:grid;grid-template-columns:1fr 1fr}.ctMarketsLocale label{display:grid;gap:5px}.ctMarketsLocale select{max-width:none;width:100%;min-width:0}.ctMarketsHeader nav{width:100%;justify-content:space-between}}
+
+
+/* Region-aware weather panel */
+.ctRegionalWeather{max-width:1180px;margin:28px auto 42px;padding:clamp(20px,3vw,30px);border:1px solid #e8def6;border-radius:24px;background:linear-gradient(135deg,#f2eaff,#e9f2ff 55%,#fff0f7);box-shadow:0 14px 36px #49317812;color:#30234f}
+.ctRegionalWeatherHead{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.ctRegionalWeatherHead>div>span{font-size:10px;font-weight:900;letter-spacing:1.1px;color:#8845c4}
+.ctRegionalWeatherHead h2{margin:7px 0;font-size:clamp(24px,3vw,34px);letter-spacing:-1px}
+.ctRegionalWeatherHead p{margin:0;color:#807691;font-size:12px}
+.ctWeatherUnit{padding:9px 13px;border:1px solid #e4d7f3;border-radius:12px;background:#ffffffc9;font-weight:900}
+.ctWeatherSearch{display:flex;align-items:end;gap:9px;margin:18px 0}
+.ctWeatherSearch label{display:grid;gap:5px;flex:1;color:#766b8a;font-size:10px;font-weight:800}
+.ctWeatherSearch input{width:100%;padding:11px 13px;border:1px solid #dfd5ef;border-radius:11px;background:#fff;color:#30234f;font:inherit;font-size:12px}
+.ctWeatherSearch button{border:0;border-radius:11px;padding:12px 16px;background:linear-gradient(110deg,#7538db,#3985e6 55%,#dc35a8);color:white;font:inherit;font-size:11px;font-weight:850;cursor:pointer}
+.ctWeatherCurrent{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px;border:1px solid #fff;border-radius:17px;background:#ffffffd9}
+.ctWeatherCurrent>div:first-child>span,.ctWeatherCurrent small{display:block;color:#807691;font-size:11px}
+.ctWeatherCurrent strong{display:block;margin:5px 0;font-size:clamp(28px,4vw,42px);letter-spacing:-1px}
+.ctWeatherDetails{display:grid;gap:7px;color:#807691;font-size:11px}
+.ctWeatherDetails b{color:#38295b}
+.ctWeatherForecast{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:12px}
+.ctWeatherForecast article{display:grid;justify-items:center;gap:6px;padding:13px 6px;border:1px solid #fff;border-radius:14px;background:#ffffffc9;text-align:center}
+.ctWeatherForecast article b{font-size:11px}.ctWeatherForecast article span{font-size:21px}.ctWeatherForecast article strong{font-size:10px}.ctWeatherForecast article small{color:#807691;font-size:9px}
+.ctWeatherAttribution{display:block;margin-top:13px;color:#807691;font-size:9px}.ctWeatherAttribution a{color:#7841bd;text-decoration:underline}
+@media(max-width:620px){.ctRegionalWeather{margin:18px 14px 28px;padding:17px;border-radius:19px}.ctWeatherSearch{align-items:stretch;flex-direction:column}.ctWeatherSearch button{width:100%}.ctWeatherCurrent{align-items:flex-start;flex-direction:column}.ctWeatherForecast{gap:5px}.ctWeatherForecast article{padding:10px 3px}.ctWeatherForecast article strong{font-size:9px}}
