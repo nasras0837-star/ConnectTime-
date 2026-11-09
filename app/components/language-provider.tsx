@@ -67,6 +67,17 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [language, regionReady]);
 
   const setCountryCode = (value: string) => {
+    if (value === "AUTO") {
+      try { window.localStorage.removeItem("connect-country-manual"); } catch { /* Session-only automatic detection. */ }
+      fetch("/api/region", { cache: "no-store" }).then(response => response.ok ? response.json() : Promise.reject())
+        .then(data => {
+          const detected = /^[A-Z]{2}$/.test(data.countryCode) ? data.countryCode : "US";
+          setCountryCodeState(detected);
+          setTemperatureUnit(fahrenheitCountries.has(detected) ? "fahrenheit" : "celsius");
+          if (countryLanguage[detected]) setLanguageState(countryLanguage[detected]);
+        }).catch(() => { setCountryCodeState("US"); setTemperatureUnit("fahrenheit"); });
+      return;
+    }
     const next = /^[A-Z]{2}$/.test(value) ? value : "US";
     setCountryCodeState(next);
     setTemperatureUnit(fahrenheitCountries.has(next) ? "fahrenheit" : "celsius");
