@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type Profile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string; matchScore?: number | null; matchReasons?: string[] };
+type Profile = { handle: string; photoUrl?: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string; matchScore?: number | null; matchReasons?: string[] };
 const goalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
 
 export default function DatingPage() {
@@ -149,6 +149,7 @@ export default function DatingPage() {
     <section className="authCard discoverCard">
       <div className="eyebrow">CONNECT DATING · VERIFIED ADULTS</div>
       <h1>Meet someone who gets you.</h1>
+      <div className="datingHeroTrust"><span>✓ Verified adult community</span><span>♡ Mutual matches</span><span>⌖ Shared interests</span></div>
       <p>Discover people by shared interests, age, location and what they are looking for. Send a like to show interest. When you both like each other, it’s a match.</p>
       <div className="datingQuickSearch">
         <label htmlFor="datingPeopleSearch">Find people</label>
@@ -177,10 +178,10 @@ export default function DatingPage() {
         <button type="button" className="discoverConnectButton" onClick={() => void likeSelected()} disabled={bulkSending || selected.length === 0}>{bulkSending ? "Sending likes…" : "♡ Send likes (" + selected.filter(handle => results.some(profile => profile.handle === handle) && !liked.includes(handle)).length + ")"}</button>
       </div>}
       {loading ? <p role="status">Finding people…</p> : results.length ? <><div className="discoverGrid">{results.map(profile => <article className="discoverMember" key={profile.handle}>
-        <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div>
+        <div className="datingPhotoFrame">{profile.photoUrl ? <img src={profile.photoUrl} alt={profile.displayName + " profile"} loading="lazy" referrerPolicy="no-referrer"/> : <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div>}<span>18+ verified member</span></div>
         <h2>{profile.displayName}, {profile.age}</h2><p className="discoverHandle">@{profile.handle}</p>
         <p>{profile.bio || "Ready to meet new people."}</p><p className="discoverLocation">{[profile.region, profile.country].filter(Boolean).join(", ")}</p>
-        <p><strong>{goalLabels[profile.relationshipGoal] || "Open to meeting"}</strong></p>
+        <p className="datingProfileMeta"><strong>{goalLabels[profile.relationshipGoal] || "Open to meeting"}</strong><span>{profile.gender === "woman" ? "Woman" : profile.gender === "man" ? "Man" : profile.gender === "nonbinary" ? "Non-binary" : "Member"}</span></p>
         {typeof profile.matchScore === "number" && <div className="datingMatchFit"><strong>{profile.matchScore}% profile compatibility</strong>{profile.matchReasons?.length ? <span>{profile.matchReasons.join(" · ")}</span> : <span>No shared details found yet. Add interests and a relationship goal to improve recommendations.</span>}</div>}
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
         {!liked.includes(profile.handle) && <label className="datingSelectMember"><input type="checkbox" checked={selected.includes(profile.handle)} onChange={() => toggleSelected(profile.handle)} disabled={bulkSending}/> Select this person</label>}
