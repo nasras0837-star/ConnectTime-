@@ -75,24 +75,36 @@ export async function GET(request: Request) {
         if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
         const sharedInterests = publicProfile.interests.filter((item: string) => viewerInterests.includes(item.toLowerCase()));
         const reasons: string[] = [];
-        let score = 40;
-        if (sharedInterests.length) {
-          score += Math.min(30, sharedInterests.length * 10);
-          reasons.push(sharedInterests.length === 1 ? "1 shared interest" : sharedInterests.length + " shared interests");
+        let availableWeight = 0;
+        let earnedWeight = 0;
+        if (viewerInterests.length) {
+          availableWeight += 40;
+          earnedWeight += Math.min(40, (sharedInterests.length / viewerInterests.length) * 40);
+          if (sharedInterests.length) reasons.push(sharedInterests.length === 1 ? "1 shared interest" : sharedInterests.length + " shared interests");
         }
-        if (viewerProfile?.country && String(viewerProfile.country).toLowerCase() === publicProfile.country.toLowerCase()) {
-          score += 12;
-          reasons.push("Same country");
+        if (viewerProfile?.country) {
+          availableWeight += 20;
+          if (String(viewerProfile.country).toLowerCase() === publicProfile.country.toLowerCase()) {
+            earnedWeight += 20;
+            reasons.push("Same country");
+          }
         }
-        if (viewerProfile?.region && String(viewerProfile.region).toLowerCase() === publicProfile.region.toLowerCase()) {
-          score += 8;
-          reasons.push("Same region");
+        if (viewerProfile?.region) {
+          availableWeight += 10;
+          if (String(viewerProfile.region).toLowerCase() === publicProfile.region.toLowerCase()) {
+            earnedWeight += 10;
+            reasons.push("Same region");
+          }
         }
-        if (viewerProfile?.relationship_goal && String(viewerProfile.relationship_goal) === publicProfile.relationshipGoal) {
-          score += 10;
-          reasons.push("Same relationship goal");
+        if (viewerProfile?.relationship_goal) {
+          availableWeight += 30;
+          if (String(viewerProfile.relationship_goal) === publicProfile.relationshipGoal) {
+            earnedWeight += 30;
+            reasons.push("Same relationship goal");
+          }
         }
-        return { ...publicProfile, matchScore: Math.min(100, score), matchReasons: reasons };
+        const matchScore = availableWeight ? Math.round((earnedWeight / availableWeight) * 100) : null;
+        return { ...publicProfile, matchScore, matchReasons: reasons };
       } catch {
         // Missing or unreadable eligibility records never make a profile discoverable.
         return null;
