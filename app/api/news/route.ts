@@ -16,7 +16,7 @@ const SEARCH_TERMS: Record<NewsCategory, string> = {
   Technology: "technology AI innovation",
   Science: "science environment research",
   Gaming: "video games gaming esports",
-  Local: "local news United States",
+  Local: "local news",
   Nearby: "local news",
 };
 
@@ -116,21 +116,29 @@ async function fetchFeed(feed: Feed): Promise<ReturnType<typeof parseFeed>> {
   return articles;
 }
 
-function googleNewsFeed(category: NewsCategory, lat?: number, lon?: number): Feed {
-  const params = new URLSearchParams({
-    q: category === "Nearby" && lat !== undefined && lon !== undefined
-      ? `local news near ${lat.toFixed(2)},${lon.toFixed(2)} when:2d`
-      : `${SEARCH_TERMS[category]} when:2d`,
-    hl: "en-US",
-    gl: "US",
-    ceid: "US:en",
-  });
-  return { label: "Google News", url: `https://news.google.com/rss/search?${params.toString()}`, category };
+const COUNTRY_NAMES: Record<string, string> = {
+US:"United States",GB:"United Kingdom",CA:"Canada",AU:"Australia",NZ:"New Zealand",IE:"Ireland",DE:"Germany",FR:"France",ES:"Spain",IT:"Italy",NL:"Netherlands",PT:"Portugal",SE:"Sweden",
+BR:"Brazil",MX:"Mexico",AR:"Argentina",CL:"Chile",CO:"Colombia",IN:"India",JP:"Japan",CN:"China",TW:"Taiwan",KR:"South Korea",SG:"Singapore",MY:"Malaysia",ID:"Indonesia",TH:"Thailand",ZA:"South Africa",NG:"Nigeria",KE:"Kenya",UG:"Uganda",AE:"United Arab Emirates",SA:"Saudi Arabia",QA:"Qatar",PK:"Pakistan"
+};
+const GOOGLE_LANG: Record<string, string> = { en:"en",es:"es",fr:"fr",de:"de",pt:"pt",ja:"ja",ko:"ko",zh:"zh",hi:"hi",ar:"ar",ur:"ur" };
+
+function googleNewsFeed(category: NewsCategory, country: string, language: string, lat?: number, lon?: number): Feed {
+  const countryName = COUNTRY_NAMES[country] || "United States";
+  const lang = GOOGLE_LANG[language] || "en";
+  const query = category === "Nearby" && lat !== undefined && lon !== undefined
+    ? "local news near " + lat.toFixed(2) + "," + lon.toFixed(2) + " " + countryName + " when:2d"
+    : SEARCH_TERMS[category] + " " + (category === "Local" ? countryName : "in " + countryName) + " when:2d";
+  const params = new URLSearchParams({ q: query, hl: lang + "-" + country, gl: country, ceid: country + ":" + lang });
+  return { label: "Google News", url: "https://news.google.com/rss/search?" + params.toString(), category };
 }
 
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
   const requested = params.get("category") || "For You";
+  const requestedCountry = (params.get("country") || "US").toUpperCase();
+  const country = /^[A-Z]{2}$/.test(requestedCountry) ? requestedCountry : "US";
+  const requestedLanguage = (params.get("language") || "en").toLowerCase();
+  const language = GOOGLE_LANG[requestedLanguage] ? requestedLanguage : "en";
   const allowed: string[] = ["World", "Politics", "Sports", "Music", "Entertainment", "Business", "Technology", "Science", "Gaming", "Local", "Nearby"];
   if (requested !== "For You" && !allowed.includes(requested)) {
     return NextResponse.json({ articles: [], error: "Unknown news category." }, { status: 400 });
@@ -152,7 +160,7 @@ export async function GET(request: Request) {
 
   const feeds: Feed[] = categories.flatMap((category) => [
     ...(PUBLISHER_FEEDS[category] || []),
-    googleNewsFeed(category, category === "Nearby" ? lat : undefined, category === "Nearby" ? lon : undefined),
+    googleNewsFeed(category, country, language, category === "Nearby" ? lat : undefined, category === "Nearby" ? lon : undefined),
   ]);
   const results = await Promise.allSettled(feeds.map(fetchFeed));
   let articles = results.flatMap((result) => result.status === "fulfilled" ? result.value : []);
@@ -176,7 +184,7 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.json(
-    { articles, updatedAt: new Date().toISOString(), category: requested, providersChecked: feeds.length },
+    { articles, updatedAt: new Date().toISOString(), category: requested, country, language, providersChecked: feeds.length },
     { headers: { "Cache-Control": "public, s-maxage=120, stale-while-revalidate=300" } },
   );
 }
