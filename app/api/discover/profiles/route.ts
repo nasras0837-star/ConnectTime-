@@ -7,6 +7,16 @@ import { isEligible } from "@/lib/access-policy";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function preferenceAllows(preference: unknown, gender: unknown) {
+  const choice = String(preference || "everyone").toLowerCase();
+  const value = String(gender || "").toLowerCase();
+  if (!choice || choice === "everyone" || choice === "any") return true;
+  if (choice === "women" || choice === "woman") return value === "woman";
+  if (choice === "men" || choice === "man") return value === "man";
+  if (choice === "nonbinary" || choice === "non-binary") return value === "nonbinary";
+  return true;
+}
+
 export async function GET(request: Request) {
   const viewer = await currentCommunityMember();
   if (!viewer) return NextResponse.json({ error: "Sign in to discover members." }, { status: 401 });
@@ -17,6 +27,7 @@ export async function GET(request: Request) {
   const search = (url.searchParams.get("q") || "").trim().slice(0, 60).toLowerCase();
   const country = (url.searchParams.get("country") || "").trim().slice(0, 80).toLowerCase();
   const interest = (url.searchParams.get("interest") || "").trim().slice(0, 32).toLowerCase();
+  const cursor = (url.searchParams.get("cursor") || "").trim().slice(0, 128);
   try {
     const profileTableId = process.env.APPWRITE_PROFILES_TABLE_ID;
     const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
@@ -29,10 +40,13 @@ export async function GET(request: Request) {
       throw new Error("Profile discovery storage is not fully configured.");
     }
     const { tablesDB, databaseId } = communitySafetyStore();
-    const [profiles, outgoingBlocks, incomingBlocks] = await Promise.all([
-      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("visibility", ["public", "members"]), Query.orderDesc("$updatedAt"), Query.limit(100)] }),
+    const profileQueries = [Query.equal("visibility", ["public", "members"]), Query.orderDesc("$updatedAt"), Query.limit(100)];
+    if (cursor) profileQueries.push(Query.cursorAfter(cursor));
+    const [profiles, outgoingBlocks, incomingBlocks, viewerProfiles] = await Promise.all([
+      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: profileQueries }),
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", viewer.$id), Query.limit(500)] }),
-      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] })
+      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] }),
+      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("user_id", [viewer.$id]), Query.limit(1)] })
     ]);
     const blocked = new Set<string>([
       ...outgoingBlocks.rows.map(row => String(row.blocked_user_id || "")),
@@ -40,6 +54,8 @@ export async function GET(request: Request) {
     ]);
     const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
     const databases = new Databases(client);
+    const viewerProfile = viewerProfiles.rows[0];
+    const viewerInterests = String(viewerProfile?.interests || "").split(",").map((item: string) => item.trim().toLowerCase()).filter(Boolean);
     const candidates = profiles.rows.filter(row => row.user_id && row.user_id !== viewer.$id && !blocked.has(String(row.user_id)));
     const eligible = await Promise.all(candidates.map(async row => {
       try {
@@ -47,23 +63,58 @@ export async function GET(request: Request) {
         if (!isEligible({ adult_status: access.adult_status, account_status: access.account_status })) return null;
         const publicProfile = {
           handle: String(row.handle || ""),
+          photoUrl: row.photo_file_id ? "/api/profile/photo/" + encodeURIComponent(String(row.photo_file_id)) : String(row.photo_url || ""),
           displayName: String(row.display_name || ""),
           bio: String(row.bio || ""),
           country: String(row.country || ""),
           region: String(row.region || ""),
           interests: String(row.interests || "").split(",").map((item: string) => item.trim()).filter(Boolean), age: Number(row.age || 0), gender: String(row.gender || ""), relationshipGoal: String(row.relationship_goal || ""),
         };
-        if (!publicProfile.handle || !publicProfile.displayName) return null;
+        if (!publicProfile.handle || !publicProfile.displayName || publicProfile.age < 18 || !publicProfile.gender) return null;
+        // Discovery honors both members' stated dating preferences.
+        if (!preferenceAllows(viewerProfile?.interested_in, publicProfile.gender)) return null;
+        if (!preferenceAllows(row.interested_in, viewerProfile?.gender)) return null;
         if (country && !publicProfile.country.toLowerCase().includes(country)) return null;
         if (interest && !publicProfile.interests.some((item: string) => item.toLowerCase().includes(interest))) return null;
-        if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
-        return publicProfile;
+        if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, publicProfile.gender, publicProfile.relationshipGoal, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
+        const sharedInterests = publicProfile.interests.filter((item: string) => viewerInterests.includes(item.toLowerCase()));
+        const reasons: string[] = [];
+        let availableWeight = 0;
+        let earnedWeight = 0;
+        if (viewerInterests.length) {
+          availableWeight += 40;
+          earnedWeight += Math.min(40, (sharedInterests.length / viewerInterests.length) * 40);
+          if (sharedInterests.length) reasons.push(sharedInterests.length === 1 ? "1 shared interest" : sharedInterests.length + " shared interests");
+        }
+        if (viewerProfile?.country) {
+          availableWeight += 20;
+          if (String(viewerProfile.country).toLowerCase() === publicProfile.country.toLowerCase()) {
+            earnedWeight += 20;
+            reasons.push("Same country");
+          }
+        }
+        if (viewerProfile?.region) {
+          availableWeight += 10;
+          if (String(viewerProfile.region).toLowerCase() === publicProfile.region.toLowerCase()) {
+            earnedWeight += 10;
+            reasons.push("Same region");
+          }
+        }
+        if (viewerProfile?.relationship_goal) {
+          availableWeight += 30;
+          if (String(viewerProfile.relationship_goal) === publicProfile.relationshipGoal) {
+            earnedWeight += 30;
+            reasons.push("Same relationship goal");
+          }
+        }
+        const matchScore = availableWeight ? Math.round((earnedWeight / availableWeight) * 100) : null;
+        return { ...publicProfile, matchScore, matchReasons: reasons };
       } catch {
         // Missing or unreadable eligibility records never make a profile discoverable.
         return null;
       }
     }));
-    return NextResponse.json({ profiles: eligible.filter(Boolean).slice(0, 60) }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ profiles: eligible.filter(Boolean).sort((left, right) => (right?.matchScore || 0) - (left?.matchScore || 0)).slice(0, 60), nextCursor: profiles.rows.length === 100 ? String(profiles.rows[profiles.rows.length - 1].$id) : null }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Profile discovery failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Profile discovery is not configured or is temporarily unavailable." }, { status: 503 });

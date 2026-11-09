@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-type Profile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string };
+type Profile = { handle: string; photoUrl?: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string; matchScore?: number | null; matchReasons?: string[] };
 const goalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
 
 export default function DatingPage() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [search, setSearch] = useState("");
   const [interest, setInterest] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("everyone");
@@ -15,6 +16,10 @@ export default function DatingPage() {
   const [minAge, setMinAge] = useState(18);
   const [maxAge, setMaxAge] = useState(80);
   const [loading, setLoading] = useState(true);
+  const discoveryLoaded = useRef(false);
+  const [searching, setSearching] = useState(false);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [sending, setSending] = useState("");
   const [liked, setLiked] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -24,20 +29,78 @@ export default function DatingPage() {
 
   useEffect(() => {
     let active = true;
-    Promise.all([
-      fetch("/api/discover/profiles", { cache: "no-store" }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || "Dating discovery is unavailable."); return d.profiles || []; }),
-      fetch("/api/dating/likes", { cache: "no-store" }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || "Likes are unavailable."); return d.sent || []; })
-    ]).then(([items, sent]) => { if (active) { setProfiles(items); setLiked(sent); } })
-      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Dating is unavailable."); })
-      .finally(() => { if (active) setLoading(false); });
+    fetch("/api/dating/likes", { cache: "no-store" })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Likes are unavailable.");
+        if (active) setLiked(data.sent || []);
+      })
+      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Likes are unavailable."); });
     return () => { active = false; };
   }, []);
 
-  const results = useMemo(() => profiles.filter(p => p.age >= 18 && !!p.gender && p.age >= minAge && p.age <= maxAge
-    && (gender === "everyone" || p.gender === gender)
-    && (goal === "any" || p.relationshipGoal === goal)
-    && (!country.trim() || p.country.toLowerCase().includes(country.trim().toLowerCase()))
-    && (!interest.trim() || p.interests.some(v => v.toLowerCase().includes(interest.trim().toLowerCase())))), [profiles, minAge, maxAge, gender, goal, country, interest]);
+  useEffect(() => {
+    let active = true;
+    const params = new URLSearchParams();
+    if (search.trim()) params.set("q", search.trim());
+    if (country.trim()) params.set("country", country.trim());
+    if (interest.trim()) params.set("interest", interest.trim());
+    const query = params.toString();
+    const timer = window.setTimeout(async () => {
+      if (!discoveryLoaded.current) setLoading(true);
+      else setSearching(true);
+      try {
+        const response = await fetch("/api/discover/profiles" + (query ? "?" + query : ""), { cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Dating discovery is unavailable.");
+        if (active) { setProfiles(data.profiles || []); setNextCursor(data.nextCursor || null); discoveryLoaded.current = true; setError(""); }
+      } catch (e) {
+        if (active) setError(e instanceof Error ? e.message : "Dating discovery is unavailable.");
+      } finally {
+        if (active) { setLoading(false); setSearching(false); }
+      }
+    }, 250);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [search, country, interest]);
+
+  const results = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return profiles.filter(p => {
+      const searchable = [p.displayName, p.handle, p.bio, p.country, p.region, p.gender, goalLabels[p.relationshipGoal] || p.relationshipGoal, ...p.interests].filter(Boolean).join(" ").toLowerCase();
+      return p.age >= 18 && !!p.gender && p.age >= minAge && p.age <= maxAge
+        && (gender === "everyone" || p.gender === gender)
+        && (goal === "any" || p.relationshipGoal === goal)
+        && (!country.trim() || p.country.toLowerCase().includes(country.trim().toLowerCase()))
+        && (!interest.trim() || p.interests.some(v => v.toLowerCase().includes(interest.trim().toLowerCase())))
+        && (!query || searchable.includes(query));
+    });
+  }, [profiles, minAge, maxAge, gender, goal, country, interest, search]);
+
+  async function loadMoreProfiles() {
+    if (!nextCursor || loadingMore) return;
+    setLoadingMore(true);
+    setError("");
+    try {
+      const params = new URLSearchParams();
+      if (search.trim()) params.set("q", search.trim());
+      if (country.trim()) params.set("country", country.trim());
+      if (interest.trim()) params.set("interest", interest.trim());
+      params.set("cursor", nextCursor);
+      const response = await fetch("/api/discover/profiles?" + params.toString(), { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "More profiles could not be loaded.");
+      setProfiles(current => [...current, ...(data.profiles || []).filter((profile: Profile) => !current.some(item => item.handle === profile.handle))]);
+      setNextCursor(data.nextCursor || null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "More profiles could not be loaded.");
+    } finally {
+      setLoadingMore(false);
+    }
+  }
+
+  function clearFilters() {
+    setSearch(""); setInterest(""); setCountry(""); setGender("everyone"); setGoal("any"); setMinAge(18); setMaxAge(80); setSelected([]);
+  }
 
   async function like(profile: Profile) {
     setSending(profile.handle); setMessage(""); setError("");
@@ -86,33 +149,45 @@ export default function DatingPage() {
     <section className="authCard discoverCard">
       <div className="eyebrow">CONNECT DATING · VERIFIED ADULTS</div>
       <h1>Meet someone who gets you.</h1>
+      <div className="datingHeroTrust"><span>✓ Verified adult community</span><span>♡ Mutual matches</span><span>⌖ Shared interests</span></div>
       <p>Discover people by shared interests, age, location and what they are looking for. Send a like to show interest. When you both like each other, it’s a match.</p>
-      <div className="discoverFilters">
-        <label>Shared interest<input value={interest} onChange={e => setInterest(e.target.value)} placeholder="Music, travel, books…"/></label>
-        <label>Country<input value={country} onChange={e => setCountry(e.target.value)} placeholder="Any country"/></label>
-        <label>Interested in<select value={gender} onChange={e => setGender(e.target.value)}><option value="everyone">Everyone</option><option value="woman">Women</option><option value="man">Men</option><option value="nonbinary">Non-binary</option></select></label>
-        <label>Looking for<select value={goal} onChange={e => setGoal(e.target.value)}><option value="any">Any relationship goal</option><option value="serious_relationship">Serious relationship</option><option value="dating">Dating</option><option value="friendship">Friendship first</option></select></label>
-        <label>Minimum age<input type="number" min={18} max={110} value={minAge} onChange={e => setMinAge(Math.min(110, Math.max(18, Number(e.target.value))))}/></label>
-        <label>Maximum age<input type="number" min={18} max={110} value={maxAge} onChange={e => setMaxAge(Math.max(minAge, Math.min(110, Number(e.target.value))))}/></label>
+      <div className="datingQuickSearch">
+        <label htmlFor="datingPeopleSearch">Find people</label>
+        <div className="datingQuickSearchField"><span aria-hidden="true">⌕</span><input id="datingPeopleSearch" type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search names, interests, places or keywords…" autoComplete="off"/>{search && <button type="button" onClick={() => setSearch("")} aria-label="Clear search">×</button>}</div>
+        <p>Try a name, city, country, hobby or relationship goal.</p>
       </div>
+      <details className="datingAdvancedFilters">
+        <summary>Refine your search <span>Optional filters</span></summary>
+        <div className="discoverFilters">
+          <label>Shared interest<input value={interest} onChange={e => setInterest(e.target.value)} placeholder="Music, travel, books…"/></label>
+          <label>Country<input value={country} onChange={e => setCountry(e.target.value)} placeholder="Any country"/></label>
+          <label>Interested in<select value={gender} onChange={e => setGender(e.target.value)}><option value="everyone">Everyone</option><option value="woman">Women</option><option value="man">Men</option><option value="nonbinary">Non-binary</option></select></label>
+          <label>Looking for<select value={goal} onChange={e => setGoal(e.target.value)}><option value="any">Any relationship goal</option><option value="serious_relationship">Serious relationship</option><option value="dating">Dating</option><option value="friendship">Friendship first</option></select></label>
+          <label>Minimum age<input type="number" min={18} max={110} value={minAge} onChange={e => setMinAge(Math.min(110, Math.max(18, Number(e.target.value))))}/></label>
+          <label>Maximum age<input type="number" min={18} max={110} value={maxAge} onChange={e => setMaxAge(Math.max(minAge, Math.min(110, Number(e.target.value))))}/></label>
+        </div>
+        <button type="button" className="datingClearFilters" onClick={clearFilters}>Clear all filters</button>
+      </details>
       <p className="switch"><Link href="/profile">Complete your dating profile and interests</Link> · <Link href="/friends">Your friends</Link></p>
       {error && <p className="message" role="alert">{error}</p>}{message && <p className="message" role="status">{message}</p>}
-      <div className="communityFeedHead"><div><span>YOUR DISCOVERY</span><h2>{results.length} potential connections</h2></div><span>18+ only</span></div>
+      <div className="communityFeedHead"><div><span>YOUR DISCOVERY</span><h2>{results.length} {results.length === 1 ? "person" : "people"} to explore</h2></div><span>{searching ? "Updating results…" : "18+ only"}</span></div>
       {!loading && results.length > 0 && <div className="datingSelectionBar">
         <span>{selected.filter(handle => results.some(profile => profile.handle === handle)).length} selected</span>
         <button type="button" onClick={selectAllMatching} disabled={bulkSending}>Select all matching</button>
         <button type="button" onClick={() => setSelected([])} disabled={bulkSending || selected.length === 0}>Clear selection</button>
         <button type="button" className="discoverConnectButton" onClick={() => void likeSelected()} disabled={bulkSending || selected.length === 0}>{bulkSending ? "Sending likes…" : "♡ Send likes (" + selected.filter(handle => results.some(profile => profile.handle === handle) && !liked.includes(handle)).length + ")"}</button>
       </div>}
-      {loading ? <p role="status">Finding people…</p> : results.length ? <div className="discoverGrid">{results.map(profile => <article className="discoverMember" key={profile.handle}>
-        <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div>
+      {loading ? <p role="status">Finding people…</p> : results.length ? <><div className="discoverGrid">{results.map(profile => <article className="discoverMember" key={profile.handle}>
+        <div className="datingPhotoFrame">{profile.photoUrl ? <img src={profile.photoUrl} alt={profile.displayName + " profile"} loading="lazy" referrerPolicy="no-referrer"/> : <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div>}<span>18+ verified member</span></div>
         <h2>{profile.displayName}, {profile.age}</h2><p className="discoverHandle">@{profile.handle}</p>
         <p>{profile.bio || "Ready to meet new people."}</p><p className="discoverLocation">{[profile.region, profile.country].filter(Boolean).join(", ")}</p>
-        <p><strong>{goalLabels[profile.relationshipGoal] || "Open to meeting"}</strong></p>
+        <p className="datingProfileMeta"><strong>{goalLabels[profile.relationshipGoal] || "Open to meeting"}</strong><span>{profile.gender === "woman" ? "Woman" : profile.gender === "man" ? "Man" : profile.gender === "nonbinary" ? "Non-binary" : "Member"}</span></p>
+        {typeof profile.matchScore === "number" && <div className="datingMatchFit"><strong>{profile.matchScore}% profile compatibility</strong>{profile.matchReasons?.length ? <span>{profile.matchReasons.join(" · ")}</span> : <span>No shared details found yet. Add interests and a relationship goal to improve recommendations.</span>}</div>}
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
         {!liked.includes(profile.handle) && <label className="datingSelectMember"><input type="checkbox" checked={selected.includes(profile.handle)} onChange={() => toggleSelected(profile.handle)} disabled={bulkSending}/> Select this person</label>}
         <button className="discoverConnectButton" disabled={!!sending || liked.includes(profile.handle)} onClick={() => void like(profile)}>{sending === profile.handle ? "Sending…" : liked.includes(profile.handle) ? "♥ Like sent" : "♡ Send a like"}</button>
-      </article>)}</div> : <p>No dating profiles match these filters yet. Try widening your age range or changing your interests.</p>}
+      </article>)}</div>
+        {nextCursor && <div className="datingLoadMore"><button type="button" onClick={() => void loadMoreProfiles()} disabled={loadingMore || searching}>{loadingMore ? "Loading more people…" : "Load more people"}</button></div>}</> : <div className="datingNoResults"><strong>No people found for that search.</strong><p>Try a different keyword or remove some filters to see more profiles.</p><button type="button" onClick={clearFilters}>Show everyone</button>{nextCursor && <button type="button" onClick={() => void loadMoreProfiles()} disabled={loadingMore || searching}>{loadingMore ? "Loading…" : "Search next page"}</button>}</div>}
       <p className="switch"><Link href="/safety">Safety Center</Link> · <Link href="/profile">Edit dating profile</Link></p>
     </section>
     <footer className="plannedFeatureFooter">Connect · Meet through shared interests.</footer>

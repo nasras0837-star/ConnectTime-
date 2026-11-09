@@ -1332,3 +1332,68 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .mfaLogin p{font-size:12px}
 .settingsChoice .button{flex:0 0 auto;padding:9px 12px;font-size:11px}
 @media(max-width:620px){.mfaRecovery ul{grid-template-columns:1fr}.settingsChoice{align-items:flex-start;flex-direction:column}}
+
+
+/* Easier dating discovery search */
+.datingQuickSearch{margin:22px 0 12px;padding:17px;border:1px solid #dce8f1;border-radius:15px;background:linear-gradient(135deg,#f5faff,#eef7fb)}
+.datingQuickSearch>label{display:block;margin-bottom:8px;color:#214b67;font-size:13px;font-weight:900}
+.datingQuickSearchField{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 13px;border:1px solid #cbdde9;border-radius:12px;background:#fff;box-shadow:0 4px 14px #1c52700b}
+.datingQuickSearchField>span{color:#087eae;font-size:25px;line-height:1}
+.datingQuickSearchField input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#173e5a;font:600 14px 'DM Sans',sans-serif}
+.datingQuickSearchField input::placeholder{color:#8ba0af;font-weight:500}
+.datingQuickSearchField button{width:30px;height:30px;border:0;border-radius:50%;background:#eaf2f7;color:#41657d;font-size:20px;cursor:pointer}
+.datingQuickSearch>p{margin:8px 0 0;color:#71899b;font-size:10px}
+.datingAdvancedFilters{margin:12px 0 18px;border:1px solid #e0e9f0;border-radius:12px;background:#fff}
+.datingAdvancedFilters summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;color:#315b76;font-size:11px;font-weight:900;cursor:pointer;list-style:none}
+.datingAdvancedFilters summary::-webkit-details-marker{display:none}
+.datingAdvancedFilters summary:after{content:"＋";margin-left:auto;color:#087eae;font-size:16px}
+.datingAdvancedFilters[open] summary:after{content:"−"}
+.datingAdvancedFilters summary span{color:#91a3b0;font-size:9px;font-weight:700}
+.datingAdvancedFilters .discoverFilters{padding:0 14px 12px}
+.datingClearFilters{margin:0 14px 14px;border:1px solid #d8e5ed;border-radius:9px;padding:9px 12px;background:#f4f8fb;color:#45677e;font-size:10px;font-weight:850;cursor:pointer}
+.datingNoResults{padding:28px 18px;border:1px dashed #cbdce7;border-radius:14px;background:#f8fbfd;text-align:center}
+.datingNoResults strong{color:#315b76;font-size:14px}
+.datingNoResults p{color:#71899b;font-size:11px}
+.datingNoResults button{border:0;border-radius:9px;padding:10px 15px;background:#087eae;color:#fff;font-size:11px;font-weight:900;cursor:pointer}
+@media(max-width:620px){.datingQuickSearch{padding:13px}.datingQuickSearchField{min-height:50px}.datingQuickSearchField input{font-size:16px}.datingAdvancedFilters summary{flex-wrap:wrap}.datingAdvancedFilters summary span{margin-left:auto}}
+
+
+/* Dating compatibility indicators */
+.datingMatchFit{display:grid;gap:4px;margin:10px 0;padding:9px 10px;border:1px solid #cce9df;border-radius:10px;background:#f0faf6}
+.datingMatchFit strong{color:#16785b;font-size:11px;font-weight:900}
+.datingMatchFit span{color:#648477;font-size:9px;line-height:1.45}
+
+.datingLoadMore{display:flex;justify-content:center;margin:18px 0 8px}
+.datingLoadMore button{border:1px solid #b9d8e8;border-radius:11px;padding:12px 20px;background:#f1f8fc;color:#17658b;font-size:11px;font-weight:900;cursor:pointer}
+.datingLoadMore button:disabled{opacity:.55;cursor:wait}
+
+
+/* Polished Connect Dating discovery and member photos */
+.datingHeroTrust{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 8px}
+.datingHeroTrust span{padding:8px 11px;border:1px solid #cde4f0;border-radius:999px;background:#f3f9fd;color:#27617e;font-size:10px;font-weight:850}
+.datingPhotoFrame{position:relative;display:grid;place-items:center;min-height:210px;overflow:hidden;border-radius:13px;background:linear-gradient(135deg,#e7f2fb,#e9f6f2)}
+.datingPhotoFrame>img{width:100%;height:210px;object-fit:cover}
+.datingPhotoFrame>.discoverAvatar{width:78px;height:78px;border-radius:50%;font-size:32px}
+.datingPhotoFrame>span{position:absolute;left:10px;bottom:10px;padding:6px 9px;border-radius:99px;background:#102e48d9;color:#fff;font-size:9px;font-weight:850}
+.discoverMember{overflow:hidden}
+.datingProfileMeta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.datingProfileMeta>span{color:#6d8294;font-size:10px;font-weight:800;text-transform:capitalize}
+.datingInboxSearch{display:grid;gap:7px;margin:15px 0;color:#52677f;font-size:11px;font-weight:850}
+.datingInboxSearch input{width:100%;padding:12px 14px;border:1px solid #dce6f0;border-radius:11px;background:#fff;color:#1d3654;font:inherit;font-weight:500}
+.datingInboxPhoto{width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:15px;background:linear-gradient(135deg,#1e6fc4,#20a99c);color:#fff;font-size:24px;font-weight:900}
+.datingInboxPhoto img{width:100%;height:100%;object-fit:cover}
+.datingInboxCopy>p{margin:6px 0;color:#61788c;font-size:11px;line-height:1.5}
+.datingInboxCopy>small{display:block;margin-top:5px;color:#16816e;font-size:10px;font-weight:850}
+.datingProfilePhotoPreview{display:flex;align-items:center;gap:12px;margin:8px 0 16px;color:#71889b;font-size:11px}
+.datingProfilePhotoPreview img{width:76px;height:76px;border-radius:15px;object-fit:cover;border:1px solid #dce7ef}
+@media(max-width:620px){.datingPhotoFrame,.datingPhotoFrame>img{min-height:170px;height:170px}.datingInboxPhoto{width:56px;height:56px;flex-basis:56px}.datingHeroTrust{gap:6px}.datingHeroTrust span{font-size:9px;padding:7px 9px}}
+
+
+/* Secure profile photo upload */
+.profilePhotoUpload{display:grid;gap:10px;padding:15px;margin:16px 0;border:1px solid #dce7ef;border-radius:14px;background:#f8fbfd}
+.profilePhotoUpload .datingProfilePhotoPreview{align-items:center}
+.profilePhotoUpload .datingProfilePhotoPreview>div:last-child{display:grid;gap:5px;min-width:0}
+.profilePhotoUpload .datingProfilePhotoPreview strong{color:#25435d;font-size:12px}
+.profilePhotoPlaceholder{width:76px;height:76px;display:grid;place-items:center;flex:0 0 76px;border-radius:15px;background:linear-gradient(135deg,#1e6fc4,#20a99c);color:#fff;font-size:26px;font-weight:900}
+.profilePhotoUpload input[type=file]{display:block;width:100%;max-width:100%;margin-top:7px;font-size:12px}
+.profilePhotoUpload .button.secondary{background:#fff;color:#a23e4c;border:1px solid #e7cbd0}
