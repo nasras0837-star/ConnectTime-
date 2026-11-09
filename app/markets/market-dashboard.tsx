@@ -283,11 +283,11 @@ export default function MarketDashboard() {
     <section className="ctMarketsSection ctInvestmentAccounts">
       <div className="ctMarketsSectionHead"><div><span>{selectedCountry.name.toUpperCase()} PROVIDERS</span><h2>{copy.accounts}</h2><p>{copy.accountIntro}</p></div><small>Secure sign-in stays with each provider</small></div>
       <div className="ctInvestmentAccountGrid">
-        {investmentAccounts.filter(account => !account.countries || account.countries.includes("*") || account.countries.includes(countryCode)).map(account => <article className="ctInvestmentAccountCard" key={account.name}>
+        {investmentAccounts.filter(account => !account.countries || account.countries.includes("*") || account.countries.includes(countryCode)).map(account => <a className="ctInvestmentAccountCard" key={account.name} href={account.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${account.name} official website in a new tab`}>
           <div className="ctInvestmentAccountMark" aria-hidden="true">{account.mark}</div>
           <div className="ctInvestmentAccountInfo"><strong>{account.name}</strong><span>{account.type}</span></div>
-          <a href={account.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${account.name} official website in a new tab`}>Sign in <span aria-hidden="true">↗</span></a>
-        </article>)}
+          <span className="ctInvestmentAccountVisit">Visit official site <span aria-hidden="true">↗</span></span>
+        </a>)}
       </div>
       <p className="ctInvestmentSecurity"><span aria-hidden="true">🔒</span> You sign in directly on each provider’s official website. Availability and eligibility vary by country and provider. Connect does not collect brokerage passwords or import account balances or holdings.</p>
     </section>
