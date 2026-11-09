@@ -81,11 +81,7 @@ export default function FreeTvPage() {
   const [watchlistError,setWatchlistError] = useState("");
   const [watchlistBusy,setWatchlistBusy] = useState<string | null>(null);
   const [showSavedOnly,setShowSavedOnly] = useState(false);
-  const [selectedChannelId,setSelectedChannelId] = useState("sky-uk");
-  useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get("channel");
-    if (requested && channels.some(channel => channel.id === requested)) setSelectedChannelId(requested);
-  }, []);
+  const [selectedChannelId,setSelectedChannelId] = useState(() => channels.some(channel => channel.id === initialChannelId) ? initialChannelId : "sky-uk");
   useEffect(() => {
     let active = true;
     fetch("/api/free-tv/watchlist", { cache: "no-store" }).then(async response => {
