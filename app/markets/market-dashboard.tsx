@@ -139,22 +139,22 @@ const marketCopy: Record<string,Record<string,string>> = {
 };
 
 const investmentAccounts = [
-  { name: "E*TRADE", type: "Brokerage & retirement", mark: "E*", url: "https://us.etrade.com/etx/pxy/login" },
-  { name: "Charles Schwab", type: "Brokerage & wealth management", mark: "CS", url: "https://www.schwab.com/" },
-  { name: "Coinbase", type: "Crypto exchange", mark: "CB", url: "https://www.coinbase.com/signin" },
-  { name: "Robinhood", type: "Stocks, options & crypto", mark: "RH", url: "https://robinhood.com/" },
-  { name: "Fidelity", type: "Brokerage & retirement", mark: "F", url: "https://www.fidelity.com/" },
-  { name: "Vanguard", type: "Investing & retirement", mark: "V", url: "https://investor.vanguard.com/" },
-  { name: "Merrill Edge", type: "Self-directed investing", mark: "ME", url: "https://www.merrilledge.com/" },
-  { name: "Interactive Brokers", type: "Global brokerage", mark: "IB", url: "https://www.interactivebrokers.com/" },
-  { name: "Webull", type: "Stocks, ETFs & options", mark: "W", url: "https://www.webull.com/" },
-  { name: "SoFi Invest", type: "Investing & financial services", mark: "S", url: "https://www.sofi.com/invest/" },
-  { name: "Wealthfront", type: "Automated investing", mark: "WF", url: "https://www.wealthfront.com/" },
-  { name: "Betterment", type: "Automated investing", mark: "B", url: "https://www.betterment.com/" },
-  { name: "Morgan Stanley", type: "Wealth management", mark: "MS", url: "https://www.morganstanley.com/" },
-  { name: "J.P. Morgan", type: "Self-directed & managed investing", mark: "JP", url: "https://www.jpmorgan.com/wealth-management" },
-  { name: "Kraken", type: "Crypto exchange", mark: "K", url: "https://www.kraken.com/sign-in" },
-  { name: "Tastytrade", type: "Options & futures brokerage", mark: "T", url: "https://tastytrade.com/" },
+  { name: "E*TRADE", type: "Brokerage & retirement", mark: "E*", url: "https://us.etrade.com/etx/pxy/login" , countries:["US"]},
+  { name: "Charles Schwab", type: "Brokerage & wealth management", mark: "CS", url: "https://www.schwab.com/" , countries:["US"]},
+  { name: "Coinbase", type: "Crypto exchange", mark: "CB", url: "https://www.coinbase.com/signin" , countries:["US","GB","CA","AU","SG"]},
+  { name: "Robinhood", type: "Stocks, options & crypto", mark: "RH", url: "https://robinhood.com/" , countries:["US","GB"]},
+  { name: "Fidelity", type: "Brokerage & retirement", mark: "F", url: "https://www.fidelity.com/" , countries:["US","GB","CA"]},
+  { name: "Vanguard", type: "Investing & retirement", mark: "V", url: "https://investor.vanguard.com/" , countries:["US","GB","AU"]},
+  { name: "Merrill Edge", type: "Self-directed investing", mark: "ME", url: "https://www.merrilledge.com/" , countries:["US"]},
+  { name: "Interactive Brokers", type: "Global brokerage", mark: "IB", url: "https://www.interactivebrokers.com/" , countries:["*"]},
+  { name: "Webull", type: "Stocks, ETFs & options", mark: "W", url: "https://www.webull.com/" , countries:["US","HK","SG"]},
+  { name: "SoFi Invest", type: "Investing & financial services", mark: "S", url: "https://www.sofi.com/invest/" , countries:["US"]},
+  { name: "Wealthfront", type: "Automated investing", mark: "WF", url: "https://www.wealthfront.com/" , countries:["US"]},
+  { name: "Betterment", type: "Automated investing", mark: "B", url: "https://www.betterment.com/" , countries:["US"]},
+  { name: "Morgan Stanley", type: "Wealth management", mark: "MS", url: "https://www.morganstanley.com/" , countries:["US","GB","DE","FR","JP","SG"]},
+  { name: "J.P. Morgan", type: "Self-directed & managed investing", mark: "JP", url: "https://www.jpmorgan.com/wealth-management" , countries:["US","GB","DE","FR","JP","CA"]},
+  { name: "Kraken", type: "Crypto exchange", mark: "K", url: "https://www.kraken.com/sign-in" , countries:["US","GB","DE","FR","JP","IN","CA","AU","HK","SG","BR"]},
+  { name: "Tastytrade", type: "Options & futures brokerage", mark: "T", url: "https://tastytrade.com/" , countries:["US"]},
 ];
 
 export default function MarketDashboard() {
