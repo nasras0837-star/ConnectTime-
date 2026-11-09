@@ -68,7 +68,7 @@ export async function GET(request: Request) {
         if (!publicProfile.handle || !publicProfile.displayName || publicProfile.age < 18 || !publicProfile.gender) return null;
         // Discovery honors both members' stated dating preferences.
         if (!preferenceAllows(viewerProfile?.interested_in, publicProfile.gender)) return null;
-        if (!preferenceAllows(publicProfile.interestedIn, viewerProfile?.gender)) return null;
+        if (!preferenceAllows(row.interested_in, viewerProfile?.gender)) return null;
         if (country && !publicProfile.country.toLowerCase().includes(country)) return null;
         if (interest && !publicProfile.interests.some((item: string) => item.toLowerCase().includes(interest))) return null;
         if (search && ![publicProfile.handle, publicProfile.displayName, publicProfile.bio, publicProfile.country, publicProfile.region, ...publicProfile.interests].some(value => value.toLowerCase().includes(search))) return null;
