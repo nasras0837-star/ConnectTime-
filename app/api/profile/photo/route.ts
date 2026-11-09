@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ID, Storage } from "node-appwrite";
+import { Client, ID, Storage } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
@@ -16,7 +16,7 @@ function services() {
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!;
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!;
   const apiKey = process.env.APPWRITE_API_KEY!;
-  const storage = new Storage(new (require("node-appwrite").Client)().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
+  const storage = new Storage(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
   return { bucketId, tablesDB, databaseId, tableId: process.env.APPWRITE_PROFILES_TABLE_ID!, storage };
 }
 
