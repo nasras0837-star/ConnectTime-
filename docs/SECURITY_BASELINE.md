@@ -55,5 +55,5 @@ This document tracks controls to implement and verify. It is a checklist, not ce
 - [ ] CI lint, typecheck, build, dependency audit, and security tests pass.
 - [ ] Production configuration reviewed; no secrets/debug endpoints exposed.
 
-## Appwrite migration note
-The starter still uses Supabase SSR/client libraries. This checklist does not migrate those integrations. Appwrite migration is separate work and must be completed before backend controls can be considered implemented.
+## Authentication architecture note
+Connect's current sign-in flow uses Appwrite Authentication with the Appwrite React SSR handler. MFA UI is being added for TOTP, verified email/phone challenges, and recovery codes. Verify the deployed Appwrite project configuration, domain allowlist, email delivery, MFA factors, session alerts, and server-side authorization before treating these controls as production-ready.
