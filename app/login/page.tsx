@@ -51,7 +51,7 @@ export default function LoginPage() {
       });
     } catch (err) {
       const authError = err as { type?: string; code?: string; message?: string };
-      if (authError.type === "user_more_factors_required" || authError.code === 401 && authError.message?.includes("more factors")) {
+      if (authError.type === "user_more_factors_required") {
         try {
           const factors = await account.listMfaFactors();
           setMfaFactors(factors);
