@@ -86,8 +86,10 @@ export default function FreeTvPage() {
   useEffect(() => {
     if (!regionReady) return;
     if (countries.includes(countryName)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- synchronize the TV filters with the selected member region.
       setCountry(countryName);
       const match = channels.find(channel => channel.country === countryName);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- synchronize the TV filters with the selected member region.
       if (match) setRegion(match.region);
     }
   }, [regionReady, countryName]);
