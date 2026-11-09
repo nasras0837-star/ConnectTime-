@@ -63,6 +63,7 @@ export async function GET(request: Request) {
         if (!isEligible({ adult_status: access.adult_status, account_status: access.account_status })) return null;
         const publicProfile = {
           handle: String(row.handle || ""),
+          photoUrl: String(row.photo_url || ""),
           displayName: String(row.display_name || ""),
           bio: String(row.bio || ""),
           country: String(row.country || ""),
