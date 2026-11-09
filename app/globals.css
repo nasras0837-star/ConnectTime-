@@ -1523,3 +1523,30 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 @media(max-width:1050px){.connectDashboardLayout{grid-template-columns:210px minmax(0,1fr);gap:16px}.connectDashboardTiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.connectDashboardLayout{width:calc(100% - 22px);display:block;margin:14px auto}.connectDashboardSide{position:static;margin-bottom:16px;padding:12px}.connectDashboardIdentity{padding-bottom:12px;margin-bottom:10px}.connectDashboardSide nav{display:flex;flex-wrap:wrap}.connectDashNav{padding:9px 10px;font-size:12px}.connectDashboardSideFoot{display:flex;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px}.connectDashboardGreeting{align-items:flex-start;flex-direction:column}.connectDashboardGreeting h1{font-size:28px}.connectDashboardStatus{align-items:flex-start;flex-wrap:wrap}.connectDashboardStatus>a{margin-left:22px}.connectDashboardTiles{gap:9px}.connectDashboardTile{padding:13px;min-height:165px}.connectDashboardExplore{align-items:flex-start;flex-direction:column}.connectDashboardExploreLinks{justify-content:flex-start}}
 @media(max-width:420px){.connectDashboardTiles{grid-template-columns:1fr}.connectDashboardTile{min-height:0}.connectDashboardGreeting p{line-height:1.5}}
+
+
+/* Electric-blue globe brand system — every application route */
+:root{color-scheme:dark;--ink:#f4f9ff;--muted:#c7dcf4;--purple:#43baff;--line:#3977bd;--paper:#061b4c}
+html{background:#061b4c}
+body{min-height:100vh;color:#f4f9ff;background-color:#061b4c;background-image:linear-gradient(105deg,rgba(3,15,50,.94) 0%,rgba(4,31,88,.84) 52%,rgba(3,18,60,.62) 100%),url('/electric-blue-globe.svg');background-size:cover;background-position:center top;background-attachment:fixed}
+.vibrantHome,.connectSocialHome,.shell,.videoShell,.pageShell,.page-shell,.pageContainer,.page-container{background:transparent!important;color:#f4f9ff}
+.vHeader,.connectTopbar,.header,.videoHeader{background:rgba(4,23,67,.88)!important;border-color:#5abfff66!important;color:#f4f9ff!important;backdrop-filter:blur(16px)}
+.vSidebar,.connectLeftRail,.connectRightRail{background:rgba(4,24,69,.72)!important;border-color:#4d91d466!important}
+.vSidebar>a,.connectTopLinks a,.connectRailNav a,.header nav a,.videoHeader nav a{color:#e3f4ff}
+.vSidebar>a:hover,.vSidebar>a.vSideActive{background:linear-gradient(110deg,#087bd8,#5b45d6)!important;color:#fff}
+.vHero,.connectWelcome{box-shadow:0 20px 48px #00143d77}
+.vSectionHead h2,.connectSectionHeading h2,.sectionIntro h2,.videoIntro h1,.vMain h1,.vMain h2{color:#fff;text-shadow:0 2px 16px #00143d88}
+.vSectionHead p,.connectSectionHeading p,.sectionIntro p,.hero>p,.videoIntro>p,.adultNote,.vBottomCall p{color:#d0e7ff}
+.vInterest,.vShortcut,.feature,.videoCard,.recommendationInfo,.connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,.connectDynamicPanel,.connectQuickLink,.connectCommunityStandards{background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(226,243,255,.94))!important;border:1px solid #80d6ff99!important;color:#102b59!important;box-shadow:0 14px 34px #00143d44}
+.vInterest b,.vShortcut h3,.connectRightTitle,.connectSectionHeading strong,.connectQuickLink strong,.connectExploreText strong,.feature h3,.videoMeta h2,.recommendationInfo strong{color:#092b68!important}
+.vShortcut p,.connectQuickLink small,.connectExploreText small,.feature p,.videoMeta p,.videoMeta small,.recommendationInfo p,.connectRailSafety p,.connectRightCard p{color:#355879!important}
+.vEyebrow,.eyebrow,.videoEyebrow,.featureNumber{color:#65eaff!important}
+.vBottomCall{background:linear-gradient(105deg,#063c9a,#075fbd 60%,#4925a2)!important;border:1px solid #73dfff88}
+.vBottomCall strong{color:#fff}.vBottomCall p{color:#e0f1ff}
+footer,.vFooter,.videoFooter{color:#d1e7ff!important;border-color:#58bfff66!important}
+button,input,textarea,select{color:inherit}
+input,textarea,select{background:rgba(255,255,255,.97)!important;color:#102b59!important;border-color:#74cfff!important}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #5df0ff!important;outline-offset:3px}
+@media(max-width:700px){.vSidebar{background:rgba(4,24,69,.96)!important}.vSidebar>a{color:#e5f5ff}}
+@media(prefers-reduced-motion:reduce){body{background-attachment:scroll}}
+
