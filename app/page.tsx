@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import LiveInterestFeed from "./components/live-interest-feed";
 import LiveNewsArticles from "./components/live-news-articles";
