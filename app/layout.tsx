@@ -22,6 +22,17 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const configured = Boolean(projectId && isValidAppwriteEndpoint(endpoint));
-  const session = configured ? await createNextServerHelpers({ endpoint: endpoint!, projectId: projectId! }).readSessionCookie() : null;
+
+  // An expired or malformed session cookie must never prevent public routes
+  // (including /login and /register) from rendering. Treat it as signed out.
+  let session: string | null = null;
+  if (configured) {
+    try {
+      session = (await createNextServerHelpers({ endpoint: endpoint!, projectId: projectId! }).readSessionCookie()) ?? null;
+    } catch {
+      session = null;
+    }
+  }
+
   return <html lang="en"><body><Providers session={session}>{children}<ConnectAssistant /></Providers></body></html>;
 }
