@@ -155,6 +155,27 @@ const investmentAccounts = [
   { name: "J.P. Morgan", type: "Self-directed & managed investing", mark: "JP", url: "https://www.jpmorgan.com/wealth-management" , countries:["US","GB","DE","FR","JP","CA"]},
   { name: "Kraken", type: "Crypto exchange", mark: "K", url: "https://www.kraken.com/sign-in" , countries:["US","GB","DE","FR","JP","IN","CA","AU","HK","SG","BR"]},
   { name: "Tastytrade", type: "Options & futures brokerage", mark: "T", url: "https://tastytrade.com/" , countries:["US"]},
+
+  { name: "Hargreaves Lansdown", type: "UK investment platform", mark: "HL", url: "https://www.hl.co.uk/", countries: ["GB"] },
+  { name: "Trading 212", type: "Stocks, ETFs & ISA", mark: "212", url: "https://www.trading212.com/", countries: ["GB","DE","FR"] },
+  { name: "AJ Bell", type: "UK investing & pensions", mark: "AJ", url: "https://www.ajbell.co.uk/", countries: ["GB"] },
+  { name: "DEGIRO", type: "European brokerage", mark: "D", url: "https://www.degiro.com/", countries: ["DE","FR"] },
+  { name: "Trade Republic", type: "German investment app", mark: "TR", url: "https://traderepublic.com/", countries: ["DE","FR"] },
+  { name: "Boursorama", type: "French banking & investing", mark: "BO", url: "https://www.boursobank.com/", countries: ["FR"] },
+  { name: "Saxo", type: "Multi-market investment platform", mark: "S", url: "https://www.home.saxo/", countries: ["GB","DE","FR","JP","SG","AU"] },
+  { name: "Zerodha", type: "Indian stock brokerage", mark: "Z", url: "https://zerodha.com/", countries: ["IN"] },
+  { name: "Groww", type: "Indian investing platform", mark: "G", url: "https://groww.in/", countries: ["IN"] },
+  { name: "Upstox", type: "Indian stock brokerage", mark: "U", url: "https://upstox.com/", countries: ["IN"] },
+  { name: "Questrade", type: "Canadian brokerage", mark: "Q", url: "https://www.questrade.com/", countries: ["CA"] },
+  { name: "Wealthsimple", type: "Canadian investing platform", mark: "WS", url: "https://www.wealthsimple.com/", countries: ["CA"] },
+  { name: "CommSec", type: "Australian brokerage", mark: "C", url: "https://www.commsec.com.au/", countries: ["AU"] },
+  { name: "Stake", type: "Australian & global investing", mark: "ST", url: "https://hellostake.com/", countries: ["AU"] },
+  { name: "Rakuten Securities", type: "Japanese online brokerage", mark: "R", url: "https://www.rakuten-sec.co.jp/", countries: ["JP"] },
+  { name: "SBI Securities", type: "Japanese brokerage", mark: "SBI", url: "https://www.sbisec.co.jp/", countries: ["JP"] },
+  { name: "Futu / moomoo", type: "Hong Kong & global investing", mark: "M", url: "https://www.moomoo.com/", countries: ["HK","SG","AU"] },
+  { name: "Tiger Brokers", type: "Multi-market brokerage", mark: "T", url: "https://www.itiger.com/", countries: ["HK","SG","AU"] },
+  { name: "XP Investimentos", type: "Brazilian investment platform", mark: "XP", url: "https://www.xpi.com.br/", countries: ["BR"] },
+  { name: "eToro", type: "Multi-country investing platform", mark: "e", url: "https://www.etoro.com/", countries: ["GB","DE","FR","JP","IN","CA","AU","HK","SG","BR"] },
 ];
 
 export default function MarketDashboard() {
@@ -252,7 +273,7 @@ export default function MarketDashboard() {
     setSymbol(raw.includes(":") ? raw : "NASDAQ:" + raw);
     setMessage("");
   }
-  return <main className="ctMarketsPage">
+  return <main className="ctMarketsPage" dir={language === "ar" ? "rtl" : "ltr"}>
     <header className="ctMarketsHeader"><Link href="/" className="ctMarketsBrand"><img src="/connect-logo.svg" alt="Connect" /> <span>Connect <small>Markets</small></span></Link><div className="ctMarketsLocale"><label>{copy.country}<select aria-label={copy.country} value={countryCode} onChange={event=>setCountryCode(event.target.value)}>{marketCountries.map(item=><option value={item.code} key={item.code}>{item.name}</option>)}</select></label><label>{copy.language}<select aria-label={copy.language} value={language} onChange={event=>setLanguage(event.target.value)}>{languageOptions.map(item=><option value={item.code} key={item.code}>{item.label}</option>)}</select></label></div><nav><Link href="/">{copy.home}</Link><Link href="/news">{copy.news}</Link><Link href="/community">{copy.community}</Link><Link className="ctMarketsJoin" href="/register">{copy.register}</Link></nav></header>
     <section className="ctMarketsHero"><div><span className="ctMarketsEyebrow">CONNECT · {selectedCountry.name.toUpperCase()} · FINANCIAL MARKETS</span><h1>{copy.hero}<br/><em>{copy.hero2}</em></h1><p>{copy.intro}</p><div className="ctMarketsTags"><span>Global indexes</span><span>Stocks & ETFs</span><span>Market news</span><span>Commodities & FX</span></div></div><div className="ctMarketsHeroArt" aria-hidden="true"><span>↗</span><b>MARKET<br/>WATCH</b><i>◒</i></div></section>
     <section className="ctMarketsTicker"><TradingViewEmbed src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" config={{...tickerConfig,symbols:selectedCountry.tickerSymbols,locale:language}} height={76} label="global market ticker" /></section>
