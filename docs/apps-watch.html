@@ -68,6 +68,55 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
 @media(max-width:620px){.sectionHead{display:block}.sectionHead>small{display:block;margin-top:10px}.discovery-tools{padding:13px}.filter-row{gap:7px}.filter-chip{padding:8px 10px;font-size:10px}.service-search{height:48px}.service-search input{font-size:12px}.viewer-panel{min-height:400px}.provider-fallback{padding:22px}}
 @media(prefers-reduced-motion:reduce){.card,.filter-chip,.app-launch{transition:none}}
 
+
+/* Connect electric-blue night theme with a luminous globe backdrop */
+body{position:relative;color:#f4f8ff;background:radial-gradient(ellipse at 50% -8%,#164dcb 0,transparent 42%),radial-gradient(ellipse at 95% 25%,#4a16a5 0,transparent 28%),#030a2a}
+body:before{content:"";position:fixed;z-index:0;pointer-events:none;width:min(62vw,680px);height:min(62vw,680px);min-width:330px;min-height:330px;right:-8vw;top:125px;border-radius:50%;opacity:.42;background:radial-gradient(circle at 32% 28%,#8ffcff 0,#2c9fff 12%,#1456db 38%,#061a69 72%);box-shadow:inset -35px -25px 65px #01082e,0 0 45px #00c8ff66,0 0 0 18px #32aaff12,0 0 0 38px #32aaff09}
+body:after{content:"";position:fixed;z-index:0;pointer-events:none;width:720px;height:720px;right:-260px;top:80px;border-radius:50%;border:2px solid #62eaff30;box-shadow:0 0 0 22px #32aaff0b,0 0 0 48px #32aaff08}
+.shell{position:relative;z-index:1}
+.shell>header{border-color:#254a9b}
+.brand span{background:linear-gradient(90deg,#65eaff,#8c9cff 55%,#ff66d5);background-clip:text;color:transparent}
+.brand img{filter:drop-shadow(0 0 14px #00cfff77)}
+nav{color:#c4d8ff}nav a{color:#c4d8ff}nav a:hover{color:#ff65d4}
+.hero{position:relative;overflow:hidden;border-color:#2864bd;background:radial-gradient(circle at 84% 28%,#0b75ff55 0,transparent 36%),linear-gradient(120deg,#07194bf2,#08143bea 62%,#10134be8);box-shadow:0 20px 65px #006bff2b}
+.hero h1{background:linear-gradient(100deg,#35dcff,#9b8cff 48%,#ff55cb);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:#b7d2f5}
+.eyebrow{border-color:#3b8dff}
+.notice,.discovery-tools,.card,.how{border-color:#254a9b;background:#071943e8;box-shadow:0 12px 32px #000b2c55}
+.notice b,.body h3,.sectionHead h2,.how h2,.how b{color:#e9f5ff}
+.notice span,.section-intro,.sectionHead small,.note,.how ol{color:#a9c6e9}
+.section-intro{color:#a9c6e9}
+.service-search{border-color:#315eaa;background:#06133d;color:#62eaff}
+.service-search input{color:#f4f8ff}
+.service-search input::placeholder{color:#8ba9d2}
+.service-search kbd,.filter-chip{border-color:#31528d;background:#0b2052;color:#c4d8ff}
+.filter-chip span{background:#17346b;color:#b7d2f5}
+.filter-chip:hover{border-color:#35baff;color:#68eaff}
+.filter-chip.active{border-color:#168cff;background:linear-gradient(100deg,#087cff,#4d47d6);color:#fff}
+.results-status{color:#9bb9e1}
+.plan-pill{border-color:#31528d;background:#102b5b;color:#c4d8ff}
+.plan-pill.free-pill{border-color:#176d70;background:#0c3d4c;color:#8af5d7}
+.card:hover{box-shadow:0 16px 38px #006bff33}
+.open{color:#67dfff}
+.app-launch{border-color:#3265ad;background:#0d2a60;color:#83eaff}
+.app-launch:hover{background:#087cff;color:#fff;border-color:#087cff}
+.empty-results{border-color:#315eaa;background:#071943e8}
+.empty-results h3{color:#e9f5ff}
+.empty-results p{color:#a9c6e9}
+.empty-results button{background:linear-gradient(100deg,#087cff,#00d9ff);color:#04133d}
+footer{border-color:#254a9b;color:#a9c6e9}
+.viewer-panel{border-color:#2864bd;background:#071943}
+.viewer-head{background:linear-gradient(100deg,#0b2860,#21164f);border-color:#254a9b}
+.viewer-title{color:#e9f5ff}
+.viewer-actions a,.viewer-actions button{border-color:#315eaa;background:#0d2a60;color:#83eaff}
+.viewer-actions .viewer-close{background:#087cff;color:#fff;border-color:#087cff}
+.viewer-hint{background:#102b5b;color:#c4d8ff;border-color:#31528d}
+.viewer-foot{background:#071943;color:#a9c6e9;border-color:#254a9b}
+.provider-fallback{background:radial-gradient(circle at 50% 15%,#164dcb 0,transparent 55%),#06133d}
+.provider-fallback h2{color:#e9f5ff}
+.provider-fallback p,.provider-fallback small{color:#b7d2f5}
+@media(max-width:620px){body:before{right:-230px;top:190px;opacity:.25}body:after{right:-350px;top:150px}}
+
 </style></head><body><div class="shell">
 <header><a class="brand" href="index.html" aria-label="Connect homepage"><img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/public/connect-logo.svg?v=7893aa3" alt="Connect electric blue globe logo"><span>Connect</span></a><nav><a href="index.html">Home</a><a href="index.html#features">Explore Connect</a></nav></header>
 <main><section class="hero"><span class="eyebrow">YOUR STREAMING DESTINATION</span><h1>Apps <em>Watch</em></h1><p>One convenient place to open the streaming services you already use. Choose an app, sign in securely on its official website, and enjoy movies and shows with your own account.</p><div class="notice"><b>Your subscriptions stay yours.</b><span>Connect does not sell streaming subscriptions, store provider passwords, or unlock paid content. Each provider controls sign-in, playback, plans and regional availability.</span></div></section>
