@@ -412,6 +412,39 @@ body{zoom:.9}
 .ctSocialPreview{background:#fff;border:1px solid #e9e2f4;box-shadow:0 12px 35px #49317808}.ctSocialPreviewHead .btn{white-space:nowrap}.ctSocialPreviewCard{box-shadow:none}.ctSocialPreviewActions{gap:15px}.ctSocialPreviewMini .ico{background:#f0e8ff!important;color:#783ed0}
 @media(max-width:900px){.ctProHero{grid-template-columns:1fr;gap:25px}.ctProHeroCopy{max-width:680px}.ctHeroProduct{max-width:650px;width:100%;margin:auto}.ctMainHeader{padding:0 10px;margin:0 -10px}.ctMainHeader .nav{gap:10px}}
 @media(max-width:620px){.ctMainHeader{height:68px}.ctMainHeader .brand img{width:42px;height:42px}.ctProHero{padding:30px 0 35px}.ctProHero h1{font-size:clamp(44px,12vw,58px);letter-spacing:-3px}.ctHeroTrust{gap:8px 11px}.ctHeroProductBody{grid-template-columns:36px 1fr;min-height:280px}.ctHeroRail{gap:10px}.ctHeroFeed{padding:10px}.ctHeroPostVisual{min-height:75px}.ctHeroPostFoot{gap:9px}.ctSocialPreviewHead .btn{margin-top:15px;width:100%}}
+
+/* Social welcome section — vibrant Connect signature treatment */
+.ctSocialPreview{
+ position:relative;isolation:isolate;overflow:hidden;
+ margin:8px 0 48px;padding:clamp(24px,4vw,42px);
+ border:1px solid #d9c7f5;border-radius:30px;
+ background:
+  radial-gradient(ellipse at 8% 0%,#e6d7ff 0,transparent 42%),
+  radial-gradient(ellipse at 100% 12%,#d8eaff 0,transparent 40%),
+  radial-gradient(ellipse at 52% 115%,#ffdced 0,transparent 48%),
+  linear-gradient(125deg,#f5edff 0%,#edf4ff 52%,#fff0f8 100%);
+ box-shadow:0 20px 55px #6334a51c, inset 0 1px 0 #ffffff;
+}
+.ctSocialPreview:before,.ctSocialPreview:after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}
+.ctSocialPreview:before{width:230px;height:230px;right:-75px;top:-115px;background:#bd9aff45;filter:blur(2px)}
+.ctSocialPreview:after{width:190px;height:190px;left:-85px;bottom:-115px;background:#83c8ff45;filter:blur(2px)}
+.ctSocialPreviewHead{align-items:center;gap:24px;margin-bottom:24px}
+.ctSocialPreviewHead .eyebrow{display:inline-flex;padding:9px 14px;border:1px solid #d9c2ff;border-radius:999px;background:linear-gradient(100deg,#eee3ff,#e4edff 55%,#ffe3f2);color:#7136c5;font-size:11px;letter-spacing:1.45px;box-shadow:0 5px 16px #6334a512}
+.ctSocialPreviewHead h2{max-width:780px;margin:13px 0 10px;font-size:clamp(30px,4.2vw,48px);line-height:1.04;letter-spacing:-2px;font-weight:950;color:#35205f;background:linear-gradient(100deg,#6732c8 0%,#287bd9 52%,#d52d99 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ctSocialPreviewHead p{max-width:650px;color:#594c75;font-size:clamp(14px,1.5vw,16px);line-height:1.75;font-weight:550}
+.ctSocialPreviewHead>.btn{flex:0 0 auto;padding:15px 22px;border-radius:15px;font-size:13px;box-shadow:0 12px 25px #7439c43b}
+.ctSocialPreviewGrid{gap:16px}
+.ctSocialPreviewCard{padding:21px;border:1px solid #ffffff;background:linear-gradient(145deg,#ffffffed,#f9f5ffed);border-radius:21px;box-shadow:0 12px 30px #52327d12;backdrop-filter:blur(12px)}
+.ctSocialPreviewCard h3{font-size:15px;color:#3e2a67;margin-bottom:15px}
+.ctSocialPreviewCard p{font-size:13px;line-height:1.75;color:#5f5478}
+.ctSocialPreviewUser b,.ctSocialPreviewMini b{font-size:12px;color:#3c2a60}
+.ctSocialPreviewUser small,.ctSocialPreviewMini small{font-size:10px;color:#817494}
+.ctSocialPreviewActions{font-size:11px;color:#753cc7}
+.ctSocialPreviewMini{padding:11px 0;border-color:#e9e0f5}
+.ctSocialPreviewMini .ico{width:40px;height:40px;flex-basis:40px;border:1px solid #e6d8fb;background:linear-gradient(135deg,#eee2ff,#e2efff)!important;color:#713ac4}
+.ctSocialPreviewCard .btn{padding:12px;font-size:12px}
+@media(max-width:760px){.ctSocialPreview{padding:22px 17px}.ctSocialPreviewHead h2{font-size:clamp(29px,8vw,39px)}.ctSocialPreviewHead p{font-size:14px}.ctSocialPreviewCard{padding:18px}}
+
 </style>
 
 <style id="connect-hero-people-background">
