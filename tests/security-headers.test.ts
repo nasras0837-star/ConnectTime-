@@ -12,6 +12,10 @@ describe("security response headers", () => {
     expect(headers.get("content-security-policy")).toContain("https://*.cloud.appwrite.io");
     expect(headers.get("x-frame-options")).toBe("DENY");
     expect(headers.get("x-content-type-options")).toBe("nosniff");
+    expect(headers.get("x-permitted-cross-domain-policies")).toBe("none");
+    expect(headers.get("origin-agent-cluster")).toBe("?1");
+    expect(headers.get("cross-origin-opener-policy")).toBe("same-origin-allow-popups");
+    expect(headers.get("content-security-policy")).toContain("https://www.youtube-nocookie.com");
     expect(headers.get("referrer-policy")).toBe("strict-origin-when-cross-origin");
     expect(headers.get("permissions-policy")).toContain("geolocation=()");
     expect(headers.get("strict-transport-security")).toContain("max-age=31536000");
