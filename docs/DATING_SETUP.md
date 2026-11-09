@@ -12,7 +12,9 @@ Create these columns in the existing profiles table (`APPWRITE_PROFILES_TABLE_ID
 |---|---|---|
 | `age` | Integer | No (profiles without a dating age are not shown in dating) |
 | `gender` | String | No (profiles without a dating gender are not shown in dating) |
-| `photo_url` | String (max 1000) | No (optional HTTPS image URL) |
+| `photo_file_id` | String (max 36) | No (private Storage file ID) |
+| `photo_mime_type` | String (max 40) | No (server-detected MIME type) |
+| `photo_url` | String (max 1000) | No (legacy links only; new uploads use private Storage) |
 | `interested_in` | String | No |
 | `relationship_goal` | String | No |
 
@@ -37,6 +39,17 @@ Add indexes for `sender_user_id`, `recipient_user_id`, and `created_at` (the inb
 - Do not display birth dates, identity documents or precise location. Profile photo URLs are optional HTTPS links supplied by the member; do not use them for verification or identity checks.
 
 
+## Private profile photo Storage
+
+- Set APPWRITE_PROFILE_PHOTOS_BUCKET_ID to a dedicated Appwrite Storage bucket ID.
+- Create the bucket with no bucket-level read/write permissions, File Security enabled, and no public or Role.users() access. The server API key performs uploads, reads and deletes; browsers never receive direct bucket access.
+- Allow only jpg, jpeg, png, and webp; set the bucket maximum file size to 5 MB. Enable antivirus scanning and metadata stripping when those options are available on the Appwrite plan.
+- Grant the server API key only the Storage file scopes required by the app (files.read, files.write, files.delete) alongside its existing required database scopes.
+- Add photo_file_id and photo_mime_type columns to the profiles table and an equality index on photo_file_id.
+- Uploads require a signed-in independently verified adult, same-origin request, valid JPEG/PNG/WebP file signatures, and a 5 MB limit. SVG, GIF, and other formats are rejected. New uploads replace and best-effort delete the prior file.
+- Files are stored without user read permissions. The same-origin photo proxy checks the viewer's verified-adult status, the owner's current eligibility and visibility, and either-direction blocks before streaming the image. Never make this bucket public or use a public file token.
+- This upload flow validates file signatures and relies on Appwrite bucket antivirus/metadata stripping where enabled; it is not a full content moderation or age-authentication system. Keep existing moderation and reporting controls in place.
+
 ## Likes inbox and matches
 
 - Members can open `/dating/likes` to review likes received, mutual matches, and likes they have sent.
@@ -51,5 +64,5 @@ Add indexes for `sender_user_id`, `recipient_user_id`, and `created_at` (the inb
 - Discovery search sends the free-text query, country, and interest filters to the server with a short debounce; age, gender, and relationship-goal refinements are then applied to the returned profiles. Results support cursor-based Load more pagination so members can continue beyond the first page.
 - Results are ranked using a transparent compatibility estimate: shared interests, matching country/region, and matching relationship goal. The percentage is a discovery aid, not a prediction or guarantee of relationship compatibility.
 - Discovery checks both members' stated gender preferences before showing a profile. A member's `interested_in` preference is used only for matching and is not returned as public profile data.
-- Discovery cards and the likes inbox can display the optional `photo_url`, profile bio, region and relationship goal. Members can add a photo link in their profile editor; this is URL-based, not a direct file upload.
+- Discovery cards and the likes inbox display the optional private Storage photo, profile bio, region and relationship goal. Members upload or remove their own image in the profile editor; legacy HTTPS photo_url values remain a fallback until replaced.
 - Recommendations use profile information members choose to provide. They do not use precise location, private messages, identity documents, or sensitive verification data.
