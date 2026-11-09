@@ -49,6 +49,7 @@ export async function PUT(request: Request) {
   const gender = typeof body.gender === "string" ? body.gender.trim() : "";
   const interestedIn = typeof body.interestedIn === "string" ? body.interestedIn.trim() : "everyone";
   const relationshipGoal = typeof body.relationshipGoal === "string" ? body.relationshipGoal.trim() : "friendship";
+  const photoUrl = typeof body.photoUrl === "string" ? body.photoUrl.trim() : "";
 
   if (!/^[a-z0-9_]{3,24}$/.test(handle)) return NextResponse.json({ error: "Handle must be 3–24 characters using lowercase letters, numbers, or underscores." }, { status: 400 });
   if (!displayName || displayName.length > 80) return NextResponse.json({ error: "Display name is required and must be 80 characters or fewer." }, { status: 400 });
@@ -58,6 +59,7 @@ export async function PUT(request: Request) {
   if (gender && !["woman", "man", "nonbinary", "prefer_not_to_say"].includes(gender)) return NextResponse.json({ error: "Choose a valid gender option." }, { status: 400 });
   if (!["everyone", "women", "men", "nonbinary"].includes(interestedIn)) return NextResponse.json({ error: "Choose a valid partner preference." }, { status: 400 });
   if (!["serious_relationship", "dating", "friendship"].includes(relationshipGoal)) return NextResponse.json({ error: "Choose a valid relationship goal." }, { status: 400 });
+  if (photoUrl) { try { const parsed = new URL(photoUrl); if (parsed.protocol !== "https:" || photoUrl.length > 1000) throw new Error(); } catch { return NextResponse.json({ error: "Profile photo must be a valid HTTPS image URL." }, { status: 400 }); } }
   if (!["public", "members", "friends", "private"].includes(visibility)) return NextResponse.json({ error: "Choose a valid profile visibility setting." }, { status: 400 });
 
   try {
@@ -84,6 +86,7 @@ export async function PUT(request: Request) {
       ...(gender ? { gender } : {}),
       interested_in: interestedIn,
       relationship_goal: relationshipGoal,
+      photo_url: photoUrl,
       visibility,
       updated_at: new Date().toISOString(),
     };
