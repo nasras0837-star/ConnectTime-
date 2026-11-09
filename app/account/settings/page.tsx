@@ -13,6 +13,10 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [closureReason, setClosureReason] = useState("");
+  const [closureConfirmed, setClosureConfirmed] = useState(false);
+  const [closureBusy, setClosureBusy] = useState(false);
+  const [closureStatus, setClosureStatus] = useState("");
 
   useEffect(() => {
     fetch("/api/account/settings", { cache: "no-store" }).then(async response => {
@@ -33,6 +37,19 @@ export default function SettingsPage() {
     finally { setSaving(false); }
   }
 
+  async function requestClosure() {
+    if (!closureConfirmed) return;
+    setClosureBusy(true); setClosureStatus("");
+    try {
+      const response = await fetch("/api/account/closure-request", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ confirmed: closureConfirmed, reason: closureReason }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Your closure request could not be submitted.");
+      setClosureStatus(data.message || "Your request was submitted for review.");
+      setClosureReason(""); setClosureConfirmed(false);
+    } catch (e) { setClosureStatus(e instanceof Error ? e.message : "The closure service is unavailable. No request was submitted."); }
+    finally { setClosureBusy(false); }
+  }
+
   const choices: [keyof Preferences, string, string][] = [
     ["friend_requests", "New friend requests", "When another eligible member requests to connect."],
     ["friend_acceptances", "Accepted friend requests", "When a connection request you sent is accepted."],
@@ -48,9 +65,9 @@ export default function SettingsPage() {
     {loading ? <p role="status">Loading settings…</p> : <div className="settingsChoices">{choices.map(([key, title, description]) => <label className="settingsChoice" key={key}><span><strong>{title}</strong><small>{description}</small></span><input type="checkbox" checked={settings[key]} onChange={e => setSettings(current => ({ ...current, [key]: e.target.checked }))}/></label>)}</div>}
     <button className="button" onClick={save} disabled={loading || saving || Boolean(error)}>{saving ? "Saving…" : "Save preferences"}</button>
     {message && <p role="status" className="message">{message}</p>}{error && <div role="alert" className="message"><p>{error}</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div>}
-    <div className="settingsSection"><h2>Profile privacy</h2><p>Choose who can discover your profile from <Link href="/profile">Edit your profile</Link>. Existing discovery rules only expose public/member profiles; friends-only and private visibility are not listed publicly.</p></div>
+    <div className="settingsSection"><h2>Profile privacy</h2><p>Choose who can discover your profile from <Link href="/profile">Edit your profile</Link>. Public and members-only profiles can be discovered by eligible members. Friends-only profiles are restricted to accepted connections, and private profiles are hidden from other members.</p></div>
     <div className="settingsSection"><h2>Profile photos</h2><p>Photo uploads are not available yet. They will remain disabled until private quarantine storage, moderation checks, and age-safety controls are tested.</p></div>
-    <div className="settingsSection"><h2>Account deactivation</h2><p>Self-service deactivation is not enabled yet. Contact Connect support to request account closure; do not assume deleting the app or signing out deactivates your account.</p></div>
+    <div className="settingsSection"><h2>Request account closure</h2><p>Submit a closure request for review. This does not immediately deactivate or delete your account. You can continue signing in until Connect confirms the request has been processed. Do not submit this form for an urgent safety issue.</p><label style={{ display: "grid", gap: 7, marginTop: 12 }}>Reason (optional)<textarea value={closureReason} onChange={event => setClosureReason(event.target.value)} maxLength={500} rows={3} placeholder="Tell us why you are requesting account closure." /></label><label style={{ display: "flex", gap: 9, alignItems: "flex-start", marginTop: 12 }}><input type="checkbox" checked={closureConfirmed} onChange={event => setClosureConfirmed(event.target.checked)} /><span>I confirm that I am requesting account closure and understand this request will be reviewed before any account action is taken.</span></label><button className="button" type="button" onClick={requestClosure} disabled={!closureConfirmed || closureBusy}>{closureBusy ? "Submitting request…" : "Submit closure request"}</button>{closureStatus && <p role="status" className="message">{closureStatus}</p>}</div>
     <p className="switch"><Link href="/account">Back to account</Link> · <Link href="/safety">Safety Center</Link></p>
   </section></main>;
 }
