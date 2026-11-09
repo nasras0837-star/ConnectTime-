@@ -163,7 +163,7 @@ export async function POST(request: Request) {
     ] });
     if (recent.rows.length >= 20) return NextResponse.json({ error: "You are sending messages too quickly. Please wait a minute and try again." }, { status: 429 });
     const peer = await profileByHandle(s, recipientHandle);
-    if (!peer || !await peerAccess(s, user.$id, peer.userId)) return NextResponse.json({ error: "You can message only eligible members in your connections." }, { status: 403 });
+    if (!peer || !await peerAccess(s, user.$id, peer.userId, peer.visibility)) return NextResponse.json({ error: "You can message only eligible members in your connections." }, { status: 403 });
     const now = new Date().toISOString();
     const row = await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.messagesTableId, rowId: ID.unique(), data: {
       sender_user_id: user.$id,
@@ -217,7 +217,7 @@ export async function PATCH(request: Request) {
   try {
     const s = await services();
     const peer = await profileByHandle(s, peerHandle);
-    if (!peer || !await peerAccess(s, user.$id, peer.userId)) return NextResponse.json({ error: "Conversation is not available." }, { status: 404 });
+    if (!peer || !await peerAccess(s, user.$id, peer.userId, peer.visibility)) return NextResponse.json({ error: "Conversation is not available." }, { status: 404 });
     const unread = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.messagesTableId, queries: [Query.equal("sender_user_id", peer.userId), Query.equal("recipient_user_id", user.$id), Query.equal("is_read", false), Query.limit(100)] });
     await Promise.all(unread.rows.map(row => s.tablesDB.updateRow({ databaseId: s.databaseId, tableId: s.messagesTableId, rowId: String(row.$id), data: { is_read: true } })));
     return NextResponse.json({ updated: unread.rows.length }, { headers: { "Cache-Control": "no-store" } });
