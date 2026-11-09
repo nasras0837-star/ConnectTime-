@@ -207,12 +207,23 @@ export default function MarketDashboard() {
 
   useEffect(() => {
     if (!regionReady) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync the market filters with the member's region context.
     setCountryCode(marketCountries.some(item => item.code === memberCountryCode) ? memberCountryCode : "GLOBAL");
     const languageMap: Record<string,string> = { en:"en",es:"es",fr:"fr",de:"de",pt:"pt",ja:"ja",zh:"zh_CN",ko:"ko" };
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync the market filters with the member's region context.
     setLanguage(languageMap[memberLanguage] || "en");
   }, [regionReady, memberCountryCode, memberLanguage]);
 
-  useEffect(() => { const activeCountry = marketCountries.find(item => item.code === countryCode) || marketCountries[0]; const first = activeCountry.stocks[0]?.[0] || "NASDAQ:AAPL"; setSymbol(first); setSearch(first); setMessage(""); }, [countryCode]);
+  useEffect(() => {
+    const activeCountry = marketCountries.find(item => item.code === countryCode) || marketCountries[0];
+    const first = activeCountry.stocks[0]?.[0] || "NASDAQ:AAPL";
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset the selected ticker when the active market changes.
+    setSymbol(first);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- keep the search field in sync with the active market.
+    setSearch(first);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- clear stale feedback when the active market changes.
+    setMessage("");
+  }, [countryCode]);
 
   useEffect(() => {
     let active = true;
@@ -262,8 +273,11 @@ export default function MarketDashboard() {
   const selectedTicker = symbol.split(":").pop() || symbol;
   useEffect(() => {
     const controller = new AbortController();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset the analyst panel before loading the selected ticker.
     setAnalystStatus("loading");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- clear stale analyst feedback for the selected ticker.
     setAnalystMessage("");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- clear stale analyst data for the selected ticker.
     setAnalystData(null);
     fetch(`/api/markets/analyst?ticker=${encodeURIComponent(selectedTicker)}`, { cache: "no-store", signal: controller.signal })
       .then(async response => {
