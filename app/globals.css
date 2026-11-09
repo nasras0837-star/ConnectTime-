@@ -1455,3 +1455,15 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 @media(max-width:1000px){.connectSiteHeader{gap:12px}.connectSiteHeader nav{gap:10px}.connectSiteHeader nav a{font-size:10px}}
 @media(max-width:760px){.connectSiteHeader{height:66px;padding:0 13px;gap:10px}.connectSiteSearch{max-width:none;min-width:0}.connectSiteHeader nav{display:none}.connectSiteActions{margin-left:auto;gap:8px}.connectSiteActions>a{font-size:10px}.connectSiteActions .connectSiteJoin{padding:9px 11px}}
 @media(max-width:460px){.connectSiteBrand .ctWordmark{font-size:19px}.connectSiteBrand .ctBrandMark{width:33px;height:33px;flex-basis:33px}.connectSiteSearch{padding:8px 10px;font-size:0}.connectSiteSearch span{font-size:19px}.connectSiteActions>a:first-child{display:none}}
+
+
+/* Member account landing page */
+.connectAccountShell{min-height:100vh;background:#f3f7f9;color:#203747;padding-bottom:50px}
+.connectAccountCard{width:min(760px,calc(100% - 28px));margin:34px auto;padding:clamp(22px,4vw,34px);display:grid;gap:15px;background:#fff;border:1px solid #e2eaee;border-radius:18px;box-shadow:0 12px 34px #21475b0d}
+.connectAccountCard h1{margin:0;font:800 clamp(27px,4vw,36px) Manrope,sans-serif;letter-spacing:-1.2px;color:#27475a}
+.connectAccountCard>p{margin:0;color:#6f8490;font-size:13px;line-height:1.7}
+.connectAccountCard>p.message{padding:12px 14px;border-radius:11px;background:#eaf5f5;color:#286c78}
+.connectAccountCard>a,.connectAccountCard p>a{color:#147e8e;font-size:12px;font-weight:800}
+.connectAccountCard>p:has(a){padding:10px 12px;border:1px solid #edf1f3;border-radius:10px;background:#fbfdfd}
+.connectAccountCard button{justify-self:start}
+@media(max-width:760px){.connectAccountCard{margin:18px auto}.connectAccountCard>p:has(a){padding:12px}}
