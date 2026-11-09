@@ -28,30 +28,53 @@ async function unavailable() {
 }
 
 /**
- * Render terminates TLS at its edge, so request.url is not a reliable
- * source of the public origin in every deployment topology. Use the
- * explicitly configured public app URL instead, with Render's assigned
- * URL as a safe deployment fallback.
+ * Build an exact origin allowlist for this deployment. Render's public URL
+ * and Vercel's deployment URL are platform-provided hostnames; APP_BASE_URL
+ * and APP_ALLOWED_ORIGINS support explicitly configured stable domains.
+ * Never use wildcard suffix matching for preview domains.
  */
+function trustedOrigins(request: NextRequest) {
+  const configured = [
+    process.env.APP_BASE_URL,
+    process.env.RENDER_EXTERNAL_URL,
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : undefined,
+    ...(process.env.APP_ALLOWED_ORIGINS ?? "").split(","),
+  ];
+
+  const origins = new Set<string>();
+  for (const value of configured) {
+    if (!value?.trim()) continue;
+    try {
+      origins.add(new URL(value.trim()).origin);
+    } catch {
+      // Ignore malformed optional entries; a valid explicit origin is required.
+    }
+  }
+
+  // In local development only, allow the request's own origin.
+  if (process.env.NODE_ENV !== "production") {
+    try {
+      origins.add(new URL(request.url).origin);
+    } catch {
+      // Fail closed below if the request URL is malformed.
+    }
+  }
+
+  return origins;
+}
+
 function isCrossSiteMutation(request: NextRequest) {
   const origin = request.headers.get("origin");
   const fetchSite = request.headers.get("sec-fetch-site");
 
   if (fetchSite === "cross-site") return true;
-
-  // Browser POST requests include Origin. Reject requests without it unless
-  // Fetch Metadata explicitly identifies a same-origin browser request.
   if (!origin) return fetchSite !== "same-origin";
 
   try {
-    const publicAppUrl =
-      process.env.APP_BASE_URL ??
-      process.env.RENDER_EXTERNAL_URL ??
-      request.url;
-    const expectedOrigin = new URL(publicAppUrl).origin;
-    return new URL(origin).origin !== expectedOrigin;
+    return !trustedOrigins(request).has(new URL(origin).origin);
   } catch {
-    // Fail closed if either the configured public URL or Origin is malformed.
     return true;
   }
 }
