@@ -1,47 +1,171 @@
+"use client";
+
 import Link from "next/link";
 import LiveInterestFeed from "./components/live-interest-feed";
 import LiveNewsArticles from "./components/live-news-articles";
 import SportsScores from "./components/sports-scores";
 import RegionalWeather from "./components/regional-weather";
 import { MemberCount } from "./components/member-count";
+import { LanguageSwitcher } from "./components/language-switcher";
 
-const destinations = [
-  { icon: "❤️", title: "Dating & mutual likes", description: "Find compatible adults by age, interests, location and relationship goals. Like someone and connect when the interest is mutual.", href: "/dating", action: "Explore dating" },
-  { icon: "🌐", title: "Connect with people", description: "Meet members, discover shared interests, build friendships and grow your community.", href: "/discover", action: "Discover members" },
-  { icon: "🛍️", title: "Buy & sell in Marketplace", description: "List and discover lawful goods and property, from real estate and cars to electronics, furniture, clothing, comics and sports cards.", href: "/marketplace", action: "Explore Marketplace" },
-  { icon: "💬", title: "Join the conversation", description: "Share updates, react, comment and take part in community discussions.", href: "/community", action: "Explore community" },
-  { icon: "👥", title: "Build your communities", description: "Discover interest-based groups, meet members and join focused discussions.", href: "/groups", action: "Explore groups" },
-  { icon: "💬", title: "Text chat & private messages", description: "Send private text messages and keep conversations going with friends you have connected with.", href: "/messages", action: "Start a text chat" },
-  { icon: "🎥", title: "Video chat & group meetings", description: "See and talk with friends and family in private group video meetings across countries and time zones. Create a room and invite everyone with one link.", href: "/meetings", action: "Start video chat" },
-  { icon: "📺", title: "Watch and explore", description: "Find news, entertainment and official broadcaster streams, plus video discovery.", href: "/free-tv", action: "Explore TV & video" },
-  { icon: "🎵", title: "Free music & radio", description: "Tune into local radio and free music streams from countries and cultures around the world.", href: "/radio", action: "Listen worldwide" },
-  { icon: "🎯", title: "Your personalized live feed", description: "Choose interests across news, sports, entertainment, music, business and science.", href: "#live-interest", action: "Explore live feeds" },
-  { icon: "📰", title: "Stay informed", description: "Browse current affairs and news topics from a range of publishers.", href: "/news", action: "Read the news" },
-  { icon: "🎉", title: "Discover what's happening", description: "Explore community events and find activities and conversations to join.", href: "/events", action: "Explore events" },
-  { icon: "🎯", title: "Smart advertising", description: "Plan campaigns around audience interests, regions and business goals. Explore targeting options and campaign tools, with review before launch.", href: "/advertise", action: "Explore smart advertising" },
+const primaryLinks = [
+  { icon: "⌂", label: "Home", href: "/" },
+  { icon: "◉", label: "Community", href: "/community" },
+  { icon: "⌕", label: "Discover people", href: "/discover" },
+  { icon: "♧", label: "Friends", href: "/friends" },
+  { icon: "✉", label: "Messages", href: "/messages" },
+  { icon: "▦", label: "Groups", href: "/groups" },
+  { icon: "♡", label: "Dating", href: "/dating" },
+];
+const exploreLinks = [
+  { icon: "🛍️", title: "Marketplace", detail: "Buy and sell with the community", href: "/marketplace", tone: "mint" },
+  { icon: "🎉", title: "Events", detail: "Find activities and gatherings", href: "/events", tone: "gold" },
+  { icon: "📰", title: "News", detail: "Follow stories from around the world", href: "/news", tone: "blue" },
+  { icon: "📺", title: "Video & TV", detail: "Explore official channels and video", href: "/free-tv", tone: "violet" },
+  { icon: "🎵", title: "Music & Radio", detail: "Listen across countries and cultures", href: "/radio", tone: "rose" },
+  { icon: "🎥", title: "Group meetings", detail: "Meet face-to-face online", href: "/meetings", tone: "sky" },
 ];
 
 export default function HomePage() {
-  return <main className="ctHome">
-    <header className="ctHomeHeader">
-      <Link href="/" className="ctHomeBrand"><img className="ctHomeLogo" src="/connect-logo.svg" alt="Connect — Meet people worldwide. Discover. Share. Connect." /></Link>
-      <nav aria-label="Main navigation"><Link href="/community">Community</Link><Link href="/news">News</Link><Link href="/free-tv">TV & Video</Link><Link href="/radio">Music & Radio</Link><Link href="/groups">Groups</Link><Link href="/dating">Dating</Link><Link href="/marketplace">Marketplace</Link><Link href="/meetings">Group Meetings</Link><Link href="/advertise">Advertise</Link><Link href="/feedback">Feedback</Link><Link href="/login">Log in</Link><Link className="ctHomeRegister" href="/register">Register Now</Link></nav>
-    </header>
-    <section className="ctHomeHero">
-      <div className="ctHomeHeroCopy"><span className="ctHomeEyebrow">THE ALL-IN-ONE MEDIA APPLICATION</span><h1>Your global social world,<br/><em>all in one place.</em></h1><p>Connect is an all-in-one media application bringing social networking, private messaging, communities, news, live-interest video feeds, entertainment, TV discovery and events together in one place.</p><div className="ctHomeActions"><Link href="/register" className="ctHomePrimary">Join Connect <span>→</span></Link><Link href="/community" className="ctHomeSecondary">Explore the platform</Link></div>
-      <div className="ctHomeFeatureHighlights" aria-label="Connect features"><Link href="/discover">People &amp; communities</Link><span aria-hidden="true">✦</span><Link href="/messages">Private text chat</Link><span aria-hidden="true">✦</span><Link href="/meetings">Video chat worldwide</Link><span aria-hidden="true">✦</span><Link href="/news">News, TV &amp; video</Link></div><div className="ctHomeTrust"><span>🌍 Global perspectives</span><span>💬 Private text chat</span><span>🎥 Group video chat</span><span>🎬 Media discovery</span><span>🎯 Smart advertising</span></div></div>
-      <div className="ctHomeHeroVisual" aria-label="Connect brings together community, media and discovery"><div className="ctHomeOrb">CT</div><div className="ctHomeFloat ctHomeFloatOne"><b>📰</b><span>News & stories</span></div><div className="ctHomeFloat ctHomeFloatTwo"><b>📺</b><span>TV & video</span></div><div className="ctHomeFloat ctHomeFloatThree"><b>💬</b><span>People & community</span></div><div className="ctHomeFloat ctHomeFloatFour"><b>🎵</b><span>Entertainment</span></div></div>
-    </section>
-    <div style={{display:"flex",justifyContent:"center",padding:"0 20px 28px"}}><MemberCount /></div>
-    <SportsScores />
-    <RegionalWeather />
-    <section className="ctHomeIntro"><span>MORE THAN A SOCIAL NETWORK</span><h2>Social connection meets your daily media hub.</h2><p>Catch up on the latest, find something to watch, share your point of view and connect around what matters to you.</p></section>
-    <section className="ctHomeSmartAds"><div className="ctHomeAdIcon">✦</div><div><span>FOR BUSINESSES, CREATORS & ORGANIZATIONS</span><h2>Smart advertising that helps you reach the right audience.</h2><p>Explore campaign planning built around audience interests, geographic reach and your marketing goals. Review your campaign options and submit it for approval before launch.</p><div className="ctHomeAdPills"><b>Interest-led planning</b><b>Regional reach</b><b>Campaign insights</b></div></div><Link href="/advertise">Explore smart advertising <span>→</span></Link></section>
-    <section className="ctHomeGrid">{destinations.map(item=><article className="ctHomeCard" key={item.title}><span className="ctHomeCardIcon">{item.icon}</span><h3>{item.title}</h3><p>{item.description}</p><Link href={item.href}>{item.action} <span>→</span></Link></article>)}</section>
-    <div id="live-interest" className="ctHomeLiveFeed"><LiveInterestFeed /></div>
-    <LiveNewsArticles />
-    <section className="ctHomeFeatureBand"><div><span>BUILT AROUND YOUR INTERESTS</span><h2>Follow what you love.<br/><em>Find what inspires you.</em></h2><p>Personalize your live-interest feed, explore topics from around the world and discover new communities at your own pace.</p><Link href="/news">Explore your interests →</Link></div><div className="ctHomeFeatureTiles"><div>🌍<b>Global news</b><small>Perspectives from around the world</small></div><div>🏟️<b>Sports & culture</b><small>Follow the topics you care about</small></div><div>🎥<b>Video discovery</b><small>Find media from official sources</small></div><div>🤝<b>Shared interests</b><small>Connect with your communities</small></div></div></section>
-    <section className="ctHomeFinal"><span>YOUR PEOPLE. YOUR PASSIONS. YOUR CONNECT.</span><h2>Bring your world together.</h2><p>Create your account and explore an all-in-one destination for connection and media.</p><Link href="/register">Register Now <span>→</span></Link><small>Adults 18+. Some features are in development and availability varies by region and provider.</small></section>
-    <footer className="ctHomeFooter"><Link href="/">Connect</Link><span>© {new Date().getFullYear()} Techcyber LLC</span><div><Link href="/safety">Safety</Link><Link href="/feedback">Feedback</Link><Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link><Link href="/account">Account</Link></div></footer>
-  </main>;
+  return (
+    <main className="connectSocialHome">
+      <header className="connectTopbar">
+        <Link href="/" className="connectBrand" aria-label="Connect home">
+          <span className="ctBrandMark">CT</span><span className="ctWordmark">Connect</span>
+        </Link>
+        <Link href="/discover" className="connectSearch" aria-label="Search people and interests">
+          <span aria-hidden="true">⌕</span><span>Search people, groups and interests</span>
+        </Link>
+        <nav className="connectTopLinks" aria-label="Quick navigation">
+          <Link href="/community">Community</Link>
+          <Link href="/discover">Discover</Link>
+          <Link href="/messages">Messages</Link>
+          <Link href="/news">News</Link>
+        </nav>
+        <div className="connectTopActions">
+          <Link href="/login" className="connectLogin">Log in</Link>
+          <Link href="/register" className="connectJoin">Join Connect</Link>
+        </div>
+      </header>
+
+      <div className="connectSocialGrid">
+        <aside className="connectLeftRail" aria-label="Main sections">
+          <section className="connectRailCard">
+            <div className="connectRailLabel">YOUR CONNECT</div>
+            <nav className="connectRailNav">
+              {primaryLinks.map(item => (
+                <Link href={item.href} key={item.label} className={item.href === "/" ? "active" : ""}>
+                  <span aria-hidden="true">{item.icon}</span>{item.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="connectRailDivider" />
+            <div className="connectRailLabel">EXPLORE</div>
+            <nav className="connectRailNav">
+              <Link href="/marketplace"><span>▣</span>Marketplace</Link>
+              <Link href="/events"><span>✦</span>Events</Link>
+              <Link href="/free-tv"><span>▷</span>Video & TV</Link>
+              <Link href="/radio"><span>♫</span>Music & Radio</Link>
+              <Link href="/advertise"><span>↗</span>Advertise</Link>
+            </nav>
+          </section>
+          <section className="connectRailSafety">
+            <span aria-hidden="true">✓</span>
+            <div><strong>Community comes first</strong><p>Explore respectfully. Adults 18+; safety rules apply across Connect.</p>
+              <Link href="/safety">Visit Safety Center →</Link>
+            </div>
+          </section>
+          <footer className="connectRailFooter">
+            <Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link><Link href="/feedback">Feedback</Link>
+            <span>© {new Date().getFullYear()} Techcyber LLC</span>
+          </footer>
+        </aside>
+
+        <section className="connectMainColumn">
+          <section className="connectWelcome">
+            <div className="connectWelcomeImage" aria-hidden="true" />
+            <div className="connectWelcomeShade" aria-hidden="true" />
+            <div className="connectWelcomeCopy">
+              <span className="connectWelcomeEyebrow">YOUR GLOBAL SOCIAL NETWORK</span>
+              <h1>Your people.<br /><em>Your world.</em></h1>
+              <p>Meet people, build communities, share ideas and discover the media that matters to you — all in one place.</p>
+              <div className="connectWelcomeActions">
+                <Link href="/register" className="connectWelcomePrimary">Create your account <span>→</span></Link>
+                <Link href="/community" className="connectWelcomeSecondary">Explore the community</Link>
+              </div>
+              <div className="connectWelcomeProof"><span>🌍 Global perspectives</span><span>💬 Private messaging</span><span>🛡️ Safety-focused</span></div>
+            </div>
+          </section>
+
+          <section className="connectComposerPrompt">
+            <div className="connectPromptAvatar" aria-hidden="true">CT</div>
+            <div className="connectPromptContent">
+              <strong>What's happening in your world?</strong>
+              <p>Share a thought, join a discussion or meet someone new.</p>
+              <div className="connectPromptActions">
+                <Link href="/community"><span>✎</span> Start a discussion</Link>
+                <Link href="/discover"><span>⌕</span> Find people</Link>
+                <Link href="/groups"><span>♧</span> Explore groups</Link>
+              </div>
+            </div>
+          </section>
+
+          <section className="connectExploreSection">
+            <div className="connectSectionHeading"><div><span>MAKE IT YOURS</span><h2>Explore Connect</h2><p>Move between the spaces that bring your interests together.</p></div><Link href="/account">Your account →</Link></div>
+            <div className="connectExploreGrid">
+              {exploreLinks.map(item => (
+                <Link href={item.href} key={item.title} className="connectExploreCard">
+                  <span className={"connectExploreIcon " + item.tone}>{item.icon}</span>
+                  <span className="connectExploreText"><strong>{item.title}</strong><small>{item.detail}</small></span>
+                  <span className="connectExploreArrow" aria-hidden="true">↗</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="connectDynamicPanel">
+            <div className="connectSectionHeading"><div><span>WHAT'S HAPPENING</span><h2>Stories from around the world</h2><p>Current headlines from public publishers and feeds.</p></div><Link href="/news">All news →</Link></div>
+            <LiveNewsArticles />
+          </section>
+
+          <section className="connectDynamicPanel">
+            <div className="connectSectionHeading"><div><span>YOUR INTERESTS</span><h2>Watch what you love</h2><p>Choose topics and explore official broadcaster and video sources.</p></div><Link href="/free-tv">Explore video →</Link></div>
+            <LiveInterestFeed />
+          </section>
+
+          <section className="connectDynamicPanel connectRegionalPanel">
+            <div className="connectSectionHeading"><div><span>YOUR REGION</span><h2>Local updates, global view</h2><p>Explore weather and sports information for your region.</p></div></div>
+            <RegionalWeather />
+            <SportsScores />
+          </section>
+        </section>
+
+        <aside className="connectRightRail" aria-label="Connect information">
+          <section className="connectRightCard connectMemberCard">
+            <div className="connectRightCardHead"><span>THE CONNECT COMMUNITY</span><b>◉</b></div>
+            <MemberCount />
+            <p>Discover people, interests and new perspectives across the platform.</p>
+            <Link href="/discover">Discover members →</Link>
+          </section>
+          <section className="connectRightCard">
+            <div className="connectRightTitle">Start connecting</div>
+            <Link className="connectQuickLink" href="/discover"><span>⌕</span><div><strong>Discover people</strong><small>Find members and shared interests</small></div></Link>
+            <Link className="connectQuickLink" href="/friends"><span>♧</span><div><strong>Friends</strong><small>Build your personal network</small></div></Link>
+            <Link className="connectQuickLink" href="/messages"><span>✉</span><div><strong>Messages</strong><small>Keep up with your connections</small></div></Link>
+            <Link className="connectQuickLink" href="/dating"><span>♡</span><div><strong>Dating</strong><small>Meet verified adult members</small></div></Link>
+          </section>
+          <section className="connectRightCard connectRegionCard">
+            <div className="connectRightTitle">Your regional edition</div>
+            <p>Choose your country and language to tailor regional information.</p>
+            <LanguageSwitcher />
+          </section>
+          <section className="connectRightCard connectCommunityStandards">
+            <span className="connectStandardsIcon">✓</span><strong>A better community starts with respect.</strong>
+            <p>Harassment, threats, intimidation and privacy violations are not allowed.</p>
+            <Link href="/community-guidelines">Read the Community Guidelines →</Link>
+          </section>
+        </aside>
+      </div>
+    </main>
+  );
 }
