@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 
-type Profile = { handle?: string; display_name?: string; bio?: string; country?: string; region?: string; interests?: string; visibility?: string; age?: number; gender?: string; interested_in?: string; relationship_goal?: string };
+type Profile = { handle?: string; display_name?: string; bio?: string; country?: string; region?: string; interests?: string; photo_url?: string; visibility?: string; age?: number; gender?: string; interested_in?: string; relationship_goal?: string };
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile>({});
@@ -32,7 +32,7 @@ export default function ProfilePage() {
     try {
       const response = await fetch("/api/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         handle: profile.handle || "", displayName: profile.display_name || "", bio: profile.bio || "",
-        country: profile.country || "", region: profile.region || "", interests: profile.interests || "", visibility: profile.visibility || "members", age: profile.age ? Number(profile.age) : undefined, gender: profile.gender || "", interestedIn: profile.interested_in || "everyone", relationshipGoal: profile.relationship_goal || "friendship",
+        country: profile.country || "", region: profile.region || "", interests: profile.interests || "", photoUrl: profile.photo_url || "", visibility: profile.visibility || "members", age: profile.age ? Number(profile.age) : undefined, gender: profile.gender || "", interestedIn: profile.interested_in || "everyone", relationshipGoal: profile.relationship_goal || "friendship",
       }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Profile could not be saved.");
@@ -51,6 +51,8 @@ export default function ProfilePage() {
       <label>Country<input value={profile.country || ""} onChange={e => update("country", e.target.value)} maxLength={80} required/></label>
       <label>Region / state <span>(optional)</span><input value={profile.region || ""} onChange={e => update("region", e.target.value)} maxLength={100}/></label>
       <label>Interests <span>(comma separated)</span><input value={profile.interests || ""} onChange={e => update("interests", e.target.value)} placeholder="Music, travel, technology" maxLength={384}/></label>
+      <label>Profile photo URL <span>(optional HTTPS image link)</span><input type="url" value={profile.photo_url || ""} onChange={e => update("photo_url", e.target.value)} placeholder="https://example.com/your-photo.jpg" maxLength={1000}/><small>Use a photo you have permission to share. A clear, recent portrait helps people recognize you.</small></label>
+      {profile.photo_url && <div className="datingProfilePhotoPreview"><img src={profile.photo_url} alt="Profile photo preview" referrerPolicy="no-referrer"/><span>Photo preview</span></div>}
 
       <div className="eyebrow">DATING PROFILE · 18+ MEMBERS</div>
       <label>Age<input type="number" min={18} max={110} value={profile.age ?? ""} onChange={e => setProfile(current => ({ ...current, age: e.target.value === "" ? undefined : Number(e.target.value) }))}/><small>Your age is shown on your dating card. Your birth date and ID are never displayed.</small></label>
