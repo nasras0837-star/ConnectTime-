@@ -1332,3 +1332,109 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .mfaLogin p{font-size:12px}
 .settingsChoice .button{flex:0 0 auto;padding:9px 12px;font-size:11px}
 @media(max-width:620px){.mfaRecovery ul{grid-template-columns:1fr}.settingsChoice{align-items:flex-start;flex-direction:column}}
+
+
+/* Connect social-first home experience */
+.connectSocialHome{min-height:100vh;background:#f3f7f9;color:#203747;font-family:'DM Sans',sans-serif}
+.connectTopbar{height:76px;position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:25px;padding:0 clamp(16px,3vw,44px);background:#ffffffed;border-bottom:1px solid #e2eaee;backdrop-filter:blur(18px)}
+.connectBrand{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.connectBrand .ctBrandMark{width:39px;height:39px;flex-basis:39px;border-radius:13px;font-size:17px}
+.connectBrand .ctWordmark{font-size:23px}
+.connectSearch{display:flex;align-items:center;gap:11px;flex:1;max-width:390px;min-width:150px;padding:11px 15px;border:1px solid #e5edf0;border-radius:25px;background:#f3f7f8;color:#82939c;font-size:12px}
+.connectSearch>span:first-child{font-size:21px;color:#277e91;line-height:1}
+.connectTopLinks{display:flex;align-items:center;gap:21px;margin-left:auto;white-space:nowrap}
+.connectTopLinks a,.connectLogin{font-size:12px;font-weight:750;color:#607987}
+.connectTopLinks a:hover,.connectLogin:hover{color:#147e8e}
+.connectTopActions{display:flex;align-items:center;gap:12px;white-space:nowrap}
+.connectJoin{padding:11px 16px;border-radius:22px;background:linear-gradient(110deg,#176eaa,#159b86);color:#fff;font-size:11px;font-weight:850;box-shadow:0 7px 18px #167c9128}
+.connectSocialGrid{max-width:1540px;margin:0 auto;padding:23px clamp(12px,2vw,28px) 40px;display:grid;grid-template-columns:220px minmax(0,760px) 275px;gap:20px;align-items:start}
+.connectLeftRail,.connectRightRail{position:sticky;top:96px;display:grid;gap:14px;min-width:0}
+.connectRailCard,.connectRightCard{background:#fff;border:1px solid #e2eaee;border-radius:16px;box-shadow:0 5px 18px #21475b08}
+.connectRailCard{padding:16px 12px}
+.connectRailLabel{padding:4px 10px 9px;color:#94a3ab;font-size:9px;font-weight:900;letter-spacing:1.3px}
+.connectRailNav{display:grid;gap:3px}
+.connectRailNav a{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;color:#607987;font-size:12px;font-weight:700;transition:background .15s,color .15s}
+.connectRailNav a span{display:grid;place-items:center;width:22px;font-size:18px;color:#418b9a}
+.connectRailNav a:hover,.connectRailNav a.active{background:#e8f3f4;color:#176d83}
+.connectRailNav a.active{font-weight:850}
+.connectRailDivider{height:1px;background:#edf1f3;margin:12px 4px}
+.connectRailSafety{display:flex;gap:10px;padding:14px;border:1px solid #dceee7;border-radius:14px;background:linear-gradient(140deg,#edf8f4,#f4faf7);color:#2e6d5d}
+.connectRailSafety>span{display:grid;place-items:center;flex:0 0 24px;height:24px;border-radius:50%;background:#d5eee4;font-weight:900}
+.connectRailSafety strong{font-size:11px}
+.connectRailSafety p{margin:6px 0 9px;font-size:10px;line-height:1.55;color:#6d8c83}
+.connectRailSafety a,.connectRailFooter a{font-size:10px;font-weight:800;color:#187f8d}
+.connectRailFooter{display:flex;flex-wrap:wrap;gap:9px;padding:4px 5px;color:#91a0a8}
+.connectRailFooter span{flex-basis:100%;font-size:9px}
+.connectMainColumn{display:grid;gap:17px;min-width:0}
+.connectWelcome{position:relative;isolation:isolate;min-height:330px;overflow:hidden;border-radius:20px;background:#154f69;color:#fff;box-shadow:0 13px 34px #174f6925}
+.connectWelcomeImage{position:absolute;inset:0;z-index:-2;background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=85');background-size:cover;background-position:center 43%;transform:scale(1.02)}
+.connectWelcomeShade{position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(11,47,69,.95),rgba(16,77,93,.76) 57%,rgba(21,116,111,.18))}
+.connectWelcomeCopy{padding:34px clamp(22px,3.5vw,42px);max-width:620px}
+.connectWelcomeEyebrow{display:inline-flex;padding:7px 11px;border:1px solid #ffffff48;border-radius:22px;background:#ffffff18;color:#d4f7ec;font-size:9px;font-weight:900;letter-spacing:1.35px}
+.connectWelcome h1{margin:17px 0 11px;font-size:clamp(40px,5vw,62px);line-height:.99;letter-spacing:-2.8px;color:#fff}
+.connectWelcome h1 em{font-style:normal;color:#a9e9d8}
+.connectWelcomeCopy>p{max-width:440px;margin:0;color:#e5f1f3;font-size:13px;line-height:1.75}
+.connectWelcomeActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:21px}
+.connectWelcomeActions a{display:inline-flex;align-items:center;gap:12px;padding:12px 15px;border-radius:10px;font-size:11px;font-weight:850}
+.connectWelcomePrimary{background:#fff;color:#17677a}
+.connectWelcomePrimary span{font-size:16px}
+.connectWelcomeSecondary{border:1px solid #ffffff65;background:#ffffff18;color:#fff}
+.connectWelcomeProof{display:flex;flex-wrap:wrap;gap:8px;margin-top:21px}
+.connectWelcomeProof span{padding:6px 9px;border:1px solid #ffffff35;border-radius:20px;background:#ffffff17;color:#f1fbf8;font-size:9px}
+.connectComposerPrompt{display:flex;gap:13px;padding:17px;background:#fff;border:1px solid #e2eaee;border-radius:16px;box-shadow:0 5px 18px #21475b08}
+.connectPromptAvatar{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:14px;background:linear-gradient(140deg,#176eaa,#159b86);color:#fff;font:900 13px Manrope,sans-serif}
+.connectPromptContent{flex:1;min-width:0}
+.connectPromptContent>strong{display:block;margin:2px 0 4px;font-size:12px;color:#345466}
+.connectPromptContent>p{margin:0;color:#91a0a8;font-size:10px}
+.connectPromptActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid #edf1f3}
+.connectPromptActions a{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:8px;background:#f2f7f8;color:#5d7885;font-size:10px;font-weight:800}
+.connectPromptActions a span{font-size:14px;color:#168394}
+.connectExploreSection,.connectDynamicPanel{padding:18px;background:#fff;border:1px solid #e2eaee;border-radius:16px;box-shadow:0 5px 18px #21475b08;min-width:0}
+.connectSectionHeading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}
+.connectSectionHeading>div>span{font-size:9px;font-weight:900;letter-spacing:1.35px;color:#258b91}
+.connectSectionHeading h2{margin:5px 0 3px;font:800 21px Manrope,sans-serif;letter-spacing:-.8px;color:#27475a}
+.connectSectionHeading p{margin:0;color:#84949d;font-size:10px;line-height:1.5}
+.connectSectionHeading>a{flex:0 0 auto;color:#17818c;font-size:10px;font-weight:850}
+.connectExploreGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.connectExploreCard{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid #edf1f3;border-radius:12px;background:#fcfefe;transition:transform .15s,border-color .15s,box-shadow .15s}
+.connectExploreCard:hover{transform:translateY(-2px);border-color:#cce3e6;box-shadow:0 8px 18px #245c6b0d}
+.connectExploreIcon{display:grid;place-items:center;flex:0 0 39px;height:39px;border-radius:12px;font-size:19px;background:#e8f3f5}
+.connectExploreIcon.mint{background:#e1f5ed}.connectExploreIcon.gold{background:#fff2d9}.connectExploreIcon.blue{background:#e5effb}.connectExploreIcon.violet{background:#efebfb}.connectExploreIcon.rose{background:#fceaf0}.connectExploreIcon.sky{background:#e4f3fb}
+.connectExploreText{display:grid;gap:4px;min-width:0}
+.connectExploreText strong{font-size:11px;color:#345466}
+.connectExploreText small{font-size:9px;line-height:1.4;color:#8a9aa2}
+.connectExploreArrow{margin-left:auto;color:#91aab0;font-size:14px}
+.connectRightCard{padding:15px}
+.connectRightCardHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#8a9aa2;font-size:9px;font-weight:900;letter-spacing:1px}
+.connectRightCardHead b{color:#1b8991;font-size:15px}
+.connectMemberCard .ctHomeMemberCount{padding:10px 0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.connectMemberCard .ctHomeMemberCount strong{font-size:27px!important;color:#176f83!important}
+.connectMemberCard>p{margin:6px 0 10px;color:#80929b;font-size:10px;line-height:1.6}
+.connectRightCard>a:not(.connectQuickLink){font-size:10px;font-weight:850;color:#16818e}
+.connectRightTitle{margin-bottom:10px;color:#355466;font-size:12px;font-weight:850}
+.connectQuickLink{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #edf1f3}
+.connectQuickLink>span{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:10px;background:#edf5f6;color:#278394;font-size:16px}
+.connectQuickLink>div{display:grid;gap:3px}
+.connectQuickLink strong{font-size:10px;color:#466475}
+.connectQuickLink small{font-size:9px;color:#91a0a8}
+.connectRegionCard>p{margin:0 0 12px;color:#85959e;font-size:10px;line-height:1.55}
+.connectRegionCard .ctLanguageControl{display:grid;gap:7px}
+.connectRegionCard .ctLanguageControl label{font-size:10px;color:#607d89;font-weight:750}
+.connectRegionCard .ctLanguageControl select{width:100%;min-width:0;border:1px solid #e1e9ed;border-radius:8px;background:#f8fbfc;padding:8px;color:#45616e;font:inherit;font-size:10px}
+.connectRegionCard .ctLanguageSaved{font-size:9px;line-height:1.5;color:#91a0a8}
+.connectCommunityStandards{background:linear-gradient(145deg,#eaf6f2,#f2faf7);border-color:#dceee7}
+.connectStandardsIcon{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#d6eee4;color:#247b66;font-weight:900}
+.connectCommunityStandards strong{display:block;margin:9px 0 5px;color:#386e60;font-size:11px}
+.connectCommunityStandards p{margin:0 0 10px;color:#6f8b83;font-size:10px;line-height:1.6}
+.connectCommunityStandards>a{color:#267b70!important}
+.connectDynamicPanel>.ctLiveNewsArticles,.connectDynamicPanel>.ctLiveInterest{margin-top:14px}
+.connectDynamicPanel .ctLiveNewsArticlesHead h2,.connectDynamicPanel .ctLiveInterestHead h2,.connectDynamicPanel .ctSportsHead h2,.connectDynamicPanel .ctRegionalWeatherHead h2{font-size:19px}
+.connectDynamicPanel .ctLiveNewsArticleGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.connectRegionalPanel{display:grid;gap:17px}
+.connectRegionalPanel .ctRegionalWeather,.connectRegionalPanel .ctSportsScores{margin:0;min-width:0}
+.connectSocialHome .ctSportsLeagueGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.connectSocialHome .ctWeatherForecast{grid-template-columns:repeat(5,minmax(0,1fr))}
+.connectSocialHome .ctWeatherForecast article{min-width:0}
+@media(max-width:1180px){.connectSocialGrid{grid-template-columns:190px minmax(0,1fr)}.connectRightRail{display:none}.connectTopLinks{gap:13px}}
+@media(max-width:800px){.connectTopbar{height:68px;gap:12px;padding:0 14px}.connectSearch{max-width:none}.connectTopLinks{display:none}.connectTopActions{margin-left:auto}.connectSocialGrid{display:block;padding:12px}.connectLeftRail{position:static;margin-bottom:12px}.connectRailCard{padding:8px;border-radius:12px}.connectRailLabel,.connectRailDivider,.connectRailSafety,.connectRailFooter{display:none}.connectRailNav{display:flex;overflow-x:auto;gap:4px}.connectRailNav a{flex:0 0 auto;gap:7px;padding:9px 10px;font-size:0}.connectRailNav a span{font-size:17px}.connectMainColumn{gap:12px}.connectWelcome{min-height:300px}.connectWelcomeCopy{padding:28px 22px}.connectWelcome h1{font-size:48px}.connectExploreSection,.connectDynamicPanel{padding:14px}.connectSocialHome .ctSportsLeagueGrid{grid-template-columns:1fr}}
+@media(max-width:540px){.connectBrand .ctWordmark{font-size:20px}.connectBrand .ctBrandMark{width:34px;height:34px;flex-basis:34px}.connectSearch{min-width:0;flex:1;padding:9px 11px}.connectSearch>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}.connectTopActions{gap:8px}.connectLogin{font-size:10px}.connectJoin{padding:9px 11px;font-size:10px}.connectWelcome{min-height:340px}.connectWelcomeImage{background-position:58% center}.connectWelcomeShade{background:linear-gradient(100deg,rgba(11,47,69,.96),rgba(16,77,93,.8))}.connectWelcomeCopy{padding:25px 19px}.connectWelcome h1{font-size:43px}.connectWelcomeCopy>p{font-size:12px}.connectWelcomeProof{gap:6px}.connectWelcomeProof span{font-size:8px}.connectComposerPrompt{padding:13px}.connectPromptActions{gap:6px}.connectPromptActions a{font-size:9px;padding:7px 8px}.connectExploreGrid{grid-template-columns:1fr}.connectSectionHeading{align-items:flex-start}.connectSectionHeading h2{font-size:19px}.connectSectionHeading p{max-width:260px}.connectSectionHeading>a{font-size:9px}.connectDynamicPanel .ctLiveNewsArticleGrid{grid-template-columns:1fr}.connectSocialHome .ctWeatherForecast{grid-template-columns:repeat(2,minmax(0,1fr))}}
