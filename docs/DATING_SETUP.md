@@ -12,6 +12,7 @@ Create these columns in the existing profiles table (`APPWRITE_PROFILES_TABLE_ID
 |---|---|---|
 | `age` | Integer | No (profiles without a dating age are not shown in dating) |
 | `gender` | String | No (profiles without a dating gender are not shown in dating) |
+| `photo_url` | String (max 1000) | No (optional HTTPS image URL) |
 | `interested_in` | String | No |
 | `relationship_goal` | String | No |
 
