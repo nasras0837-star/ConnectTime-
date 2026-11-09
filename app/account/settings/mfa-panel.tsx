@@ -20,9 +20,12 @@ export default function MfaPanel() {
   async function refreshFactors() {
     const user = await account.get();
     const factors = await account.listMfaFactors() as MfaFactors;
-    setEmailVerified(Boolean(user.emailVerification));
+    const verifiedEmail = Boolean(user.emailVerification);
+    const enabled = Boolean(user.mfa);
+    setEmailVerified(verifiedEmail);
     setTotpVerified(Boolean(factors.totp));
-    setMfaEnabled(Boolean(user.mfa));
+    setMfaEnabled(enabled);
+    return { emailVerified: verifiedEmail, factors, mfaEnabled: enabled };
   }
 
   useEffect(() => {
@@ -79,9 +82,9 @@ export default function MfaPanel() {
   async function enableMfa() {
     setBusy(true); setError(""); setStatus("");
     try {
-      await refreshFactors();
-      const factors = await account.listMfaFactors() as MfaFactors;
-      if (!factors.totp || (!emailVerified && !factors.email && !factors.phone)) {
+      const current = await refreshFactors();
+      const factors = current.factors;
+      if (!factors.totp || (!current.emailVerified && !factors.email && !factors.phone)) {
         throw new Error("MFA requires a verified authenticator app plus a second verified factor, such as email or phone.");
       }
       const result = await account.createMfaRecoveryCodes();
