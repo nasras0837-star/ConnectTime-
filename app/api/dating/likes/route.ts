@@ -89,6 +89,9 @@ export async function GET() {
         handle: String(row.handle || ""),
         displayName: String(row.display_name || row.handle || ""),
         country: String(row.country || ""),
+        region: String(row.region || ""),
+        bio: String(row.bio || "").slice(0, 500),
+        relationshipGoal: String(row.relationship_goal || ""),
         age: Number(row.age || 0),
         gender: String(row.gender || ""),
         interests: String(row.interests || "").split(",").map((item: string) => item.trim()).filter(Boolean)
