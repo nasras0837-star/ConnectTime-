@@ -39,8 +39,8 @@ export default function MfaPanel() {
         const userId = params.get("userId");
         const verificationSecret = params.get("secret");
         if (userId && verificationSecret) {
-          await account.updateVerification({ userId, secret: verificationSecret });
           window.history.replaceState({}, "", window.location.pathname);
+          await account.updateVerification({ userId, secret: verificationSecret });
         }
         await refreshFactors();
         if (active) setStatus("Review your available sign-in factors below.");
