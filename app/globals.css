@@ -1582,3 +1582,72 @@ body :is(button,[role="button"],.button){font-size:14px!important;line-height:1.
 body :is(a,.textLink){text-underline-offset:3px}
 body :is(a,button):focus-visible{outline:3px solid #63e8ff!important;outline-offset:3px}
 @media(max-width:600px){html{font-size:16px}body{line-height:1.7!important}body :is(h1){line-height:1.12!important}}
+
+
+/* Unified electric-blue globe surfaces across every route.
+   Keep the homepage's deep-blue atmosphere while replacing legacy white
+   cards, panels, navigation, and form surfaces with readable dark glass. */
+:root{
+  color-scheme:dark!important;
+  --ink:#f4f8ff;
+  --muted:#c5dcfa;
+  --line:#3479c7;
+  --paper:#04143d;
+  --connect-surface:rgba(5,24,69,.94);
+  --connect-surface-raised:rgba(8,39,99,.96);
+  --connect-border:rgba(91,181,255,.42);
+  --connect-accent:#63e8ff;
+}
+html,body{
+  min-height:100%;
+  background-color:#04143d!important;
+  background-image:linear-gradient(125deg,rgba(2,13,43,.76),rgba(3,25,76,.84)),url('/electric-blue-globe.svg')!important;
+  background-size:cover!important;
+  background-position:center top!important;
+  background-attachment:fixed!important;
+  color:#f4f8ff!important;
+}
+body{font-family:'DM Sans','Segoe UI',Arial,sans-serif!important}
+body :is(main,.authShell,.connectFeatureShell,.connectAccountShell,.connectMemberDashboard,.meetingsShell,.pageShell,.page-shell,.pageContainer,.page-container){
+  background-color:transparent!important;
+  color:#f4f8ff!important;
+}
+body :is(.authCard,.connectAccountCard,.connectDashboardSide,.connectDashboardStatus,.connectDashboardTile,.connectDashboardNextSteps,.connectDashboardExplore,.meetingAction,.meetingInvitePanel,.meetingFeatureList>div,.messageInbox,.messageThread,.discoverMember,.discoverFilters,.messageReportForm,.profileCard,.settingsCard,.eventCard,.groupCard,.marketplaceCard,.notificationCard,.advertisingCard,.podcastCard,.radioCard,.newsCard,.videoCard,.recommendationInfo,.connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,.connectDynamicPanel,.connectQuickLink,.connectCommunityStandards,[class*="panel"],[class*="Panel"],[class*="card"],[class*="Card"],[class*="tile"],[class*="Tile"],[class*="modal"],[class*="Modal"],[class*="inbox"],[class*="Inbox"],[class*="thread"],[class*="Thread"]){
+  background:linear-gradient(145deg,rgba(8,38,96,.97),rgba(4,20,61,.97))!important;
+  border-color:var(--connect-border)!important;
+  color:#f4f8ff!important;
+  box-shadow:0 14px 36px rgba(0,8,35,.28);
+}
+body :is(.connectSiteHeader,.connectTopbar,.connectDashboardSide,.connectDashboardNextSteps,.messageInbox,.messageThread,.videoHeader,.header,.vHeader){
+  background:rgba(3,19,58,.94)!important;
+  border-color:var(--connect-border)!important;
+  color:#f4f8ff!important;
+  backdrop-filter:blur(18px);
+}
+body :is(h1,h2,h3,h4,h5,h6,strong,b,label,legend,summary,th){color:#f5f9ff!important}
+body :is(p,li,dd,dt,blockquote,figcaption,small,.muted,.description,.subtitle){color:#c9def9!important}
+body :is(a,.textLink){color:#69eaff}
+body :is(input,textarea,select){
+  background:rgba(3,18,55,.98)!important;
+  color:#f7fbff!important;
+  border:1px solid #438bd5!important;
+  caret-color:#63e8ff;
+}
+body :is(input,textarea,select)::placeholder{color:#a9c9ef!important;opacity:1}
+body select option{background:#071b4b!important;color:#fff!important}
+body :is(button,[role="button"],.button,[class*="btn"]){
+  background:linear-gradient(110deg,#087fce,#245fe0 58%,#6545d5)!important;
+  color:#fff!important;
+  border-color:#55bfff!important;
+}
+body :is(button,[role="button"],.button,[class*="btn"]):hover{filter:brightness(1.13)}
+body :is(.connectJoin,.connectWelcomePrimary,.connectSiteJoin,.vJoin){background:linear-gradient(110deg,#087fce,#245fe0 58%,#c02fc4)!important;color:#fff!important}
+body :is(.connectWelcome,.vHero,.vBottomCall,.connectBottomCall){color:#fff!important}
+body :is(.connectWelcome,.vHero,.vBottomCall,.connectBottomCall) :is(h1,h2,h3,p,a,span,strong){color:inherit}
+body :is(table,tr,td,th){border-color:#3479c7!important;color:#eaf4ff!important}
+body :is(hr,.divider){border-color:#3479c7!important}
+body :focus-visible{outline:3px solid #63e8ff!important;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}body{background-attachment:scroll!important}}
+@media(max-width:760px){
+  body :is(.connectSiteHeader,.connectTopbar,.connectDashboardSide,.messageInbox){background:rgba(3,19,58,.98)!important}
+}
