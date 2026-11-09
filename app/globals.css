@@ -1467,3 +1467,13 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .connectAccountCard>p:has(a){padding:10px 12px;border:1px solid #edf1f3;border-radius:10px;background:#fbfdfd}
 .connectAccountCard button{justify-self:start}
 @media(max-width:760px){.connectAccountCard{margin:18px auto}.connectAccountCard>p:has(a){padding:12px}}
+
+
+/* Full-width shell for primary social feature pages */
+.connectFeatureShell{min-height:100vh;background:#f3f7f9;color:#203747;padding-bottom:42px}
+.connectFeatureShell>.authCard{width:min(1120px,calc(100% - 32px));max-width:none;margin:24px auto;background:#fff!important;border:1px solid #e2eaee!important;border-radius:18px;box-shadow:0 10px 30px #21475b0d!important;color:#203747!important}
+.connectFeatureShell>.authCard h1{color:#27475a!important}
+.connectFeatureShell>.authCard>p,.connectFeatureShell>.authCard label,.connectFeatureShell>.authCard small{color:#718691!important}
+.connectFeatureShell>.authCard input:not([type=checkbox]){background:#fbfdfd!important;color:#27475a!important;border-color:#dce7eb!important}
+.connectFeatureShell>.authCard .message{background:#eaf5f5!important;color:#286c78!important}
+@media(max-width:760px){.connectFeatureShell>.authCard{width:calc(100% - 22px);margin:14px auto}}
