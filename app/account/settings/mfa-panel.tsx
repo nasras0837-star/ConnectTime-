@@ -29,7 +29,7 @@ export default function MfaPanel() {
     setPhoneVerified(Boolean(factors.phone));
     setMfaEnabled(enabled);
     return { emailVerified: verifiedEmail, factors, mfaEnabled: enabled };
-  }, [account, refreshFactors]);
+  }, [account]);
 
   useEffect(() => {
     let active = true;
@@ -49,7 +49,7 @@ export default function MfaPanel() {
       }
     })();
     return () => { active = false; };
-  }, [account]);
+  }, [account, refreshFactors]);
 
   async function sendEmailVerification() {
     setBusy(true); setError(""); setStatus("");
