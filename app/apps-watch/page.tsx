@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 const services = [
+  { name: "Apple TV", category: "Apple Originals, films & live sports", url: "https://tv.apple.com/", color: "#252535", mark: "tv+", note: "An Apple TV subscription is required for subscription content; availability varies by region." },
+  { name: "YouTube TV", category: "Live TV, sports, news & cloud DVR", url: "https://tv.youtube.com/", color: "#f5f5f5", mark: "▶ TV", note: "A YouTube TV membership is required; channel lineups and availability vary by location." },
   { name: "Hulu", category: "TV shows, movies & originals", url: "https://www.hulu.com/", color: "#1ce783", mark: "hulu", note: "A Hulu plan may be required. Plan and title availability vary." },
   { name: "Netflix", category: "Series, films & documentaries", url: "https://www.netflix.com/", color: "#e50914", mark: "N", note: "Sign in with your Netflix account and active plan." },
   { name: "Tubi", category: "Free movies & TV with ads", url: "https://tubitv.com/", color: "#6b36ff", mark: "tubi", note: "Free, ad-supported viewing; no paid subscription required." },
@@ -20,7 +22,7 @@ export default function AppsWatchPage() {
       <div className="appsWatchNotice"><strong>Your subscriptions stay yours.</strong><span>Connect does not sell streaming subscriptions, store provider passwords, or unlock paid content. Each provider controls sign-in, playback, plans and regional availability.</span></div>
     </section>
     <section className="appsWatchSection">
-      <div className="appsWatchSectionTitle"><div><span>STREAMING SERVICES</span><h2>Choose where to watch</h2></div><small>7 services</small></div>
+      <div className="appsWatchSectionTitle"><div><span>STREAMING SERVICES</span><h2>Choose where to watch</h2></div><small>9 services</small></div>
       <div className="appsWatchGrid">
         {services.map(service => <article className="appsWatchCard" key={service.name}>
           <div className="appsWatchLogo" style={{"--service-color":service.color} as React.CSSProperties}><b>{service.mark}</b></div>
