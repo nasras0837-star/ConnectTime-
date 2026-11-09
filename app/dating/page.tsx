@@ -16,6 +16,8 @@ export default function DatingPage() {
   const [minAge, setMinAge] = useState(18);
   const [maxAge, setMaxAge] = useState(80);
   const [loading, setLoading] = useState(true);
+  const [discoveryLoaded, setDiscoveryLoaded] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [sending, setSending] = useState("");
   const [liked, setLiked] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -25,14 +27,39 @@ export default function DatingPage() {
 
   useEffect(() => {
     let active = true;
-    Promise.all([
-      fetch("/api/discover/profiles", { cache: "no-store" }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || "Dating discovery is unavailable."); return d.profiles || []; }),
-      fetch("/api/dating/likes", { cache: "no-store" }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || "Likes are unavailable."); return d.sent || []; })
-    ]).then(([items, sent]) => { if (active) { setProfiles(items); setLiked(sent); } })
-      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Dating is unavailable."); })
-      .finally(() => { if (active) setLoading(false); });
+    fetch("/api/dating/likes", { cache: "no-store" })
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Likes are unavailable.");
+        if (active) setLiked(data.sent || []);
+      })
+      .catch(e => { if (active) setError(e instanceof Error ? e.message : "Likes are unavailable."); });
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    const params = new URLSearchParams();
+    if (search.trim()) params.set("q", search.trim());
+    if (country.trim()) params.set("country", country.trim());
+    if (interest.trim()) params.set("interest", interest.trim());
+    const query = params.toString();
+    const timer = window.setTimeout(async () => {
+      if (!discoveryLoaded) setLoading(true);
+      else setSearching(true);
+      try {
+        const response = await fetch("/api/discover/profiles" + (query ? "?" + query : ""), { cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Dating discovery is unavailable.");
+        if (active) { setProfiles(data.profiles || []); setDiscoveryLoaded(true); setError(""); }
+      } catch (e) {
+        if (active) setError(e instanceof Error ? e.message : "Dating discovery is unavailable.");
+      } finally {
+        if (active) { setLoading(false); setSearching(false); }
+      }
+    }, 250);
+    return () => { active = false; window.clearTimeout(timer); };
+  }, [search, country, interest, discoveryLoaded]);
 
   const results = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -118,7 +145,7 @@ export default function DatingPage() {
       </details>
       <p className="switch"><Link href="/profile">Complete your dating profile and interests</Link> · <Link href="/friends">Your friends</Link></p>
       {error && <p className="message" role="alert">{error}</p>}{message && <p className="message" role="status">{message}</p>}
-      <div className="communityFeedHead"><div><span>YOUR DISCOVERY</span><h2>{results.length} {results.length === 1 ? "person" : "people"} to explore</h2></div><span>18+ only</span></div>
+      <div className="communityFeedHead"><div><span>YOUR DISCOVERY</span><h2>{results.length} {results.length === 1 ? "person" : "people"} to explore</h2></div><span>{searching ? "Updating results…" : "18+ only"}</span></div>
       {!loading && results.length > 0 && <div className="datingSelectionBar">
         <span>{selected.filter(handle => results.some(profile => profile.handle === handle)).length} selected</span>
         <button type="button" onClick={selectAllMatching} disabled={bulkSending}>Select all matching</button>
