@@ -81,6 +81,7 @@ export default function FreeTvPage() {
   const [watchlistError,setWatchlistError] = useState("");
   const [watchlistBusy,setWatchlistBusy] = useState<string | null>(null);
   const [showSavedOnly,setShowSavedOnly] = useState(false);
+  const [selectedChannelId,setSelectedChannelId] = useState(() => channels.some(channel => channel.id === initialChannelId) ? initialChannelId : "sky-uk");
   useEffect(() => {
     let active = true;
     fetch("/api/free-tv/watchlist", { cache: "no-store" }).then(async response => {
@@ -110,9 +111,17 @@ export default function FreeTvPage() {
     const matchesQuery = !term || [channel.name,channel.country,channel.region,channel.language,channel.description].join(" ").toLowerCase().includes(term);
     return matchesRegion && matchesCountry && matchesCategory && matchesQuery;
   }),[region,country,category,query]);
+  const activeChannel = channels.find(channel => channel.id === selectedChannelId) ?? channels[0];
   return <main className="freeTvPage">
     <header className="freeTvHeader"><Link href="/" className="freeTvBrand"><span>◉</span> Connect</Link><nav><Link href="/">Home</Link><Link href="/news">News</Link><Link href="/videos">Video Tube</Link><Link className="freeTvJoin" href="/register">Register Now</Link></nav></header>
     <section className="freeTvHero"><span className="freeTvEyebrow">CONNECT · FREE TV</span><h1>Local voices.<br/><em>World-wide viewing.</em></h1><p>Discover free official news and entertainment channels from participating broadcasters around the world. Choose a region, find a channel, and watch on the broadcaster&apos;s own service.</p><div className="freeTvHeroStats"><span>🌍 Regional discovery</span><span>📰 Local & world news</span><span>🎭 Free entertainment</span><span>🔗 Official broadcaster links</span></div></section>
+    <section className="freeTvPlayerSection" id="live-player" aria-labelledby="free-tv-player-title">
+      <div className="freeTvPlayerHeading"><div><span>OFFICIAL LIVE BROADCAST</span><h2 id="free-tv-player-title">Watch live on Connect</h2><p>Select a broadcaster. The video is requested from its official service; some broadcasters block embedding or restrict playback by country.</p></div>
+        <label>Choose broadcaster<select value={selectedChannelId} onChange={event => setSelectedChannelId(event.target.value)}>{channels.filter(channel => channel.category === "News").map(channel => <option key={channel.id} value={channel.id}>{channel.name} · {channel.country}</option>)}</select></label>
+      </div>
+      <div className="freeTvPlayerFrame"><iframe key={activeChannel.id} src={activeChannel.url} title={`${activeChannel.name} official live broadcast`} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen /><div className="freeTvPlayerFallback"><strong>{activeChannel.name}</strong><span>If the broadcaster does not allow embedded playback, open its official live page.</span><a href={activeChannel.url} target="_blank" rel="noopener noreferrer">Open official broadcaster ↗</a></div></div>
+      <p className="freeTvPlayerNote">Connect does not host, record, mirror or rebroadcast these streams. Playback, advertisements, account requirements and regional rights are controlled by each broadcaster.</p>
+    </section>
     <section className="freeTvDirectory">
       <div className="freeTvSectionHead"><div><span>CHANNEL GUIDE</span><h2>Find something to watch</h2><p>Connect links to the broadcaster. It does not host, record or rebroadcast TV streams. Official destination links receive a scheduled technical check; regional rights and actual live playback still require broadcaster confirmation.</p></div><span className="freeTvCount">{filtered.length} channels</span></div>
       <div className="freeTvWatchlistBar"><button type="button" onClick={() => setShowSavedOnly(false)} aria-pressed={!showSavedOnly}>All channels</button><button type="button" onClick={() => setShowSavedOnly(true)} aria-pressed={showSavedOnly}>★ My watchlist ({watchlist.length})</button><span>{watchlistReady ? "Personal watchlist" : "Loading saved channels…"}</span></div>{watchlistError && <p className="freeTvWatchlistMessage" role="status">{watchlistError} You can still browse the directory.</p>}<div className="freeTvControls"><label>Search channels<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search by channel, country or language"/></label><label>Region<select value={region} onChange={e=>setRegion(e.target.value)}>{regions.map(v=><option key={v}>{v}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}>{countries.map(v=><option key={v}>{v}</option>)}</select></label></div>
