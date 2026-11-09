@@ -36,9 +36,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     try {
       const savedLanguage = window.localStorage.getItem("connect-language");
       const savedCountry = window.localStorage.getItem("connect-country-manual");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- restore persisted preferences after client hydration.
       if (savedLanguage && languages.some(item => item.code === savedLanguage)) setLanguageState(savedLanguage as LanguageCode);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- restore persisted preferences after client hydration.
       if (savedCountry && /^[A-Z]{2}$/.test(savedCountry)) setCountryCodeState(savedCountry);
       browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync the browser time zone after hydration.
       setTimeZone(browserTimeZone);
     } catch { /* Browser privacy settings may disable local preferences. */ }
     fetch("/api/region", { cache: "no-store" }).then(response => response.ok ? response.json() : Promise.reject())
