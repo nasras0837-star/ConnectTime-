@@ -141,7 +141,7 @@ footer{border-color:#e9e1f5;color:#9389a7}
 @media(max-width:620px){.ctNewsGrid{grid-template-columns:1fr}.ctNewsRefresh{margin-left:0}.ctNewsToolbar{gap:6px}.ctNewsFilter,.ctNewsRefresh{padding:8px 10px}}
 
 
-/* ConnectTime public homepage sports scores */
+/* Connect public homepage sports scores */
 .ctPublicSports{margin:12px 0 44px;padding:clamp(20px,3vw,32px);border:1px solid #e6d9f6;border-radius:28px;background:linear-gradient(130deg,#f0e6ff,#e5efff 52%,#ffe8f4);box-shadow:0 18px 45px #51327b12}
 .ctPublicSportsHead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
 .ctPublicSportsHead h2{margin:8px 0;font-size:clamp(27px,4vw,42px);line-height:1.05;letter-spacing:-1.8px}
@@ -380,14 +380,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #6b2f
 .ctFeedbackButton:focus-visible{outline:3px solid #ffe66d;outline-offset:4px}
 @media(max-width:620px){.ctFeedbackCard{padding:19px!important}.ctFeedbackTopics{font-size:13px}}
 
-/* Consolidated ConnectTime homepage navigation and directory */
+/* Consolidated Connect homepage navigation and directory */
 .ctMainHeader{position:sticky;top:0;z-index:50;padding:0 14px;background:#fbf9fff0;backdrop-filter:blur(16px);border-bottom:1px solid #e9e1f5;border-radius:0 0 16px 16px}
 .featureDirectoryGroup{margin:34px 0 42px}.featureDirectoryHeading{margin:0 0 16px}.featureDirectoryHeading h3{margin:0 0 5px;font-size:clamp(20px,2.4vw,27px);letter-spacing:-.7px;color:#38245e}.featureDirectoryHeading p{margin:0;color:#807691;font-size:12px}.featureDirectoryGroup .grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ctHomeFeatureHighlights{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:24px;color:#8b69b4;font-size:11px;font-weight:850}.ctHomeFeatureHighlights a{color:#6f43b2}.ctHomeFeatureHighlights a:hover{text-decoration:underline}
 @media(max-width:900px){.featureDirectoryGroup .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.ctMainHeader{padding:0 8px}.featureDirectoryGroup{margin:25px 0 32px}.featureDirectoryGroup .grid{grid-template-columns:1fr}.ctHomeFeatureHighlights{gap:7px;font-size:10px}}
 </style>
 
-<style id="connecttime-hero-people-background">
+<style id="connect-hero-people-background">
 .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:30px;padding-left:clamp(18px,3vw,38px);padding-right:clamp(18px,3vw,38px)}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(90deg,rgba(248,251,255,.94) 0%,rgba(248,251,255,.82) 48%,rgba(248,251,255,.56) 100%),url("https://images.pexels.com/photos/6146961/pexels-photo-6146961.jpeg?auto=compress&dpr=1&h=750&w=1260") center 42%/cover no-repeat}
 .hero>div{position:relative;z-index:1}
@@ -496,7 +496,24 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 .podcastFeatureTile{border-color:#d8d6f5;background:linear-gradient(145deg,#fff,#f0edff)}
 .podcastFeatureTile .ico{background:#e7e1ff}
 @media(max-width:700px){.podcastSpotlightInner{grid-template-columns:1fr}.podcastSpotlightArt{min-height:130px;grid-row:1}.podcastSpotlight{border-radius:22px;padding:22px 18px}.podcastSpotlight h2{letter-spacing:-1.4px}}
-</style></head>
+</style>
+<style id="connect-compact-live-tv">
+/* Compact broadcaster cards on the public Connect homepage */
+.liveNewsPanel{padding:clamp(16px,2.4vw,26px)}
+.liveNewsHead{margin-bottom:14px;gap:14px}
+.liveNewsHead h2{font-size:clamp(24px,3.2vw,34px)}
+.liveNewsGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.liveNewsCard{padding:12px;border-radius:16px}
+.liveNewsCardTop{font-size:8px;letter-spacing:.45px}
+.liveNewsCard h3{margin:7px 0 3px;font-size:15px}
+.liveNewsCard>p{margin-bottom:9px;font-size:10px;line-height:1.4}
+.liveNewsPlayer{border-radius:10px}
+.liveNewsCard>a{margin-top:9px;font-size:10px}
+.liveNewsDisclaimer{font-size:11px;line-height:1.5}
+@media(max-width:980px){.liveNewsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.liveNewsPanel{padding:18px 13px}.liveNewsGrid{grid-template-columns:1fr}.liveNewsCard{padding:13px}.liveNewsCard h3{font-size:17px}}
+</style>
+</head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a><div class="wrap">
 <header class="ctMainHeader"><a class="brand" href="./" aria-label="Connect homepage"><img src="https://raw.githubusercontent.com/nasras0837-star/ConnectTime-/main/public/connect-logo.svg?v=7893aa3" alt="Connect C globe logo"><span>Connect</span></a><button type="button" class="mobileMenuToggle" id="mobileMenuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="mainNavigation"><span aria-hidden="true">☰</span></button><nav class="nav" id="mainNavigation" aria-label="Main navigation"><a href="#features">Connect</a><a href="#discover">Explore</a><a href="#news">News &amp; interests</a><a href="#advertise">For business</a><a href="#feedback">Feedback</a><a href="https://connect-web-7ypt.onrender.com/login" target="_blank" rel="noopener noreferrer">Log in</a><a class="btn" href="https://connect-web-7ypt.onrender.com/register" target="_blank" rel="noopener noreferrer">Register Now</a></nav></header>
@@ -520,14 +537,14 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 
 
 <section class="liveNewsPanel" id="live-video-news" aria-labelledby="liveNewsTitle">
- <div class="liveNewsHead"><div><div class="eyebrow">CONNECT · LIVE VIDEO NEWS</div><h2 id="liveNewsTitle">Watch the world as it happens.</h2><p>Choose an official broadcaster to load its live video stream. Coverage and embedding availability may vary by country and time.</p></div><span class="liveNewsPill"><i></i> Official broadcaster channels</span></div>
+ <div class="liveNewsHead"><div><div class="eyebrow">CONNECT · LIVE VIDEO NEWS</div><h2 id="liveNewsTitle">Watch the world as it happens.</h2><p>Choose an official broadcaster to try its live video stream. Playback depends on the broadcaster, regional availability, and whether a live stream is currently offered.</p></div><span class="liveNewsPill"><i></i> Official broadcaster channels</span></div>
  <div class="liveNewsGrid">
   <article class="liveNewsCard"><div class="liveNewsCardTop"><span>🇺🇸 UNITED STATES</span><b>ABC NEWS</b></div><h3>ABC News Live</h3><p>Breaking news and live coverage from ABC News.</p><div class="liveNewsPlayer" data-channel="UCBi2mrWuNuyYy4gbM6fU18Q" data-title="ABC News Live"><div class="liveNewsPlaceholder"><span>▶</span><b>Load live video</b><small>Video loads only when you choose to watch.</small></div></div><a href="https://abcnews.go.com/Live" target="_blank" rel="noopener noreferrer">ABC News official site ↗</a></article>
   <article class="liveNewsCard"><div class="liveNewsCardTop"><span>🇺🇸 UNITED STATES</span><b>NBC NEWS</b></div><h3>NBC News NOW</h3><p>Continuous news coverage and current affairs.</p><div class="liveNewsPlayer" data-channel="UCeY0bbntWzzVIaj2z3QigXg" data-title="NBC News NOW"><div class="liveNewsPlaceholder"><span>▶</span><b>Load live video</b><small>Video loads only when you choose to watch.</small></div></div><a href="https://www.nbcnews.com/now" target="_blank" rel="noopener noreferrer">NBC News official site ↗</a></article>
   <article class="liveNewsCard"><div class="liveNewsCardTop"><span>🌐 GLOBAL</span><b>AL JAZEERA</b></div><h3>Al Jazeera English</h3><p>International reporting and global perspectives.</p><div class="liveNewsPlayer" data-channel="UCNye-wNBqNL5ZzHSJj3l8Bg" data-title="Al Jazeera English Live"><div class="liveNewsPlaceholder"><span>▶</span><b>Load live video</b><small>Video loads only when you choose to watch.</small></div></div><a href="https://www.aljazeera.com/live" target="_blank" rel="noopener noreferrer">Al Jazeera official site ↗</a></article>
   <article class="liveNewsCard"><div class="liveNewsCardTop"><span>🇬🇧 UNITED KINGDOM</span><b>SKY NEWS</b></div><h3>Sky News Live</h3><p>Live news and rolling coverage from the UK.</p><div class="liveNewsPlayer" data-channel="UCoMdktPbSTixAyNGwb-UYkQ" data-title="Sky News Live"><div class="liveNewsPlaceholder"><span>▶</span><b>Load live video</b><small>Video loads only when you choose to watch.</small></div></div><a href="https://news.sky.com/watch-live" target="_blank" rel="noopener noreferrer">Sky News official site ↗</a></article>
  </div>
- <p class="liveNewsDisclaimer">Streams are provided by their respective broadcasters through YouTube’s privacy-enhanced player. A channel may not be live, may disable embedding, or may be restricted in your region. Connect does not host or rebroadcast these videos. If a player is unavailable, use the broadcaster’s official link.</p>
+ <p class="liveNewsDisclaimer">Streams are provided by their respective broadcasters through YouTube’s privacy-enhanced player. Not every broadcaster permits embedded playback. A stream may be offline, unavailable in your country, or blocked by the broadcaster. Connect does not host or rebroadcast these videos. If playback is unavailable, use the broadcaster’s official link.</p>
 </section>
 
 <section class="panel" id="radio" style="background:linear-gradient(125deg,#e1f5fc,#e4f8f0 52%,#f8e8f5);border-color:#d7edf1"> <div class="panelTop"><div><div class="eyebrow">FEATURE SPOTLIGHT · CONNECT MUSIC & RADIO</div><h2>Turn on the world. Discover music and radio from every region.</h2></div><p>Explore free internet radio from countries and communities worldwide. Tune into music, culture, local voices, news, and more—all from one place.</p></div> <div class="topics"><article class="topic"><span>🌍</span><h3>Six world regions</h3><p>Browse stations across Africa, Asia, Europe, North America, South America, and Oceania.</p></article><article class="topic"><span>🎧</span><h3>Find your sound</h3><p>Search stations by country, language, station name, or genre, then listen with the built-in audio player.</p></article><article class="topic"><span>📻</span><h3>Free radio & music discovery</h3><p>Save favorite stations and explore independent music services and artist-supported releases.</p></article></div> <div class="ctRadioFinder" aria-labelledby="ctRadioFinderTitle">
