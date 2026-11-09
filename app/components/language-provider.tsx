@@ -19,9 +19,7 @@ type LanguageContextValue = {
 };
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-const countryLanguage: Record<string, LanguageCode> = {
-  ES:"es",MX:"es",AR:"es",CL:"es",CO:"es",FR:"fr",CA:"en",DE:"de",JP:"ja",KR:"ko",BR:"pt",PT:"pt",IN:"hi",PK:"ur",CN:"zh",TW:"zh",SA:"ar",AE:"ar",QA:"ar"
-};
+const countryLanguage: Record<string, LanguageCode> = { US:"en",GB:"en",CA:"en",AU:"en",NZ:"en",IE:"en",DE:"de",FR:"fr",ES:"es",IT:"en",NL:"en",PT:"pt",SE:"en",BR:"pt",MX:"es",AR:"es",CL:"es",CO:"es",IN:"hi",JP:"ja",CN:"zh",TW:"zh",KR:"ko",SG:"en",MY:"en",ID:"en",TH:"en",ZA:"en",NG:"en",KE:"en",UG:"en",AE:"ar",SA:"ar",QA:"ar",PK:"ur" };
 const fahrenheitCountries = new Set(["US","BS","BZ","KY","PW","FM","MH","LR"]);
 const TIMEZONE_COUNTRY: Record<string,string> = {"America/New_York":"US","America/Chicago":"US","America/Denver":"US","America/Los_Angeles":"US","America/Toronto":"CA","America/Vancouver":"CA","Europe/London":"GB","Europe/Dublin":"IE","Europe/Berlin":"DE","Europe/Paris":"FR","Europe/Madrid":"ES","Europe/Rome":"IT","Europe/Amsterdam":"NL","Europe/Lisbon":"PT","Europe/Stockholm":"SE","Australia/Sydney":"AU","Australia/Perth":"AU","Pacific/Auckland":"NZ","Asia/Tokyo":"JP","Asia/Kolkata":"IN","Asia/Shanghai":"CN","Asia/Taipei":"TW","Asia/Seoul":"KR","Asia/Singapore":"SG","Asia/Kuala_Lumpur":"MY","Asia/Jakarta":"ID","Asia/Bangkok":"TH","Africa/Johannesburg":"ZA","Africa/Lagos":"NG","Africa/Nairobi":"KE","Africa/Kampala":"UG","Asia/Dubai":"AE","Asia/Riyadh":"SA","Asia/Qatar":"QA","Asia/Karachi":"PK","America/Sao_Paulo":"BR","America/Mexico_City":"MX","America/Argentina/Buenos_Aires":"AR","America/Santiago":"CL","America/Bogota":"CO"};
 
