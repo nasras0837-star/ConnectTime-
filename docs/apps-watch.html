@@ -177,7 +177,7 @@ a{color:inherit;text-decoration:none}.shell{min-height:100vh;padding:0 26px 30px
       if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
       else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
     }
-    if(event.key==='/'&&!viewer.hidden===false&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+    if(event.key==='/'&&viewer.hidden&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
       event.preventDefault();searchInput.focus();
     }
   });
