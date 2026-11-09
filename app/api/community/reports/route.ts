@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { communitySafetyStore, cleanText, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
+import { validateReportInput } from "@/lib/report-policy";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,13 +19,21 @@ export async function POST(request: Request) {
   const contentReference = cleanText(body.contentReference, 180);
   const details = cleanText(body.details, 3000);
   const allowedCategories = ["harassment", "intimidation", "threats", "hate", "privacy", "sexual-content", "spam", "other"];
-  if (!allowedCategories.includes(category) || !["member", "post", "message", "other"].includes(targetType) || (!targetUserId && !contentReference) || targetUserId === user.$id || details.length < 10) {
+  if (!validateReportInput({ category, targetType, targetUserId, contentReference, details, reporterUserId: user.$id })) {
     return NextResponse.json({ error: "Choose a report reason, identify the content or member, and provide at least 10 characters of detail." }, { status: 400 });
   }
   try {
     const tableId = process.env.APPWRITE_COMMUNITY_REPORTS_TABLE_ID;
     if (!tableId) throw new Error("Community reports table is not configured.");
     const { tablesDB, databaseId } = communitySafetyStore();
+    const recent = await tablesDB.listRows({ databaseId, tableId, queries: [Query.equal("reporter_user_id", user.$id), Query.orderDesc("$createdAt"), Query.limit(20)] });
+    const dayStart = new Date();
+    dayStart.setUTCHours(0, 0, 0, 0);
+    const reportsToday = recent.rows.filter(item => {
+      const created = Date.parse(String(item.created_at || ""));
+      return Number.isFinite(created) && created >= dayStart.getTime();
+    }).length;
+    if (reportsToday >= 5) return NextResponse.json({ error: "You have reached the daily report limit. If someone is in immediate danger, contact local emergency services." }, { status: 429, headers: { "Cache-Control": "no-store" } });
     const row = await tablesDB.createRow({ databaseId, tableId, rowId: ID.unique(), data: {
       reporter_user_id: user.$id, ...(targetUserId ? { reported_user_id: targetUserId } : {}), target_type: targetType,
       ...(contentReference ? { content_reference: contentReference } : {}), category, details, status: "open", created_at: new Date().toISOString(),
