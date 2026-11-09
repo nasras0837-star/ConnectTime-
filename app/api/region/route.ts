@@ -15,6 +15,9 @@ export async function GET(request: Request) {
     headers.get("x-vercel-ip-country") ||
     headers.get("cf-ipcountry") ||
     headers.get("x-country-code") ||
+    headers.get("x-forwarded-country") ||
+    headers.get("x-geo-country") ||
+    headers.get("cloudfront-viewer-country") ||
     ""
   ).toUpperCase();
   const accepted = (headers.get("accept-language") || "").split(",").map(part => part.split(";")[0].trim().toLowerCase());
