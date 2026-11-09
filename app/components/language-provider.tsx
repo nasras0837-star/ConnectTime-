@@ -23,6 +23,7 @@ const countryLanguage: Record<string, LanguageCode> = {
   ES:"es",MX:"es",AR:"es",CL:"es",CO:"es",FR:"fr",CA:"en",DE:"en",BR:"pt",PT:"pt",IN:"hi",PK:"ur",CN:"zh",TW:"zh",SA:"ar",AE:"ar",QA:"ar"
 };
 const fahrenheitCountries = new Set(["US","BS","BZ","KY","PW","FM","MH","LR"]);
+const TIMEZONE_COUNTRY: Record<string,string> = {"America/New_York":"US","America/Chicago":"US","America/Denver":"US","America/Los_Angeles":"US","America/Toronto":"CA","America/Vancouver":"CA","Europe/London":"GB","Europe/Dublin":"IE","Europe/Berlin":"DE","Europe/Paris":"FR","Europe/Madrid":"ES","Europe/Rome":"IT","Europe/Amsterdam":"NL","Europe/Lisbon":"PT","Europe/Stockholm":"SE","Australia/Sydney":"AU","Australia/Perth":"AU","Pacific/Auckland":"NZ","Asia/Tokyo":"JP","Asia/Kolkata":"IN","Asia/Shanghai":"CN","Asia/Taipei":"TW","Asia/Seoul":"KR","Asia/Singapore":"SG","Asia/Kuala_Lumpur":"MY","Asia/Jakarta":"ID","Asia/Bangkok":"TH","Africa/Johannesburg":"ZA","Africa/Lagos":"NG","Africa/Nairobi":"KE","Africa/Kampala":"UG","Asia/Dubai":"AE","Asia/Riyadh":"SA","Asia/Qatar":"QA","Asia/Karachi":"PK","America/Sao_Paulo":"BR","America/Mexico_City":"MX","America/Argentina/Buenos_Aires":"AR","America/Santiago":"CL","America/Bogota":"CO"};
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<LanguageCode>("en");
@@ -33,18 +34,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let active = true;
+    let browserTimeZone = "UTC";
     try {
       const savedLanguage = window.localStorage.getItem("connect-language");
       const savedCountry = window.localStorage.getItem("connect-country-manual");
       if (savedLanguage && languages.some(item => item.code === savedLanguage)) setLanguageState(savedLanguage as LanguageCode);
       if (savedCountry && /^[A-Z]{2}$/.test(savedCountry)) setCountryCodeState(savedCountry);
-      setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
+      browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+      setTimeZone(browserTimeZone);
     } catch { /* Browser privacy settings may disable local preferences. */ }
     fetch("/api/region", { cache: "no-store" }).then(response => response.ok ? response.json() : Promise.reject())
       .then(data => {
         if (!active) return;
         const savedCountry = window.localStorage.getItem("connect-country-manual");
-        const selectedCountry = savedCountry && /^[A-Z]{2}$/.test(savedCountry) ? savedCountry : data.countryCode || "US";
+        const timezoneCountry = TIMEZONE_COUNTRY[browserTimeZone] || "";
+        const detectedCountry = data.detectedBy === "default" && timezoneCountry ? timezoneCountry : data.countryCode || timezoneCountry || "US";
+        const selectedCountry = savedCountry && /^[A-Z]{2}$/.test(savedCountry) ? savedCountry : detectedCountry;
         setCountryCodeState(selectedCountry);
         setTemperatureUnit(fahrenheitCountries.has(selectedCountry) ? "fahrenheit" : "celsius");
         if (!window.localStorage.getItem("connect-language")) {
