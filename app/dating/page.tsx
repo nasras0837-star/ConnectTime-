@@ -18,6 +18,8 @@ export default function DatingPage() {
   const [loading, setLoading] = useState(true);
   const discoveryLoaded = useRef(false);
   const [searching, setSearching] = useState(false);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [sending, setSending] = useState("");
   const [liked, setLiked] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -51,7 +53,7 @@ export default function DatingPage() {
         const response = await fetch("/api/discover/profiles" + (query ? "?" + query : ""), { cache: "no-store" });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Dating discovery is unavailable.");
-        if (active) { setProfiles(data.profiles || []); discoveryLoaded.current = true; setError(""); }
+        if (active) { setProfiles(data.profiles || []); setNextCursor(data.nextCursor || null); discoveryLoaded.current = true; setError(""); }
       } catch (e) {
         if (active) setError(e instanceof Error ? e.message : "Dating discovery is unavailable.");
       } finally {
@@ -73,6 +75,28 @@ export default function DatingPage() {
         && (!query || searchable.includes(query));
     });
   }, [profiles, minAge, maxAge, gender, goal, country, interest, search]);
+
+  async function loadMoreProfiles() {
+    if (!nextCursor || loadingMore) return;
+    setLoadingMore(true);
+    setError("");
+    try {
+      const params = new URLSearchParams();
+      if (search.trim()) params.set("q", search.trim());
+      if (country.trim()) params.set("country", country.trim());
+      if (interest.trim()) params.set("interest", interest.trim());
+      params.set("cursor", nextCursor);
+      const response = await fetch("/api/discover/profiles?" + params.toString(), { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "More profiles could not be loaded.");
+      setProfiles(current => [...current, ...(data.profiles || []).filter((profile: Profile) => !current.some(item => item.handle === profile.handle))]);
+      setNextCursor(data.nextCursor || null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "More profiles could not be loaded.");
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   function clearFilters() {
     setSearch(""); setInterest(""); setCountry(""); setGender("everyone"); setGoal("any"); setMinAge(18); setMaxAge(80); setSelected([]);
@@ -161,7 +185,8 @@ export default function DatingPage() {
         <div className="discoverTags">{profile.interests.map(item => <span key={item}>{item}</span>)}</div>
         {!liked.includes(profile.handle) && <label className="datingSelectMember"><input type="checkbox" checked={selected.includes(profile.handle)} onChange={() => toggleSelected(profile.handle)} disabled={bulkSending}/> Select this person</label>}
         <button className="discoverConnectButton" disabled={!!sending || liked.includes(profile.handle)} onClick={() => void like(profile)}>{sending === profile.handle ? "Sending…" : liked.includes(profile.handle) ? "♥ Like sent" : "♡ Send a like"}</button>
-      </article>)}</div> : <div className="datingNoResults"><strong>No people found for that search.</strong><p>Try a different keyword or remove some filters to see more profiles.</p><button type="button" onClick={clearFilters}>Show everyone</button></div>}
+      </article>)}</div>
+        {nextCursor && <div className="datingLoadMore"><button type="button" onClick={() => void loadMoreProfiles()} disabled={loadingMore || searching}>{loadingMore ? "Loading more people…" : "Load more people"}</button></div>} : <div className="datingNoResults"><strong>No people found for that search.</strong><p>Try a different keyword or remove some filters to see more profiles.</p><button type="button" onClick={clearFilters}>Show everyone</button></div>}
       <p className="switch"><Link href="/safety">Safety Center</Link> · <Link href="/profile">Edit dating profile</Link></p>
     </section>
     <footer className="plannedFeatureFooter">Connect · Meet through shared interests.</footer>
