@@ -20,5 +20,7 @@ describe("security response headers", () => {
     expect(headers.get("permissions-policy")).toContain("geolocation=()");
     expect(headers.get("strict-transport-security")).toContain("max-age=31536000");
     expect(nextConfig.poweredByHeader).toBe(false);
+    expect(entries?.some(entry => entry.source === "/account/:path*" && entry.headers.some(header => header.key === "Cache-Control" && header.value.includes("no-store")))).toBe(true);
+    expect(entries?.some(entry => entry.source === "/api/:path*" && entry.headers.some(header => header.key === "Cache-Control" && header.value === "no-store"))).toBe(true);
   });
 });
