@@ -8,7 +8,7 @@ function isValidAppwriteEndpoint(value: string | undefined): boolean {
   if (!value) return false;
   try {
     const url = new URL(value);
-    return url.protocol === "https:" && url.pathname.replace(/\\/$/, "").endsWith("/v1") && !url.username && !url.password;
+    return url.protocol === "https:" && url.pathname.replace(/\/$/, "").endsWith("/v1") && !url.username && !url.password;
   } catch {
     return false;
   }
