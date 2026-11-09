@@ -18,7 +18,6 @@ export async function POST(request: Request) {
   const targetUserId = cleanText(body.targetUserId, 128);
   const contentReference = cleanText(body.contentReference, 180);
   const details = cleanText(body.details, 3000);
-  const allowedCategories = ["harassment", "intimidation", "threats", "hate", "privacy", "sexual-content", "spam", "other"];
   if (!validateReportInput({ category, targetType, targetUserId, contentReference, details, reporterUserId: user.$id })) {
     return NextResponse.json({ error: "Choose a report reason, identify the content or member, and provide at least 10 characters of detail." }, { status: 400 });
   }
