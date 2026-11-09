@@ -1318,3 +1318,17 @@ body :is(footer,.videoFooter,.radioFooter,.marketFooter,.ctHomeFooter){color:#b9
 .ctWeatherForecast article b{font-size:11px}.ctWeatherForecast article span{font-size:21px}.ctWeatherForecast article strong{font-size:10px}.ctWeatherForecast article small{color:#807691;font-size:9px}
 .ctWeatherAttribution{display:block;margin-top:13px;color:#807691;font-size:9px}.ctWeatherAttribution a{color:#7841bd;text-decoration:underline}
 @media(max-width:620px){.ctRegionalWeather{margin:18px 14px 28px;padding:17px;border-radius:19px}.ctWeatherSearch{align-items:stretch;flex-direction:column}.ctWeatherSearch button{width:100%}.ctWeatherCurrent{align-items:flex-start;flex-direction:column}.ctWeatherForecast{gap:5px}.ctWeatherForecast article{padding:10px 3px}.ctWeatherForecast article strong{font-size:9px}}
+
+
+/* Account MFA controls */
+.mfaSetup,.mfaRecovery,.mfaLogin{margin:14px 0;padding:16px;border:1px solid #d8c9f2;border-radius:14px;background:rgba(255,255,255,.07)}
+.mfaSetup code,.mfaRecovery code{display:inline-block;max-width:100%;padding:9px 11px;border-radius:8px;background:#111b3d;color:#c9f4ff;overflow-wrap:anywhere;user-select:all}
+.mfaSetup label{display:grid;gap:7px;margin:12px 0;font-size:12px;font-weight:800}
+.mfaSetup input,.mfaLogin input{width:100%;padding:11px 12px;border:1px solid #8b7ba8;border-radius:9px;background:#0c1737;color:#fff;font:inherit}
+.mfaRecovery ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;list-style:none;padding:0}
+.mfaRecovery li{min-width:0}
+.mfaFactorButtons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.mfaLogin h2{margin:0 0 7px}
+.mfaLogin p{font-size:12px}
+.settingsChoice .button{flex:0 0 auto;padding:9px 12px;font-size:11px}
+@media(max-width:620px){.mfaRecovery ul{grid-template-columns:1fr}.settingsChoice{align-items:flex-start;flex-direction:column}}
