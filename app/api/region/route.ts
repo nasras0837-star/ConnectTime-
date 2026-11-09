@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   const accepted = (headers.get("accept-language") || "").split(",").map(part => part.split(";")[0].trim().toLowerCase());
   const localeCountry = accepted.map(locale => ACCEPT_LANGUAGE_COUNTRIES[locale]).find(Boolean) || "";
   const countryCode = /^[A-Z]{2}$/.test(edgeCountry) && edgeCountry !== "XX" ? edgeCountry : localeCountry || "US";
-  const language = accepted.map(locale => locale.split("-")[0]).find(code => ["en","es","fr","ar","pt","hi","zh","ur"].includes(code)) || "en";
+  const language = accepted.map(locale => locale.split("-")[0]).find(code => ["en","es","fr","ar","pt","hi","zh","ur","de","ja","ko"].includes(code)) || "en";
   const fahrenheit = ["US","BS","BZ","KY","PW","FM","MH","LR"].includes(countryCode);
   return NextResponse.json({
     countryCode,
