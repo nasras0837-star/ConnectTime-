@@ -47,24 +47,24 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         const selectedCountry = savedCountry && /^[A-Z]{2}$/.test(savedCountry) ? savedCountry : data.countryCode || "US";
         setCountryCodeState(selectedCountry);
         setTemperatureUnit(fahrenheitCountries.has(selectedCountry) ? "fahrenheit" : "celsius");
-        if (!window.localStorage.getItem("connect-language") && data.language && languages.some(item => item.code === data.language)) {
-          setLanguageState(data.language as LanguageCode);
-        } else if (!window.localStorage.getItem("connect-language") && countryLanguage[selectedCountry]) {
-          setLanguageState(countryLanguage[selectedCountry]);
+        if (!window.localStorage.getItem("connect-language")) {
+          const preferredLanguage = countryLanguage[selectedCountry] || data.language;
+          if (preferredLanguage && languages.some(item => item.code === preferredLanguage)) setLanguageState(preferredLanguage as LanguageCode);
         }
       }).catch(() => {
         if (!active) return;
-        setTemperatureUnit(fahrenheitCountries.has(countryCode) ? "fahrenheit" : "celsius");
+        setTemperatureUnit("fahrenheit");
       }).finally(() => { if (active) setRegionReady(true); });
     return () => { active = false; };
   }, []);
 
   useEffect(() => {
+    if (!regionReady) return;
     const selected = languages.find(item => item.code === language) ?? languages[0];
     document.documentElement.lang = language;
     document.documentElement.dir = selected.dir;
     try { window.localStorage.setItem("connect-language", language); } catch { /* Session-only preference. */ }
-  }, [language]);
+  }, [language, regionReady]);
 
   const setCountryCode = (value: string) => {
     const next = /^[A-Z]{2}$/.test(value) ? value : "US";
