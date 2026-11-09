@@ -2,25 +2,44 @@ export type AuthOriginInput = {
   requestUrl: string;
   origin: string | null;
   fetchSite: string | null;
+  requestHost?: string | null;
+  forwardedHost?: string | null;
+  forwardedProto?: string | null;
   allowedOrigins?: string;
 };
 
 /**
- * Allow same-origin authentication on every deployment environment and
- * explicitly allow additional exact test/preview origins. Reject cross-site
- * fetches and never use wildcard or suffix matching.
+ * Trust requests whose browser Origin exactly matches the externally visible
+ * host serving this request. Render and other reverse proxies can make
+ * request.url reflect an internal origin, so prefer forwarded host/protocol
+ * (then Host) over the internal URL. Extra test/preview origins can be listed
+ * as exact origins in APP_ALLOWED_ORIGINS.
  */
 export function isTrustedAuthMutation(input: AuthOriginInput): boolean {
-  if (input.fetchSite === "cross-site") return false;
+  const trusted = new Set<string>();
 
-  let requestOrigin: string;
-  try {
-    requestOrigin = new URL(input.requestUrl).origin;
-  } catch {
-    return false;
+  const externalHost = input.forwardedHost?.split(",")[0]?.trim()
+    || input.requestHost?.split(",")[0]?.trim();
+  const externalProto = input.forwardedProto?.split(",")[0]?.trim()
+    || (() => {
+      try { return new URL(input.requestUrl).protocol.replace(":", ""); }
+      catch { return ""; }
+    })();
+
+  if (externalHost && (externalProto === "https" || externalProto === "http")) {
+    try {
+      trusted.add(new URL(`${externalProto}://${externalHost}`).origin);
+    } catch {
+      // Ignore malformed proxy headers; exact request URL remains a fallback.
+    }
   }
 
-  const trusted = new Set<string>([requestOrigin]);
+  try {
+    trusted.add(new URL(input.requestUrl).origin);
+  } catch {
+    if (!trusted.size) return false;
+  }
+
   for (const candidate of (input.allowedOrigins ?? "").split(",")) {
     const value = candidate.trim();
     if (!value) continue;
@@ -31,8 +50,14 @@ export function isTrustedAuthMutation(input: AuthOriginInput): boolean {
     }
   }
 
-  if (!input.origin) return input.fetchSite === "same-origin";
+  if (!input.origin) {
+    return input.fetchSite === "same-origin" || input.fetchSite === "same-site";
+  }
+
   try {
+    // Origin is browser-controlled and cannot be forged by a cross-origin
+    // page. Exact origin matching is the security boundary; Fetch Metadata
+    // can report "cross-site" behind proxies even for a legitimate deployment.
     return trusted.has(new URL(input.origin).origin);
   } catch {
     return false;
