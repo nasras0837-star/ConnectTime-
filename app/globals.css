@@ -1567,3 +1567,18 @@ body :is(button,[role="button"],.button,[class*="btn"]:hover){filter:brightness(
 body :is(table,tr,td,th){border-color:#28549a!important;color:#eaf4ff}
 body :focus-visible{outline:3px solid #63e8ff!important;outline-offset:3px}
 @media(prefers-reduced-motion:no-preference){body{background-attachment:fixed!important}}
+
+
+/* Readability pass: consistent typography, sizing, spacing, and text contrast. */
+:root{font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html{font-size:16px}
+body{font-family:'DM Sans','Segoe UI',Arial,sans-serif!important;font-size:16px!important;font-weight:450;line-height:1.65!important;letter-spacing:.005em;color:#f4f8ff!important}
+body :is(h1,h2,h3,h4,h5,h6){font-family:Manrope,'Segoe UI',Arial,sans-serif!important;font-weight:800!important;line-height:1.18!important;letter-spacing:-.025em!important;color:#fff!important}
+body :is(p,li,dd,dt,blockquote,label,legend,figcaption){font-size:1rem;line-height:1.7!important;color:#d7e8ff!important}
+body :is(small,.small,.caption,[class*="caption"],[class*="meta"],[class*="Meta"]){font-size:max(.78rem,12px)!important;line-height:1.55!important;color:#c2d8f5!important}
+body :is(a,button,input,textarea,select){font-family:'DM Sans','Segoe UI',Arial,sans-serif!important;font-weight:600}
+body :is(input,textarea,select){font-size:16px!important;line-height:1.5!important}
+body :is(button,[role="button"],.button){font-size:14px!important;line-height:1.35!important}
+body :is(a,.textLink){text-underline-offset:3px}
+body :is(a,button):focus-visible{outline:3px solid #63e8ff!important;outline-offset:3px}
+@media(max-width:600px){html{font-size:16px}body{line-height:1.7!important}body :is(h1){line-height:1.12!important}}
