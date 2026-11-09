@@ -6,6 +6,20 @@ import { useAuth, useAppwrite } from "@appwrite.io/react";
 import { LanguageText } from "@/app/components/language-provider";
 import { AuthenticationFactor } from "appwrite";
 
+function friendlyAuthMessage(error: unknown, fallback: string) {
+  const value = error && typeof error === "object" ? error as { type?: string; code?: number; message?: string } : {};
+  if (value.type === "user_invalid_credentials") return "That email and password combination was not recognized. Check both details or use password recovery if available.";
+  if (value.type === "user_already_exists") return "An account with this email already exists. Log in instead.";
+  if (value.type === "user_blocked") return "This account is currently disabled. Contact Connect support for help.";
+  if (value.type === "user_more_factors_required") return "Your password was accepted. Complete the additional verification step.";
+  if (value.type === "general_rate_limit_exceeded" || value.code === 429) return "There have been too many attempts. Wait a little while and try again.";
+  if (value.type === "password_recently_used") return "Choose a password you have not used recently.";
+  if (value.type === "password_personal_data") return "Choose a password that does not contain your personal information.";
+  if (value.type === "general_argument_invalid") return "Some details were not accepted. Check the form and try again.";
+  if (value.code === 503) return "The sign-in service is temporarily unavailable. Please try again shortly.";
+  return value.message?.trim() || fallback;
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const { signIn, error } = useAuth();
