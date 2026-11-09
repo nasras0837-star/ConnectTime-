@@ -34,6 +34,8 @@ export async function POST(request: Request) {
   const access = await checkMemberAccess();
   if (!access.allowed) return NextResponse.json({ error: "Verified adult membership is required to upload a dating photo." }, { status: access.status });
 
+  const contentLength = Number(request.headers.get("content-length") || 0);
+  if (contentLength > MAX_PHOTO_BYTES + 256 * 1024) return NextResponse.json({ error: "Choose an image smaller than 5 MB." }, { status: 413 });
   let uploadedId = "";
   try {
     const form = await request.formData();
