@@ -98,7 +98,7 @@ export default function HomePage() {
           <section className="connectComposerPrompt">
             <div className="connectPromptAvatar" aria-hidden="true">CT</div>
             <div className="connectPromptContent">
-              <strong>What's happening in your world?</strong>
+              <strong>What&apos;s happening in your world?</strong>
               <p>Share a thought, join a discussion or meet someone new.</p>
               <div className="connectPromptActions">
                 <Link href="/community"><span>✎</span> Start a discussion</Link>
@@ -122,7 +122,7 @@ export default function HomePage() {
           </section>
 
           <section className="connectDynamicPanel">
-            <div className="connectSectionHeading"><div><span>WHAT'S HAPPENING</span><h2>Stories from around the world</h2><p>Current headlines from public publishers and feeds.</p></div><Link href="/news">All news →</Link></div>
+            <div className="connectSectionHeading"><div><span>WHAT&apos;S HAPPENING</span><h2>Stories from around the world</h2><p>Current headlines from public publishers and feeds.</p></div><Link href="/news">All news →</Link></div>
             <LiveNewsArticles />
           </section>
 
