@@ -176,7 +176,7 @@ export default function DatingPage() {
         <button type="button" onClick={() => setSelected([])} disabled={bulkSending || selected.length === 0}>Clear selection</button>
         <button type="button" className="discoverConnectButton" onClick={() => void likeSelected()} disabled={bulkSending || selected.length === 0}>{bulkSending ? "Sending likes…" : "♡ Send likes (" + selected.filter(handle => results.some(profile => profile.handle === handle) && !liked.includes(handle)).length + ")"}</button>
       </div>}
-      {loading ? <p role="status">Finding people…</p> : results.length ? <div className="discoverGrid">{results.map(profile => <article className="discoverMember" key={profile.handle}>
+      {loading ? <p role="status">Finding people…</p> : results.length ? <><div className="discoverGrid">{results.map(profile => <article className="discoverMember" key={profile.handle}>
         <div className="discoverAvatar" aria-hidden="true">{profile.displayName.slice(0,1).toUpperCase()}</div>
         <h2>{profile.displayName}, {profile.age}</h2><p className="discoverHandle">@{profile.handle}</p>
         <p>{profile.bio || "Ready to meet new people."}</p><p className="discoverLocation">{[profile.region, profile.country].filter(Boolean).join(", ")}</p>
@@ -186,7 +186,7 @@ export default function DatingPage() {
         {!liked.includes(profile.handle) && <label className="datingSelectMember"><input type="checkbox" checked={selected.includes(profile.handle)} onChange={() => toggleSelected(profile.handle)} disabled={bulkSending}/> Select this person</label>}
         <button className="discoverConnectButton" disabled={!!sending || liked.includes(profile.handle)} onClick={() => void like(profile)}>{sending === profile.handle ? "Sending…" : liked.includes(profile.handle) ? "♥ Like sent" : "♡ Send a like"}</button>
       </article>)}</div>
-        {nextCursor && <div className="datingLoadMore"><button type="button" onClick={() => void loadMoreProfiles()} disabled={loadingMore || searching}>{loadingMore ? "Loading more people…" : "Load more people"}</button></div>} : <div className="datingNoResults"><strong>No people found for that search.</strong><p>Try a different keyword or remove some filters to see more profiles.</p><button type="button" onClick={clearFilters}>Show everyone</button></div>}
+        {nextCursor && <div className="datingLoadMore"><button type="button" onClick={() => void loadMoreProfiles()} disabled={loadingMore || searching}>{loadingMore ? "Loading more people…" : "Load more people"}</button></div>}</> : <div className="datingNoResults"><strong>No people found for that search.</strong><p>Try a different keyword or remove some filters to see more profiles.</p><button type="button" onClick={clearFilters}>Show everyone</button></div>}
       <p className="switch"><Link href="/safety">Safety Center</Link> · <Link href="/profile">Edit dating profile</Link></p>
     </section>
     <footer className="plannedFeatureFooter">Connect · Meet through shared interests.</footer>
