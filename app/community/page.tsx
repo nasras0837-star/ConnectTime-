@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { FormEvent, useEffect, useState } from "react";
 
 type Post = { id: string; body: string; createdAt: string; author: { handle: string; displayName: string }; mine: boolean };
@@ -102,7 +103,7 @@ export default function CommunityPage() {
   }
 
   return <main className="communityPage">
-    <header className="communityHeader"><Link href="/" className="communityBrand">◉ Connect</Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link><Link href="/groups">Groups</Link><Link href="/account">Account</Link></nav></header>
+    <ConnectSiteHeader />
     <section className="communityHero"><span>THE CONNECT COMMUNITY</span><h1>Ideas, stories & <em>real connections.</em></h1><p>A place for conversation, creativity, good-faith debate and shared interests. Adults 18+; harassment and intimidation are not allowed.</p></section>
     <section className="communityLayout">
       <div className="communityMain">
