@@ -47,7 +47,7 @@ Add indexes for `sender_user_id`, `recipient_user_id`, and `created_at` (the inb
 
 ## Compatibility ranking and search
 
-- Discovery search sends the free-text query, country, and interest filters to the server with a short debounce; age, gender, and relationship-goal refinements are then applied to the returned profiles.
+- Discovery search sends the free-text query, country, and interest filters to the server with a short debounce; age, gender, and relationship-goal refinements are then applied to the returned profiles. Results support cursor-based Load more pagination so members can continue beyond the first page.
 - Results are ranked using a transparent compatibility estimate: shared interests, matching country/region, and matching relationship goal. The percentage is a discovery aid, not a prediction or guarantee of relationship compatibility.
 - Discovery checks both members' stated gender preferences before showing a profile. A member's `interested_in` preference is used only for matching and is not returned as public profile data.
 - Recommendations use profile information members choose to provide. They do not use precise location, private messages, identity documents, or sensitive verification data.
