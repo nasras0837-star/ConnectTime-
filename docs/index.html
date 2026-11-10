@@ -1387,3 +1387,14 @@ body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme=light]) :is(h1,h2,h
 body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme=light]) :is(p,li,small,label,span,div){color:#263a65!important}
 body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme=light]) a:not(.btn){color:#064fc4!important}
 </style>
+
+<style id="connect-remove-white-cards">
+/* Match every white/light card to the dark electric Connect homepage palette */
+body :is(.card,.score-card,.scorecard,.stat-card,.feature-card,.info-card,.profile-card,.dashboard-card,.result-card,.summary-card,.metric-card,.tile,.topic,.post,.liveNewsCard,.ctSocialPreviewCard,.ctHomeMarketCard,.ctFeedbackCard,.ctSignupCta,[class*="card"],[class*="Card"],[class*="score"],[class*="Score"],[class*="tile"],[class*="Tile"]){
+ background:linear-gradient(145deg,rgba(17,42,91,.98),rgba(10,23,56,.98))!important;
+ color:#f1f7ff!important;border-color:rgba(105,198,255,.24)!important;
+ box-shadow:0 14px 34px rgba(0,0,0,.2)!important;
+}
+body :is(.card,.score-card,.scorecard,.stat-card,.feature-card,.info-card,.profile-card,.dashboard-card,.result-card,.summary-card,.metric-card,.tile,.topic,.post,.liveNewsCard,.ctSocialPreviewCard,.ctHomeMarketCard,.ctFeedbackCard,.ctSignupCta,[class*="card"],[class*="Card"],[class*="score"],[class*="Score"],[class*="tile"],[class*="Tile"]) :is(h1,h2,h3,h4,h5,h6,b,strong){color:#fff!important}
+body :is(.card,.score-card,.scorecard,.stat-card,.feature-card,.info-card,.profile-card,.dashboard-card,.result-card,.summary-card,.metric-card,.tile,.topic,.post,.liveNewsCard,.ctSocialPreviewCard,.ctHomeMarketCard,.ctFeedbackCard,.ctSignupCta,[class*="card"],[class*="Card"],[class*="score"],[class*="Score"],[class*="tile"],[class*="Tile"]) :is(p,li,small,label,span){color:#c8d9f6!important}
+</style>
