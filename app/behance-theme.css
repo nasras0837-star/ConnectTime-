@@ -1,0 +1,241 @@
+/* CONNECT — Behance-inspired editorial design system
+   Creative portfolio energy, warm canvas, expressive typography and vivid accents. */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  color-scheme: light;
+  --bh-ink: #17191f;
+  --bh-muted: #626875;
+  --bh-paper: #f7f6f2;
+  --bh-white: #fffefa;
+  --bh-line: #e6e4de;
+  --bh-blue: #2457f5;
+  --bh-blue-deep: #1538bd;
+  --bh-coral: #ff654f;
+  --bh-lime: #d9f36a;
+  --bh-lilac: #d9d1ff;
+  --bh-shadow: 0 18px 50px rgba(25, 31, 48, .08);
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bh-paper) !important;
+  color: var(--bh-ink) !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+body {
+  background-image: none !important;
+  background-attachment: initial !important;
+  color-scheme: light;
+}
+body :is(h1,h2,h3,h4,h5,h6,.logo,.vLogo,.videoBrand,.connectSectionHeading,.connectRightTitle) {
+  font-family: 'Space Grotesk', 'DM Sans', sans-serif !important;
+  letter-spacing: -.045em;
+  color: var(--bh-ink) !important;
+}
+body :is(p,li,label,small,figcaption,.muted,.description,.meta,.helper) {
+  color: var(--bh-muted) !important;
+}
+body a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+body a:hover { color: var(--bh-blue) !important; }
+body :is(button,[role=button],input,select,textarea) { font-family: inherit; }
+body :is(input,select,textarea) {
+  color: var(--bh-ink) !important;
+  background: #fff !important;
+  border: 1px solid #d9d8d2 !important;
+  border-radius: 14px !important;
+}
+body :is(input,select,textarea)::placeholder { color: #858994 !important; opacity: 1; }
+body :is(button,a,input,select,textarea,[tabindex]):focus-visible {
+  outline: 3px solid var(--bh-blue) !important;
+  outline-offset: 3px !important;
+}
+body :is(button,.button,.primary,.navButton,.vJoin,.connectWelcomePrimary) {
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+body :is(button,.button,.primary,.navButton,.vJoin,.connectWelcomePrimary):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(36,87,245,.18);
+}
+body :is(.shell,.videoShell) { max-width: 1320px; }
+
+/* Shared navigation */
+body :is(.header,.videoHeader,.vHeader,.topbar,.connectHeader,.siteHeader) {
+  background: rgba(255,254,250,.92) !important;
+  color: var(--bh-ink) !important;
+  border-bottom: 1px solid var(--bh-line) !important;
+  box-shadow: 0 4px 24px rgba(25,31,48,.035);
+  backdrop-filter: blur(18px);
+}
+body :is(.header nav,.videoHeader nav,.vHeader nav,.topbar nav) a,
+body :is(.header nav,.videoHeader nav,.vHeader nav) { color: var(--bh-ink) !important; }
+body :is(.logo,.videoBrand,.vLogo,.brand) { color: var(--bh-ink) !important; }
+body :is(.logo span,.videoBrand span,.vLogo span,.brand>span:last-child) { color: var(--bh-blue) !important; }
+body :is(.navButton,.button,.primary,.vJoin,.connectWelcomePrimary) {
+  background: var(--bh-blue) !important;
+  color: white !important;
+  border: 1px solid var(--bh-blue) !important;
+}
+body :is(.navButton,.button,.primary,.vJoin,.connectWelcomePrimary):hover { background: var(--bh-blue-deep) !important; }
+
+/* Editorial landing and discovery layouts */
+body :is(.hero,.videoIntro,.connectWelcomeCopy) { color: var(--bh-ink) !important; }
+body :is(.hero h1,.videoIntro h1,.connectWelcome h1) {
+  font-size: clamp(3rem, 7vw, 6.8rem) !important;
+  line-height: .98 !important;
+  letter-spacing: -.075em !important;
+  max-width: 1000px;
+}
+body :is(.hero h1 span,.videoIntro h1 span,.connectWelcome h1 em) { color: var(--bh-blue) !important; }
+body :is(.eyebrow,.videoEyebrow,.connectWelcomeEyebrow,.connectSectionHeading>div>span) {
+  color: var(--bh-blue) !important;
+  letter-spacing: .16em !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+body :is(.hero>p,.videoIntro>p,.connectWelcomeCopy>p) {
+  color: #555d6b !important;
+  font-size: clamp(16px,1.5vw,20px) !important;
+  line-height: 1.7 !important;
+  max-width: 680px;
+}
+body :is(.features,.connectExploreSection,.connectDynamicPanel) { border-color: var(--bh-line) !important; }
+body :is(.sectionIntro h2,.connectSectionHeading h2) {
+  font-size: clamp(2rem,4vw,3.5rem) !important;
+  line-height: 1.02 !important;
+}
+body :is(.feature,.videoCard,.connectExploreCard,.connectRightCard,.connectComposerPrompt,.connectDynamicPanel,.recommendationInfo) {
+  background: var(--bh-white) !important;
+  color: var(--bh-ink) !important;
+  border: 1px solid var(--bh-line) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--bh-shadow);
+}
+body :is(.feature,.connectExploreCard,.connectRightCard) { transition: transform .22s ease, box-shadow .22s ease; }
+body :is(.feature,.connectExploreCard,.connectRightCard):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 55px rgba(25,31,48,.12);
+}
+body :is(.featureNumber,.videoCategory) { color: var(--bh-blue) !important; }
+body :is(.feature h3,.videoMeta h2,.connectExploreText strong,.connectRightTitle) { color: var(--bh-ink) !important; }
+body :is(.feature p,.videoMeta p,.videoMeta small,.connectExploreText small,.connectRightCard p) { color: var(--bh-muted) !important; }
+
+/* Connect social home: light editorial canvas with vivid blue feature moments */
+body :is(.vibrantHome,.connectHome,.connectPage) {
+  background: var(--bh-paper) !important;
+  color: var(--bh-ink) !important;
+}
+body :is(.vHeader) { background: rgba(255,254,250,.94) !important; }
+body :is(.vSearch,.videoSearch,.search,.connectSearch) {
+  background: #efeee9 !important;
+  color: var(--bh-ink) !important;
+  border: 1px solid var(--bh-line) !important;
+  border-radius: 999px !important;
+}
+body :is(.vSearch span) { color: var(--bh-muted) !important; }
+body :is(.vLayout) { color: var(--bh-ink) !important; }
+body :is(.connectWelcome) {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px !important;
+  background: linear-gradient(115deg,#dce5ff 0%,#e9e4ff 48%,#ffe0d8 100%) !important;
+  border: 1px solid #d6dcf4 !important;
+  box-shadow: var(--bh-shadow);
+}
+body :is(.connectWelcomeShade) { background: linear-gradient(90deg,rgba(247,246,242,.06),rgba(247,246,242,.08)) !important; }
+body :is(.connectWelcomeCopy) { color: var(--bh-ink) !important; }
+body :is(.connectWelcomeProof span) {
+  background: rgba(255,254,250,.72) !important;
+  color: var(--bh-ink) !important;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+body :is(.connectWelcomeSecondary,.textLink) { color: var(--bh-blue) !important; }
+body :is(.connectPromptAvatar,.connectExploreIcon) {
+  background: var(--bh-lilac) !important;
+  color: #34247e !important;
+  border-radius: 16px !important;
+}
+body :is(.connectExploreArrow) { color: var(--bh-blue) !important; }
+body :is(.connectRightCardHead span,.connectRightCardHead b) { color: var(--bh-blue) !important; }
+body :is(.connectQuickLink>span) {
+  background: #edf0ff !important;
+  color: var(--bh-blue) !important;
+  border-radius: 12px !important;
+}
+body :is(.connectCommunityStandards) { background: #eff5d8 !important; border-color: #e0e9bc !important; }
+body :is(.connectStandardsIcon) { background: var(--bh-lime) !important; color: var(--bh-ink) !important; }
+
+/* Feed, cards, controls and secondary pages */
+body :is(.videoCard,.composer,.post,.panel,.story,.person,.recommendationInfo,.emptyVideos) {
+  background: var(--bh-white) !important;
+  color: var(--bh-ink) !important;
+  border: 1px solid var(--bh-line) !important;
+  border-radius: 20px !important;
+}
+body :is(.videoFrame) { background: #17191f !important; }
+body :is(.videoFilters button,.searchHistory button,.videoActions button,.recommendationInfo button) {
+  background: #eeede8 !important;
+  color: var(--bh-ink) !important;
+  border: 1px solid #e0dfd8 !important;
+  border-radius: 999px !important;
+}
+body :is(.videoFilters button.selected) { background: var(--bh-blue) !important; color: white !important; }
+body :is(.feedDisclaimer,.interestNote,.searchHistory) { color: var(--bh-muted) !important; }
+body :is(.avatar,.story i,.post-head i,.person i,.connectPromptAvatar) {
+  background: var(--bh-lilac) !important;
+  color: #34247e !important;
+}
+body :is(.photo) { border-radius: 18px !important; }
+body :is(.stats) { color: var(--bh-muted) !important; border-color: var(--bh-line) !important; }
+body :is(.actions button,.compose-actions button) { color: var(--bh-muted) !important; }
+body :is(.actions button:hover,.compose-actions button:hover) { color: var(--bh-blue) !important; }
+
+/* Forms, account pages, dialogs and auth surfaces */
+body :is(.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,.contentCard,.accountCard,.settingsCard) {
+  background: var(--bh-white) !important;
+  color: var(--bh-ink) !important;
+  border: 1px solid var(--bh-line) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--bh-shadow);
+}
+body :is(.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,.contentCard,.accountCard,.settingsCard) :is(h1,h2,h3,strong,b) { color: var(--bh-ink) !important; }
+body :is(.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,.contentCard,.accountCard,.settingsCard) :is(p,label,small,span) { color: var(--bh-muted) !important; }
+body :is(dialog) { background: var(--bh-white) !important; color: var(--bh-ink) !important; border-radius: 24px !important; box-shadow: 0 28px 90px rgba(20,25,40,.2) !important; }
+body :is(dialog)::backdrop { background: rgba(23,25,31,.48) !important; backdrop-filter: blur(5px); }
+body :is(footer,.videoFooter) { color: var(--bh-muted) !important; border-color: var(--bh-line) !important; }
+
+/* Remove inherited dark-globe surfaces and improve contrast consistently */
+body :is(.topbar,.sidebar) { background: var(--bh-white) !important; color: var(--bh-ink) !important; border-color: var(--bh-line) !important; }
+body :is(.sidebar nav button) { color: #505765 !important; border-radius: 14px !important; }
+body :is(.sidebar nav button.active,.sidebar nav button:hover) { background: #e9edff !important; color: var(--bh-blue) !important; }
+body :is(.side-note) { background: #f0f4dc !important; color: #33421b !important; border-radius: 18px !important; }
+body :is(.side-note small) { color: #596344 !important; }
+body :is(.profile,.welcome h1,.post-head,.person) { color: var(--bh-ink) !important; }
+body :is(.profile small,.post-head small,.person small,.welcome p,.post p,.panel p,.foot,.stats) { color: var(--bh-muted) !important; }
+body :is(.search) { background: #efeee9 !important; color: var(--bh-ink) !important; }
+body :is(.panel a,.textLink) { color: var(--bh-blue) !important; }
+body :is(.panel a:hover,.textLink:hover) { color: var(--bh-blue-deep) !important; }
+
+/* Accent palette for category tiles and decorative elements */
+body :is(.connectExploreIcon,.feature:nth-child(3n+1)) { --tile-accent: var(--bh-lilac); }
+body :is(.connectExploreCard:nth-child(3n+2) .connectExploreIcon) { background: #ffe0d8 !important; color: #8c2b1d !important; }
+body :is(.connectExploreCard:nth-child(3n) .connectExploreIcon) { background: #eff5d8 !important; color: #3c4d12 !important; }
+body :is(.connectExploreCard:nth-child(3n+1) .connectExploreIcon) { background: #e4e9ff !important; color: var(--bh-blue) !important; }
+
+/* Mobile */
+@media (max-width: 760px) {
+  body :is(.shell,.videoShell) { padding-left: 16px !important; padding-right: 16px !important; }
+  body :is(.header,.videoHeader,.vHeader) { min-height: 66px; }
+  body :is(.header nav,.videoHeader nav,.vHeader nav) { gap: 12px !important; }
+  body :is(.hero) { padding-top: 72px !important; }
+  body :is(.hero h1,.videoIntro h1,.connectWelcome h1) { font-size: clamp(2.8rem,13vw,4.5rem) !important; }
+  body :is(.connectWelcome) { border-radius: 20px !important; }
+  body :is(.connectExploreCard,.connectRightCard,.connectComposerPrompt,.feature,.videoCard) { border-radius: 18px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body *, body *::before, body *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
