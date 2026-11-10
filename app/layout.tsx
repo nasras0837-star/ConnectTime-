@@ -9,7 +9,7 @@ import "./behance-theme.css";
 import "./readability-overrides.css";
 import "../docs/connect-design-system.css";
 
-export const metadata: Metadata = { title: "Connect — Your All-in-One Media & Community Platform", description: "Connect with people, explore communities, discover news and video, watch official TV channels, and share what you love — all in one place.", applicationName: "Connect", openGraph: { title: "Connect — Your All-in-One Media & Community Platform", description: "Connect with people, explore communities, discover news and video, and watch official TV channels — all in one place.", siteName: "Connect", type: "website" }, twitter: { card: "summary_large_image", title: "Connect — Your All-in-One Media & Community Platform", description: "Your people. Your passions. Your Connect." }, icons: { icon: "/connect-logo.svg", apple: "/connect-logo.svg" } };
+export const metadata: Metadata = { title: "Connect — Your All-in-One Media & Community Platform", description: "Connect with people, explore communities, discover news and video, watch official TV channels, and share what you love — all in one place.", applicationName: "Connect", openGraph: { title: "Connect — Your All-in-One Media & Community Platform", description: "Connect with people, explore communities, discover news and video, and watch official TV channels — all in one place.", siteName: "Connect", type: "website" }, twitter: { card: "summary_large_image", title: "Connect — Your All-in-One Media & Community Platform", description: "Your people. Your passions. Your Connect." }, icons: { icon: "/icon.svg", apple: "/icon.svg" } };
 
 function isValidAppwriteEndpoint(value: string | undefined): value is string {
   if (!value) return false;
