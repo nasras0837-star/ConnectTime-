@@ -37,6 +37,23 @@ async function blocked(s: ReturnType<typeof services>, a: string, b: string) {
   return ab.rows.length > 0 || ba.rows.length > 0;
 }
 
+async function friends(s: ReturnType<typeof services>, a: string, b: string) {
+  const tableId = process.env.APPWRITE_FRIEND_REQUESTS_TABLE_ID;
+  if (!tableId) return false;
+  const [forward, reverse] = await Promise.all([
+    s.tablesDB.listRows({ databaseId: s.databaseId, tableId, queries: [Query.equal("sender_user_id", a), Query.equal("recipient_user_id", b), Query.equal("status", "accepted"), Query.limit(1)] }),
+    s.tablesDB.listRows({ databaseId: s.databaseId, tableId, queries: [Query.equal("sender_user_id", b), Query.equal("recipient_user_id", a), Query.equal("status", "accepted"), Query.limit(1)] })
+  ]);
+  return forward.rows.length > 0 || reverse.rows.length > 0;
+}
+
+async function canViewProfile(s: ReturnType<typeof services>, viewerId: string, authorId: string, visibility: unknown) {
+  if (viewerId === authorId) return true;
+  if (visibility === "public" || visibility === "members") return true;
+  if (visibility === "friends") return friends(s, viewerId, authorId);
+  return false;
+}
+
 export async function GET() {
   const user = await currentCommunityMember();
   if (!user) return NextResponse.json({ error: "Sign in to view the community feed." }, { status: 401 });
@@ -51,7 +68,7 @@ export async function GET() {
       if (!authorId || await blocked(s, user.$id, authorId) || !await eligible(s, authorId)) continue;
       const profileRows = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", authorId), Query.limit(1)] });
       const profile = profileRows.rows[0];
-      if (!profile || !["public", "members"].includes(String(profile.visibility || ""))) continue;
+      if (!profile || !await canViewProfile(s, user.$id, authorId, profile.visibility)) continue;
       posts.push({ id: String(row.$id), body: String(row.body || ""), createdAt: String(row.created_at || ""), author: { handle: String(profile.handle || ""), displayName: String(profile.display_name || profile.handle || "") }, mine: authorId === user.$id });
     }
     return NextResponse.json({ posts }, { headers: { "Cache-Control": "no-store" } });
@@ -77,7 +94,7 @@ export async function POST(request: Request) {
     const recent = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.postsTableId, queries: [Query.equal("author_user_id", user.$id), Query.greaterThanEqual("created_at", new Date(Date.now() - 10 * 60_000).toISOString()), Query.limit(6)] });
     if (recent.rows.length >= 5) return NextResponse.json({ error: "You have reached the posting limit. Please wait before publishing again." }, { status: 429 });
     const profileRows = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.profilesTableId, queries: [Query.equal("user_id", user.$id), Query.limit(1)] });
-    if (!profileRows.rows[0] || !["public", "members"].includes(String(profileRows.rows[0].visibility || ""))) return NextResponse.json({ error: "Set your profile visibility to Public or Signed-in members before posting." }, { status: 403 });
+    if (!profileRows.rows[0] || !["public", "members", "friends"].includes(String(profileRows.rows[0].visibility || ""))) return NextResponse.json({ error: "Set your profile visibility to Public, Signed-in members, or Friends before posting." }, { status: 403 });
     const now = new Date().toISOString();
     const row = await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.postsTableId, rowId: ID.unique(), data: { author_user_id: user.$id, body: content, created_at: now, updated_at: now, status: "published" } });
     return NextResponse.json({ published: true, post: { id: String(row.$id), body: content, createdAt: now, author: { handle: String(profileRows.rows[0].handle || ""), displayName: String(profileRows.rows[0].display_name || profileRows.rows[0].handle || "") }, mine: true } }, { status: 201, headers: { "Cache-Control": "no-store" } });
