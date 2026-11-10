@@ -235,3 +235,73 @@ body.connectAppTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScor
   font-weight:950 !important;
   text-shadow:0 0 18px rgba(0,220,255,.22);
 }
+
+
+/* SITEWIDE CARD SURFACE UNIFICATION
+   Match every card-like surface to Connect's midnight page background.
+   Keep media, form controls, and vibrant primary actions unchanged. */
+body.connectPagesTheme :is(
+  [class*="card" i],[class*="panel" i],[class*="score" i],
+  [class*="tile" i],[class*="widget" i],[class*="surface" i],
+  [class*="stat" i],[class*="metric" i],[class*="box" i],
+  [class*="module" i],[class*="feed" i],[class*="community" i],
+  [class*="notice" i],[class*="proof" i],[class*="topic" i],
+  [class*="join" i]
+),
+body.connectAppTheme :is(
+  [class*="card" i],[class*="panel" i],[class*="score" i],
+  [class*="tile" i],[class*="widget" i],[class*="surface" i],
+  [class*="stat" i],[class*="metric" i],[class*="box" i],
+  [class*="module" i],[class*="feed" i],[class*="community" i],
+  [class*="notice" i],[class*="proof" i],[class*="topic" i],
+  [class*="join" i]
+) {
+  background-color: #081b43 !important;
+  background-image: linear-gradient(145deg, rgba(10,31,76,.98), rgba(5,16,45,.98)) !important;
+  color: #f4f8ff !important;
+  border-color: rgba(91,190,255,.30) !important;
+  box-shadow: 0 12px 34px rgba(0,5,28,.28) !important;
+}
+body.connectPagesTheme :is(
+  [class*="card" i],[class*="panel" i],[class*="score" i],
+  [class*="tile" i],[class*="widget" i],[class*="surface" i],
+  [class*="stat" i],[class*="metric" i],[class*="box" i],
+  [class*="module" i],[class*="feed" i],[class*="community" i],
+  [class*="notice" i],[class*="proof" i],[class*="topic" i],
+  [class*="join" i]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,label),
+body.connectAppTheme :is(
+  [class*="card" i],[class*="panel" i],[class*="score" i],
+  [class*="tile" i],[class*="widget" i],[class*="surface" i],
+  [class*="stat" i],[class*="metric" i],[class*="box" i],
+  [class*="module" i],[class*="feed" i],[class*="community" i],
+  [class*="notice" i],[class*="proof" i],[class*="topic" i],
+  [class*="join" i]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,label) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+body.connectPagesTheme :is(
+  [class*="card" i],[class*="panel" i],[class*="score" i],
+  [class*="tile" i],[class*="widget" i],[class*="surface" i],
+  [class*="stat" i],[class*="metric" i],[class*="box" i],
+  [class*="module" i],[class*="feed" i],[class*="community" i],
+  [class*="notice" i],[class*="proof" i],[class*="topic" i],
+  [class*="join" i]
+) :is(p,small,span,li,figcaption,.muted,.meta,.description),
+body.connectAppTheme :is(
+  [class*="card" i],[class*="panel" i],[class*="score" i],
+  [class*="tile" i],[class*="widget" i],[class*="surface" i],
+  [class*="stat" i],[class*="metric" i],[class*="box" i],
+  [class*="module" i],[class*="feed" i],[class*="community" i],
+  [class*="notice" i],[class*="proof" i],[class*="topic" i],
+  [class*="join" i]
+) :is(p,small,span,li,figcaption,.muted,.meta,.description) {
+  color: #c8dcf7 !important;
+  -webkit-text-fill-color: #c8dcf7 !important;
+}
+/* Avoid recoloring media, controls, and primary action buttons inside cards. */
+body.connectPagesTheme :is([class*="card" i],[class*="panel" i],[class*="score" i],[class*="tile" i],[class*="widget" i]) :is(img,video,canvas,input,select,textarea,button,.btn),
+body.connectAppTheme :is([class*="card" i],[class*="panel" i],[class*="score" i],[class*="tile" i],[class*="widget" i]) :is(img,video,canvas,input,select,textarea,button,.btn) {
+  background-image: revert !important;
+}
