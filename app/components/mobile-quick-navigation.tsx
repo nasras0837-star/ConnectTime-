@@ -21,9 +21,8 @@ const exploreLinks = [
   { href: "/news", label: "News", icon: "▤" },
   { href: "/radio", label: "Music & Radio", icon: "♪" },
   { href: "/free-tv", label: "Video & TV", icon: "▷" },
-  { href: "/podcasts", label: "Podcasts", icon: "♫" },
   { href: "/profile", label: "My profile", icon: "◎" },
-  { href: "/account", label: "Account settings", icon: "⚙" },
+  { href: "/account/settings", label: "Account settings", icon: "⚙" },
 ];
 
 function isCurrentPath(pathname: string, href: string) {
