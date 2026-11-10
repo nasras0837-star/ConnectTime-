@@ -106,3 +106,28 @@ search.addEventListener("input",applyFilters);filter.addEventListener("change",a
 document.getElementById("form").addEventListener("submit",event=>{event.preventDefault();const name=document.getElementById("name").value.trim(),region=document.getElementById("region").value,country=document.getElementById("country").value.trim(),budget=Number(document.getElementById("budget").value),cap=Number(document.getElementById("cap").value),interests=[...document.querySelectorAll(".checks input:checked")].map(x=>x.value);const toast=document.getElementById("toast");if(!name||!country||!Number.isFinite(budget)||!Number.isFinite(cap)||budget<1||cap<budget){toast.textContent="Enter a campaign name and country. The total cap must be at least the daily budget.";return}const card=document.createElement("article");card.className="card campaign";card.dataset.name=name.toLowerCase();card.dataset.status="draft";card.dataset.region=region.toLowerCase();const top=document.createElement("div");top.className="campaignTop";const details=document.createElement("div");const eyebrow=document.createElement("div");eyebrow.className="eyebrow";eyebrow.textContent=region.toUpperCase()+" · "+document.getElementById("objective").value.toUpperCase();const heading=document.createElement("h3");heading.textContent=name;const sub=document.createElement("div");sub.className="muted";sub.textContent="Preview campaign · "+country;details.append(eyebrow,heading,sub);const badge=document.createElement("span");badge.className="status";badge.textContent="Draft";top.append(details,badge);const met=document.createElement("div");met.className="metrics";[["DAILY BUDGET","$"+budget.toFixed(2)],["SPEND","$0.00"],["IMPRESSIONS","0"],["CLICKS","0"],["CTR","—"],["TOTAL CAP","$"+cap.toFixed(2)]].forEach(([a,b])=>{const d=document.createElement("div"),s=document.createElement("small"),v=document.createElement("b");s.textContent=a;v.textContent=b;d.append(s,v);met.append(d)});const audience=document.createElement("div");audience.className="audience";[country,...interests].forEach(t=>{const chip=document.createElement("span");chip.className="chip";chip.textContent=t;audience.append(chip)});const foot=document.createElement("div");foot.className="footrow";foot.textContent="Local demo only · No ad delivery or billing";card.append(top,met,audience,foot);list.prepend(card);document.getElementById("count").textContent=list.querySelectorAll(".campaign").length;toast.textContent="Demo campaign added to this browser view only. Nothing was submitted or published.";event.target.reset();document.getElementById("budget").value="10";document.getElementById("cap").value="100";applyFilters()});
 </script>
 </body></html>
+<style id="connect-universe-text-visibility">
+/* CONNECT UNIVERSE — sitewide text visibility and vibrant contrast pass */
+:root{--ct-text-primary:#f7f9ff;--ct-text-secondary:#d7e5ff;--ct-text-muted:#b8c9e8;--ct-link:#65eaff;--ct-accent:#a99aff;--ct-positive:#75f0c4;--ct-warning:#ffd47a;--ct-danger:#ff9db5}
+html,body{color:var(--ct-text-primary)!important}
+body :is(h1,h2,h3,h4,h5,h6,[role=heading]){color:#fff!important;text-shadow:0 1px 14px rgba(52,120,255,.18)}
+body :is(p,li,dd,dt,blockquote,figcaption,label,legend,summary,caption){color:var(--ct-text-secondary)!important}
+body :is(small,.muted,.subtle,.description,.subtitle,.helper-text,.form-hint,.meta,.metadata,[class*=muted],[class*=subtitle],[class*=description],[class*=caption]){color:var(--ct-text-muted)!important;opacity:1!important}
+body :is(a,.text-link,[role=link]){color:var(--ct-link)}
+body :is(a:hover,.text-link:hover,[role=link]:hover){color:#b5f7ff!important}
+body :is(strong,b,th,.label,.eyebrow,.badge,.tag,.chip){color:#f3f7ff}
+body :is(.eyebrow,.section-kicker,.overline,.category,.status-label){color:#65eaff!important}
+body :is(.success,.positive,.status-success){color:var(--ct-positive)!important}
+body :is(.warning,.status-warning){color:var(--ct-warning)!important}
+body :is(.error,.danger,.status-error){color:var(--ct-danger)!important}
+body :is(button,[role=button],.button,.btn,input[type=submit]){color:#fff!important;font-weight:700}
+body :is(input,textarea,select){color:#f7f9ff!important;background:#101d3c!important;border-color:#5574ae!important}
+body :is(input,textarea,select)::placeholder{color:#b8c9e8!important;opacity:1!important}
+body :is(input,textarea,select):disabled,body button:disabled{color:#b8c9e8!important;opacity:.8}
+body :is(td,th){color:#eaf2ff!important;border-color:rgba(143,169,231,.28)!important}
+body :is(.card,.panel,.tile,.post,.modal,.dialog,.dropdown,.popover,.menu,.toast,.notice,[class*=Card],[class*=Panel],[class*=card],[class*=panel]) :is(h1,h2,h3,h4,h5,h6,strong,b){color:#fff!important}
+body :is(.card,.panel,.tile,.post,.modal,.dialog,.dropdown,.popover,.menu,.toast,.notice,[class*=Card],[class*=Panel],[class*=card],[class*=panel]) :is(p,li,small,span,label){color:var(--ct-text-secondary)}
+body :is(.brand,.logo,.wordmark,.gradient-text){background:linear-gradient(100deg,#24d9e8,#8eaaff 48%,#e65bff);background-clip:text;-webkit-background-clip:text;color:transparent!important}
+body :focus-visible{outline:3px solid #24d9e8!important;outline-offset:3px!important}
+@media(prefers-contrast:more){body :is(p,li,small,label,.muted,.description){color:#f1f6ff!important}body :is(a,.text-link){color:#8ff3ff!important}}
+</style>
