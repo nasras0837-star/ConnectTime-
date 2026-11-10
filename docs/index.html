@@ -1353,3 +1353,16 @@ body :is(.brand,.logo,.wordmark,.gradient-text){background:linear-gradient(100de
 body :focus-visible{outline:3px solid #24d9e8!important;outline-offset:3px!important}
 @media(prefers-contrast:more){body :is(p,li,small,label,.muted,.description){color:#f1f6ff!important}body :is(a,.text-link){color:#8ff3ff!important}}
 </style>
+
+<style id="connect-main-site-vibrant-dark-text">
+/* Stronger, darker text contrast on the light sections of the Connect homepage */
+:root{--ct-light-ink:#17264f;--ct-light-muted:#34496f;--ct-light-link:#064fc4}
+body{color:var(--ct-light-ink)}
+/* Preserve the dark Universe surfaces while improving contrast on any light cards */
+body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme="light"]) :is(p,li,small,label,span,div){color:#24365f!important}
+body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme="light"]) :is(h1,h2,h3,h4,h5,h6,strong,b){color:#101c43!important}
+body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme="light"]) a{color:#064fc4!important}
+/* Make secondary copy and links more vivid without dimming dark-theme text */
+.ctRadioStationInfo small,.ctRadioSearchStatus,.ctWeatherDetails,.ctWeatherUpdated{color:#c6d8f7!important}
+body a:not(.btn){text-decoration-color:rgba(101,234,255,.35)}
+</style>
