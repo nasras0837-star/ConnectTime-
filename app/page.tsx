@@ -19,7 +19,7 @@ const exploreLinks = [
   { icon: "🛍️", title: "Marketplace", detail: "Buy and sell with the community", href: "/marketplace", tone: "mint" },
   { icon: "🎉", title: "Events", detail: "Find activities and gatherings", href: "/events", tone: "gold" },
   { icon: "📰", title: "News", detail: "Follow stories from around the world", href: "/news", tone: "blue" },
-  { icon: "📺", title: "Video & TV", detail: "Explore official channels and video", href: "/free-tv", tone: "violet" },
+  { icon: "📺", title: "Connect Video Tube", detail: "Watch official channels and videos from around the world", href: "/free-tv", tone: "violet" },
   { icon: "🎵", title: "Music & Radio", detail: "Listen across countries and cultures", href: "/radio", tone: "rose" },
   { icon: "🎥", title: "Group meetings", detail: "Meet face-to-face online", href: "/meetings", tone: "sky" },
 ];
@@ -62,7 +62,7 @@ export default function HomePage() {
             <nav className="connectRailNav">
               <Link href="/marketplace"><span>▣</span>Marketplace</Link>
               <Link href="/events"><span>✦</span>Events</Link>
-              <Link href="/free-tv"><span>▷</span>Video & TV</Link>
+              <Link href="/free-tv"><span>▷</span>Connect Video Tube</Link>
               <Link href="/radio"><span>♫</span>Music & Radio</Link>
               <Link href="/advertise"><span>↗</span>Advertise</Link>
             </nav>
@@ -127,7 +127,7 @@ export default function HomePage() {
           </section>
 
           <section className="connectDynamicPanel">
-            <div className="connectSectionHeading"><div><span>YOUR INTERESTS</span><h2>Watch what you love</h2><p>Choose topics and explore official broadcaster and video sources.</p></div><Link href="/free-tv">Explore video →</Link></div>
+            <div className="connectSectionHeading"><div><span>YOUR INTERESTS</span><h2>Watch what you love</h2><p>Choose topics and explore official broadcaster and video sources.</p></div><Link href="/free-tv">Open Video Tube →</Link></div>
             <LiveInterestFeed />
           </section>
 
