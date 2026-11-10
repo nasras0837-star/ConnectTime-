@@ -292,3 +292,19 @@ body :is(.actions button,.compose-actions button){color:#c0c9e4!important}
 body :is(.actions button:hover,.compose-actions button:hover){color:#9db0ff!important}
 body :is(.connectExploreCard,.connectRightCard,.connectComposerPrompt,.feature,.videoCard){border-color:#35405e!important}
 @media(max-width:760px){body :is(.header,.videoHeader,.vHeader){background:rgba(12,15,29,.98)!important}}
+
+
+/* Catch-all surface pass for components that do not use the shared card classes */
+body :is(main,section,article,aside,nav,header,footer,form,fieldset,[class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],[class*="modal"],[class*="Modal"],[class*="container"],[class*="Container"]) {
+  background-color: #101526 !important;
+  color: #f2f4ff !important;
+  border-color: #303a59;
+}
+body :is(main,section,article,aside,nav,header,footer,form,fieldset,[class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],[class*="modal"],[class*="Modal"],[class*="container"],[class*="Container"]) :is(h1,h2,h3,h4,h5,h6,strong,b) { color: #fff !important; }
+body :is(main,section,article,aside,nav,header,footer,form,fieldset,[class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],[class*="modal"],[class*="Modal"],[class*="container"],[class*="Container"]) :is(p,li,label,small,span,figcaption) { color: #cbd3eb !important; }
+body :is([style*="background: white"],[style*="background:white"],[style*="background-color: white"],[style*="background-color:white"],[style*="background: #fff"],[style*="background:#fff"],[style*="background-color: #fff"],[style*="background-color:#fff"]) {
+  background: #151a2b !important;
+  background-color: #151a2b !important;
+  color: #f5f6ff !important;
+}
+body :is(button,[role="button"]) { color: #f7f8ff; }
