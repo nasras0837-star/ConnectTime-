@@ -122,3 +122,83 @@ body.connectAppTheme footer { color: #b8d2f5 !important; border-color: var(--con
     scroll-behavior: auto !important;
   }
 }
+
+/* SITEWIDE NO-WHITE-SURFACES OVERRIDE
+   Applies to the static GitHub Pages site and every Next.js route.
+   Images/media are intentionally excluded; interactive controls remain legible. */
+body.connectPagesTheme,
+body.connectAppTheme {
+  background-color: var(--connect-night) !important;
+}
+body.connectPagesTheme :is(.btn.ghost,.mobileMenuToggle,.nav,.heroArt,.centerLogo,.float,.tile,.topic,.panel,.post,.notice,.feed,.community,.metrics,.join,.proof),
+body.connectAppTheme :is(.btn.ghost,.mobileMenuToggle,.nav,.heroArt,.centerLogo,.float,.tile,.topic,.panel,.post,.notice,.feed,.community,.metrics,.join,.proof) {
+  background: linear-gradient(145deg, #0c2456 0%, #091b46 58%, #101d50 100%) !important;
+  color: #f5f9ff !important;
+  border-color: rgba(93, 190, 255, .42) !important;
+  box-shadow: 0 14px 38px rgba(0, 5, 28, .28) !important;
+}
+body.connectPagesTheme :is(.heroArt,.metrics,.join),
+body.connectAppTheme :is(.heroArt,.metrics,.join) {
+  background: radial-gradient(circle at 82% 18%, rgba(0,217,255,.24), transparent 30%), linear-gradient(120deg,#08245b,#0757a8 58%,#40206e) !important;
+}
+body.connectPagesTheme :is(.heroArt,.centerLogo,.float,.tile,.topic,.panel,.post,.notice,.feed,.community,.metrics,.join) :is(h1,h2,h3,h4,b,strong,p,span,small,li),
+body.connectAppTheme :is(.heroArt,.centerLogo,.float,.tile,.topic,.panel,.post,.notice,.feed,.community,.metrics,.join) :is(h1,h2,h3,h4,b,strong,p,span,small,li) {
+  color: #eaf4ff !important;
+  -webkit-text-fill-color: currentColor;
+}
+body.connectPagesTheme :is(.btn.ghost,.mobileMenuToggle) {
+  background: linear-gradient(110deg,#087cff,#1760ca 58%,#7138cf) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+body.connectPagesTheme :is(.nav,.nav.open) {
+  background: #071a43 !important;
+  border: 1px solid rgba(93,190,255,.4) !important;
+}
+body.connectPagesTheme :is(.nav a,.proof,.proof b,.hero p,.head p,.community p,.panelTop p,.topic p,.tile p,.post p,.postTop small,.stats,footer,.notice) {
+  color: #c4d8f7 !important;
+  -webkit-text-fill-color: currentColor;
+}
+/* Remove common white/pale utility surfaces, including arbitrary inline styles. */
+body.connectPagesTheme :is([class~="bg-white"],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[class*="bg-white/"],[class*="bg-slate-50/"],[class*="bg-gray-50/"],[class*="bg-zinc-50/"],[class*="bg-neutral-50/"],[class*="bg-stone-50/"]),
+body.connectAppTheme :is([class~="bg-white"],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[class*="bg-white/"],[class*="bg-slate-50/"],[class*="bg-gray-50/"],[class*="bg-zinc-50/"],[class*="bg-neutral-50/"],[class*="bg-stone-50/"]) {
+  background: linear-gradient(145deg,#0c2456,#091b46) !important;
+  color: #f5f9ff !important;
+  border-color: rgba(93,190,255,.38) !important;
+}
+body.connectPagesTheme [style*="background:#fff"],
+body.connectPagesTheme [style*="background: #fff"],
+body.connectPagesTheme [style*="background-color:#fff"],
+body.connectPagesTheme [style*="background-color: #fff"],
+body.connectPagesTheme [style*="background:#ffffff"],
+body.connectPagesTheme [style*="background: #ffffff"],
+body.connectPagesTheme [style*="background-color:#ffffff"],
+body.connectPagesTheme [style*="background-color: #ffffff"],
+body.connectPagesTheme [style*="background: white"],
+body.connectPagesTheme [style*="background-color: white"],
+body.connectAppTheme [style*="background:#fff"],
+body.connectAppTheme [style*="background: #fff"],
+body.connectAppTheme [style*="background-color:#fff"],
+body.connectAppTheme [style*="background-color: #fff"],
+body.connectAppTheme [style*="background:#ffffff"],
+body.connectAppTheme [style*="background: #ffffff"],
+body.connectAppTheme [style*="background-color:#ffffff"],
+body.connectAppTheme [style*="background-color: #ffffff"],
+body.connectAppTheme [style*="background: white"],
+body.connectAppTheme [style*="background-color: white"] {
+  background: linear-gradient(145deg,#0c2456,#091b46) !important;
+  color: #f5f9ff !important;
+  border-color: rgba(93,190,255,.38) !important;
+}
+/* Inputs stay dark; primary actions retain saturated Connect gradients. */
+body.connectPagesTheme :is(input,select,textarea),
+body.connectAppTheme :is(input,select,textarea) {
+  background: #071b4b !important;
+  color: #f5f9ff !important;
+  border-color: #397bd0 !important;
+}
+body.connectPagesTheme :is(button,.btn:not(.ghost),.primary),
+body.connectAppTheme :is(button,.btn:not(.ghost),.primary) {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
