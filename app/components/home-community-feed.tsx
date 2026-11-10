@@ -28,10 +28,9 @@ export default function HomeCommunityFeed() {
   const [error, setError] = useState("");
 
   async function load() {
-    setLoading(true);
-    setError("");
     try {
       const response = await fetch("/api/community/posts", { cache: "no-store" });
+      setError("");
       const data = await response.json();
       if (response.status === 401) { setSignedOut(true); setPosts([]); return; }
       if (!response.ok) throw new Error(data.error || "The community feed is unavailable.");
@@ -52,7 +51,7 @@ export default function HomeCommunityFeed() {
       </div>
       {loading ? <p className="homeSocialFeedState" role="status">Loading the latest posts…</p> :
         signedOut ? <div className="homeSocialFeedJoin"><div><strong>Your community feed is waiting.</strong><p>Sign in to see member updates and join the conversation.</p></div><Link href="/login">Log in</Link></div> :
-        error ? <div className="homeSocialFeedState" role="alert">{error} <button type="button" onClick={() => void load()}>Try again</button></div> :
+        error ? <div className="homeSocialFeedState" role="alert">{error} <button type="button" onClick={() => { setLoading(true); setError(""); void load(); }}>Try again</button></div> :
         posts.length ? <div className="homeSocialFeedList">{posts.map(post => <article className="homeSocialFeedPost" key={post.id}>
           <div className="homeSocialFeedAvatar" aria-hidden="true">{(post.author.displayName || post.author.handle || "C").slice(0,1).toUpperCase()}</div>
           <div className="homeSocialFeedPostBody"><div className="homeSocialFeedByline"><strong>{post.author.displayName || post.author.handle}</strong><span>@{post.author.handle} · {relativeTime(post.createdAt)}</span></div><p>{post.body}</p><Link href="/community">Join the discussion →</Link></div>
