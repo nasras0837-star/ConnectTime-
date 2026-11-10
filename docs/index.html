@@ -1332,6 +1332,23 @@ body a:not(.btn){color:#80eaff!important}footer{border-color:rgba(105,190,255,.2
 @media(prefers-reduced-motion:no-preference){.ctHeroProduct{animation:ctHeroGlow 8s ease-in-out infinite alternate}.ctHeroProduct:hover{transform:translateY(-5px) rotate(0)!important}@keyframes ctHeroGlow{from{box-shadow:0 30px 90px rgba(0,0,0,.48),0 0 32px rgba(0,165,255,.13)}to{box-shadow:0 30px 90px rgba(0,0,0,.48),0 0 58px rgba(0,209,255,.24)}}}
 </style>
 
+
+<style id="connect-register-button-dark-fix">
+/* Keep the homepage Register Now CTA dark instead of the legacy white pill */
+.join > a.btn,
+.join > .btn {
+  background:linear-gradient(110deg,#102653 0%,#123d78 55%,#075b72 100%)!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  border:1px solid rgba(91,205,255,.72)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.28),0 0 0 1px rgba(84,190,255,.12)!important;
+}
+.join > a.btn:hover,
+.join > .btn:hover {
+  background:linear-gradient(110deg,#17366f 0%,#14539a 55%,#087b91 100%)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.34),0 0 18px rgba(70,190,255,.2)!important;
+}
+</style>
 </body></html>
 <style id="connect-universe-theme-14">
 :root{color-scheme:dark;--ink:#f5f7ff;--muted:#b5c4e2;--blue:#3478ff;--teal:#24d9e8;--pink:#e65bff;--line:rgba(143,169,231,.22);--paper:#080d1f}
