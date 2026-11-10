@@ -1,0 +1,118 @@
+/* Connect sitewide contrast and vibrant-text correction.
+   Loaded after every other stylesheet so it wins over legacy light-surface rules. */
+:root {
+  color-scheme: dark !important;
+  --connect-surface: #0b1d46;
+  --connect-surface-raised: #10295b;
+  --connect-border: #3765a6;
+  --connect-text: #f5f8ff;
+  --connect-muted: #c9dcf8;
+  --connect-blue: #70d8ff;
+  --connect-violet: #c5a6ff;
+  --connect-coral: #ff9b9b;
+  --connect-lime: #d8ff83;
+}
+
+/* Standardize text colors on dark pages and remove legacy pale/low-contrast text. */
+html, body { background-color: #04143d !important; color: var(--connect-text) !important; }
+body :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: currentColor;
+}
+body :is(p,li,dd,dt,label,small,figcaption,blockquote,.muted,.description,.subtitle,.helper,.meta) {
+  color: var(--connect-muted) !important;
+  -webkit-text-fill-color: currentColor;
+}
+body a:not([class*="button"]):not([class*="Button"]) { color: var(--connect-blue) !important; }
+body a:hover { color: var(--connect-coral) !important; }
+body :is(.eyebrow,.sectionEyebrow,.connectWelcomeEyebrow,.connectDashboardNavLabel,.connectDashEyebrow,.featureNumber,.videoCategory) {
+  color: var(--connect-blue) !important;
+}
+
+/* Replace white, ivory and pastel content panels with readable midnight-blue surfaces. */
+body :is(
+  .feature,.videoCard,.connectExploreCard,.connectRightCard,.connectComposerPrompt,
+  .connectDynamicPanel,.recommendationInfo,.composer,.post,.panel,.story,.person,
+  .emptyVideos,.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,
+  .contentCard,.accountCard,.settingsCard,.connectRailCard,.connectQuickLink,
+  .connectCommunityStandards,.vInterest,.vShortcut,.connectDashboardSide,
+  .connectDashboardStatus,.connectDashboardTile,.connectDashboardNextSteps,
+  .connectAccountCard,.connectFeatureShell>.authCard,.connectSiteHeader,
+  .connectMemberDashboard,.connectDashboardExplore
+) {
+  background: linear-gradient(145deg, #10285a 0%, #0a1b42 100%) !important;
+  background-color: var(--connect-surface) !important;
+  color: var(--connect-text) !important;
+  border-color: var(--connect-border) !important;
+  box-shadow: 0 12px 34px rgba(0,0,0,.24) !important;
+}
+body :is(
+  .feature,.videoCard,.connectExploreCard,.connectRightCard,.connectComposerPrompt,
+  .connectDynamicPanel,.recommendationInfo,.composer,.post,.panel,.story,.person,
+  .emptyVideos,.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,
+  .contentCard,.accountCard,.settingsCard,.connectRailCard,.connectQuickLink,
+  .connectCommunityStandards,.vInterest,.vShortcut,.connectDashboardSide,
+  .connectDashboardStatus,.connectDashboardTile,.connectDashboardNextSteps,
+  .connectAccountCard,.connectDashboardExplore
+) :is(h1,h2,h3,h4,h5,h6,strong,b,span,div,a,button,label,legend,summary) {
+  color: #f5f8ff !important;
+  -webkit-text-fill-color: currentColor;
+}
+body :is(
+  .feature,.videoCard,.connectExploreCard,.connectRightCard,.connectComposerPrompt,
+  .connectDynamicPanel,.recommendationInfo,.composer,.post,.panel,.story,.person,
+  .emptyVideos,.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,
+  .contentCard,.accountCard,.settingsCard,.connectRailCard,.connectQuickLink,
+  .connectCommunityStandards,.vInterest,.vShortcut,.connectDashboardSide,
+  .connectDashboardStatus,.connectDashboardTile,.connectDashboardNextSteps,
+  .connectAccountCard,.connectDashboardExplore
+) :is(p,li,small,em,figcaption,label,.muted,.description,.meta) {
+  color: #c9dcf8 !important;
+}
+
+/* Common light-surface utility classes used by feature routes and older pages. */
+body :is(.bg-white,.bg-light,.surface-light,.light-card,.white-card,.card-white,[class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"]) {
+  background: var(--connect-surface) !important;
+  color: var(--connect-text) !important;
+  border-color: var(--connect-border) !important;
+}
+body :is(.bg-white,.bg-light,.surface-light,.light-card,.white-card,.card-white,[class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"]) * {
+  color: var(--connect-text) !important;
+  -webkit-text-fill-color: currentColor;
+}
+body :is(.connectAccountCard>p,.connectFeatureShell>.authCard>p,.connectFeatureShell>.authCard label,.connectFeatureShell>.authCard small) {
+  color: var(--connect-muted) !important;
+}
+
+/* Inputs stay visibly distinct from panels, with bright readable content. */
+body :is(input,textarea,select,option) {
+  background: #061638 !important;
+  background-color: #061638 !important;
+  color: #ffffff !important;
+  border: 1px solid #5487d1 !important;
+  caret-color: var(--connect-blue) !important;
+}
+body :is(input,textarea,select,option)::placeholder { color: #a9c6ec !important; opacity: 1 !important; }
+body :is(input,textarea,select):disabled { color: #9db4d8 !important; opacity: .8; }
+body :is(button,[role="button"],.button,.primary,[class*="btn"]) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+body :is(button,[role="button"],.button,.primary,[class*="btn"]):focus-visible,
+body :is(a,input,textarea,select,[tabindex]):focus-visible {
+  outline: 3px solid #71e5ff !important;
+  outline-offset: 3px !important;
+}
+
+/* Preserve colorful status and category cues without sacrificing contrast. */
+body :is(.success,.status-success,.online,.verified) { color: #aaffc9 !important; }
+body :is(.warning,.status-warning) { color: #ffe08a !important; }
+body :is(.danger,.error,.status-error) { color: #ffaaaa !important; }
+body :is(.connectPromptAvatar,.connectExploreIcon,.avatar,.story i,.post-head i,.person i) {
+  color: #ffffff !important;
+}
+::selection { background: #4a8cff !important; color: #ffffff !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  body *, body *::before, body *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
