@@ -28,6 +28,7 @@ export default function NotificationsPage() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState("");
+  const [filter, setFilter] = useState<"all" | "unread">("all");
 
   const load = useCallback(async (silent = false) => {
     try {
@@ -78,7 +79,28 @@ export default function NotificationsPage() {
     }
   }
 
+  async function markAllRead() {
+    const pending = items.filter(item => !item.read);
+    if (!pending.length) return;
+    setBusy("all");
+    setError("");
+    const completed: string[] = [];
+    try {
+      for (const item of pending) {
+        const response = await fetch("/api/notifications", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ notificationId: item.id }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Some notifications could not be updated.");
+        completed.push(item.id);
+      }
+      setItems(current => current.map(item => completed.includes(item.id) ? { ...item, read: true } : item));
+    } catch (e) {
+      setItems(current => current.map(item => completed.includes(item.id) ? { ...item, read: true } : item));
+      setError(e instanceof Error ? e.message : "Some notifications could not be updated.");
+    } finally { setBusy(""); }
+  }
+
   const unread = items.filter(item => !item.read).length;
+  const visibleItems = filter === "unread" ? items.filter(item => !item.read) : items;
   return <main className="authShell">
     <header className="plannedFeatureHeader">
       <Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link>
