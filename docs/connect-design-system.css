@@ -1,0 +1,124 @@
+/* CONNECT SHARED DESIGN SYSTEM
+   Single visual source for GitHub Pages, test/staging and production.
+   Keep environment URLs, API settings and authentication configuration separate. */
+:root {
+  --connect-night: #020a2a;
+  --connect-deep: #06143d;
+  --connect-panel: #081b4b;
+  --connect-panel-raised: #10295b;
+  --connect-blue: #087cff;
+  --connect-cyan: #00d9ff;
+  --connect-teal: #20e7d0;
+  --connect-violet: #7138cf;
+  --connect-magenta: #ff22a6;
+  --connect-text: #f5f9ff;
+  --connect-muted: #c4d8f7;
+  --connect-border: #397bd0;
+  --connect-radius: 20px;
+  --connect-shadow: 0 16px 42px rgba(0, 8, 35, .38);
+}
+html { color-scheme: dark; }
+body.connectAppTheme {
+  min-height: 100%;
+  color: var(--connect-text) !important;
+  background:
+    radial-gradient(ellipse at 50% -8%, rgba(22,77,203,.55), transparent 42%),
+    radial-gradient(ellipse at 95% 25%, rgba(74,22,165,.30), transparent 28%),
+    var(--connect-night) !important;
+  font-family: Inter, "DM Sans", ui-sans-serif, system-ui, sans-serif !important;
+}
+body.connectPagesTheme {
+  color: var(--connect-text);
+  background-color: var(--connect-night);
+}
+body.connectAppTheme :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend) {
+  color: var(--connect-text);
+}
+body.connectAppTheme :is(p,li,label,small,figcaption,.muted,.description,.meta,.helper) {
+  color: var(--connect-muted);
+}
+body.connectAppTheme a { text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+body.connectAppTheme a:hover { color: var(--connect-cyan) !important; }
+body.connectAppTheme :is(input,select,textarea) {
+  color: var(--connect-text) !important;
+  background: #071b4b !important;
+  border: 1px solid #3865a5 !important;
+}
+body.connectAppTheme :is(input,select,textarea)::placeholder { color: #a9c7ef !important; opacity: 1; }
+body.connectAppTheme :is(button,.button,.primary,[role="button"],.navButton,.vJoin) {
+  background: linear-gradient(110deg,var(--connect-blue),var(--connect-cyan) 65%,var(--connect-teal)) !important;
+  color: #fff !important;
+  border-color: #48cfff !important;
+  font-weight: 800;
+}
+body.connectAppTheme :is(button,.button,.primary,[role="button"],.navButton,.vJoin):hover {
+  filter: brightness(1.12) saturate(1.12);
+  box-shadow: 0 10px 28px rgba(0,123,255,.35);
+}
+body.connectAppTheme :is(.header,.videoHeader,.vHeader,.topbar,.connectHeader,.siteHeader,.connectTopbar,.eventsHeader,.createHeader) {
+  background: rgba(3,13,48,.94) !important;
+  color: var(--connect-text) !important;
+  border-color: rgba(57,123,208,.72) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,.22);
+  backdrop-filter: blur(18px);
+}
+body.connectAppTheme :is(.header nav,.videoHeader nav,.vHeader nav,.topbar nav,.connectTopLinks,.eventsHeader nav,.createHeader nav) a {
+  color: #e2efff !important;
+}
+body.connectAppTheme :is(.shell,.videoShell,.socialLayout,.eventsMain,.createWorkspace) { color: var(--connect-text); }
+body.connectAppTheme :is(.feature,.videoCard,.composer,.post,.panel,.story,.person,.recommendationInfo,.emptyVideos,.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,.contentCard,.accountCard,.settingsCard,.socialProfile,.rightCard,.socialComposer,.socialPost,.connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,.connectDynamicPanel,.eventsSearch,.eventCard,.eventFormPanel,.createCard,.createSafety,.meetingAction,.meetingInvitePanel) {
+  background: linear-gradient(145deg,rgba(8,27,75,.97),rgba(5,17,54,.97)) !important;
+  color: var(--connect-text) !important;
+  border: 1px solid var(--connect-border) !important;
+  border-radius: var(--connect-radius);
+  box-shadow: var(--connect-shadow);
+}
+body.connectAppTheme :is(.feature,.videoCard,.composer,.post,.panel,.story,.person,.recommendationInfo,.emptyVideos,.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,.contentCard,.accountCard,.settingsCard,.socialProfile,.rightCard,.socialComposer,.socialPost,.connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,.connectDynamicPanel,.eventCard,.eventFormPanel,.createCard,.createSafety) :is(h1,h2,h3,h4,strong,b,label) {
+  color: #fff !important;
+}
+body.connectAppTheme :is(.feature,.videoCard,.composer,.post,.panel,.story,.person,.recommendationInfo,.emptyVideos,.authCard,.auth-card,.formCard,.form-card,.modal,.dialog,.contentCard,.accountCard,.settingsCard,.socialProfile,.rightCard,.socialComposer,.socialPost,.connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,.connectDynamicPanel,.eventCard,.eventFormPanel,.createCard,.createSafety) :is(p,small,li,span,figcaption) {
+  color: #c4d8f7;
+}
+body.connectAppTheme :is(.connectWelcome,.vHero,.eventsHero,.createHero) {
+  background: radial-gradient(circle at 80% 15%,rgba(0,217,255,.28),transparent 28%),linear-gradient(115deg,#06184b 0%,#0758c8 54%,#40127c 100%) !important;
+  color: #fff !important;
+  border: 1px solid #48cfff !important;
+  box-shadow: 0 22px 65px rgba(0,107,255,.28);
+}
+body.connectAppTheme :is(.connectWelcome,.vHero,.eventsHero,.createHero) :is(h1,h2,h3,p,span,em) { color: #fff !important; }
+body.connectAppTheme :is(.connectWelcome,.vHero,.eventsHero,.createHero) a {
+  color: #fff !important;
+}
+body.connectAppTheme :is(.sidebar,.vSidebar,.socialLeft,.connectLeftRail,.connectRightRail) {
+  background: rgba(5,18,55,.96) !important;
+  color: var(--connect-text) !important;
+  border-color: var(--connect-border) !important;
+}
+body.connectAppTheme :is(.sidebar nav button,.socialNav a,.connectRailNav a,.vSidebar>a) { color: #d7e7ff !important; }
+body.connectAppTheme :is(.sidebar nav button.active,.sidebar nav button:hover,.socialNav a:hover,.socialNav a.socialNavActive,.connectRailNav a.active,.vSidebar>a:hover,.vSidebar>a.vSideActive) {
+  background: linear-gradient(110deg,#087cff,#164eaa 60%,#7138cf) !important;
+  color: #fff !important;
+}
+body.connectAppTheme :is(.stats,.feedDisclaimer,.interestNote,.searchHistory,.foot,.createDisclaimer,.adultNote,.eventsFooter,.createFooter,.videoFooter) { color: #b8d2f5 !important; }
+body.connectAppTheme :is(.videoFrame,.liveNewsPlayer) { background: #020827 !important; }
+body.connectAppTheme :is(dialog) { background: #081b4b !important; color: #fff !important; border: 1px solid var(--connect-border); }
+body.connectAppTheme :is(dialog)::backdrop { background: rgba(0,5,25,.76); backdrop-filter: blur(5px); }
+body.connectAppTheme :is(button,a,input,select,textarea,[tabindex]):focus-visible {
+  outline: 3px solid var(--connect-cyan) !important;
+  outline-offset: 3px !important;
+}
+body.connectAppTheme footer { color: #b8d2f5 !important; border-color: var(--connect-border) !important; }
+@media (max-width: 760px) {
+  body.connectAppTheme :is(.vSidebar,.socialNav,.connectLeftRail) {
+    background: rgba(5,18,55,.98) !important;
+    border-color: var(--connect-border) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.connectAppTheme *, body.connectAppTheme *::before, body.connectAppTheme *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
