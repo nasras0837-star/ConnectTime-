@@ -259,3 +259,128 @@ body :is(
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
+
+
+/* Stronger universal coverage for white/light surfaces used by feature pages,
+   utility classes, and inline-styled cards. Use dark ink for every text node
+   inside these surfaces, while retaining white action-button labels. */
+:root {
+  --connect-on-white: #10265f;
+  --connect-on-white-heading: #123fc4;
+  --connect-on-white-link: #064fce;
+  --connect-on-white-muted: #3d5278;
+}
+body :is(
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-gray-50"],
+  [class~="bg-zinc-50"],[class~="bg-neutral-50"],[class~="bg-stone-50"],
+  [class~="bg-slate-100"],[class~="bg-gray-100"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-100"],[class~="bg-stone-100"],
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [class*="white-card"],[class*="light-card"],[class*="surface-light"],
+  [style*="background:white"],[style*="background: white"],
+  [style*="background-color:white"],[style*="background-color: white"],
+  [style*="background:#fff"],[style*="background: #fff"],
+  [style*="background-color:#fff"],[style*="background-color: #fff"],
+  [style*="background:#ffffff"],[style*="background: #ffffff"],
+  [style*="background-color:#ffffff"],[style*="background-color: #ffffff"],
+  [style*="rgb(255,255,255)"],[style*="rgb(255, 255, 255)"],
+  [style*="rgba(255,255,255"],[style*="rgba(255, 255, 255"]
+) {
+  color: var(--connect-on-white) !important;
+  -webkit-text-fill-color: var(--connect-on-white) !important;
+}
+body :is(
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-gray-50"],
+  [class~="bg-zinc-50"],[class~="bg-neutral-50"],[class~="bg-stone-50"],
+  [class~="bg-slate-100"],[class~="bg-gray-100"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-100"],[class~="bg-stone-100"],
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [class*="white-card"],[class*="light-card"],[class*="surface-light"],
+  [style*="background:white"],[style*="background: white"],
+  [style*="background-color:white"],[style*="background-color: white"],
+  [style*="background:#fff"],[style*="background: #fff"],
+  [style*="background-color:#fff"],[style*="background-color: #fff"],
+  [style*="background:#ffffff"],[style*="background: #ffffff"],
+  [style*="background-color:#ffffff"],[style*="background-color: #ffffff"],
+  [style*="rgb(255,255,255)"],[style*="rgb(255, 255, 255)"],
+  [style*="rgba(255,255,255"],[style*="rgba(255, 255, 255"]
+) :where(*:not(button):not([role="button"]):not(.button):not(.primary):not([class*="btn"])) {
+  color: var(--connect-on-white) !important;
+  -webkit-text-fill-color: var(--connect-on-white) !important;
+}
+body :is(
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-gray-50"],
+  [class~="bg-zinc-50"],[class~="bg-neutral-50"],[class~="bg-stone-50"],
+  [class~="bg-slate-100"],[class~="bg-gray-100"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-100"],[class~="bg-stone-100"],
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [class*="white-card"],[class*="light-card"],[class*="surface-light"],
+  [style*="background:white"],[style*="background: white"],
+  [style*="background-color:white"],[style*="background-color: white"],
+  [style*="background:#fff"],[style*="background: #fff"],
+  [style*="background-color:#fff"],[style*="background-color: #fff"],
+  [style*="background:#ffffff"],[style*="background: #ffffff"],
+  [style*="background-color:#ffffff"],[style*="background-color: #ffffff"],
+  [style*="rgb(255,255,255)"],[style*="rgb(255, 255, 255)"],
+  [style*="rgba(255,255,255"],[style*="rgba(255, 255, 255"]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend) {
+  color: var(--connect-on-white-heading) !important;
+  -webkit-text-fill-color: var(--connect-on-white-heading) !important;
+}
+body :is(
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-gray-50"],
+  [class~="bg-zinc-50"],[class~="bg-neutral-50"],[class~="bg-stone-50"],
+  [class~="bg-slate-100"],[class~="bg-gray-100"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-100"],[class~="bg-stone-100"],
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [class*="white-card"],[class*="light-card"],[class*="surface-light"],
+  [style*="background:white"],[style*="background: white"],
+  [style*="background-color:white"],[style*="background-color: white"],
+  [style*="background:#fff"],[style*="background: #fff"],
+  [style*="background-color:#fff"],[style*="background-color: #fff"],
+  [style*="background:#ffffff"],[style*="background: #ffffff"],
+  [style*="background-color:#ffffff"],[style*="background-color: #ffffff"],
+  [style*="rgb(255,255,255)"],[style*="rgb(255, 255, 255)"],
+  [style*="rgba(255,255,255"],[style*="rgba(255, 255, 255"]
+) a:not([class*="button"]):not([class*="Button"]):not([class*="btn"]) {
+  color: var(--connect-on-white-link) !important;
+  -webkit-text-fill-color: var(--connect-on-white-link) !important;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+body :is(
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-gray-50"],
+  [class~="bg-zinc-50"],[class~="bg-neutral-50"],[class~="bg-stone-50"],
+  [class~="bg-slate-100"],[class~="bg-gray-100"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-100"],[class~="bg-stone-100"],
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [class*="white-card"],[class*="light-card"],[class*="surface-light"],
+  [style*="background:white"],[style*="background: white"],
+  [style*="background-color:white"],[style*="background-color: white"],
+  [style*="background:#fff"],[style*="background: #fff"],
+  [style*="background-color:#fff"],[style*="background-color: #fff"],
+  [style*="background:#ffffff"],[style*="background: #ffffff"],
+  [style*="background-color:#ffffff"],[style*="background-color: #ffffff"],
+  [style*="rgb(255,255,255)"],[style*="rgb(255, 255, 255)"],
+  [style*="rgba(255,255,255"],[style*="rgba(255, 255, 255"]
+) :is(button,[role="button"],.button,.primary,[class*="btn"]) ,
+body :is(
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-gray-50"],
+  [class~="bg-zinc-50"],[class~="bg-neutral-50"],[class~="bg-stone-50"],
+  [class~="bg-slate-100"],[class~="bg-gray-100"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-100"],[class~="bg-stone-100"],
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [class*="white-card"],[class*="light-card"],[class*="surface-light"],
+  [style*="background:white"],[style*="background: white"],
+  [style*="background-color:white"],[style*="background-color: white"],
+  [style*="background:#fff"],[style*="background: #fff"],
+  [style*="background-color:#fff"],[style*="background-color: #fff"],
+  [style*="background:#ffffff"],[style*="background: #ffffff"],
+  [style*="background-color:#ffffff"],[style*="background-color: #ffffff"],
+  [style*="rgb(255,255,255)"],[style*="rgb(255, 255, 255)"],
+  [style*="rgba(255,255,255"],[style*="rgba(255, 255, 255"]
+) :is(button,[role="button"],.button,.primary,[class*="btn"]) * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
