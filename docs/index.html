@@ -1366,3 +1366,24 @@ body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme="light"]) a{color:#
 .ctRadioStationInfo small,.ctRadioSearchStatus,.ctWeatherDetails,.ctWeatherUpdated{color:#c6d8f7!important}
 body a:not(.btn){text-decoration-color:rgba(101,234,255,.35)}
 </style>
+
+<style id="connect-premium-vibrant-typography">
+/* Premium typography: crisp bold hierarchy, electric blue/cyan links, strong readability */
+:root{--ct-heading:#ffffff;--ct-copy:#e5efff;--ct-copy-muted:#c8d9f6;--ct-electric:#54eaff;--ct-blue:#63a7ff;--ct-violet:#b7a0ff}
+body{font-weight:500;letter-spacing:.005em}
+body :is(h1,h2,h3,h4,h5,h6){font-weight:850!important;letter-spacing:-.035em!important;color:#fff!important;text-shadow:0 2px 20px rgba(55,140,255,.24)!important}
+body :is(p,li,dd,dt,blockquote,figcaption,label,legend,summary,caption){color:var(--ct-copy)!important;font-weight:500}
+body :is(small,.muted,.subtle,.description,.subtitle,.helper-text,.form-hint,.meta,.metadata,[class*=muted],[class*=subtitle],[class*=description],[class*=caption]){color:var(--ct-copy-muted)!important;font-weight:500;opacity:1!important}
+body :is(a,.text-link,[role=link]):not(.btn){color:var(--ct-electric)!important;font-weight:700;text-decoration-color:rgba(84,234,255,.48)}
+body :is(a,.text-link,[role=link]):not(.btn):hover{color:#b5f7ff!important;text-shadow:0 0 14px rgba(84,234,255,.3)}
+body :is(strong,b,th,.label,.badge,.tag,.chip){color:#fff!important;font-weight:850}
+body :is(.eyebrow,.section-kicker,.overline,.category,.status-label){color:#72efff!important;font-weight:850;letter-spacing:.075em}
+body :is(button,[role=button],.button,.btn,input[type=submit]){font-weight:850!important}
+body :is(input,textarea,select){color:#f7faff!important;background:#0c1b3b!important;border-color:#6388c8!important;font-weight:600}
+body :is(input,textarea,select)::placeholder{color:#c2d5f4!important;opacity:1!important}
+body :is(td,th){color:#edf5ff!important;border-color:rgba(143,169,231,.32)!important}
+/* Light-surface exceptions retain dark, saturated typography for accessibility */
+body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme=light]) :is(h1,h2,h3,h4,h5,h6,strong,b){color:#101b43!important;text-shadow:none!important}
+body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme=light]) :is(p,li,small,label,span,div){color:#263a65!important}
+body :is(.light,.light-theme,.bg-white,.bg-light,[data-theme=light]) a:not(.btn){color:#064fc4!important}
+</style>
