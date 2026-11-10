@@ -28,7 +28,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
       - name: Validate staging target
         run: |
           node -e 'const u = new URL(process.env.CONNECT_BASE_URL); if (u.protocol !== "https:" || !/(staging|preview|pr-)/i.test(u.hostname)) { console.error("Target must be an HTTPS staging/preview hostname, not production."); process.exit(1); }'
