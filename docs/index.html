@@ -756,7 +756,7 @@ html body .ctHomeMarketFeed .ctHomeMarketWidget {
   box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 10px 28px rgba(0,0,0,.22);
 }
 
-/* Move the live quote strip smoothly from right to left across the homepage. */
+/* Keep live market quotes stationary; retain the responsive TradingView feed. */
 html body .ctHomeMarketFeed .ctHomeMarketTicker {
   position: relative;
   overflow: hidden;
@@ -764,25 +764,11 @@ html body .ctHomeMarketFeed .ctHomeMarketTicker {
 }
 html body .ctHomeMarketFeed .ctHomeMarketTicker tv-ticker-tape {
   display: block;
-  width: max-content;
+  width: 100%;
   min-width: 100%;
-  animation: connectMarketTickerSlide 34s linear infinite;
-  will-change: transform;
-}
-html body .ctHomeMarketFeed .ctHomeMarketTicker:hover tv-ticker-tape,
-html body .ctHomeMarketFeed .ctHomeMarketTicker:focus-within tv-ticker-tape {
-  animation-play-state: paused;
-}
-@keyframes connectMarketTickerSlide {
-  from { transform: translateX(100%); }
-  to { transform: translateX(-100%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  html body .ctHomeMarketFeed .ctHomeMarketTicker tv-ticker-tape {
-    animation: none;
-    transform: none;
-    width: 100%;
-  }
+  animation: none !important;
+  transform: none !important;
+  will-change: auto;
 }
 html body .ctHomeMarketFeed .tradingview-widget-container {
   width: 100%;
