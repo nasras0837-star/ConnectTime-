@@ -1,6 +1,7 @@
 import "server-only";
 import { Client, TablesDB } from "node-appwrite";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
+import { isTrustedAuthMutation } from "@/lib/auth-origin";
 
 export async function currentCommunityMember() {
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
@@ -24,13 +25,15 @@ export function communitySafetyStore() {
 }
 
 export function sameOrigin(request: Request) {
-  const origin = request.headers.get("origin");
-  if (!origin) return false;
-  try {
-    return new URL(origin).origin === new URL(request.url).origin;
-  } catch {
-    return false;
-  }
+  return isTrustedAuthMutation({
+    requestUrl: request.url,
+    requestHost: request.headers.get("host"),
+    forwardedHost: request.headers.get("x-forwarded-host"),
+    forwardedProto: request.headers.get("x-forwarded-proto"),
+    origin: request.headers.get("origin"),
+    fetchSite: request.headers.get("sec-fetch-site"),
+    allowedOrigins: process.env.APP_ALLOWED_ORIGINS,
+  });
 }
 
 export function cleanText(value: unknown, max: number) {
