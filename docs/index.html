@@ -1432,3 +1432,26 @@ body :is(.card,.score-card,.scorecard,.stat-card,.feature-card,.info-card,.profi
 body :is(.card,.score-card,.scorecard,.stat-card,.feature-card,.info-card,.profile-card,.dashboard-card,.result-card,.summary-card,.metric-card,.tile,.topic,.post,.liveNewsCard,.ctSocialPreviewCard,.ctHomeMarketCard,.ctFeedbackCard,.ctSignupCta,[class*="card"],[class*="Card"],[class*="score"],[class*="Score"],[class*="tile"],[class*="Tile"]) :is(h1,h2,h3,h4,h5,h6,b,strong){color:#fff!important}
 body :is(.card,.score-card,.scorecard,.stat-card,.feature-card,.info-card,.profile-card,.dashboard-card,.result-card,.summary-card,.metric-card,.tile,.topic,.post,.liveNewsCard,.ctSocialPreviewCard,.ctHomeMarketCard,.ctFeedbackCard,.ctSignupCta,[class*="card"],[class*="Card"],[class*="score"],[class*="Score"],[class*="tile"],[class*="Tile"]) :is(p,li,small,label,span){color:#c8d9f6!important}
 </style>
+
+<style id="connect-register-button-dark-final">
+/* Final homepage CTA override: wins over legacy .join .btn white-pill theme rules */
+html body .join a.btn,
+html body .join a.btn.pink,
+html body .join .btn {
+  background:linear-gradient(110deg,#102653 0%,#123d78 55%,#075b72 100%) !important;
+  background-color:#102653 !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  border:1px solid rgba(91,205,255,.82) !important;
+  border-radius:14px !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.32),0 0 0 1px rgba(84,190,255,.16) !important;
+}
+html body .join a.btn:hover,
+html body .join a.btn.pink:hover,
+html body .join .btn:hover {
+  background:linear-gradient(110deg,#17366f 0%,#14539a 55%,#087b91 100%) !important;
+  background-color:#17366f !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+</style>
