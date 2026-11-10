@@ -116,3 +116,55 @@ body :is(.connectPromptAvatar,.connectExploreIcon,.avatar,.story i,.post-head i,
 @media (prefers-reduced-motion: reduce) {
   body *, body *::before, body *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+
+/* White/light surfaces: use vivid ink instead of white text.
+   Keep action buttons and dark media overlays on their existing dark-surface palette. */
+body :is(
+  .bg-white,.bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) {
+  color: #172554 !important;
+  -webkit-text-fill-color: #172554 !important;
+}
+body :is(
+  .bg-white,.bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) :not(button):not([role="button"]):not(.button):not(.primary) {
+  color: #172554 !important;
+  -webkit-text-fill-color: #172554 !important;
+}
+body :is(
+  .bg-white,.bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend) {
+  color: #1538bd !important;
+  -webkit-text-fill-color: #1538bd !important;
+}
+body :is(
+  .bg-white,.bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) a:not([class*="button"]):not([class*="Button"]) {
+  color: #2457f5 !important;
+  -webkit-text-fill-color: #2457f5 !important;
+}
