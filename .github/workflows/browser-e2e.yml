@@ -1,0 +1,50 @@
+name: Connect staging browser E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: HTTPS URL of the dedicated staging deployment (never production)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: connect-staging-browser-e2e
+  cancel-in-progress: false
+
+jobs:
+  browser-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CONNECT_BASE_URL: ${{ inputs.target_url }}
+      CONNECT_QA_EMAIL: ${{ secrets.CONNECT_QA_EMAIL }}
+      CONNECT_QA_PASSWORD: ${{ secrets.CONNECT_QA_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Validate staging target
+        run: |
+          node -e 'const u = new URL(process.env.CONNECT_BASE_URL); if (u.protocol !== "https:" || !/(staging|preview|pr-)/i.test(u.hostname)) { console.error("Target must be an HTTPS staging/preview hostname, not production."); process.exit(1); }'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser tests
+        run: npm run test:e2e
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: connect-browser-e2e-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
