@@ -46,9 +46,6 @@ export function MobileQuickNavigation() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [menuOpen]);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   if (hiddenOnAuth) return null;
 
@@ -62,6 +59,7 @@ export function MobileQuickNavigation() {
             href={item.href}
             key={item.href}
             aria-current={active ? "page" : undefined}
+            onClick={() => setMenuOpen(false)}
           >
             <span className="ctMobileDockIcon" aria-hidden="true">{item.icon}</span>
             <span>{item.label}</span>
@@ -108,6 +106,7 @@ export function MobileQuickNavigation() {
                     href={item.href}
                     className={`ctMobileMoreLink${active ? " isActive" : ""}`}
                     aria-current={active ? "page" : undefined}
+                    onClick={() => setMenuOpen(false)}
                   >
                     <span aria-hidden="true">{item.icon}</span>
                     {item.label}
