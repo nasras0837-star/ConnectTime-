@@ -18,7 +18,6 @@ const moreLinks = [
   { href: "/marketplace", label: "Marketplace", icon: "🛍" },
   { href: "/events", label: "Events", icon: "✦" },
   { href: "/news", label: "News", icon: "▤" },
-  { href: "/podcasts", label: "Podcasts", icon: "♫" },
   { href: "/radio", label: "Music & Radio", icon: "♪" },
   { href: "/free-tv", label: "Video & TV", icon: "▷" },
   { href: "/profile", label: "My profile", icon: "◎" },
