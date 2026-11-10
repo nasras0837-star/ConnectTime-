@@ -739,6 +739,46 @@ body{background-image:radial-gradient(ellipse at 50% -8%,rgba(22,77,203,.42),tra
 :where(.menuToggle,.mobileMenuToggle,.close,.viewer-close){background:linear-gradient(110deg,#087cff,#00bddd)!important;color:#fff!important}
 img,video,canvas,svg{background-color:transparent}
 </style>
+<style id="connect-home-market-feed-contrast">
+/* Keep the homepage quote tape dark even when TradingView is not transparent. */
+html body .ctHomeMarketFeed,
+html body .ctHomeMarketFeed .ctHomeMarketWidget,
+html body .ctHomeMarketFeed .tradingview-widget-container,
+html body .ctHomeMarketFeed .tradingview-widget-container__widget {
+  background: #07132d !important;
+  background-color: #07132d !important;
+}
+html body .ctHomeMarketFeed .ctHomeMarketWidget {
+  min-height: 82px;
+  border: 1px solid rgba(91, 205, 255, .42) !important;
+  border-radius: 13px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 10px 28px rgba(0,0,0,.22);
+}
+html body .ctHomeMarketFeed .tradingview-widget-container {
+  width: 100%;
+  min-height: 76px;
+}
+html body .ctHomeMarketFeed .tradingview-widget-container__widget {
+  width: 100%;
+  min-height: 64px;
+}
+html body .ctHomeMarketFeed .ctHomeMarketAttribution {
+  padding: 5px 12px 8px;
+  color: #b9cce9 !important;
+  background: #07132d !important;
+}
+html body .ctHomeMarketFeed .ctHomeMarketAttribution a {
+  color: #72eaff !important;
+}
+html body .ctHomeMarketFeed .ctHomeMarketDisclosure {
+  color: #c4d8f7 !important;
+}
+@media (max-width: 620px) {
+  html body .ctHomeMarketFeed .ctHomeMarketWidget { min-height: 78px; }
+  html body .ctHomeMarketFeed .tradingview-widget-container { min-height: 72px; }
+}
+</style>
 </head>
 <body class="connectPagesTheme">
 <a class="skip-link" href="#main-content">Skip to main content</a><div class="wrap">
@@ -755,7 +795,7 @@ img,video,canvas,svg{background-color:transparent}
 </section>
 <section class="ctHomeMarketFeed" id="market-feed" aria-labelledby="ctHomeMarketTitle">
   <div class="ctHomeMarketHead"><div><span class="ctHomeMarketEyebrow">GLOBAL MARKET WATCH</span><h2 id="ctHomeMarketTitle">Markets, moving now.</h2><p>Follow the Nasdaq, Dow Jones, S&amp;P 500 and leading cryptocurrencies from the Connect homepage.</p></div><a href="markets.html">Explore Markets <span aria-hidden="true">↗</span></a></div>
-  <div class="ctHomeMarketWidget"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><div class="ctHomeMarketAttribution"><a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">Market data and charts by TradingView</a></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols":[{"proName":"NASDAQ:IXIC","title":"Nasdaq Composite"},{"proName":"DJ:DJI","title":"Dow Jones"},{"proName":"SP:SPX","title":"S&P 500"},{"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},{"proName":"BITSTAMP:ETHUSD","title":"Ethereum"},{"proName":"BINANCE:SOLUSDT","title":"Solana"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}</script></div></div>
+  <div class="ctHomeMarketWidget"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><div class="ctHomeMarketAttribution"><a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">Market data and charts by TradingView</a></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols":[{"proName":"NASDAQ:IXIC","title":"Nasdaq Composite"},{"proName":"FOREXCOM:DJI","title":"Dow Jones"},{"proName":"FOREXCOM:SPXUSD","title":"S&P 500"},{"proName":"BITSTAMP:BTCUSD","title":"Bitcoin"},{"proName":"BITSTAMP:ETHUSD","title":"Ethereum"},{"proName":"BINANCE:SOLUSDT","title":"Solana"}],"showSymbolLogo":true,"isTransparent":false,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}</script></div></div>
   <p class="ctHomeMarketDisclosure">Market information is provided by TradingView. Cryptocurrency markets trade continuously. U.S. index data may be delayed depending on exchange permissions and data-provider availability; this feed is informational and is not investment advice.</p>
 </section>
 <section class="podcastSpotlight" id="podcasting" aria-labelledby="podcastSpotlightTitle">
