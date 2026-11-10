@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { Providers } from "./providers";
 import { ConnectAssistant } from "./components/connect-assistant";
+import { MobileQuickNavigation } from "./components/mobile-quick-navigation";
 import "./globals.css";
+import "./mobile-navigation.css";
 import "./auth.css";
 import "./language.css";
 import "./behance-theme.css";
@@ -37,5 +39,5 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     }
   }
 
-  return <html lang="en"><body className="connectAppTheme"><Providers session={session}>{children}<ConnectAssistant /></Providers></body></html>;
+  return <html lang="en"><body className="connectAppTheme"><Providers session={session}>{children}<ConnectAssistant /><MobileQuickNavigation /></Providers></body></html>;
 }
