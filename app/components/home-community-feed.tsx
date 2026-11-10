@@ -26,22 +26,33 @@ export default function HomeCommunityFeed() {
   const [loading, setLoading] = useState(true);
   const [signedOut, setSignedOut] = useState(false);
   const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
-  async function load() {
-    try {
-      const response = await fetch("/api/community/posts", { cache: "no-store" });
-      setError("");
-      const data = await response.json();
-      if (response.status === 401) { setSignedOut(true); setPosts([]); return; }
-      if (!response.ok) throw new Error(data.error || "The community feed is unavailable.");
-      setSignedOut(false);
-      setPosts(Array.isArray(data.posts) ? data.posts.slice(0, 4) : []);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The community feed is unavailable.");
-    } finally { setLoading(false); }
-  }
-
-  useEffect(() => { void load(); }, []);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/community/posts", { cache: "no-store" })
+      .then(async (response) => {
+        const data = await response.json();
+        if (cancelled) return;
+        if (response.status === 401) {
+          setSignedOut(true);
+          setPosts([]);
+          setError("");
+          return;
+        }
+        if (!response.ok) throw new Error(data.error || "The community feed is unavailable.");
+        setSignedOut(false);
+        setError("");
+        setPosts(Array.isArray(data.posts) ? data.posts.slice(0, 4) : []);
+      })
+      .catch((cause: unknown) => {
+        if (!cancelled) setError(cause instanceof Error ? cause.message : "The community feed is unavailable.");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [reloadKey]);
 
   return (
     <section className="homeSocialFeed" aria-labelledby="home-social-feed-title">
@@ -51,7 +62,7 @@ export default function HomeCommunityFeed() {
       </div>
       {loading ? <p className="homeSocialFeedState" role="status">Loading the latest posts…</p> :
         signedOut ? <div className="homeSocialFeedJoin"><div><strong>Your community feed is waiting.</strong><p>Sign in to see member updates and join the conversation.</p></div><Link href="/login">Log in</Link></div> :
-        error ? <div className="homeSocialFeedState" role="alert">{error} <button type="button" onClick={() => { setLoading(true); setError(""); void load(); }}>Try again</button></div> :
+        error ? <div className="homeSocialFeedState" role="alert">{error} <button type="button" onClick={() => { setLoading(true); setReloadKey((key) => key + 1); }}>Try again</button></div> :
         posts.length ? <div className="homeSocialFeedList">{posts.map(post => <article className="homeSocialFeedPost" key={post.id}>
           <div className="homeSocialFeedAvatar" aria-hidden="true">{(post.author.displayName || post.author.handle || "C").slice(0,1).toUpperCase()}</div>
           <div className="homeSocialFeedPostBody"><div className="homeSocialFeedByline"><strong>{post.author.displayName || post.author.handle}</strong><span>@{post.author.handle} · {relativeTime(post.createdAt)}</span></div><p>{post.body}</p><Link href="/community">Join the discussion →</Link></div>
