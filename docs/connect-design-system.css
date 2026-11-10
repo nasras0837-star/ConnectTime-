@@ -202,3 +202,36 @@ body.connectAppTheme :is(button,.btn:not(.ghost),.primary) {
   color: #fff !important;
   -webkit-text-fill-color: #fff !important;
 }
+
+
+/* SCORECARDS — dark, high-contrast Connect treatment (Pages + app) */
+body.connectPagesTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card),
+body.connectAppTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) {
+  background: linear-gradient(145deg,#07183f 0%,#0b2860 58%,#111d50 100%) !important;
+  color: #f5f9ff !important;
+  border: 1px solid rgba(65,190,255,.55) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 14px 36px rgba(0,8,35,.42), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+body.connectPagesTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) :is(h1,h2,h3,h4,strong,b,.team,.teamName,.team-name,.score,.teamScore,.team-score,.gameTitle),
+body.connectAppTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) :is(h1,h2,h3,h4,strong,b,.team,.teamName,.team-name,.score,.teamScore,.team-score,.gameTitle) {
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+}
+body.connectPagesTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) :is(p,small,span,li,.status,.gameStatus,.game-status,.meta,.caption),
+body.connectAppTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) :is(p,small,span,li,.status,.gameStatus,.game-status,.meta,.caption) {
+  color:#c9e5ff !important;
+  -webkit-text-fill-color:#c9e5ff !important;
+}
+body.connectPagesTheme :is(.ctPublicSportsGameStatus,.gameStatus,.game-status,.scoreStatus),
+body.connectAppTheme :is(.ctPublicSportsGameStatus,.gameStatus,.game-status,.scoreStatus) {
+  color:#67f0ff !important;
+  font-weight:900 !important;
+}
+body.connectPagesTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) :is(.teamScore,.team-score,.score),
+body.connectAppTheme :is(.ctPublicSportsLeague,.ctPublicSportsGame,.ctSportsScorecard,.sportsScorecard,.scorecard,.scoreCard,.score-card,.gameCard,.game-card,.scoreboardCard,.scoreboard-card) :is(.teamScore,.team-score,.score) {
+  color:#63f5ff !important;
+  -webkit-text-fill-color:#63f5ff !important;
+  font-weight:950 !important;
+  text-shadow:0 0 18px rgba(0,220,255,.22);
+}
