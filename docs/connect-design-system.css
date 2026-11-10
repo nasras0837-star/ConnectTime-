@@ -305,3 +305,105 @@ body.connectPagesTheme :is([class*="card" i],[class*="panel" i],[class*="score" 
 body.connectAppTheme :is([class*="card" i],[class*="panel" i],[class*="score" i],[class*="tile" i],[class*="widget" i]) :is(img,video,canvas,input,select,textarea,button,.btn) {
   background-image: revert !important;
 }
+
+
+/* FINAL SITEWIDE WHITE-SURFACE REMOVAL
+   Last-loaded enforcement for both the Next.js app and GitHub Pages.
+   Targets legacy component classes, Tailwind arbitrary colors, and inline
+   white/light backgrounds that older page styles may still inject. */
+:root { color-scheme: dark !important; }
+html, body.connectAppTheme, body.connectPagesTheme {
+  background-color: #020a2a !important;
+  color: #f5f9ff !important;
+}
+body.connectAppTheme :is(
+  [class*="bg-white" i], [class*="bg-slate-50" i], [class*="bg-slate-100" i],
+  [class*="bg-gray-50" i], [class*="bg-gray-100" i], [class*="bg-zinc-50" i],
+  [class*="bg-zinc-100" i], [class*="bg-neutral-50" i], [class*="bg-neutral-100" i],
+  [class*="bg-stone-50" i], [class*="bg-stone-100" i],
+  [class*="bg-[#fff" i], [class*="bg-[#f" i], [class*="bg-[white" i],
+  [class*="whitecard" i], [class*="lightcard" i], [class*="surface-light" i],
+  [class*="card" i], [class*="panel" i], [class*="score" i], [class*="tile" i],
+  [class*="widget" i], [class*="metric" i], [class*="stat" i], [class*="module" i],
+  [class*="notice" i], [class*="proof" i], [class*="topic" i], [class*="join" i],
+  [style*="background:#fff" i], [style*="background: #fff" i],
+  [style*="background-color:#fff" i], [style*="background-color: #fff" i],
+  [style*="background:#ffffff" i], [style*="background: #ffffff" i],
+  [style*="background-color:#ffffff" i], [style*="background-color: #ffffff" i],
+  [style*="background:white" i], [style*="background: white" i],
+  [style*="background-color:white" i], [style*="background-color: white" i],
+  [style*="rgb(255,255,255)" i], [style*="rgb(255, 255, 255)" i],
+  [style*="rgba(255,255,255" i], [style*="rgba(255, 255, 255" i],
+  [style*="rgb(248, 249, 250)" i], [style*="rgb(249, 250, 251)" i],
+  [style*="rgb(248, 250, 252)" i], [style*="rgb(245, 247, 250)" i]
+),
+body.connectPagesTheme :is(
+  [class*="bg-white" i], [class*="bg-slate-50" i], [class*="bg-slate-100" i],
+  [class*="bg-gray-50" i], [class*="bg-gray-100" i], [class*="bg-zinc-50" i],
+  [class*="bg-zinc-100" i], [class*="bg-neutral-50" i], [class*="bg-neutral-100" i],
+  [class*="bg-stone-50" i], [class*="bg-stone-100" i],
+  [class*="bg-[#fff" i], [class*="bg-[#f" i], [class*="bg-[white" i],
+  [class*="whitecard" i], [class*="lightcard" i], [class*="surface-light" i],
+  [class*="card" i], [class*="panel" i], [class*="score" i], [class*="tile" i],
+  [class*="widget" i], [class*="metric" i], [class*="stat" i], [class*="module" i],
+  [class*="notice" i], [class*="proof" i], [class*="topic" i], [class*="join" i],
+  [style*="background:#fff" i], [style*="background: #fff" i],
+  [style*="background-color:#fff" i], [style*="background-color: #fff" i],
+  [style*="background:#ffffff" i], [style*="background: #ffffff" i],
+  [style*="background-color:#ffffff" i], [style*="background-color: #ffffff" i],
+  [style*="background:white" i], [style*="background: white" i],
+  [style*="background-color:white" i], [style*="background-color: white" i],
+  [style*="rgb(255,255,255)" i], [style*="rgb(255, 255, 255)" i],
+  [style*="rgba(255,255,255" i], [style*="rgba(255, 255, 255" i],
+  [style*="rgb(248, 249, 250)" i], [style*="rgb(249, 250, 251)" i],
+  [style*="rgb(248, 250, 252)" i], [style*="rgb(245, 247, 250)" i]
+) {
+  background-color: #081b43 !important;
+  background-image: linear-gradient(145deg, #10295b 0%, #071a43 100%) !important;
+  color: #f5f9ff !important;
+  border-color: rgba(91,190,255,.38) !important;
+  -webkit-text-fill-color: #f5f9ff !important;
+}
+body.connectAppTheme :is(
+  [class*="card" i], [class*="panel" i], [class*="score" i], [class*="tile" i],
+  [class*="widget" i], [class*="metric" i], [class*="stat" i], [class*="module" i],
+  [class*="notice" i], [class*="proof" i], [class*="topic" i], [class*="join" i],
+  [class*="whitecard" i], [class*="lightcard" i], [class*="surface-light" i]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th) {
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
+body.connectPagesTheme :is(
+  [class*="card" i], [class*="panel" i], [class*="score" i], [class*="tile" i],
+  [class*="widget" i], [class*="metric" i], [class*="stat" i], [class*="module" i],
+  [class*="notice" i], [class*="proof" i], [class*="topic" i], [class*="join" i],
+  [class*="whitecard" i], [class*="lightcard" i], [class*="surface-light" i]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,label,legend,th) {
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
+body.connectAppTheme :is(
+  [class*="card" i], [class*="panel" i], [class*="score" i], [class*="tile" i],
+  [class*="widget" i], [class*="metric" i], [class*="stat" i], [class*="module" i],
+  [class*="notice" i], [class*="proof" i], [class*="topic" i], [class*="join" i]
+) :is(p,small,li,span,figcaption,.muted,.meta,.description) {
+  color: #c8dcf7 !important; -webkit-text-fill-color: #c8dcf7 !important;
+}
+body.connectPagesTheme :is(
+  [class*="card" i], [class*="panel" i], [class*="score" i], [class*="tile" i],
+  [class*="widget" i], [class*="metric" i], [class*="stat" i], [class*="module" i],
+  [class*="notice" i], [class*="proof" i], [class*="topic" i], [class*="join" i]
+) :is(p,small,li,span,figcaption,.muted,.meta,.description) {
+  color: #c8dcf7 !important; -webkit-text-fill-color: #c8dcf7 !important;
+}
+/* Never flatten images, video, controls, or high-priority action buttons. */
+body.connectAppTheme :is(img,picture,video,canvas,svg,input,select,textarea,button,[role="button"],.btn),
+body.connectPagesTheme :is(img,picture,video,canvas,svg,input,select,textarea,button,[role="button"],.btn) {
+  background-image: revert !important;
+}
+body.connectAppTheme :is(input,select,textarea),
+body.connectPagesTheme :is(input,select,textarea) {
+  background-color: #071b4b !important; color: #fff !important;
+}
+body.connectAppTheme :is(button,.btn,.button,.primary,[role="button"]),
+body.connectPagesTheme :is(button,.btn,.button,.primary,[role="button"]) {
+  color: #fff !important; -webkit-text-fill-color: #fff !important;
+}
