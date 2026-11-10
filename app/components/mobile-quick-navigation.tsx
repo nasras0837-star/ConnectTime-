@@ -20,7 +20,7 @@ const exploreLinks = [
   { href: "/meetings", label: "Meetings", icon: "◉" },
   { href: "/news", label: "News", icon: "▤" },
   { href: "/radio", label: "Music & Radio", icon: "♪" },
-  { href: "/free-tv", label: "Video & TV", icon: "▷" },
+  { href: "/free-tv", label: "Connect Video Tube", icon: "▷" },
   { href: "/profile", label: "My profile", icon: "◎" },
   { href: "/account/settings", label: "Account settings", icon: "⚙" },
 ];
