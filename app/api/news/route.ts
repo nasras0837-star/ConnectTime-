@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const revalidate = 120;
 
-type NewsCategory = "World" | "Politics" | "Sports" | "Music" | "Entertainment" | "Business" | "Technology" | "Science" | "Gaming" | "Local" | "Nearby";
+type NewsCategory = "World" | "Politics" | "Sports" | "Music" | "Entertainment" | "Business" | "Technology" | "Science" | "Gaming" | "Wrestling" | "Local" | "Nearby";
 type Feed = { label: string; url: string; category: NewsCategory };
 
 const SEARCH_TERMS: Record<NewsCategory, string> = {
@@ -15,7 +15,8 @@ const SEARCH_TERMS: Record<NewsCategory, string> = {
   Business: "business economy markets",
   Technology: "technology AI innovation",
   Science: "science environment research",
-  Gaming: "video games gaming esports",
+  Gaming: "PlayStation PS5 Sony PlayStation Xbox Xbox Series X Xbox Game Pass video game gaming industry esports",
+  Wrestling: "WWE World Wrestling Entertainment AEW All Elite Wrestling professional wrestling",
   Local: "local news",
   Nearby: "local news",
 };
@@ -55,6 +56,7 @@ const PUBLISHER_FEEDS: Partial<Record<NewsCategory, Feed[]>> = {
   Gaming: [
     { label: "The Verge", url: "https://www.theverge.com/rss/index.xml", category: "Gaming" },
   ],
+  Wrestling: [],
 };
 
 function decode(value: string) {
@@ -139,13 +141,13 @@ export async function GET(request: Request) {
   const country = /^[A-Z]{2}$/.test(requestedCountry) ? requestedCountry : "US";
   const requestedLanguage = (params.get("language") || "en").toLowerCase();
   const language = GOOGLE_LANG[requestedLanguage] ? requestedLanguage : "en";
-  const allowed: string[] = ["World", "Politics", "Sports", "Music", "Entertainment", "Business", "Technology", "Science", "Gaming", "Local", "Nearby"];
+  const allowed: string[] = ["World", "Politics", "Sports", "Music", "Entertainment", "Business", "Technology", "Science", "Gaming", "Wrestling", "Local", "Nearby"];
   if (requested !== "For You" && !allowed.includes(requested)) {
     return NextResponse.json({ articles: [], error: "Unknown news category." }, { status: 400 });
   }
 
   const categories: NewsCategory[] = requested === "For You"
-    ? ["World", "Politics", "Sports", "Entertainment", "Business", "Technology", "Music", "Gaming"]
+    ? ["World", "Politics", "Sports", "Entertainment", "Business", "Technology", "Music", "Gaming", "Wrestling"]
     : [requested as NewsCategory];
 
   let lat: number | undefined;
