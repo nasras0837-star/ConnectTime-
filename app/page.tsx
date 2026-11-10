@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LiveInterestFeed from "./components/live-interest-feed";
+import HomeCommunityFeed from "./components/home-community-feed";
 import LiveNewsArticles from "./components/live-news-articles";
 import SportsScores from "./components/sports-scores";
 import RegionalWeather from "./components/regional-weather";
@@ -107,6 +108,8 @@ export default function HomePage() {
               </div>
             </div>
           </section>
+
+          <HomeCommunityFeed />
 
           <section className="connectExploreSection">
             <div className="connectSectionHeading"><div><span>MAKE IT YOURS</span><h2>Explore Connect</h2><p>Move between the spaces that bring your interests together.</p></div><Link href="/account">Your account →</Link></div>
