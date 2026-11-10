@@ -29,7 +29,7 @@ export default function HomePage() {
     <main className="connectSocialHome">
       <header className="connectTopbar">
         <Link href="/" className="connectBrand" aria-label="Connect home">
-          <span className="ctBrandMark">CT</span><span className="ctWordmark">Connect</span>
+          <img className="connectBrandLogo" src="/connect-logo.svg" alt="Connect" />
         </Link>
         <Link href="/discover" className="connectSearch" aria-label="Search people and interests">
           <span aria-hidden="true">⌕</span><span>Search people, groups and interests</span>
@@ -96,7 +96,7 @@ export default function HomePage() {
           </section>
 
           <section className="connectComposerPrompt">
-            <div className="connectPromptAvatar" aria-hidden="true">CT</div>
+            <div className="connectPromptAvatar" aria-hidden="true">C</div>
             <div className="connectPromptContent">
               <strong>What&apos;s happening in your world?</strong>
               <p>Share a thought, join a discussion or meet someone new.</p>
