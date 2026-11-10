@@ -66,7 +66,8 @@ export async function GET(_request: Request, context: { params: Promise<{ postId
       if (blockedA.rows.length || blockedB.rows.length || !profile.rows[0] || !["public", "members"].includes(String(profile.rows[0].visibility || "")) || !await eligible(s, authorId)) continue;
       visible.push({ id: String(row.$id), body: String(row.body || ""), createdAt: String(row.created_at || ""), author: { handle: String(profile.rows[0].handle || ""), displayName: String(profile.rows[0].display_name || profile.rows[0].handle || "") }, mine: authorId === user.$id });
     }
-    return NextResponse.json({ comments: visible, reactionCount: reactions.rows.length, reacted: reactions.rows.some(row => row.user_id === user.$id) }, { headers: { "Cache-Control": "no-store" } });
+    const ownReaction = reactions.rows.find(row => row.user_id === user.$id);
+    return NextResponse.json({ comments: visible, reactionCount: reactions.rows.length, reacted: Boolean(ownReaction), reactionType: ownReaction ? String(ownReaction.reaction || "like") : null }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Community interactions lookup failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "Comments and reactions are not configured or are temporarily unavailable." }, { status: 503 });
@@ -83,7 +84,10 @@ export async function POST(request: Request, context: { params: Promise<{ postId
   try { body = await request.json() as Record<string, unknown>; } catch { return NextResponse.json({ error: "Invalid interaction." }, { status: 400 }); }
   const type = body.type;
   const content = typeof body.body === "string" ? body.body.trim() : "";
+  const reactionType = typeof body.reaction === "string" ? body.reaction : "like";
+  const validReactions = ["like", "love", "laugh", "wow", "support"];
   if (type !== "comment" && type !== "reaction") return NextResponse.json({ error: "Choose a valid interaction." }, { status: 400 });
+  if (type === "reaction" && !validReactions.includes(reactionType)) return NextResponse.json({ error: "Choose a supported reaction." }, { status: 400 });
   if (type === "comment" && (!content || content.length > 500 || /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/.test(content))) return NextResponse.json({ error: "Comments must contain 1–500 supported characters." }, { status: 400 });
   try {
     const { postId } = await context.params;
@@ -104,14 +108,18 @@ export async function POST(request: Request, context: { params: Promise<{ postId
       return NextResponse.json({ created: true, comment: { id: String(row.$id), body: content, createdAt: String(row.created_at), mine: true } }, { status: 201, headers: { "Cache-Control": "no-store" } });
     }
     const existing = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.reactionsTableId, queries: [Query.equal("post_id", postId), Query.equal("user_id", user.$id), Query.limit(1)] });
-    if (existing.rows[0]) {
+    if (existing.rows[0] && String(existing.rows[0].reaction || "like") === reactionType) {
       await s.tablesDB.deleteRow({ databaseId: s.databaseId, tableId: s.reactionsTableId, rowId: existing.rows[0].$id });
       const count = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.reactionsTableId, queries: [Query.equal("post_id", postId), Query.limit(100)] });
-      return NextResponse.json({ reacted: false, reactionCount: count.rows.length }, { headers: { "Cache-Control": "no-store" } });
+      return NextResponse.json({ reacted: false, reactionType: null, reactionCount: count.rows.length }, { headers: { "Cache-Control": "no-store" } });
     }
-    await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.reactionsTableId, rowId: ID.unique(), data: { post_id: postId, user_id: user.$id, reaction: "like", created_at: new Date().toISOString() } });
+    if (existing.rows[0]) {
+      await s.tablesDB.updateRow({ databaseId: s.databaseId, tableId: s.reactionsTableId, rowId: existing.rows[0].$id, data: { reaction: reactionType } });
+    } else {
+      await s.tablesDB.createRow({ databaseId: s.databaseId, tableId: s.reactionsTableId, rowId: ID.unique(), data: { post_id: postId, user_id: user.$id, reaction: reactionType, created_at: new Date().toISOString() } });
+    }
     const count = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.reactionsTableId, queries: [Query.equal("post_id", postId), Query.limit(100)] });
-    return NextResponse.json({ reacted: true, reactionCount: count.rows.length }, { status: 201, headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ reacted: true, reactionType, reactionCount: count.rows.length }, { status: existing.rows[0] ? 200 : 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Community interaction failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "The interaction could not be saved. Check the private Appwrite interaction tables." }, { status: 503 });
