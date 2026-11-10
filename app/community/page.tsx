@@ -6,7 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 type Post = { id: string; body: string; createdAt: string; author: { handle: string; displayName: string }; mine: boolean };
 type Comment = { id: string; body: string; createdAt: string; author?: { handle: string; displayName: string }; mine?: boolean };
-type Interaction = { comments: Comment[]; reactionCount: number; reacted: boolean; open: boolean; loading: boolean; draft: string };
+type Interaction = { comments: Comment[]; reactionCount: number; reacted: boolean; reactionType?: string | null; open: boolean; loading: boolean; draft: string };
 
 function formatDate(value: string) {
   const date = new Date(value);
@@ -58,21 +58,21 @@ export default function CommunityPage() {
       setInteractions(state => ({ ...state, [post.id]: { ...state[post.id], open: false } }));
       return;
     }
-    setInteractions(state => ({ ...state, [post.id]: { comments: state[post.id]?.comments || [], reactionCount: state[post.id]?.reactionCount || 0, reacted: state[post.id]?.reacted || false, draft: state[post.id]?.draft || "", open: true, loading: true } }));
+    setInteractions(state => ({ ...state, [post.id]: { comments: state[post.id]?.comments || [], reactionCount: state[post.id]?.reactionCount || 0, reacted: state[post.id]?.reacted || false, reactionType: state[post.id]?.reactionType || null, draft: state[post.id]?.draft || "", open: true, loading: true } }));
     try {
       const response = await fetch(`/api/community/posts/${encodeURIComponent(post.id)}/interactions`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Could not load discussion.");
-      setInteractions(state => ({ ...state, [post.id]: { ...state[post.id], comments: data.comments || [], reactionCount: data.reactionCount || 0, reacted: Boolean(data.reacted), loading: false } }));
+      setInteractions(state => ({ ...state, [post.id]: { ...state[post.id], comments: data.comments || [], reactionCount: data.reactionCount || 0, reacted: Boolean(data.reacted), reactionType: data.reactionType || null, loading: false } }));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not load discussion.");
       setInteractions(state => ({ ...state, [post.id]: { ...state[post.id], loading: false } }));
     }
   }
 
-  async function react(post: Post) {
+  async function react(post: Post, reaction: string) {
     try {
-      const response = await fetch(`/api/community/posts/${encodeURIComponent(post.id)}/interactions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "reaction" }) });
+      const response = await fetch(`/api/community/posts/${encodeURIComponent(post.id)}/interactions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "reaction", reaction }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Reaction could not be saved.");
       setInteractions(state => ({ ...state, [post.id]: { ...(state[post.id] || { comments: [], draft: "", open: false, loading: false, reacted: false, reactionCount: 0 }), reacted: Boolean(data.reacted), reactionCount: data.reactionCount || 0 } }));
@@ -118,8 +118,8 @@ export default function CommunityPage() {
         {loading ? <p className="communityEmpty">Loading community posts…</p> : posts.length ? <div className="communityPosts">{posts.map(post => <article className="communityPost" key={post.id}>
           <div className="communityPostHead"><div className="communityAvatar">{(post.author.displayName || post.author.handle || "C").slice(0,1).toUpperCase()}</div><div><b>{post.author.displayName || post.author.handle}</b><span>@{post.author.handle} · {formatDate(post.createdAt)}</span></div><button type="button" onClick={() => void report(post)} aria-label="Report this post">Report</button></div>
           <p>{post.body}</p>
-          <div className="communityPostActions"><button type="button" onClick={() => void react(post)} aria-pressed={Boolean(interactions[post.id]?.reacted)}>{interactions[post.id]?.reacted ? "♥ Liked" : "♡ Like"} · {interactions[post.id]?.reactionCount || 0}</button><button type="button" onClick={() => void loadInteractions(post)}>💬 Comments</button></div>
-          {interactions[post.id]?.open && <section className="communityDiscussion"><h4>Discussion ({interactions[post.id]?.comments.length || 0})</h4>{interactions[post.id]?.loading ? <p>Loading comments…</p> : <>{(interactions[post.id]?.comments || []).map(item => <div className="communityComment" key={item.id}><b>{item.author?.displayName || "Member"}</b><p>{item.body}</p><small>{formatDate(item.createdAt)}</small></div>)}<form onSubmit={event => { event.preventDefault(); void comment(post); }}><textarea aria-label="Write a comment" rows={2} maxLength={500} value={interactions[post.id]?.draft || ""} onChange={event => setInteractions(state => ({ ...state, [post.id]: { ...state[post.id], comments: state[post.id]?.comments || [], reactionCount: state[post.id]?.reactionCount || 0, reacted: state[post.id]?.reacted || false, open: true, loading: false, draft: event.target.value.slice(0,500) } }))} placeholder="Add a respectful comment…" /><button type="submit" disabled={!interactions[post.id]?.draft.trim()}>Comment</button></form></>}</section>}
+          <div className="communityPostActions"><div className="communityReactionPicker" role="group" aria-label="React to this post">{[{type:"like",emoji:"👍",label:"Like"},{type:"love",emoji:"❤️",label:"Love"},{type:"laugh",emoji:"😂",label:"Funny"},{type:"wow",emoji:"😮",label:"Wow"},{type:"support",emoji:"🙌",label:"Support"}].map(item => <button key={item.type} type="button" className={interactions[post.id]?.reactionType === item.type ? "isSelected" : ""} onClick={() => void react(post,item.type)} aria-pressed={interactions[post.id]?.reactionType === item.type} aria-label={item.label}>{item.emoji}</button>)}<span>{interactions[post.id]?.reactionCount || 0}</span></div><button type="button" onClick={() => void loadInteractions(post)}>💬 Comments</button></div>
+          {interactions[post.id]?.open && <section className="communityDiscussion"><h4>Discussion ({interactions[post.id]?.comments.length || 0})</h4>{interactions[post.id]?.loading ? <p>Loading comments…</p> : <>{(interactions[post.id]?.comments || []).map(item => <div className="communityComment" key={item.id}><b>{item.author?.displayName || "Member"}</b><p>{item.body}</p><small>{formatDate(item.createdAt)}</small></div>)}<form onSubmit={event => { event.preventDefault(); void comment(post); }}><textarea aria-label="Write a comment" rows={2} maxLength={500} value={interactions[post.id]?.draft || ""} onChange={event => setInteractions(state => ({ ...state, [post.id]: { ...state[post.id], comments: state[post.id]?.comments || [], reactionCount: state[post.id]?.reactionCount || 0, reacted: state[post.id]?.reacted || false, reactionType: state[post.id]?.reactionType || null, open: true, loading: false, draft: event.target.value.slice(0,500) } }))} placeholder="Add a respectful comment…" /><button type="submit" disabled={!interactions[post.id]?.draft.trim()}>Comment</button></form></>}</section>}
         </article>)}</div> : <div className="communityEmpty">There are no posts yet. Start the conversation with a thoughtful first post.</div>}
       </div>
       <aside className="communitySidebar"><div><span>COMMUNITY STANDARDS</span><h3>Open expression. No intimidation.</h3><p>Debate, criticism, satire, political and social viewpoints, and unpopular opinions are welcome. Threats, targeted harassment, stalking, doxxing, blackmail and privacy violations are not.</p><Link href="/safety">Visit Safety Center ↗</Link></div><div><span>MORE TO EXPLORE</span><Link href="/news">News & current affairs ↗</Link><Link href="/free-tv">Free TV directory ↗</Link><Link href="/events">Community events ↗</Link><Link href="/groups">Explore groups ↗</Link><Link href="/discover">Find members ↗</Link></div></aside>
