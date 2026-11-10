@@ -28,6 +28,7 @@ export default function NotificationsPage() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState("");
+  const [filter, setFilter] = useState<"all" | "unread">("all");
 
   const load = useCallback(async (silent = false) => {
     try {
@@ -78,7 +79,28 @@ export default function NotificationsPage() {
     }
   }
 
+  async function markAllRead() {
+    const pending = items.filter(item => !item.read);
+    if (!pending.length) return;
+    setBusy("all");
+    setError("");
+    const completed: string[] = [];
+    try {
+      for (const item of pending) {
+        const response = await fetch("/api/notifications", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ notificationId: item.id }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Some notifications could not be updated.");
+        completed.push(item.id);
+      }
+      setItems(current => current.map(item => completed.includes(item.id) ? { ...item, read: true } : item));
+    } catch (e) {
+      setItems(current => current.map(item => completed.includes(item.id) ? { ...item, read: true } : item));
+      setError(e instanceof Error ? e.message : "Some notifications could not be updated.");
+    } finally { setBusy(""); }
+  }
+
   const unread = items.filter(item => !item.read).length;
+  const visibleItems = filter === "unread" ? items.filter(item => !item.read) : items;
   return <main className="authShell">
     <header className="plannedFeatureHeader">
       <Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link>
@@ -89,9 +111,16 @@ export default function NotificationsPage() {
       <h1>Notifications</h1>
       <p>Dating likes, mutual matches, friend requests, connection updates, private messages and community group chat activity appear here. {unread} unread.</p>
       {error && <p className="message" role="alert">{error}</p>}
-      {loading ? <p role="status">Loading notifications…</p> : items.length === 0 ? <p className="notificationEmpty">You’re all caught up. New activity will appear here.</p> :
-        <div className="notificationList" aria-live="polite">
-          {items.map(item => {
+      {loading ? <p role="status">Loading notifications…</p> : items.length === 0 ? <p className="notificationEmpty">You’re all caught up. New activity will appear here.</p> : <>
+        <div className="notificationToolbar">
+          <div className="notificationFilters" role="group" aria-label="Filter notifications">
+            <button type="button" className={filter === "all" ? "active" : ""} aria-pressed={filter === "all"} onClick={() => setFilter("all")}>All <span>{items.length}</span></button>
+            <button type="button" className={filter === "unread" ? "active" : ""} aria-pressed={filter === "unread"} onClick={() => setFilter("unread")}>Unread <span>{unread}</span></button>
+          </div>
+          <button type="button" className="notificationMarkAll" onClick={() => void markAllRead()} disabled={!unread || !!busy}>{busy === "all" ? "Updating…" : "Mark all read"}</button>
+        </div>
+        {visibleItems.length ? <div className="notificationList" aria-live="polite">
+          {visibleItems.map(item => {
             const target = destination(item.type, item.referenceId);
             return <article className={item.read ? "notificationItem isRead" : "notificationItem"} key={item.id}>
               <span className="notificationDot" aria-hidden="true"/>
@@ -100,12 +129,13 @@ export default function NotificationsPage() {
                 <span>{category(item.type)}{item.createdAt ? " · " + new Date(item.createdAt).toLocaleString() : ""}</span>
                 <Link href={target.href}>{target.label}</Link>
               </div>
-              {!item.read && <button type="button" disabled={busy === item.id} onClick={() => void markRead(item)}>
+              {!item.read && <button type="button" disabled={busy === item.id || busy === "all"} onClick={() => void markRead(item)}>
                 {busy === item.id ? "Saving…" : "Mark read"}
               </button>}
             </article>;
           })}
-        </div>}
+        </div> : <p className="notificationEmpty">No unread notifications. You’re all caught up.</p>}
+      </>}
       <div className="introActions"><Link href="/friends">Manage friends</Link><Link className="introExplore" href="/discover">Discover members</Link></div>
       <p className="switch">
         <button className="friendRefresh" type="button" onClick={() => void load()}>Refresh notifications</button>
