@@ -67,9 +67,9 @@ Recommended comments indexes: `post_id + created_at`, `user_id + created_at`, an
 |---|---|---:|---|
 | post_id | varchar/string | yes | 128 |
 | user_id | varchar/string | yes | 128 |
-| reaction | varchar/string | yes | 20; currently `like` |
+| reaction | varchar/string | yes | 20; supported values: `like`, `love`, `laugh`, `wow`, `support` |
 | created_at | varchar/string | yes | ISO timestamp |
 
-Create a unique index on `post_id + user_id` to prevent duplicate likes, plus an index on `post_id`. The API toggles a member's Like on/off. Keep both tables private and grant access only through the server API key.
+Create a unique index on `post_id + user_id` to prevent duplicate likes, plus an index on `post_id`. The API lets a member select, change, or remove one reaction per post (`like`, `love`, `laugh`, `wow`, or `support`). Keep both tables private and grant access only through the server API key.
 
 The interactions API requires the same verified-adult and active-member access record as posting. It checks post visibility and blocks in both directions, filters comments from blocked or ineligible members, and limits comments to 20 per member per rolling ten minutes. Application-level throttling is not a distributed rate limiter. Configure edge/WAF limits before public launch.
