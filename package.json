@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run tests",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@appwrite.io/react": "latest",
@@ -26,6 +27,7 @@
     "eslint": "^9.39.0",
     "eslint-config-next": "^16.0.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.12"
+    "vitest": "^4.1.12",
+    "@playwright/test": "^1.56.1"
   }
 }
