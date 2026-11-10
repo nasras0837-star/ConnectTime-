@@ -111,9 +111,16 @@ export default function NotificationsPage() {
       <h1>Notifications</h1>
       <p>Dating likes, mutual matches, friend requests, connection updates, private messages and community group chat activity appear here. {unread} unread.</p>
       {error && <p className="message" role="alert">{error}</p>}
-      {loading ? <p role="status">Loading notifications…</p> : items.length === 0 ? <p className="notificationEmpty">You’re all caught up. New activity will appear here.</p> :
-        <div className="notificationList" aria-live="polite">
-          {items.map(item => {
+      {loading ? <p role="status">Loading notifications…</p> : items.length === 0 ? <p className="notificationEmpty">You’re all caught up. New activity will appear here.</p> : <>
+        <div className="notificationToolbar">
+          <div className="notificationFilters" role="group" aria-label="Filter notifications">
+            <button type="button" className={filter === "all" ? "active" : ""} aria-pressed={filter === "all"} onClick={() => setFilter("all")}>All <span>{items.length}</span></button>
+            <button type="button" className={filter === "unread" ? "active" : ""} aria-pressed={filter === "unread"} onClick={() => setFilter("unread")}>Unread <span>{unread}</span></button>
+          </div>
+          <button type="button" className="notificationMarkAll" onClick={() => void markAllRead()} disabled={!unread || !!busy}>{busy === "all" ? "Updating…" : "Mark all read"}</button>
+        </div>
+        {visibleItems.length ? <div className="notificationList" aria-live="polite">
+          {visibleItems.map(item => {
             const target = destination(item.type, item.referenceId);
             return <article className={item.read ? "notificationItem isRead" : "notificationItem"} key={item.id}>
               <span className="notificationDot" aria-hidden="true"/>
@@ -122,12 +129,13 @@ export default function NotificationsPage() {
                 <span>{category(item.type)}{item.createdAt ? " · " + new Date(item.createdAt).toLocaleString() : ""}</span>
                 <Link href={target.href}>{target.label}</Link>
               </div>
-              {!item.read && <button type="button" disabled={busy === item.id} onClick={() => void markRead(item)}>
+              {!item.read && <button type="button" disabled={busy === item.id || busy === "all"} onClick={() => void markRead(item)}>
                 {busy === item.id ? "Saving…" : "Mark read"}
               </button>}
             </article>;
           })}
-        </div>}
+        </div> : <p className="notificationEmpty">No unread notifications. You’re all caught up.</p>}
+      </>}
       <div className="introActions"><Link href="/friends">Manage friends</Link><Link className="introExplore" href="/discover">Discover members</Link></div>
       <p className="switch">
         <button className="friendRefresh" type="button" onClick={() => void load()}>Refresh notifications</button>
