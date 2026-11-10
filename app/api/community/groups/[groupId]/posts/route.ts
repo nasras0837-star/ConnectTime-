@@ -10,9 +10,10 @@ function config() {
   const groups = process.env.APPWRITE_COMMUNITY_GROUPS_TABLE_ID;
   const members = process.env.APPWRITE_COMMUNITY_GROUP_MEMBERS_TABLE_ID;
   const posts = process.env.APPWRITE_COMMUNITY_GROUP_POSTS_TABLE_ID;
-  if (!groups || !members || !posts) throw new Error("Group discussion storage is not configured.");
+  const blocks = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
+  if (!groups || !members || !posts || !blocks) throw new Error("Group discussion and block-control storage is not configured.");
   const { tablesDB, databaseId } = communitySafetyStore();
-  return { tablesDB, databaseId, groups, members, posts };
+  return { tablesDB, databaseId, groups, members, posts, blocks };
 }
 
 async function member(s: ReturnType<typeof config>, groupId: string, userId: string) {
@@ -31,10 +32,19 @@ export async function GET(_request: Request, context: { params: Promise<{ groupI
     const group = await s.tablesDB.getRow({ databaseId: s.databaseId, tableId: s.groups, rowId: groupId });
     const isMember = await member(s, groupId, user.$id);
     if (group.status !== "active" || (group.privacy !== "public" && !isMember)) return NextResponse.json({ error: "Join this group to view its discussion." }, { status: 403 });
-    const result = await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.posts, queries: [Query.equal("group_id", groupId), Query.equal("status", "published"), Query.orderDesc("created_at"), Query.limit(60)] });
+    const [result, outgoingBlocks, incomingBlocks] = await Promise.all([
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.posts, queries: [Query.equal("group_id", groupId), Query.equal("status", "published"), Query.orderDesc("created_at"), Query.limit(60)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocks, queries: [Query.equal("blocker_user_id", user.$id), Query.limit(500)] }),
+      s.tablesDB.listRows({ databaseId: s.databaseId, tableId: s.blocks, queries: [Query.equal("blocked_user_id", user.$id), Query.limit(500)] })
+    ]);
+    const blockedAuthors = new Set([
+      ...outgoingBlocks.rows.map(row => String(row.blocked_user_id)),
+      ...incomingBlocks.rows.map(row => String(row.blocker_user_id))
+    ]);
     const profiles = process.env.APPWRITE_PROFILES_TABLE_ID;
     const items = [];
     for (const row of result.rows) {
+      if (blockedAuthors.has(String(row.author_user_id || ""))) continue;
       const profileRows = profiles ? await s.tablesDB.listRows({ databaseId: s.databaseId, tableId: profiles, queries: [Query.equal("user_id", String(row.author_user_id)), Query.limit(1)] }) : { rows: [] };
       const profile = profileRows.rows[0];
       items.push({ id: String(row.$id), body: String(row.body || ""), createdAt: String(row.created_at || ""), author: { handle: String(profile?.handle || "member"), displayName: String(profile?.display_name || "Member") } });
