@@ -168,3 +168,94 @@ body :is(
   color: #2457f5 !important;
   -webkit-text-fill-color: #2457f5 !important;
 }
+
+
+/* Final pass: when a component keeps a white/light background, its text must
+   use saturated ink colors. This deliberately changes text only, not surfaces. */
+:root {
+  --connect-light-ink: #14265f;
+  --connect-light-heading: #1747d1;
+  --connect-light-link: #075fe8;
+  --connect-light-muted: #405477;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) {
+  color: var(--connect-light-ink) !important;
+  -webkit-text-fill-color: var(--connect-light-ink) !important;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) :is(p,span,div,li,dd,dt,label,small,em,strong,b,th,td,legend,summary,figcaption,blockquote) {
+  color: var(--connect-light-ink) !important;
+  -webkit-text-fill-color: var(--connect-light-ink) !important;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend) {
+  color: var(--connect-light-heading) !important;
+  -webkit-text-fill-color: var(--connect-light-heading) !important;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) a:not([class*="button"]):not([class*="Button"]) {
+  color: var(--connect-light-link) !important;
+  -webkit-text-fill-color: var(--connect-light-link) !important;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"],
+  [style*="background: white"],[style*="background:white"],
+  [style*="background-color: white"],[style*="background-color:white"],
+  [style*="background: #fff"],[style*="background:#fff"],
+  [style*="background-color: #fff"],[style*="background-color:#fff"],
+  [style*="background: rgb(255, 255, 255)"],[style*="background-color: rgb(255, 255, 255)"]
+) :is(.muted,.description,.subtitle,.helper,.meta,small,figcaption) {
+  color: var(--connect-light-muted) !important;
+  -webkit-text-fill-color: var(--connect-light-muted) !important;
+}
+/* Retain white labels on action controls placed inside light cards. */
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"]
+) :is(button,[role="button"],.button,.primary,[class*="btn"]) ,
+body :is(
+  .bg-white,.bg-slate-50,.bg-gray-50,.bg-zinc-50,.bg-neutral-50,.bg-stone-50,
+  .bg-light,.surface-light,.light-card,.white-card,.card-white,
+  [class*="whiteCard"],[class*="WhiteCard"],[class*="lightCard"],[class*="LightCard"]
+) :is(button,[role="button"],.button,.primary,[class*="btn"]) * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
