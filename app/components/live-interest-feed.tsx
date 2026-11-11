@@ -25,7 +25,7 @@ const feeds: Feed[] = [
 
 const storageKey = "connect-live-feed-preferences";
 
-export default function LiveInterestFeed() {
+export default function LiveInterestFeed({ compact = false }: { compact?: boolean }) {
   const [selected, setSelected] = useState<Topic[]>(["News", "Sports", "Entertainment"]);
   const [loaded, setLoaded] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
@@ -84,10 +84,10 @@ export default function LiveInterestFeed() {
     }).catch(() => setSyncStatus("Saved on this device · account sync unavailable"));
   }
 
-  return <section className="ctLiveInterest" aria-labelledby="ct-live-interest-title">
+  return <section className={compact ? "ctLiveInterest ctMediaCompact" : "ctLiveInterest"} aria-labelledby="ct-live-interest-title">
     <div className="ctLiveInterestHead"><div><span className="ctLiveEyebrow">YOUR PERSONAL LIVE FEED</span><h2 id="ct-live-interest-title">Watch what you&apos;re into</h2><p>Choose your interests. Connect brings together official live channels and broadcaster video hubs.</p></div><span className="ctLiveCount">◉ Curated sources</span></div>
     <div className="ctLiveTopics" role="group" aria-label="Choose live feed interests">{topics.map(topic => <button key={topic} type="button" onClick={() => toggle(topic)} className={selected.includes(topic) ? "active" : ""} aria-pressed={selected.includes(topic)}>{topic}</button>)}</div><p className="ctLiveSyncStatus" role="status">{syncStatus}</p>
-    {!ready ? <p className="ctLiveNote">Loading your interests…</p> : visible.length ? <div className="ctLiveGrid">{visible.map(feed => <article className="ctLiveCard" key={feed.id}>
+    {!ready ? <p className="ctLiveNote">Loading your interests…</p> : visible.length ? <div className="ctLiveGrid">{(compact ? visible.slice(0, 5) : visible).map(feed => <article className="ctLiveCard" key={feed.id}>
       <div className="ctLiveCardTop"><span>● {feed.topic}</span><span>{feed.country}</span></div>
       <h3>{feed.title}</h3><p className="ctLivePublisher">{feed.publisher}</p><p>{feed.note}</p>
       {feed.channelId ? <>{loaded.includes(feed.id) ? <div className="ctLivePlayer"><iframe src={`https://www.youtube-nocookie.com/embed/live_stream?channel=${feed.channelId}`} title={feed.title} loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen/></div> : <button className="ctLivePlay" type="button" onClick={() => setLoaded(current => [...current, feed.id])}>▶ Load official live player</button>}</> : <a className="ctLivePlay" href={feed.url} target="_blank" rel="noopener noreferrer">Open official video feed ↗</a>}
