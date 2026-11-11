@@ -1719,3 +1719,14 @@ body [style*="background-color:#f" i],body [style*="background-color: #f" i]{
 .ctSportsCompact .ctSportsGame{padding:8px 11px}
 .ctSportsCompact .ctSportsDisclaimer{font-size:.68rem;margin:5px 0 0}
 @media(max-width:600px){.ctSportsCompact .ctSportsHead{align-items:flex-start;flex-direction:column}.ctSportsCompactTrack>.ctSportsLeague{flex-basis:82vw;width:82vw}}
+
+
+/* Expandable full-score lists on the homepage */
+.ctSportsExpand{margin-top:10px;border-top:1px solid #315b91;padding-top:9px}
+.ctSportsExpand>summary{display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;list-style:none;border:1px solid #3977bd;border-radius:9px;padding:9px 11px;background:rgba(8,44,103,.78);color:#8deaff;font-size:10px;font-weight:850;text-align:center}
+.ctSportsExpand>summary::-webkit-details-marker{display:none}
+.ctSportsExpand>summary::after{content:"＋";font-size:12px}
+.ctSportsExpand[open]>summary::after{content:"−"}
+.ctSportsExpand>summary:hover{background:rgba(12,65,139,.9);color:#fff}
+.ctSportsExpand[open]>summary{margin-bottom:5px}
+.ctSportsExpand .ctSportsGame{padding-top:10px}
