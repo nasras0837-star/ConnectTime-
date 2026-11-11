@@ -85,7 +85,7 @@ export default function HomePage() {
             <div className="connectWelcomeShade" aria-hidden="true" />
             <div className="connectWelcomeCopy">
               <span className="connectWelcomeEyebrow">YOUR GLOBAL SOCIAL NETWORK</span>
-              <h1>Your people.<br /><em>Your world.</em></h1>
+              <div className="connectWelcomeTitle"><h1>Your people.<br /><em>Your world.</em></h1><img src="/connect-logo.svg" alt="Connect logo" width="120" height="108" /></div>
               <p>Meet people, build communities, share ideas and discover the media that matters to you — all in one place.</p>
               <div className="connectWelcomeActions">
                 <Link href="/register" className="connectWelcomePrimary">Create your account <span>→</span></Link>
