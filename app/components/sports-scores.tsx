@@ -29,12 +29,12 @@ async function getScores(league: League) {
   }
 }
 
-export default async function SportsScores() {
+export default async function SportsScores({ compact = false }: { compact?: boolean }) {
   const results = await Promise.all(leagues.map(getScores));
   const available = results.filter((result) => result.events.length > 0);
 
   return (
-    <section className="ctSportsScores" aria-labelledby="ct-sports-title">
+    <section className={compact ? "ctSportsScores ctSportsScoresCompact" : "ctSportsScores"} aria-labelledby="ct-sports-title">
       <div className="ctSportsHead">
         <div>
           <span className="ctSportsEyebrow">CONNECT SPORTS DESK</span>
