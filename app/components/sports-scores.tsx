@@ -48,7 +48,7 @@ export default async function SportsScores({ compact = false }: { compact?: bool
           {available.map(({ league, events }) => (
             <section className="ctSportsLeague" key={league.label} aria-label={league.label + " scores"}>
               <div className="ctSportsLeagueHead"><strong>{league.label}</strong><a href={league.href} target="_blank" rel="noopener noreferrer">Full scoreboard ↗</a></div>
-              {events.map((event) => {
+              {(compact ? events.slice(0, 2) : events).map((event) => {
                 const competition = event.competitions?.[0];
                 const competitors = competition?.competitors ?? [];
                 const status = competition?.status?.type?.shortDetail ?? competition?.status?.type?.detail ?? competition?.status?.type?.description ?? "Scheduled";
