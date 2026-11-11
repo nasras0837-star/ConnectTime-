@@ -23,7 +23,7 @@ const descriptions: Record<number,string> = {
 function weatherLabel(code:number){return descriptions[code] || "Variable conditions";}
 function weatherIcon(code:number){if(code===0)return "☀️";if([1,2].includes(code))return "🌤️";if([3].includes(code))return "☁️";if([45,48].includes(code))return "🌫️";if([51,53,55,61,63,65,80,81,82].includes(code))return "🌧️";if([71,73,75].includes(code))return "❄️";return "⛈️";}
 
-export default function RegionalWeather() {
+export default function RegionalWeather({ compact = false }: { compact?: boolean }) {
   const { countryCode, countryName, language, temperatureUnit } = useLanguage();
   const [city,setCity] = useState("");
   const [query,setQuery] = useState("");
@@ -66,12 +66,12 @@ export default function RegionalWeather() {
   function searchCity(event:FormEvent<HTMLFormElement>){event.preventDefault();setQuery(city.trim());}
   const unit=temperatureUnit==="fahrenheit"?"°F":"°C";
   const windUnit=temperatureUnit==="fahrenheit"?"mph":"km/h";
-  return <section className="ctRegionalWeather" aria-label="Regional weather">
-    <div className="ctRegionalWeatherHead"><div><span>🌦️ CONNECT WEATHER · {countryName.toUpperCase()}</span><h2>Weather in your region</h2><p>Local conditions and a five-day forecast. Change the city at any time.</p></div><span className="ctWeatherUnit">{temperatureUnit==="fahrenheit"?"°F":"°C"}</span></div>
+  return <section className={compact ? "ctRegionalWeather ctRegionalWeatherCompact" : "ctRegionalWeather"} aria-label="Regional weather">
+    <div className="ctRegionalWeatherHead"><div><span>🌦️ CONNECT WEATHER · {countryName.toUpperCase()}</span><h2>Weather in your region</h2><p>{compact ? "Current conditions and a short forecast." : "Local conditions and a five-day forecast. Change the city at any time."}</p></div><span className="ctWeatherUnit">{temperatureUnit==="fahrenheit"?"°F":"°C"}</span></div>
     <form className="ctWeatherSearch" onSubmit={searchCity}><label htmlFor="ct-weather-city">City or town</label><input id="ct-weather-city" value={city} onChange={e=>setCity(e.target.value)} placeholder={"Search a city in "+countryName}/><button type="submit">Update location</button></form>
     {loading?<p role="status">Loading regional forecast…</p>:error?<p role="alert">{error}</p>:data&&<>
       <div className="ctWeatherCurrent"><div><span>{data.city}</span><strong>{weatherIcon(data.current.weather_code)} {Math.round(data.current.temperature_2m)}{unit}</strong><small>{weatherLabel(data.current.weather_code)}</small></div><div className="ctWeatherDetails"><span>Feels like <b>{Math.round(data.current.apparent_temperature)}{unit}</b></span><span>Humidity <b>{data.current.relative_humidity_2m}%</b></span><span>Wind <b>{Math.round(data.current.wind_speed_10m)} {windUnit}</b></span></div></div>
-      <div className="ctWeatherForecast">{data.daily.time.map((day,index)=><article key={day}><b>{new Date(day+"T12:00:00").toLocaleDateString(undefined,{weekday:"short"})}</b><span>{weatherIcon(data.daily.weather_code[index])}</span><strong>{Math.round(data.daily.temperature_2m_max[index])}{unit} / {Math.round(data.daily.temperature_2m_min[index])}{unit}</strong><small>Rain {data.daily.precipitation_probability_max[index] ?? 0}%</small></article>)}</div>
+      <div className="ctWeatherForecast">{data.daily.time.slice(0, compact ? 3 : 5).map((day,index)=><article key={day}><b>{new Date(day+"T12:00:00").toLocaleDateString(undefined,{weekday:"short"})}</b><span>{weatherIcon(data.daily.weather_code[index])}</span><strong>{Math.round(data.daily.temperature_2m_max[index])}{unit} / {Math.round(data.daily.temperature_2m_min[index])}{unit}</strong><small>Rain {data.daily.precipitation_probability_max[index] ?? 0}%</small></article>)}</div>
       <small className="ctWeatherAttribution">Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Location defaults to the country capital and can be changed above.</small>
     </>}
   </section>;

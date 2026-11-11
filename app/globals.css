@@ -1645,3 +1645,68 @@ html,body{background-color:var(--connect-night)!important;color:var(--connect-te
 :where(h1,h2,h3,h4,h5,h6,strong,b,th,legend){color:#fff}:where(p,li,label,small,figcaption,.muted,.description,.meta,.helper,.note,.footrow){color:var(--connect-muted)}
 :where(.topbar,.top,.header,.videoHeader,.vHeader,.connectHeader,.siteHeader,.shell>header){background:rgba(3,13,48,.94)!important;color:#f5f9ff!important;border-color:var(--connect-border)!important;backdrop-filter:blur(16px)}
 :where(.menuToggle,.mobileMenuToggle,.close,.viewer-close){background:linear-gradient(110deg,#087cff,#00bddd)!important;color:#fff!important}img,video,canvas,svg{background-color:transparent}
+
+
+/* Homepage information architecture: compact daily snapshot and headline preview */
+.connectMainColumn{gap:13px}
+.connectPulseGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:stretch}
+.connectPulseGrid>.ctRegionalWeather,.connectPulseGrid>.ctSportsScores,.connectPulseGrid>.ctMarketSnapshot{width:100%;max-width:none;min-width:0;margin:0;padding:13px;border-radius:14px;background:rgba(5,19,57,.88)!important;border:1px solid #28549a!important;color:#f5f8ff!important;box-shadow:0 8px 20px #0002}
+.connectPulseGrid .ctRegionalWeatherHead h2,.connectPulseGrid .ctSportsHead h2,.connectPulseGrid .ctMarketHead h2{font-size:15px;letter-spacing:-.35px;margin:5px 0}
+.connectPulseGrid .ctRegionalWeatherHead p,.connectPulseGrid .ctSportsHead p,.connectPulseGrid .ctMarketHead p{font-size:9px;line-height:1.4;color:#c1d6f5!important}
+.connectPulseGrid .ctRegionalWeatherHead>div>span,.connectPulseGrid .ctSportsEyebrow,.connectPulseGrid .ctMarketHead>div>span{font-size:8px;letter-spacing:.8px;color:#65eaff!important}
+.connectPulseGrid .ctWeatherUnit{padding:5px 7px;font-size:10px;background:#0b347c;border-color:#3865a5;color:#fff}
+.connectPulseGrid .ctWeatherSearch{gap:5px;margin:9px 0}
+.connectPulseGrid .ctWeatherSearch label{font-size:8px;color:#c1d6f5!important}
+.connectPulseGrid .ctWeatherSearch input{min-width:0;padding:7px 8px;font-size:9px}
+.connectPulseGrid .ctWeatherSearch button{padding:7px 9px;font-size:8px;white-space:nowrap}
+.connectPulseGrid .ctWeatherCurrent{gap:8px;padding:9px;background:#071b4b;border-color:#28549a}
+.connectPulseGrid .ctWeatherCurrent>div:first-child>span,.connectPulseGrid .ctWeatherCurrent small{font-size:8px;color:#c1d6f5!important}
+.connectPulseGrid .ctWeatherCurrent strong{font-size:24px;margin:2px 0}
+.connectPulseGrid .ctWeatherDetails{grid-template-columns:1fr;gap:3px;font-size:8px;color:#c1d6f5!important}
+.connectPulseGrid .ctWeatherDetails b{color:#fff!important}
+.connectPulseGrid .ctWeatherForecast{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:7px}
+.connectPulseGrid .ctWeatherForecast article{gap:3px;padding:7px 3px;background:#071b4b;border-color:#28549a;color:#fff}
+.connectPulseGrid .ctWeatherForecast article b,.connectPulseGrid .ctWeatherForecast article strong{font-size:8px;color:#fff!important}
+.connectPulseGrid .ctWeatherForecast article span{font-size:15px}
+.connectPulseGrid .ctWeatherForecast article small,.connectPulseGrid .ctWeatherAttribution{font-size:7px;color:#c1d6f5!important}
+.connectPulseGrid .ctSportsHead{display:block;margin-bottom:8px}
+.connectPulseGrid .ctSportsUpdated{display:block;margin-top:5px;font-size:8px;color:#c1d6f5!important;white-space:normal}
+.connectPulseGrid .ctSportsLeagueGrid{grid-template-columns:1fr;gap:6px}
+.connectPulseGrid .ctSportsLeague{padding:8px;background:#071b4b;border-color:#28549a}
+.connectPulseGrid .ctSportsLeagueHead{padding-bottom:5px;border-color:#28549a}
+.connectPulseGrid .ctSportsLeagueHead strong{font-size:9px;color:#65eaff!important}
+.connectPulseGrid .ctSportsLeagueHead a{font-size:7px}
+.connectPulseGrid .ctSportsGame{padding:5px 0;border-color:#28549a}
+.connectPulseGrid .ctSportsGameStatus{font-size:7px;margin-bottom:3px;color:#c1d6f5!important}
+.connectPulseGrid .ctSportsTeam{padding:2px 0;font-size:8px;color:#e8f5ff!important}
+.connectPulseGrid .ctSportsTeam strong{color:#fff!important}
+.connectPulseGrid .ctSportsDisclaimer{font-size:7px;color:#c1d6f5!important;margin-top:7px}
+.ctMarketSnapshot{display:flex;flex-direction:column;gap:9px}
+.ctMarketHead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ctMarketHead>span{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#0b347c;color:#65eaff;font-weight:900}
+.ctMarketList{display:grid;gap:0}
+.ctMarketIndex{display:flex;justify-content:space-between;align-items:center;gap:7px;padding:10px 0;border-bottom:1px solid #28549a}
+.ctMarketIndex:last-child{border-bottom:0}
+.ctMarketIndex>div{display:grid;gap:3px;min-width:0}
+.ctMarketIndex>div:last-child{text-align:right}
+.ctMarketIndex strong,.ctMarketIndex b{font-size:10px;color:#fff!important;font-variant-numeric:tabular-nums}
+.ctMarketIndex small{font-size:8px;color:#c1d6f5!important}
+.ctMarketIndex .ctMarketUp{color:#6ee7b7!important;font-weight:800}
+.ctMarketIndex .ctMarketDown{color:#fda4af!important;font-weight:800}
+.ctMarketDisclaimer,.ctMarketUnavailable{font-size:7px;line-height:1.5;color:#c1d6f5!important;margin:0}
+.ctLiveNewsArticlesCompact{margin:8px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticlesHead{align-items:center}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticlesHead h2{font-size:16px;letter-spacing:-.4px;margin:4px 0}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticlesHead p{font-size:9px;line-height:1.4}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticlesHead>button,.ctLiveNewsArticlesCompact .ctLiveNewsArticleFilters button{padding:6px 9px;font-size:9px}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleFilters{gap:5px;margin:9px 0 4px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleFilters button{flex:0 0 auto}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleStatus{min-height:0;margin:5px 0;font-size:8px}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleCard{padding:9px;border-radius:10px;box-shadow:none;background:rgba(5,19,57,.88)!important;border-color:#28549a!important}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleMeta{font-size:7px;color:#a9c8f5!important}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleCard h3{font-size:10px;line-height:1.35;margin:5px 0;color:#fff!important}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleCard p,.ctLiveNewsArticlesCompact .ctLiveNewsArticleDisclaimer{display:none}
+.ctLiveNewsArticlesCompact .ctLiveNewsArticleCard a{font-size:8px;margin-top:4px}
+@media(max-width:1000px){.connectPulseGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.connectPulseGrid>.ctRegionalWeather{grid-column:1/-1}}
+@media(max-width:700px){.connectPulseGrid{grid-template-columns:1fr}.connectPulseGrid>.ctRegionalWeather{grid-column:auto}.ctLiveNewsArticlesCompact .ctLiveNewsArticleGrid{grid-template-columns:1fr}.connectPulseGrid>.ctRegionalWeather,.connectPulseGrid>.ctSportsScores,.connectPulseGrid>.ctMarketSnapshot{padding:12px}}
