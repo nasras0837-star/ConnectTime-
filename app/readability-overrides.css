@@ -489,3 +489,23 @@ body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.create
 .meetingsCard .meetingAction label{display:grid;gap:7px;margin:9px 0;font-size:12px;font-weight:750}
 .meetingsCard .meetingAction input{width:100%;min-height:42px;padding:10px;border:1px solid #315d9e;border-radius:9px;background:#061a49;color:#fff}
 @media(max-width:650px){.discoverSimpleSearch{grid-template-columns:minmax(0,1fr) auto!important}.discoverAdvancedFilters>div{grid-template-columns:1fr}.friendTabs button{gap:4px;padding:7px 4px;font-size:10px}.groupCreateDetails>summary,.marketSellDetails>summary{padding:12px;font-size:13px}.marketCategorySelect{align-items:stretch;flex-direction:column}.marketCategorySelect select{max-width:none;width:100%}}
+
+
+/* Optional profile and dating preferences are available without crowding the main task */
+.profileEditCard{display:grid;gap:13px}
+.profileOptionalFields,.settingsInfoDetails{border:1px solid rgba(95,155,225,.28);border-radius:12px;background:rgba(4,17,54,.5);padding:0 13px}
+.profileOptionalFields>summary,.settingsInfoDetails>summary{padding:13px 2px;color:#dcecff;font-size:13px;font-weight:850;cursor:pointer;list-style:none}
+.profileOptionalFields>summary::-webkit-details-marker,.settingsInfoDetails>summary::-webkit-details-marker{display:none}
+.profileOptionalFields>summary:after,.settingsInfoDetails>summary:after{content:"＋";float:right;color:#65eaff;font-size:17px}
+.profileOptionalFields[open]>summary:after,.settingsInfoDetails[open]>summary:after{content:"−"}
+.profileOptionalFields>summary span{float:right;margin-right:14px;color:#9bbbe3;font-size:10px;font-weight:600}
+.profileOptionalFields>div{display:grid;gap:12px;padding:0 2px 14px}
+.settingsInfoDetails{margin:10px 0}
+.settingsInfoDetails>p{padding:0 2px 12px;margin:0;color:#c1d6f5;font-size:12px;line-height:1.6}
+.datingSimpleSearch{display:grid;gap:10px;margin:14px 0}
+.datingSimpleSearch>label{display:grid;gap:6px;font-size:12px;font-weight:800}
+.datingSimpleSearch>label input{min-height:42px;padding:10px 12px;border:1px solid #315d9e;border-radius:10px;background:#061a49;color:#fff}
+.datingSimpleSearch .discoverAdvancedFilters>div{grid-template-columns:repeat(2,minmax(0,1fr))}
+.datingAgeRange{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.datingAgeRange input{min-width:0;width:100%;padding:9px;border:1px solid #315d9e;border-radius:9px;background:#061a49;color:#fff}
+@media(max-width:650px){.profileOptionalFields>summary span{display:block;float:none;margin:4px 0 0}.datingSimpleSearch .discoverAdvancedFilters>div{grid-template-columns:1fr}}
