@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 type Entry = { id: string; direction: string; status: string; createdAt: string; profile: { handle: string; displayName: string; country: string } };
 type Data = { incoming: Entry[]; outgoing: Entry[]; connections: Entry[] };
@@ -12,6 +13,7 @@ export default function FriendsPage() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [activeTab, setActiveTab] = useState<"incoming" | "outgoing" | "connections">("incoming");
 
   async function refresh() {
     setError("");
@@ -53,13 +55,20 @@ export default function FriendsPage() {
     {kind === "connection" && <div className="friendEntryActions"><span className="friendConnected">Connected</span><Link className="friendMessageLink" href={"/messages?with=" + encodeURIComponent(entry.profile.handle)}>Message</Link></div> }
   </article>;
 
-  return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/profile">My profile</Link></nav></header>
+  return <main className="authShell"><ConnectSiteHeader />
     <section className="authCard friendsCard"><div className="eyebrow">CONNECT · YOUR CIRCLE</div><h1>Friends & requests</h1><p>Choose who joins your circle. Only verified adult members with active accounts can connect.</p>
       {error && <p className="message" role="alert">{error}</p>}{notice && <p className="message" role="status">{notice}</p>}
       {loading ? <p role="status">Loading your connections…</p> : <>
-        <section className="friendSection"><div className="friendSectionHead"><h2>Incoming requests</h2><span>{data.incoming.length}</span></div>{data.incoming.length ? data.incoming.map(entry => card(entry, "incoming")) : <p className="friendEmpty">No incoming requests right now.</p>}</section>
-        <section className="friendSection"><div className="friendSectionHead"><h2>Sent requests</h2><span>{data.outgoing.length}</span></div>{data.outgoing.length ? data.outgoing.map(entry => card(entry, "outgoing")) : <p className="friendEmpty">You have no pending sent requests.</p>}</section>
-        <section className="friendSection"><div className="friendSectionHead"><h2>Your connections</h2><span>{data.connections.length}</span></div>{data.connections.length ? data.connections.map(entry => card(entry, "connection")) : <p className="friendEmpty">Your circle is ready to grow. Discover members to connect.</p>}</section>
+        <nav className="friendTabs" aria-label="Friend lists">
+          <button type="button" className={activeTab === "incoming" ? "active" : ""} aria-pressed={activeTab === "incoming"} onClick={() => setActiveTab("incoming")}>Received <span>{data.incoming.length}</span></button>
+          <button type="button" className={activeTab === "outgoing" ? "active" : ""} aria-pressed={activeTab === "outgoing"} onClick={() => setActiveTab("outgoing")}>Sent <span>{data.outgoing.length}</span></button>
+          <button type="button" className={activeTab === "connections" ? "active" : ""} aria-pressed={activeTab === "connections"} onClick={() => setActiveTab("connections")}>Friends <span>{data.connections.length}</span></button>
+        </nav>
+        <section className="friendSection" aria-live="polite">
+          {activeTab === "incoming" ? <><div className="friendSectionHead"><h2>Received requests</h2></div>{data.incoming.length ? data.incoming.map(entry => card(entry, "incoming")) : <p className="friendEmpty">No requests to review. Discover people to grow your circle.</p>}</> :
+          activeTab === "outgoing" ? <><div className="friendSectionHead"><h2>Sent requests</h2></div>{data.outgoing.length ? data.outgoing.map(entry => card(entry, "outgoing")) : <p className="friendEmpty">You have no pending requests.</p>}</> :
+          <><div className="friendSectionHead"><h2>Your friends</h2></div>{data.connections.length ? data.connections.map(entry => card(entry, "connection")) : <p className="friendEmpty">No friends yet. Discover members and send a request.</p>}</>}
+        </section>
       </>}
       <div className="introActions"><Link href="/discover">Discover members</Link><Link className="introExplore" href="/safety">Safety Center</Link></div>
       <p className="switch"><Link href="/account">Back to account</Link> · <button className="friendRefresh" onClick={() => void refresh()}>Refresh requests</button></p>
