@@ -73,7 +73,7 @@ export default function LiveNewsArticles({ compact = false }: { compact?: boolea
   return (
     <section className={compact ? "ctLiveNewsArticles ctLiveNewsArticlesCompact" : "ctLiveNewsArticles"} aria-labelledby="ct-live-news-articles-title">
       <div className="ctLiveNewsArticlesHead">
-        <div><span className="ctHomeEyebrow">CONNECT NEWS DESK · LIVE HEADLINES</span><h2 id="ct-live-news-articles-title">The latest stories, as they develop.</h2><p>Current headlines from public news feeds. Choose a topic and read the full report from its publisher.</p></div>
+        <div><span className="ctHomeEyebrow">CONNECT NEWS DESK · LIVE HEADLINES</span><h2 id="ct-live-news-articles-title">{compact ? "Top headlines" : "The latest stories, as they develop."}</h2><p>Current headlines from public news feeds. Choose a topic and read the full report from its publisher.</p></div>
         <button type="button" onClick={() => void load(category)} disabled={loading}>↻ {loading ? "Updating…" : "Refresh news"}</button>
       </div>
       <div className="ctLiveNewsArticleFilters" role="group" aria-label="Filter articles by topic">
