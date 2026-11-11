@@ -82,7 +82,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
           const detected = /^[A-Z]{2}$/.test(data.countryCode) ? data.countryCode : "US";
           setCountryCodeState(detected);
           setTemperatureUnit(fahrenheitCountries.has(detected) ? "fahrenheit" : "celsius");
-          if (countryLanguage[detected]) setLanguageState(countryLanguage[detected]);
         }).catch(() => { setCountryCodeState("US"); setTemperatureUnit("fahrenheit"); });
       return;
     }
@@ -90,7 +89,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setCountryCodeState(next);
     setTemperatureUnit(fahrenheitCountries.has(next) ? "fahrenheit" : "celsius");
     try { window.localStorage.setItem("connect-country-manual", next); } catch { /* Session-only preference. */ }
-    if (countryLanguage[next]) setLanguageState(countryLanguage[next]);
   };
   const countryName = regionCountries.find(item => item[0] === countryCode)?.[1] || countryCode;
   const value = useMemo<LanguageContextValue>(() => ({
