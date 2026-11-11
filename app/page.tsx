@@ -122,6 +122,15 @@ export default function HomePage() {
             </div>
           </section>
 
+          <section className="connectDynamicPanel connectPulsePanel">
+            <div className="connectSectionHeading"><div><span>YOUR DAILY SNAPSHOT</span><h2>Weather, scores & markets</h2><p>Quick updates in one compact dashboard.</p></div></div>
+            <div className="connectPulseGrid">
+              <RegionalWeather compact />
+              <SportsScores compact />
+              <MarketSnapshot />
+            </div>
+          </section>
+
           <section className="connectDynamicPanel">
             <div className="connectSectionHeading"><div><span>WHAT&apos;S HAPPENING</span><h2>Stories from around the world</h2><p>Current headlines from public publishers and feeds.</p></div><Link href="/news">All news →</Link></div>
             <LiveNewsArticles compact />
