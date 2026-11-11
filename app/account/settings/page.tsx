@@ -3,6 +3,7 @@
 import Link from "next/link";
 import MfaPanel from "./mfa-panel";
 import { useEffect, useState } from "react";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 type Preferences = { friend_requests: boolean; friend_acceptances: boolean; private_messages: boolean; dating_likes: boolean; product_updates: boolean };
 const defaults: Preferences = { friend_requests: true, friend_acceptances: true, private_messages: true, dating_likes: true, product_updates: false };
@@ -41,7 +42,7 @@ export default function SettingsPage() {
     ["product_updates", "Connect product updates", "Occasional platform announcements and feature updates."]
   ];
 
-  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><section className="authCard settingsCard">
+  return <main className="authShell"><ConnectSiteHeader /><section className="authCard settingsCard">
     <div className="eyebrow">ACCOUNT CONTROL</div><h1>Account settings</h1><p>Manage your in-app notification preferences and profile privacy.</p>
     <MfaPanel />
     <h2>Notifications</h2>
@@ -49,8 +50,8 @@ export default function SettingsPage() {
     <button className="button" onClick={save} disabled={loading || saving || Boolean(error)}>{saving ? "Saving…" : "Save preferences"}</button>
     {message && <p role="status" className="message">{message}</p>}{error && <div role="alert" className="message"><p>{error}</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div>}
     <div className="settingsSection"><h2>Profile privacy</h2><p>Choose who can discover your profile from <Link href="/profile">Edit your profile</Link>. Existing discovery rules only expose public/member profiles; friends-only and private visibility are not listed publicly.</p></div>
-    <div className="settingsSection"><h2>Profile photos</h2><p>Photo uploads are not available yet. They will remain disabled until private quarantine storage, moderation checks, and age-safety controls are tested.</p></div>
-    <div className="settingsSection"><h2>Account deactivation</h2><p>Self-service deactivation is not enabled yet. Contact Connect support to request account closure; do not assume deleting the app or signing out deactivates your account.</p></div>
+    <details className="settingsSection settingsInfoDetails"><summary>Profile photos</summary><p>Photo uploads are not available yet. They will remain disabled until private quarantine storage, moderation checks, and age-safety controls are tested.</p></details>
+    <details className="settingsSection settingsInfoDetails"><summary>Account deactivation</summary><p>Self-service deactivation is not enabled yet. Contact Connect support to request account closure; do not assume deleting the app or signing out deactivates your account.</p></details>
     <p className="switch"><Link href="/account">Back to account</Link> · <Link href="/safety">Safety Center</Link></p>
   </section></main>;
 }
