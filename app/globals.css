@@ -1706,3 +1706,16 @@ body [style*="background-color:#f" i],body [style*="background-color: #f" i]{
 .ctMediaCompact .ctLiveNewsArticleCard>p,.ctMediaCompact .ctLiveCard>p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ctMediaCompact .ctLivePlayer{max-height:160px;overflow:hidden}
 @media(max-width:600px){.connectMediaLinks{gap:10px}.ctMediaCompact .ctLiveNewsArticleCard,.ctMediaCompact .ctLiveCard{flex-basis:84vw;width:84vw}}
+
+
+/* Homepage sports scoreboard consolidation: one compact horizontal league strip. */
+.ctSportsCompact .ctSportsHead{align-items:center;margin-bottom:10px;gap:10px}
+.ctSportsCompact .ctSportsHead h2{font-size:1.2rem;margin:3px 0}
+.ctSportsCompact .ctSportsHead p{font-size:.82rem;margin:4px 0}
+.ctSportsCompact .ctSportsUpdated{font-size:.68rem;white-space:nowrap}
+.ctSportsCompactTrack{display:flex!important;gap:10px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#287bd4 #071a40}
+.ctSportsCompactTrack>.ctSportsLeague{flex:0 0 min(260px,76vw);width:min(260px,76vw);min-width:0;margin:0;scroll-snap-align:start}
+.ctSportsCompact .ctSportsLeagueHead{padding:9px 11px}
+.ctSportsCompact .ctSportsGame{padding:8px 11px}
+.ctSportsCompact .ctSportsDisclaimer{font-size:.68rem;margin:5px 0 0}
+@media(max-width:600px){.ctSportsCompact .ctSportsHead{align-items:flex-start;flex-direction:column}.ctSportsCompactTrack>.ctSportsLeague{flex-basis:82vw;width:82vw}}
