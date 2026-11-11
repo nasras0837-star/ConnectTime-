@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 type MeetingGrant = { roomName: string; serverUrl: string; token: string; invitePath: string };
 
@@ -54,24 +55,20 @@ export default function MeetingsPage() {
   }
 
   return <main className="authShell meetingsShell">
-    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/">🌐 Connect</Link><nav><Link href="/">Home</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
+    <ConnectSiteHeader />
     <section className="authCard meetingsCard">
       <div className="eyebrow">CONNECT · FACE-TO-FACE</div>
       <h1>Group video meetings</h1>
       <p>Bring your friends and family together in one video call. Start a room, share a private invitation, and meet face-to-face from your browser.</p>
       {error && <p className="message" role="alert">{error}</p>}
       {notice && <p className="message" role="status">{notice}</p>}
-      <div className="meetingFeatureList">
-        <div><span>🎥</span><section><strong>Group video & audio</strong><small>See and hear multiple people in the same meeting.</small></section></div>
-        <div><span>🎙️</span><section><strong>Meeting controls</strong><small>Manage your microphone, camera, and screen sharing in the meeting room.</small></section></div>
-        <div><span>🔗</span><section><strong>Private invitations</strong><small>Share a unique meeting link with the people you want to invite.</small></section></div>
-      </div>
+      
       <section className="meetingAction">
-        <span className="eyebrow">START A NEW MEETING</span>
+        <span className="eyebrow">1 · START</span>
         <button className="button meetingPrimary" disabled={busy} onClick={()=>void requestMeeting()}>{busy ? "Preparing room…" : "＋ Create a group meeting"}</button>
       </section>
       <section className="meetingAction">
-        <span className="eyebrow">JOIN AN EXISTING MEETING</span>
+        <span className="eyebrow">2 · JOIN WITH AN INVITE</span>
         <label>Invitation link or meeting code<input value={roomCode} onChange={e=>setRoomCode(e.target.value)} placeholder="Paste your Connect meeting invitation"/></label>
         <button className="button meetingSecondary" disabled={busy} onClick={joinFromInvite}>{busy ? "Connecting…" : "Join meeting →"}</button>
       </section>
