@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { useEffect, useMemo, useState } from "react";
 
 type Video = { id: string; title: string; creator: string; category: string; views: string; duration: string; description: string };
@@ -72,7 +72,7 @@ export default function VideosPage() {
     return list;
   }, [active, interests, query, signals]);
   return <main className="videoShell">
-    <header className="videoHeader"><Link className="videoBrand" href="/" aria-label="Connect home"><Image src="/connect-logo.svg" alt="Connect" width={112} height={73} priority className="ctVideoLogo"/></Link><nav><Link href="/">Home</Link><Link href="/account">My account</Link></nav></header>
+    <ConnectSiteHeader />
     <section className="videoIntro"><div className="videoEyebrow">CONNECT VIDEO TUBE</div><h1>Connect. Discover.<br/><span>Watch what moves you.</span></h1><p>Welcome to Connect Video Tube—discover creators, entertainment, learning, music, travel, and ideas from around the world.</p>
       <form className="videoSearch" onSubmit={(event) => {event.preventDefault(); submitSearch();}}><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search videos, creators, or interests…" aria-label="Search videos"/><button type="submit">Search</button></form>
       {history.length > 0 && <div className="searchHistory"><span>Recent searches</span>{history.slice(0,4).map((item) => <button key={item} onClick={() => {setQuery(item); submitSearch(item);}}>{item}</button>)}</div>}
