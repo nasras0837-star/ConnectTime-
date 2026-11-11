@@ -12,6 +12,8 @@ export function LanguageSwitcher() {
   const [displayMode, setDisplayMode] = useState<DisplayMode>("expanded");
   const [restored, setRestored] = useState(false);
 
+  // Restoring persisted UI preferences after hydration is intentional here.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(DISPLAY_KEY);
