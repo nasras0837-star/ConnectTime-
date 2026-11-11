@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 
 type DatingProfile = { handle: string; displayName: string; country: string; age: number; gender: string; interests: string[] };
@@ -109,7 +110,7 @@ export default function DatingLikesPage() {
   const selectedItems = tab === "received" ? data.received : tab === "matches" ? data.matches : data.sent.map(profile => ({ id: profile.handle, profile, matched: false, createdAt: "" }));
 
   return <main className="authShell">
-    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/dating">Discover dating</Link><Link href="/friends">Friends</Link><Link href="/messages">Messages</Link></nav></header>
+    <ConnectSiteHeader />
     <section className="authCard friendsCard datingInboxPage">
       <div className="eyebrow">CONNECT DATING · YOUR CONNECTIONS</div>
       <h1>Likes & matches</h1>
