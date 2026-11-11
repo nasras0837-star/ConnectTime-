@@ -32,6 +32,7 @@ async function getScores(league: League) {
 export default async function SportsScores({ compact = false }: { compact?: boolean }) {
   const results = await Promise.all(leagues.map(getScores));
   const available = results.filter((result) => result.events.length > 0);
+  const displayed = compact ? available.slice(0, 3) : available;
 
   return (
     <section className={compact ? "ctSportsScores ctSportsScoresCompact" : "ctSportsScores"} aria-labelledby="ct-sports-title">
@@ -43,9 +44,9 @@ export default async function SportsScores({ compact = false }: { compact?: bool
         </div>
         <span className="ctSportsUpdated">↻ Updates about every 3 minutes</span>
       </div>
-      {available.length ? (
+      {displayed.length ? (
         <div className="ctSportsLeagueGrid">
-          {available.map(({ league, events }) => (
+          {displayed.map(({ league, events }) => (
             <section className="ctSportsLeague" key={league.label} aria-label={league.label + " scores"}>
               <div className="ctSportsLeagueHead"><strong>{league.label}</strong><a href={league.href} target="_blank" rel="noopener noreferrer">Full scoreboard ↗</a></div>
               {events.map((event) => {
