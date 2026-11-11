@@ -509,3 +509,126 @@ body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.create
 .datingAgeRange{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .datingAgeRange input{min-width:0;width:100%;padding:9px;border:1px solid #315d9e;border-radius:9px;background:#061a49;color:#fff}
 @media(max-width:650px){.profileOptionalFields>summary span{display:block;float:none;margin:4px 0 0}.datingSimpleSearch .discoverAdvancedFilters>div{grid-template-columns:1fr}}
+
+
+/* Connect sitewide organization pass: consistent page rhythm, content widths and responsive cards. */
+:root {
+  --ct-page-max: 1240px;
+  --ct-page-gutter: clamp(12px, 2.4vw, 28px);
+  --ct-card-radius: 18px;
+  --ct-section-gap: clamp(18px, 2.8vw, 30px);
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell,.connectSocialHome) {
+  width: min(calc(100% - (var(--ct-page-gutter) * 2)), var(--ct-page-max));
+  margin-inline: auto;
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell) {
+  padding-top: clamp(12px, 2vw, 24px);
+  padding-bottom: clamp(28px, 4vw, 52px);
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell) :is(h1) {
+  font-size: clamp(25px, 3.4vw, 38px);
+  line-height: 1.12;
+  letter-spacing: -.8px;
+  margin: 5px 0 10px;
+  text-wrap: balance;
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell) :is(h2) {
+  font-size: clamp(18px, 2.1vw, 24px);
+  line-height: 1.2;
+  letter-spacing: -.35px;
+  text-wrap: balance;
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell) :is(p) {
+  line-height: 1.6;
+}
+body.connectAppTheme :is(.authCard,.discoverCard,.friendsCard,.settingsCard,.notificationsCard,.meetingsCard,.profileEditCard,.communityFeed,.groupsDirectory,.marketBrowse,.eventsMain,.newsContent,.radioMain,.videoFeed,.createCard) {
+  border: 1px solid rgba(100,157,226,.28);
+  border-radius: var(--ct-card-radius);
+  box-shadow: 0 12px 32px rgba(0,0,0,.16);
+}
+body.connectAppTheme :is(.discoverGrid,.marketGrid,.newsGrid,.radioGrid,.videoGrid,.connectExploreGrid) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,250px),1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+body.connectAppTheme :is(.discoverMember,.marketCard,.newsCard,.radioCard,.videoCard,.connectExploreCard,.groupCard,.friendEntry) {
+  min-width: 0;
+  border-radius: 15px;
+}
+body.connectAppTheme :is(.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage) :is(.communityHero,.marketHero,.eventsHero,.newsHero,.videoIntro,.createHero,.radioHero) {
+  margin-bottom: var(--ct-section-gap);
+  border-radius: 20px;
+}
+body.connectAppTheme :is(.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage) :is(.marketLayout,.groupsLayout,.eventsMain,.newsContent,.radioMain,.videoFeed,.createWorkspace) {
+  min-width: 0;
+  gap: var(--ct-section-gap);
+}
+body.connectAppTheme :is(.connectFeatureShell,.authShell) .authCard {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(16px, 2.5vw, 28px);
+}
+body.connectAppTheme :is(.connectFeatureShell,.authShell) :is(.message,.notificationEmpty,.communityEmpty,.marketEmpty,.eventsEmpty,.newsEmpty) {
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-block: 12px;
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell) :is(button,a.button,.button,[role="button"]) {
+  max-width: 100%;
+  white-space: normal;
+}
+body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell) :is(input,select,textarea) {
+  max-width: 100%;
+}
+.connectSocialHome .connectSocialGrid {
+  align-items: start;
+  gap: 18px;
+}
+.connectSocialHome :is(.connectLeftRail,.connectRightRail) {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+}
+.connectSocialHome :is(.connectMainFeed,.connectCenterColumn) {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-width: 0;
+}
+.connectSocialHome :is(.connectRailCard,.connectRightCard,.connectComposerPrompt,.connectDynamicPanel,.connectExploreCard) {
+  border-radius: 16px;
+}
+.connectSocialHome .connectSectionHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.connectSocialHome .connectSectionHeading h2 { margin: 4px 0; font-size: clamp(18px,2vw,23px); }
+.connectSocialHome .connectExploreGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.connectSocialHome .connectMediaLane { min-width: 0; margin-top: 14px; }
+@media(max-width:900px) {
+  body.connectAppTheme :is(.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage) :is(.marketLayout,.groupsLayout) { grid-template-columns: minmax(0,1fr); }
+}
+@media(max-width:650px) {
+  :root { --ct-page-gutter: 10px; --ct-section-gap: 16px; }
+  body.connectAppTheme :is(.connectFeatureShell,.communityPage,.marketPage,.eventsPage,.newsPage,.radioPage,.videoShell,.createPage,.meetingsShell,.authShell,.connectSocialHome) {
+    width: calc(100% - 20px);
+  }
+  body.connectAppTheme :is(.authCard,.discoverCard,.friendsCard,.settingsCard,.notificationsCard,.meetingsCard,.profileEditCard,.communityFeed,.groupsDirectory,.marketBrowse,.eventsMain,.newsContent,.radioMain,.videoFeed,.createCard) {
+    border-radius: 14px;
+    padding: 14px;
+  }
+  body.connectAppTheme :is(.discoverGrid,.marketGrid,.newsGrid,.radioGrid,.videoGrid) {
+    grid-template-columns: minmax(0,1fr);
+    gap: 11px;
+  }
+  .connectSocialHome .connectExploreGrid { grid-template-columns: minmax(0,1fr); }
+  .connectSocialHome .connectSectionHeading { align-items: flex-start; }
+}
