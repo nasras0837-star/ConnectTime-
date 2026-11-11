@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ConnectSiteHeader } from "@/app/components/connect-site-header";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type MemberProfile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[] };
 
@@ -19,7 +19,7 @@ export default function DiscoverPage() {
   const [outgoingHandles, setOutgoingHandles] = useState<string[]>([]);
   const [incomingHandles, setIncomingHandles] = useState<string[]>([]);
 
-  async function refreshFriendStatus() {
+  const refreshFriendStatus = useCallback(async () => {
     try {
       const response = await fetch("/api/friends/requests", { cache: "no-store" });
       const result = await response.json();
@@ -28,7 +28,7 @@ export default function DiscoverPage() {
       setOutgoingHandles((result.outgoing || []).map((entry: { profile: { handle: string } }) => entry.profile.handle.toLowerCase()));
       setIncomingHandles((result.incoming || []).map((entry: { profile: { handle: string } }) => entry.profile.handle.toLowerCase()));
     } catch { /* Discovery remains usable if request status is temporarily unavailable. */ }
-  }
+  }, []);
 
   async function sendRequest(handle: string) {
     setSending(handle); setError(""); setRequestMessage("");
@@ -69,7 +69,7 @@ export default function DiscoverPage() {
       .catch(e => { if (!cancelled) setError(e instanceof Error ? e.message : "Member discovery is unavailable."); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [refreshFriendStatus]);
 
   return <main className="connectFeatureShell"><ConnectSiteHeader />
     <section className="authCard discoverCard"><div className="eyebrow">CONNECT · FIND YOUR COMMUNITY</div><h1>Discover members</h1><p>Explore profiles shared by verified adult members. People who have blocked you or whom you have blocked are hidden.</p>
