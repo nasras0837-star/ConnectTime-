@@ -25,6 +25,17 @@ Branch: `feature/messaging-communications-upgrade`
 6. **Safety:** block/report controls; rate limits; prevent self-messaging; verify membership/visibility on every server endpoint; no private-group data leakage; sanitize/render message content safely.
 7. **Tests:** unit/API authorization tests, UI interaction tests, accessibility/mobile checks, and end-to-end staging tests with two test accounts.
 
+## Implementation progress (2026-11-11)
+- [x] Messages page now links directly to Friends, Friend Requests, Discover, and Groups.
+- [x] Inbox conversation search filters by display name, handle, and latest-message preview.
+- [x] Mobile messaging switches between inbox and active thread, with a back-to-inbox control.
+- [x] Discover results reflect accepted connections (Message action), outgoing pending requests (Request sent), and incoming requests (Respond to request); otherwise users can send a friend request.
+- [x] Existing server-side DM authorization remains authoritative: authenticated verified-adult membership, visible profile, accepted friendship, and mutual block checks.
+- [ ] True realtime subscriptions, message history pagination, and robust multi-client delivery.
+- [ ] Authenticated WebRTC voice/video signaling and media lifecycle; no claim of working calls until two-client tests pass.
+- [ ] Full public/private group membership, invitations, moderation, and two-account authorization validation.
+- [ ] Automated tests and live staging verification for the changed flows.
+
 ## Acceptance checklist
 - [ ] Friend request accepted -> Message action enabled without manual refresh.
 - [ ] Stranger/pending/rejected/blocked user cannot read or send DMs.
