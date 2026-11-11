@@ -23,7 +23,7 @@ async function getScores(league: League) {
     );
     if (!response.ok) return { league, events: [] as Event[] };
     const data = await response.json() as { events?: Event[] };
-    return { league, events: Array.isArray(data.events) ? data.events.slice(0, 5) : [] };
+    return { league, events: Array.isArray(data.events) ? data.events : [] };
   } catch {
     return { league, events: [] as Event[] };
   }
@@ -65,6 +65,28 @@ export default async function SportsScores({ compact = false }: { compact?: bool
                   </article>
                 );
               })}
+              {compact && events.length > 2 ? (
+                <details className="ctSportsExpand">
+                  <summary>Show all scores <span>({events.length} games)</span></summary>
+                  {events.slice(2).map((event) => {
+                    const competition = event.competitions?.[0];
+                    const competitors = competition?.competitors ?? [];
+                    const status = competition?.status?.type?.shortDetail ?? competition?.status?.type?.detail ?? competition?.status?.type?.description ?? "Scheduled";
+                    const state = competition?.status?.type?.state;
+                    return (
+                      <article className="ctSportsGame" key={event.id}>
+                        <div className="ctSportsGameStatus"><span className={state === "in" ? "ctSportsLiveDot" : "ctSportsStatusDot"} />{status}</div>
+                        {competitors.map((competitor, index) => (
+                          <div className="ctSportsTeam" key={competitor.team?.abbreviation ?? index}>
+                            <span>{competitor.team?.displayName ?? "Team"}</span>
+                            <strong>{competitor.score ?? "—"}</strong>
+                          </div>
+                        ))}
+                      </article>
+                    );
+                  })}
+                </details>
+              ) : null}
             </section>
           ))}
         </div>
