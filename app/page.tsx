@@ -95,19 +95,6 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="connectComposerPrompt">
-            <div className="connectPromptAvatar" aria-hidden="true">C</div>
-            <div className="connectPromptContent">
-              <strong>What&apos;s happening in your world?</strong>
-              <p>Share a thought, join a discussion or meet someone new.</p>
-              <div className="connectPromptActions">
-                <Link href="/community"><span>✎</span> Start a discussion</Link>
-                <Link href="/discover"><span>⌕</span> Find people</Link>
-                <Link href="/groups"><span>♧</span> Explore groups</Link>
-              </div>
-            </div>
-          </section>
-
           <section className="connectExploreSection">
             <div className="connectSectionHeading"><div><span>MAKE IT YOURS</span><h2>Explore Connect</h2><p>Move between the spaces that bring your interests together.</p></div><Link href="/account">Your account →</Link></div>
             <div className="connectExploreGrid">
