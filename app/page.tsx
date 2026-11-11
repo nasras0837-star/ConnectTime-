@@ -121,14 +121,10 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="connectDynamicPanel">
-            <div className="connectSectionHeading"><div><span>WHAT&apos;S HAPPENING</span><h2>Stories from around the world</h2><p>Current headlines from public publishers and feeds.</p></div><Link href="/news">All news →</Link></div>
-            <LiveNewsArticles />
-          </section>
-
-          <section className="connectDynamicPanel">
-            <div className="connectSectionHeading"><div><span>YOUR INTERESTS</span><h2>Watch what you love</h2><p>Choose topics and explore official broadcaster and video sources.</p></div><Link href="/free-tv">Explore video →</Link></div>
-            <LiveInterestFeed />
+          <section className="connectDynamicPanel connectMediaCarousel" aria-label="News and TV highlights">
+            <div className="connectSectionHeading"><div><span>NEWS &amp; ENTERTAINMENT</span><h2>News &amp; TV, all in one place</h2><p>Swipe through a compact selection of headlines and official channels.</p></div><div className="connectMediaLinks"><Link href="/news">All news →</Link><Link href="/free-tv">All TV channels →</Link></div></div>
+            <div className="connectMediaLane"><div className="connectMediaLaneLabel">LATEST NEWS</div><LiveNewsArticles compact /></div>
+            <div className="connectMediaLane"><div className="connectMediaLaneLabel">TV CHANNELS</div><LiveInterestFeed compact /></div>
           </section>
 
           <section className="connectDynamicPanel connectRegionalPanel">
