@@ -1730,3 +1730,103 @@ body [style*="background-color:#f" i],body [style*="background-color: #f" i]{
 .ctSportsExpand>summary:hover{background:rgba(12,65,139,.9);color:#fff}
 .ctSportsExpand[open]>summary{margin-bottom:5px}
 .ctSportsExpand .ctSportsGame{padding-top:10px}
+
+
+/* CONNECTTIME ALL-PAGES DARK SURFACE + EMBED NORMALIZATION
+   Keep the application dark across routes, including cards, feeds, scoreboards,
+   media embeds, third-party iframe frames, tables, and inline light backgrounds. */
+:root{
+  color-scheme:dark!important;
+  --ct-page-bg:#020a24;
+  --ct-surface:#071735;
+  --ct-surface-raised:#0b2046;
+  --ct-surface-soft:#102953;
+  --ct-surface-border:rgba(104,171,255,.34);
+  --ct-body-text:#f3f7ff;
+  --ct-body-muted:#c5d8f4;
+}
+html,body{background-color:var(--ct-page-bg)!important;color:var(--ct-body-text)!important}
+body :is(
+  .ctSportsScores,.ctSportsLeague,.ctSportsGame,
+  .ctLiveNewsArticles,.ctLiveNewsArticleCard,.ctLiveCard,.ctLiveInterestFeed,
+  .connectDynamicPanel,.connectMediaCarousel,.connectRegionalPanel,
+  .connectRailCard,.connectRailSafety,.connectRightCard,.connectComposerPrompt,
+  .connectExploreCard,.connectQuickLink,.connectCommunityStandards,
+  .connectMemberCard,.connectRegionCard,.connectSearch,
+  .card,.Card,.panel,.Panel,.tile,.Tile,.post,.Post,.composer,.Composer,
+  .story,.Story,.feed,.Feed,.widget,.Widget,.notice,.Notice,.alert,.Alert,
+  .modal,.Modal,.dialog,.Dialog,.dropdown,.Dropdown,.popover,.Popover,
+  .menu,.Menu,.toast,.Toast,.tooltip,.Tooltip,.empty-state,.emptyState,
+  .emptyVideos,.provider-fallback,.viewer-panel,.viewer-head,.viewer-foot,
+  .score-card,.scorecard,.stat-card,.feature-card,.info-card,.profile-card,
+  .dashboard-card,.result-card,.summary-card,.metric-card,.topic,
+  .authCard,.discoverCard,.friendsCard,.settingsCard,.notificationsCard,
+  .meetingsCard,.profileEditCard,.communityFeed,.groupsDirectory,
+  .marketBrowse,.marketSell,.marketCard,.eventsMain,.eventsCard,
+  .newsContent,.newsCard,.radioMain,.radioCard,.videoFeed,.videoCard,
+  .createCard,.groupCard,.friendEntry,.messageCard,.conversationCard,
+  [class*="bg-white"],[class*="bg-light"],[class*="white-bg"],
+  [class*="light-bg"],[class*="surface-white"],[class*="light-surface"]
+){
+  background-color:var(--ct-surface)!important;
+  background-image:none!important;
+  color:var(--ct-body-text)!important;
+  border-color:var(--ct-surface-border)!important;
+  box-shadow:0 12px 34px rgba(0,3,20,.24)!important;
+}
+body :is(
+  .ctSportsScores,.ctSportsLeague,.ctSportsGame,
+  .ctLiveNewsArticleCard,.ctLiveCard,.connectDynamicPanel,
+  .connectRailCard,.connectRailSafety,.connectRightCard,.connectComposerPrompt,
+  .connectExploreCard,.connectCommunityStandards,.card,.Card,.panel,.Panel,
+  .tile,.Tile,.post,.Post,.composer,.Composer,.story,.Story,.feed,.Feed,
+  .widget,.Widget,.notice,.Notice,.alert,.Alert,.modal,.Modal,.dialog,.Dialog,
+  .dropdown,.Dropdown,.popover,.Popover,.menu,.Menu,.toast,.Toast,
+  .empty-state,.emptyState,.authCard,.discoverCard,.friendsCard,.settingsCard,
+  .notificationsCard,.meetingsCard,.profileEditCard,.communityFeed,
+  .groupsDirectory,.marketBrowse,.marketSell,.marketCard,.eventsMain,
+  .eventsCard,.newsContent,.newsCard,.radioMain,.radioCard,.videoFeed,
+  .videoCard,.createCard,.groupCard,.friendEntry,.messageCard,.conversationCard
+) :is(p,small,span,label,li,dd,dt,figcaption,.muted,.description,.meta,.helper,.note){
+  color:var(--ct-body-muted)!important;
+}
+body :is(
+  input,select,textarea,[contenteditable="true"],
+  .search input,.searchBox input,.searchField input
+){
+  color:#f5f8ff!important;
+  background-color:#071a3b!important;
+  border-color:#527bb7!important;
+}
+body :is(input,select,textarea,[contenteditable="true"])::placeholder{color:#a9c1e4!important;opacity:1!important}
+body :is(table,thead,tbody,tr,th,td,blockquote,pre,code,kbd){background-color:transparent!important;color:var(--ct-body-text)!important;border-color:var(--ct-surface-border)!important}
+body :is(hr,.divider,.separator){border-color:var(--ct-surface-border)!important}
+body :is(iframe,embed,object){background-color:var(--ct-surface)!important;color-scheme:dark}
+body :is(.embed,.embed-container,.embedContainer,.videoEmbed,.video-embed,
+  .mediaEmbed,.media-embed,.iframe-container,.iframeContainer,
+  .player-wrapper,.playerWrapper,.videoPlayer,.video-player,
+  .youtubeEmbed,.youtube-embed,.socialEmbed,.social-embed){
+  background:var(--ct-surface)!important;
+  color:var(--ct-body-text)!important;
+  border:1px solid var(--ct-surface-border)!important;
+  border-radius:14px;
+  overflow:hidden;
+}
+body :is(img,video,canvas,svg,picture){background-color:transparent!important}
+body [style*="background:#fff" i],body [style*="background: #fff" i],
+body [style*="background-color:#fff" i],body [style*="background-color: #fff" i],
+body [style*="background:white" i],body [style*="background: white" i],
+body [style*="background-color:white" i],body [style*="background-color: white" i],
+body [style*="background:#f" i],body [style*="background: #f" i],
+body [style*="background-color:#f" i],body [style*="background-color: #f" i]{
+  background-color:var(--ct-surface)!important;
+  background-image:none!important;
+  color:var(--ct-body-text)!important;
+  border-color:var(--ct-surface-border)!important;
+}
+/* Keep branded photographic hero art and genuine media imagery intact. */
+.connectWelcome,.connectWelcomeImage,.connectWelcomeShade,
+.vHero,.vHeroArt{background-image:revert!important}
+@media(prefers-contrast:more){
+  body :is(.card,.panel,.tile,.post,.composer,.embed,.embed-container){border:2px solid #83cfff!important}
+}
