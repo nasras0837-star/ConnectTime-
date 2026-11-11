@@ -1690,3 +1690,19 @@ body [style*="background-color:#f" i],body [style*="background-color: #f" i]{
 }
 /* Preserve the photographic homepage hero and its branded overlay. */
 .connectWelcome,.connectWelcomeImage,.connectWelcomeShade,.vHero,.vHeroArt{background-image:revert!important}
+
+
+/* Homepage compact News + TV horizontal carousel lanes. */
+.connectMediaCarousel{overflow:hidden}
+.connectMediaLinks{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.connectMediaLane{min-width:0;margin-top:18px}
+.connectMediaLaneLabel{font-size:.76rem;font-weight:900;letter-spacing:.13em;color:#65eaff;margin:0 0 9px}
+.ctMediaCompact .ctLiveNewsArticlesHead,.ctMediaCompact .ctLiveInterestHead{display:none}
+.ctMediaCompact .ctLiveNewsArticleFilters,.ctMediaCompact .ctLiveTopics{display:none}
+.ctMediaCompact .ctLiveNewsArticleStatus,.ctMediaCompact .ctLiveSyncStatus,.ctMediaCompact .ctLiveNewsArticleDisclaimer,.ctMediaCompact .ctLiveDisclaimer{font-size:.75rem;margin:5px 0 9px}
+.ctMediaCompact .ctLiveNewsArticleGrid,.ctMediaCompact .ctLiveGrid{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:3px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#287bd4 #071a40}
+.ctMediaCompact .ctLiveNewsArticleCard,.ctMediaCompact .ctLiveCard{flex:0 0 min(310px,82vw);width:min(310px,82vw);min-width:0;scroll-snap-align:start;margin:0}
+.ctMediaCompact .ctLiveNewsArticleCard h3,.ctMediaCompact .ctLiveCard h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em}
+.ctMediaCompact .ctLiveNewsArticleCard>p,.ctMediaCompact .ctLiveCard>p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ctMediaCompact .ctLivePlayer{max-height:160px;overflow:hidden}
+@media(max-width:600px){.connectMediaLinks{gap:10px}.ctMediaCompact .ctLiveNewsArticleCard,.ctMediaCompact .ctLiveCard{flex-basis:84vw;width:84vw}}
