@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Station = { id:string; name:string; country:string; countryCode:string; language:string; tags:string; codec:string; bitrate:number; homepage:string; streamUrl:string; votes:number };
@@ -21,7 +22,7 @@ export default function RadioPage(){
  useEffect(()=>{if(!favoritesLoaded)return;try{window.localStorage.setItem("connect-radio-favorites",JSON.stringify(saved));}catch{/* Favorites remain available for this session. */}},[saved,favoritesLoaded]);
  const regionCodes=regions.find(r=>r.name===region)?.codes||[]; const list=useMemo(()=>stations.filter(s=>(region==="All regions"||regionCodes.includes(s.countryCode))&&(!savedOnly||saved.includes(s.id))),[stations,savedOnly,saved,region,regionCodes]);
  function toggleSave(id:string){setSaved(current=>current.includes(id)?current.filter(x=>x!==id):[...current,id]);}
- return <main className="radioPage"><header className="radioHeader"><Link href="/" className="radioBrand">◉ Connect</Link><nav><Link href="/free-tv">Free TV</Link><Link href="/videos">Video Tube</Link><Link href="/">Home</Link></nav></header>
+ return <main className="radioPage"><ConnectSiteHeader />
  <section className="radioHero"><span>CONNECT · WORLD RADIO</span><h1>Your world.<br/><em>Your sound.</em></h1><p>Explore thousands of free internet radio stations from countries and communities across every region. Tune in through the station&apos;s own stream—music, local radio, culture, news and more.</p><div><span>🌍 Worldwide station directory</span><span>🎵 Music & genres</span><span>📻 Local radio voices</span><span>🔊 Free streams</span></div></section>
  <section className="radioMain"><div className="radioHeading"><div><span>LIVE RADIO DIRECTORY</span><h2>Find your frequency</h2><p>Powered by Radio Browser&apos;s community-maintained station listings. Streams and licensing are provided by broadcasters, not Connect.</p></div><button onClick={()=>{setLoading(true);setError("");void search();}} disabled={loading}>{loading?"Searching…":"↻ Refresh"}</button></div>
  <div className="radioFilters"><label>Region<select value={region} onChange={e=>{setRegion(e.target.value);setCountry("");}}><option>All regions</option>{regions.map(r=><option key={r.name}>{r.name}</option>)}</select></label><label>Country<select value={country} onChange={e=>setCountry(e.target.value)}><option value="">All countries</option>{countryOptions.map(code=><option value={code} key={code}>{code}</option>)}</select></label><label>Language<select value={language} onChange={e=>setLanguage(e.target.value)}><option value="">All languages</option>{languages.map(l=><option key={l}>{l}</option>)}</select></label><label className="radioSearch">Station / genre<input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search jazz, reggae, news…"/></label></div>
