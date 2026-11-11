@@ -130,7 +130,7 @@ export default function HomePage() {
           <section className="connectDynamicPanel connectRegionalPanel">
             <div className="connectSectionHeading"><div><span>YOUR REGION</span><h2>Local updates, global view</h2><p>Explore weather and sports information for your region.</p></div></div>
             <RegionalWeather />
-            <SportsScores />
+            <SportsScores compact />
           </section>
         </section>
 
