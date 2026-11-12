@@ -7,11 +7,9 @@ export const dynamic="force-dynamic";
 function store(){const tableId=process.env.APPWRITE_VIDEO_TUBE_TABLE_ID?.trim();if(!tableId)throw new Error("APPWRITE_VIDEO_TUBE_TABLE_ID is not configured.");const {tablesDB,databaseId}=communitySafetyStore();return {tablesDB,databaseId,tableId};}
 export async function GET(){
  const user=await currentCommunityMember();if(!user)return NextResponse.json({error:"Sign in to view Connect Short Clips."},{status:401});
- const access=await checkMemberAccess();if(!access.allowed)return NextResponse.json({error:"Verified adult member access is required."},{status:access.status});
- try{const s=store();const [published,ownDrafts]=await Promise.all([
-  s.tablesDB.listRows({databaseId:s.databaseId,tableId:s.tableId,queries:[Query.equal("record_type","clip"),Query.equal("status","approved"),Query.orderDesc("created_at"),Query.limit(100)]}),
-  s.tablesDB.listRows({databaseId:s.databaseId,tableId:s.tableId,queries:[Query.equal("record_type","clip"),Query.equal("user_id",user.$id),Query.equal("status","draft"),Query.orderDesc("created_at"),Query.limit(50)]})
- ]);
+ const access=await checkMemberAccess({requireAdultVerification:false});if(!access.allowed)return NextResponse.json({error:"An active member account is required to watch clips."},{status:access.status});
+ try{const s=store();const published=await s.tablesDB.listRows({databaseId:s.databaseId,tableId:s.tableId,queries:[Query.equal("record_type","clip"),Query.equal("status","approved"),Query.orderDesc("created_at"),Query.limit(100)]});
+  const ownDrafts=access.access.adult_status==="verified"?await s.tablesDB.listRows({databaseId:s.databaseId,tableId:s.tableId,queries:[Query.equal("record_type","clip"),Query.equal("user_id",user.$id),Query.equal("status","draft"),Query.orderDesc("created_at"),Query.limit(50)]}):{rows:[]};
  return NextResponse.json({clips:published.rows.map(row=>({$id:row.$id,title:row.title,caption:row.caption,category:row.category,creator_name:row.creator_name,media_url:row.media_url,thumbnail_url:row.thumbnail_url,view_count:row.view_count})),drafts:ownDrafts.rows.map(row=>({$id:row.$id,title:row.title,category:row.category,status:row.status}))},{headers:{"Cache-Control":"no-store"}});
  }catch(error){console.error("Short Clips lookup failed",error instanceof Error?error.message:"unknown");return NextResponse.json({error:"Short Clips storage is not configured or is unavailable."},{status:503});}
 }
