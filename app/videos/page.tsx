@@ -54,7 +54,16 @@ export default function VideosPage() {
     if (!clean) return;
     const nextHistory = [clean, ...history.filter((item) => item !== clean)].slice(0, 12);
     setHistory(nextHistory); localStorage.setItem("ct-video-searches", JSON.stringify(nextHistory));
-    fetch("/api/video-tube/interests", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: clean }) }).catch(() => { /* Local search history remains available. */ });
+    fetch("/api/video-tube/interests", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: clean }) }).then(async response => {
+      if (!response.ok) return null;
+      return response.json();
+    }).then(data => {
+      if (data?.topic && data.topic !== "General") {
+        const nextInterests = [data.topic, ...interests.filter(item => item !== data.topic)].slice(0, 8);
+        setInterests(nextInterests);
+        localStorage.setItem("ct-video-interests", JSON.stringify(nextInterests));
+      }
+    }).catch(() => { /* Local search history remains available. */ });
     const matched = categories.slice(1).find((category) => clean.includes(category.toLowerCase()));
     if (matched) {
       const nextInterests = [matched, ...interests.filter((item) => item !== matched)].slice(0, 8);
