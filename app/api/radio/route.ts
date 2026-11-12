@@ -10,21 +10,29 @@ export async function GET(request: Request) {
   const country = clean(params.get("country"), 80);
   const language = clean(params.get("language"), 60);
   const name = clean(params.get("q"), 100);
-  const limit = Math.min(100, Math.max(10, Number(params.get("limit")) || 50));
+  const limit = Math.min(100, Math.max(1, Number(params.get("limit")) || 50));
   const sort = clean(params.get("sort"), 20);
-  const search = new URLSearchParams({ hidebroken: "true", order: allowedSort.has(sort) ? sort : "clickcount", reverse: "true", limit: String(limit) });
-  if (country) search.set("countrycode", country);
-  if (language) search.set("language", language);
-  if (name) search.set("name", name);
+  const base = new URLSearchParams({ hidebroken: "true", order: allowedSort.has(sort) ? sort : "clickcount", reverse: "true", limit: String(limit) });
+  if (country) base.set("countrycode", country);
+  if (language) base.set("language", language);
+  const searches = name
+    ? ["name", "country", "tag"].map((field) => {
+        const search = new URLSearchParams(base);
+        search.set(field, name);
+        return search;
+      })
+    : [base];
   try {
-    const response = await fetch(`https://de1.api.radio-browser.info/json/stations/search?${search.toString()}`, {
+    const responses = await Promise.all(searches.map((search) => fetch(`https://de1.api.radio-browser.info/json/stations/search?${search.toString()}`, {
       headers: { "User-Agent": "Connect/1.0 (community radio directory)", Accept: "application/json" },
       signal: AbortSignal.timeout(10000),
       cache: "no-store",
-    });
-    if (!response.ok) throw new Error("Radio directory upstream unavailable");
-    const rows = await response.json();
-    const stations = Array.isArray(rows) ? rows.filter((s: Record<string, unknown>) => s.url_resolved && s.name).map((s: Record<string, unknown>) => ({
+    })));
+    if (responses.some((response) => !response.ok)) throw new Error("Radio directory upstream unavailable");
+    const resultSets = await Promise.all(responses.map((response) => response.json()));
+    const rows = resultSets.flatMap((result) => Array.isArray(result) ? result : []);
+    const uniqueRows = Array.from(new Map(rows.map((station: Record<string, unknown>) => [String(station.stationuuid || ""), station])).values());
+    const stations = uniqueRows.filter((s: Record<string, unknown>) => s.url_resolved && s.name).slice(0, limit).map((s: Record<string, unknown>) => ({
       id: String(s.stationuuid || ""), name: String(s.name || "").trim(), country: String(s.country || ""),
       countryCode: String(s.countrycode || ""), language: String(s.language || ""), tags: String(s.tags || ""),
       codec: String(s.codec || ""), bitrate: Number(s.bitrate || 0), homepage: String(s.homepage || ""),
