@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { FormEvent, useEffect, useState } from "react";
 
 type Post = { id: string; body: string; createdAt: string; author: { handle: string; displayName: string } };
@@ -132,7 +133,7 @@ export default function GroupDiscussionPage({ params }: { params: Promise<{ grou
   }
 
   return <main className="communityPage">
-    <header className="communityHeader"><Link href="/" className="communityBrand">◉ Connect</Link><nav><Link href="/groups">All groups</Link><Link href="/community">Community</Link><Link href="/account">Account</Link></nav></header>
+    <ConnectSiteHeader />
     <section className="communityHero"><span>GROUP DISCUSSION</span><h1>{group?.name || "Community group"}</h1><p>{group?.description || "A shared space for discussion."}</p></section>
     <section className="groupDiscussionWrap"><Link href="/groups">← Back to groups</Link>
       {error && <p className="communityError" role="alert">{error}</p>}{notice && <p className="communityNotice" role="status">{notice}</p>}

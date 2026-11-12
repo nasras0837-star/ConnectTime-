@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 type Profile = { handle?: string; display_name?: string; bio?: string; country?: string; region?: string; interests?: string; visibility?: string; age?: number; gender?: string; interested_in?: string; relationship_goal?: string };
 
@@ -41,7 +42,7 @@ export default function ProfilePage() {
     finally { setSaving(false); }
   }
 
-  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.png" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><form className="authCard" onSubmit={submit}>
+  return <main className="authShell"><ConnectSiteHeader /><form className="authCard profileEditCard" onSubmit={submit}>
     <div className="eyebrow">YOUR CONNECT IDENTITY</div><h1>Edit your profile</h1>
     <p>Choose what other members can see. Your precise location and verification documents are never displayed here.</p>
     {loading ? <p role="status">Loading your profile…</p> : error ? <div role="alert" className="message"><p>{error}</p><p>If you are not signed in, log in and return to profile setup. If profile storage is unavailable, try again after the service is configured.</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div> : <>
@@ -49,15 +50,14 @@ export default function ProfilePage() {
       <label>Display name<input value={profile.display_name || ""} onChange={e => update("display_name", e.target.value)} maxLength={80} required/></label>
       <label>About you<textarea value={profile.bio || ""} onChange={e => update("bio", e.target.value)} maxLength={500} rows={4}/></label>
       <label>Country<input value={profile.country || ""} onChange={e => update("country", e.target.value)} maxLength={80} required/></label>
-      <label>Region / state <span>(optional)</span><input value={profile.region || ""} onChange={e => update("region", e.target.value)} maxLength={100}/></label>
-      <label>Interests <span>(comma separated)</span><input value={profile.interests || ""} onChange={e => update("interests", e.target.value)} placeholder="Music, travel, technology" maxLength={384}/></label>
+      <details className="profileOptionalFields"><summary>Location details & interests <span>Optional</span></summary><div><label>Region / state<input value={profile.region || ""} onChange={e => update("region", e.target.value)} maxLength={100}/></label><label>Interests (comma separated)<input value={profile.interests || ""} onChange={e => update("interests", e.target.value)} placeholder="Music, travel, technology" maxLength={384}/></label></div></details>
 
-      <div className="eyebrow">DATING PROFILE · 18+ MEMBERS</div>
+      <details className="profileOptionalFields"><summary>Dating preferences <span>Optional · 18+</span></summary><div><div className="eyebrow">DATING PROFILE · 18+ MEMBERS</div>
       <label>Age<input type="number" min={18} max={110} value={profile.age ?? ""} onChange={e => setProfile(current => ({ ...current, age: e.target.value === "" ? undefined : Number(e.target.value) }))}/><small>Your age is shown on your dating card. Your birth date and ID are never displayed.</small></label>
       <label>Gender<select value={profile.gender || ""} onChange={e => update("gender", e.target.value)}><option value="">Choose gender</option><option value="woman">Woman</option><option value="man">Man</option><option value="nonbinary">Non-binary</option><option value="prefer_not_to_say">Prefer not to say</option></select></label>
       <label>Interested in<select value={profile.interested_in || "everyone"} onChange={e => update("interested_in", e.target.value)}><option value="everyone">Everyone</option><option value="women">Women</option><option value="men">Men</option><option value="nonbinary">Non-binary people</option></select></label>
       <label>What are you looking for?<select value={profile.relationship_goal || "friendship"} onChange={e => update("relationship_goal", e.target.value)}><option value="serious_relationship">A serious relationship</option><option value="dating">Dating</option><option value="friendship">Friendship first</option></select></label>
-      <label>Profile visibility<select value={profile.visibility || "members"} onChange={e => update("visibility", e.target.value)}><option value="public">Public</option><option value="members">Signed-in members</option><option value="friends">Friends only</option><option value="private">Only me</option></select></label>
+      <label>Profile visibility<select value={profile.visibility || "members"} onChange={e => update("visibility", e.target.value)}><option value="public">Public</option><option value="members">Signed-in members</option><option value="friends">Friends only</option><option value="private">Only me</option></select></label></div></details>
       <button className="button" disabled={saving}>{saving ? "Saving…" : "Save profile"}</button>
     </>}
     {message && <p role="status" className="message">{message}</p>}{error && <p role="alert" className="message">{error}</p>}

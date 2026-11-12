@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { useCallback, useEffect, useState } from "react";
 
 type Notification = { id: string; type: string; message: string; createdAt: string; read: boolean; referenceId?: string };
@@ -80,10 +81,7 @@ export default function NotificationsPage() {
 
   const unread = items.filter(item => !item.read).length;
   return <main className="authShell">
-    <header className="plannedFeatureHeader">
-      <Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link>
-      <nav><Link href="/">Home</Link><Link href="/account">Account</Link><Link href="/friends">Friends</Link><Link href="/dating/likes">Dating</Link><Link href="/messages">Messages</Link></nav>
-    </header>
+    <ConnectSiteHeader />
     <section className="authCard notificationsCard">
       <div className="eyebrow">YOUR CONNECT UPDATES</div>
       <h1>Notifications</h1>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 const categories = ["All categories","Real estate","Vehicles","Electronics","Furniture","Clothing & accessories","Comic books","Sports cards","Collectibles","Home & garden","Tools & equipment","Books & media","Toys & games","Other products"];
 const sellCategories = categories.slice(1);
@@ -19,17 +20,16 @@ export default function MarketplacePage(){
  async function create(event:FormEvent<HTMLFormElement>){event.preventDefault();const formElement=event.currentTarget;setSaving(true);setError("");setNotice("");const form=new FormData(event.currentTarget);const payload=Object.fromEntries(form.entries());try{const r=await fetch("/api/marketplace/items",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw new Error(d.error||"Your listing could not be created.");setItems(current=>[d.item,...current]);formElement.reset();setNotice("Your item is now listed on Connect Marketplace.");}catch(e){setError(e instanceof Error?e.message:"Your listing could not be created.")}finally{setSaving(false)}}
  async function report(item:Listing){const details=window.prompt("Tell our safety team why this listing should be reviewed (at least 10 characters).");if(!details||details.trim().length<10)return;try{const r=await fetch("/api/community/reports",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category:"other",targetType:"other",contentReference:item.id,details:details.trim()})});const d=await r.json();if(!r.ok)throw new Error(d.error||"Report could not be submitted.");setNotice("Thank you. This listing was reported for review.")}catch(e){setError(e instanceof Error?e.message:"Report could not be submitted.")}}
  return <main className="marketPage">
-  <header className="marketHeader"><Link href="/" className="marketBrand">◉ Connect</Link><nav><Link href="/">Home</Link><Link href="/community">Community</Link><Link href="/messages">Messages</Link><Link href="/account">Account</Link></nav></header>
-  <section className="marketHero"><span>BUY · SELL · DISCOVER</span><h1>Connect <em>Marketplace</em></h1><p>A member-to-member marketplace for homes, vehicles, electronics, furniture, fashion, comics, sports cards and more.</p><div className="marketHeroTags"><b>🏡 Real estate</b><b>🚗 Cars & vehicles</b><b>📱 Electronics</b><b>🛋️ Home & furniture</b><b>👕 Fashion</b><b>🏆 Collectibles</b></div></section>
+  <ConnectSiteHeader />
+  <section className="marketHero"><span>MARKETPLACE</span><h1>Buy and sell with members</h1><p>Search listings, filter by category, or post an item for sale.</p></section>
   {notice&&<p className="marketNotice" role="status">{notice}</p>}{error&&<p className="marketError" role="alert">{error}</p>}
   <section className="marketLayout">
    <div className="marketBrowse"><div className="marketSectionHead"><div><span>FIND SOMETHING GREAT</span><h2>Explore listings</h2></div><button type="button" onClick={()=>void refresh()}>Refresh</button></div>
     <input className="marketSearch" aria-label="Search listings" placeholder="Search products, categories or locations…" value={search} onChange={e=>setSearch(e.target.value)}/>
-    <div className="marketCategories" aria-label="Filter by category">{categories.map(c=><button key={c} type="button" className={category===c?"selected":""} onClick={()=>setCategory(c)}>{c}</button>)}</div>
+    <label className="marketCategorySelect">Category<select value={category} onChange={e=>setCategory(e.target.value)}>{categories.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
     {loading?<p className="marketEmpty">Loading listings…</p>:visible.length?<div className="marketGrid">{visible.map(item=><article className="marketCard" key={item.id}><div className="marketCardTop"><span>{item.category}</span><small>{dateLabel(item.createdAt)}</small></div><h3>{item.title}</h3><strong className="marketPrice">{money(item.price)}</strong><p>{item.description}</p><div className="marketMeta"><span>{item.condition}</span><span>📍 {item.location}</span></div><div className="marketSeller"><span>Listed by <b>{item.seller.displayName||item.seller.handle}</b></span>{item.mine?<small>Your listing</small>:<Link href={item.seller.handle?"/messages?with="+encodeURIComponent(item.seller.handle):"/messages"}>Contact seller ↗</Link>}</div>{!item.mine&&<button className="marketReport" type="button" onClick={()=>void report(item)}>Report listing</button>}</article>)}</div>:<div className="marketEmpty">No listings match this search yet. Be the first to list something.</div>}
    </div>
-   <aside className="marketSell"><div className="marketSellHead"><span>YOUR NEXT SALE STARTS HERE</span><h2>Post an item for sale</h2><p>Share clear details and a fair price so buyers know what you are offering.</p></div>
-    <form onSubmit={create}>
+   <details className="marketSell marketSellDetails"><summary>＋ Post an item for sale</summary><div className="marketSellBody"><p>Add a few details so buyers know what you are offering.</p><form onSubmit={create}>
      <label>Category<select name="category" required defaultValue=""><option value="" disabled>Choose a category</option>{sellCategories.map(c=><option key={c}>{c}</option>)}</select></label>
      <label>Item or property title<input name="title" required minLength={3} maxLength={100} placeholder="e.g. 2022 Honda Civic EX"/></label>
      <label>Description<textarea name="description" required minLength={15} maxLength={1800} rows={5} placeholder="Describe the item, features, condition and anything buyers should know."/></label>
@@ -38,8 +38,7 @@ export default function MarketplacePage(){
      <label>City / area<input name="location" required minLength={2} maxLength={100} placeholder="e.g. Vineland, NJ"/></label>
      <button type="submit" disabled={saving}>{saving?"Posting…":"Post listing"}</button>
     </form>
-    <p className="marketPolicy">By posting, you agree to the <Link href="/legal/terms">Connect Terms</Link>. Listings must be for lawful goods or property. Prostitution, escort services, sexual services, and any solicitation or advertising of paid sexual activity are strictly prohibited. Listings may be removed and accounts may be restricted or banned for violations.</p>
-   </aside>
+    <p className="marketPolicy">By posting, you agree to the <Link href="/legal/terms">Connect Terms</Link>. Listings must be for lawful goods or property. Prostitution, escort services, sexual services, and any solicitation or advertising of paid sexual activity are strictly prohibited. Listings may be removed and accounts may be restricted or banned for violations.</p></div></details>
   </section>
   <footer className="marketFooter"><Link href="/safety">Safety Center</Link> · <Link href="/legal/terms">Terms</Link> · <Link href="/legal/privacy">Privacy</Link> · Connect Marketplace</footer>
  </main>

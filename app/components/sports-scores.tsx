@@ -23,18 +23,18 @@ async function getScores(league: League) {
     );
     if (!response.ok) return { league, events: [] as Event[] };
     const data = await response.json() as { events?: Event[] };
-    return { league, events: Array.isArray(data.events) ? data.events.slice(0, 5) : [] };
+    return { league, events: Array.isArray(data.events) ? data.events : [] };
   } catch {
     return { league, events: [] as Event[] };
   }
 }
 
-export default async function SportsScores() {
+export default async function SportsScores({ compact = false }: { compact?: boolean }) {
   const results = await Promise.all(leagues.map(getScores));
   const available = results.filter((result) => result.events.length > 0);
 
   return (
-    <section className="ctSportsScores" aria-labelledby="ct-sports-title">
+    <section className={compact ? "ctSportsScores ctSportsCompact" : "ctSportsScores"} aria-labelledby="ct-sports-title">
       <div className="ctSportsHead">
         <div>
           <span className="ctSportsEyebrow">CONNECT SPORTS DESK</span>
@@ -44,11 +44,11 @@ export default async function SportsScores() {
         <span className="ctSportsUpdated">↻ Updates about every 3 minutes</span>
       </div>
       {available.length ? (
-        <div className="ctSportsLeagueGrid">
+        <div className={compact ? "ctSportsLeagueGrid ctSportsCompactTrack" : "ctSportsLeagueGrid"}>
           {available.map(({ league, events }) => (
             <section className="ctSportsLeague" key={league.label} aria-label={league.label + " scores"}>
               <div className="ctSportsLeagueHead"><strong>{league.label}</strong><a href={league.href} target="_blank" rel="noopener noreferrer">Full scoreboard ↗</a></div>
-              {events.map((event) => {
+              {(compact ? events.slice(0, 2) : events).map((event) => {
                 const competition = event.competitions?.[0];
                 const competitors = competition?.competitors ?? [];
                 const status = competition?.status?.type?.shortDetail ?? competition?.status?.type?.detail ?? competition?.status?.type?.description ?? "Scheduled";
@@ -65,6 +65,28 @@ export default async function SportsScores() {
                   </article>
                 );
               })}
+              {compact && events.length > 2 ? (
+                <details className="ctSportsExpand">
+                  <summary>Show all scores <span>({events.length} games)</span></summary>
+                  {events.slice(2).map((event) => {
+                    const competition = event.competitions?.[0];
+                    const competitors = competition?.competitors ?? [];
+                    const status = competition?.status?.type?.shortDetail ?? competition?.status?.type?.detail ?? competition?.status?.type?.description ?? "Scheduled";
+                    const state = competition?.status?.type?.state;
+                    return (
+                      <article className="ctSportsGame" key={event.id}>
+                        <div className="ctSportsGameStatus"><span className={state === "in" ? "ctSportsLiveDot" : "ctSportsStatusDot"} />{status}</div>
+                        {competitors.map((competitor, index) => (
+                          <div className="ctSportsTeam" key={competitor.team?.abbreviation ?? index}>
+                            <span>{competitor.team?.displayName ?? "Team"}</span>
+                            <strong>{competitor.score ?? "—"}</strong>
+                          </div>
+                        ))}
+                      </article>
+                    );
+                  })}
+                </details>
+              ) : null}
             </section>
           ))}
         </div>

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 type EventItem = { id?: string; title: string; category: string; date: string; time: string; city: string; country: string; venue: string; description: string; price: string; host: string; emoji: string };
 const categories = ["All events", "Community & social", "Music & nightlife", "Sports & outdoors", "Markets & food", "Arts & culture", "Business & learning", "Family-friendly"];
@@ -54,7 +54,7 @@ export default function EventsPage() {
 
   return (
     <main className="eventsPage">
-      <header className="eventsHeader"><Link href="/" className="eventsBrand" aria-label="Connect home"><Image src="/connect-logo.svg" alt="Connect" width={150} height={98} priority className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/videos">Connect TV</Link><Link href="/signup" className="eventsJoin">Join free ↗</Link></nav></header>
+      <ConnectSiteHeader />
       <section className="eventsHero"><span className="eventsEyebrow">YOUR CITY. YOUR COMMUNITY. YOUR MOMENT.</span><h1>Make plans.<br/><em>Meet the world.</em></h1><p>Discover what&apos;s happening near you, find events in places you dream of visiting, and bring people together around something you love.</p><div className="eventsHeroActions"><button type="button" onClick={() => { setShowForm(true); setNotice(""); }}>＋ Promote an event</button><a href="#discover-events">Explore events ↓</a></div><div className="eventsPills"><span>📍 Local meetups</span><span>🎵 Music & culture</span><span>🤝 Community gatherings</span><span>🌎 Across the globe</span></div></section>
       <section className="eventsMain" id="discover-events">
         <p className="eventsPreviewNotice" role="note">Member event directory. Events submitted by members remain private until reviewed and approved by moderators. Sign in with an independently verified adult account to browse.</p>

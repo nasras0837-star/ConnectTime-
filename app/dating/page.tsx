@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 
 type Profile = { handle: string; displayName: string; bio: string; country: string; region: string; interests: string[]; age: number; gender: string; relationshipGoal: string };
 const goalLabels: Record<string, string> = { serious_relationship: "Serious relationship", dating: "Dating", friendship: "Friendship first" };
@@ -82,19 +83,12 @@ export default function DatingPage() {
   }
 
   return <main className="authShell">
-    <header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/profile">My profile</Link><Link href="/dating/likes">Likes & matches</Link><Link href="/friends">Friends</Link><Link href="/safety">Safety</Link></nav></header>
+    <ConnectSiteHeader />
     <section className="authCard discoverCard">
       <div className="eyebrow">CONNECT DATING · VERIFIED ADULTS</div>
       <h1>Meet someone who gets you.</h1>
       <p>Discover people by shared interests, age, location and what they are looking for. Send a like to show interest. When you both like each other, it’s a match.</p>
-      <div className="discoverFilters">
-        <label>Shared interest<input value={interest} onChange={e => setInterest(e.target.value)} placeholder="Music, travel, books…"/></label>
-        <label>Country<input value={country} onChange={e => setCountry(e.target.value)} placeholder="Any country"/></label>
-        <label>Interested in<select value={gender} onChange={e => setGender(e.target.value)}><option value="everyone">Everyone</option><option value="woman">Women</option><option value="man">Men</option><option value="nonbinary">Non-binary</option></select></label>
-        <label>Looking for<select value={goal} onChange={e => setGoal(e.target.value)}><option value="any">Any relationship goal</option><option value="serious_relationship">Serious relationship</option><option value="dating">Dating</option><option value="friendship">Friendship first</option></select></label>
-        <label>Minimum age<input type="number" min={18} max={110} value={minAge} onChange={e => setMinAge(Math.min(110, Math.max(18, Number(e.target.value))))}/></label>
-        <label>Maximum age<input type="number" min={18} max={110} value={maxAge} onChange={e => setMaxAge(Math.max(minAge, Math.min(110, Number(e.target.value))))}/></label>
-      </div>
+      <div className="datingSimpleSearch"><label>Shared interest<input value={interest} onChange={e => setInterest(e.target.value)} placeholder="Search interests (music, travel, books…)" /></label><details className="discoverAdvancedFilters"><summary>More preferences</summary><div><label>Country<input value={country} onChange={e => setCountry(e.target.value)} placeholder="Any country"/></label><label>Interested in<select value={gender} onChange={e => setGender(e.target.value)}><option value="everyone">Everyone</option><option value="woman">Women</option><option value="man">Men</option><option value="nonbinary">Non-binary</option></select></label><label>Looking for<select value={goal} onChange={e => setGoal(e.target.value)}><option value="any">Any relationship goal</option><option value="serious_relationship">Serious relationship</option><option value="dating">Dating</option><option value="friendship">Friendship first</option></select></label><label>Age range<div className="datingAgeRange"><input aria-label="Minimum age" type="number" min={18} max={110} value={minAge} onChange={e => setMinAge(Math.min(110, Math.max(18, Number(e.target.value))))}/><input aria-label="Maximum age" type="number" min={18} max={110} value={maxAge} onChange={e => setMaxAge(Math.max(minAge, Math.min(110, Number(e.target.value))))}/></div></label></div></details></div>
       <p className="switch"><Link href="/profile">Complete your dating profile and interests</Link> · <Link href="/friends">Your friends</Link></p>
       {error && <p className="message" role="alert">{error}</p>}{message && <p className="message" role="status">{message}</p>}
       <div className="communityFeedHead"><div><span>YOUR DISCOVERY</span><h2>{results.length} potential connections</h2></div><span>18+ only</span></div>
