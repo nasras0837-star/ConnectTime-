@@ -476,3 +476,86 @@ body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[clas
 body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) :where(*:not(button):not([role="button"]):not(.button):not(.btn):not([class*="btn" i])){color:var(--ct-final-light-ink)!important;-webkit-text-fill-color:var(--ct-final-light-ink)!important}
 body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary){color:var(--ct-final-light-heading)!important;-webkit-text-fill-color:var(--ct-final-light-heading)!important}
 body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) a:not([class*="button" i]):not([class*="btn" i]){color:var(--ct-final-light-link)!important;-webkit-text-fill-color:var(--ct-final-light-link)!important;text-decoration:underline;text-underline-offset:2px}
+
+
+/* Final app-wide surface guard. This is deliberately the last rule in the
+   last global stylesheet: card/box components must never pair pale surfaces
+   with low-contrast or white text, regardless of their component class name. */
+body.connectAppTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i],
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-slate-100"],
+  [class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],
+  [style*="background:white" i],[style*="background: white" i],
+  [style*="background-color:white" i],[style*="background-color: white" i],
+  [style*="background:#fff" i],[style*="background: #fff" i],
+  [style*="background-color:#fff" i],[style*="background-color: #fff" i],
+  [style*="background:#ffffff" i],[style*="background: #ffffff" i],
+  [style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],
+  [style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],
+  [style*="rgba(255,255,255" i],[style*="rgba(255, 255, 255" i]
+) {
+  background: linear-gradient(145deg,#10295b 0%,#071a43 100%) !important;
+  background-color: #0b1d46 !important;
+  color: #f5f9ff !important;
+  -webkit-text-fill-color: #f5f9ff !important;
+  border-color: rgba(91,190,255,.38) !important;
+}
+body.connectAppTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i],
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-slate-100"],
+  [class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],
+  [style*="background:white" i],[style*="background: white" i],
+  [style*="background-color:white" i],[style*="background-color: white" i],
+  [style*="background:#fff" i],[style*="background: #fff" i],
+  [style*="background-color:#fff" i],[style*="background-color: #fff" i],
+  [style*="background:#ffffff" i],[style*="background: #ffffff" i],
+  [style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],
+  [style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],
+  [style*="rgba(255,255,255" i],[style*="rgba(255, 255, 255" i]
+) :where(*:not(button):not([role="button"]):not(.button):not(.btn):not(.primary):not([class*="btn" i]):not(input):not(textarea):not(select):not(option):not(img):not(video):not(canvas):not(iframe):not(svg)) {
+  color: #edf6ff !important;
+  -webkit-text-fill-color: #edf6ff !important;
+}
+body.connectAppTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary) {
+  color: #75eaff !important;
+  -webkit-text-fill-color: #75eaff !important;
+  text-shadow: none !important;
+}
+body.connectAppTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i]
+) a:not(.button):not(.btn):not([class*="btn" i]) {
+  color: #77eaff !important;
+  -webkit-text-fill-color: #77eaff !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+body.connectAppTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i]
+) :is(button,[role="button"],.button,.btn,.primary,[class*="btn" i]) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}

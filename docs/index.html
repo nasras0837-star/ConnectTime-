@@ -1472,7 +1472,7 @@ body a:not(.btn){color:#80eaff!important}footer{border-color:rgba(105,190,255,.2
   box-shadow:0 12px 28px rgba(0,0,0,.34),0 0 18px rgba(70,190,255,.2)!important;
 }
 </style>
-</body></html>
+
 <style id="connect-universe-theme-14">
 :root{color-scheme:dark;--ink:#f5f7ff;--muted:#b5c4e2;--blue:#3478ff;--teal:#24d9e8;--pink:#e65bff;--line:rgba(143,169,231,.22);--paper:#080d1f}
 body{color:#f5f7ff;background:radial-gradient(ellipse at 10% 0%,#1a2b60 0,transparent 36%),radial-gradient(ellipse at 95% 10%,#39205f 0,transparent 34%),#080d1f}
@@ -1764,3 +1764,87 @@ html body .ctProHeroCopy .actions .ctHomeResetButton:hover{background:rgba(24,69
  .featureDirectoryGroup .tile{min-height:116px!important;padding:12px!important}
 }
 </style>
+
+<style id="connect-final-cascade-contrast">
+/* Final contrast guard: intentionally last in the document so legacy inline
+   theme blocks cannot restore pale text on light cards or white boxes. */
+body.connectPagesTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i],
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-slate-100"],
+  [class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],
+  [style*="background:white" i],[style*="background: white" i],
+  [style*="background-color:white" i],[style*="background-color: white" i],
+  [style*="background:#fff" i],[style*="background: #fff" i],
+  [style*="background-color:#fff" i],[style*="background-color: #fff" i],
+  [style*="background:#ffffff" i],[style*="background: #ffffff" i],
+  [style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],
+  [style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],
+  [style*="rgba(255,255,255" i],[style*="rgba(255, 255, 255" i]
+) {
+  background: linear-gradient(145deg,#10295b 0%,#071a43 100%) !important;
+  background-color: #0b1d46 !important;
+  color: #f5f9ff !important;
+  -webkit-text-fill-color: #f5f9ff !important;
+  border-color: rgba(91,190,255,.38) !important;
+}
+body.connectPagesTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i],
+  [class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-slate-100"],
+  [class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],
+  [class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],
+  [style*="background:white" i],[style*="background: white" i],
+  [style*="background-color:white" i],[style*="background-color: white" i],
+  [style*="background:#fff" i],[style*="background: #fff" i],
+  [style*="background-color:#fff" i],[style*="background-color: #fff" i],
+  [style*="background:#ffffff" i],[style*="background: #ffffff" i],
+  [style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],
+  [style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],
+  [style*="rgba(255,255,255" i],[style*="rgba(255, 255, 255" i]
+) :where(*:not(button):not([role="button"]):not(.btn):not([class*="btn" i]):not(input):not(textarea):not(select):not(option):not(img):not(video):not(canvas):not(iframe):not(svg)) {
+  color: #edf6ff !important;
+  -webkit-text-fill-color: #edf6ff !important;
+}
+body.connectPagesTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i]
+) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary) {
+  color: #75eaff !important;
+  -webkit-text-fill-color: #75eaff !important;
+  text-shadow: none !important;
+}
+body.connectPagesTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i]
+) a:not(.btn):not([class*="btn" i]) {
+  color: #77eaff !important;
+  -webkit-text-fill-color: #77eaff !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+body.connectPagesTheme :is(
+  .card,.panel,.tile,.topic,.post,.notice,.feed,.community,.metrics,.join,.proof,
+  [class*="card" i],[class*="panel" i],[class*="box" i],[class*="tile" i],
+  [class*="surface" i],[class*="widget" i],[class*="metric" i],[class*="stat" i],
+  [class*="feed" i],[class*="community" i],[class*="notice" i],[class*="proof" i],
+  [class*="topic" i],[class*="join" i]
+) :is(button,[role="button"],.btn,[class*="btn" i]) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+</style>
+</body></html>
