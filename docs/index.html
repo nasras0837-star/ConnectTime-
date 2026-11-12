@@ -581,20 +581,29 @@ body :is(.badge,.chip,.tag,.status){color:#f4fbff!important}
 @media(max-width:700px){.podcastSpotlightInner{grid-template-columns:1fr}.podcastSpotlightArt{min-height:130px;grid-row:1}.podcastSpotlight{border-radius:22px;padding:22px 18px}.podcastSpotlight h2{letter-spacing:-1.4px}}
 </style>
 <style id="connect-compact-live-tv">
-/* Compact broadcaster cards on the public Connect homepage */
-.liveNewsPanel{padding:clamp(16px,2.4vw,26px)}
-.liveNewsHead{margin-bottom:14px;gap:14px}
-.liveNewsHead h2{font-size:clamp(24px,3.2vw,34px)}
-.liveNewsGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.liveNewsCard{padding:12px;border-radius:16px}
-.liveNewsCardTop{font-size:8px;letter-spacing:.45px}
-.liveNewsCard h3{margin:7px 0 3px;font-size:15px}
-.liveNewsCard>p{margin-bottom:9px;font-size:10px;line-height:1.4}
-.liveNewsPlayer{border-radius:10px}
-.liveNewsCard>a{margin-top:9px;font-size:10px}
-.liveNewsDisclaimer{font-size:11px;line-height:1.5}
-@media(max-width:980px){.liveNewsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.liveNewsPanel{padding:18px 13px}.liveNewsGrid{grid-template-columns:1fr}.liveNewsCard{padding:13px}.liveNewsCard h3{font-size:17px}}
+/* Keep official live broadcasters in a compact, horizontally browsable homepage strip */
+.liveNewsPanel{margin:12px 0 24px;padding:14px 16px;border-radius:20px}
+.liveNewsHead{align-items:center;margin-bottom:10px;gap:12px}
+.liveNewsHead h2{margin:3px 0;font-size:clamp(20px,2.5vw,27px);letter-spacing:-.8px}
+.liveNewsHead p{max-width:560px;font-size:11px;line-height:1.4}
+.liveNewsPill{padding:6px 9px;font-size:9px}
+.liveNewsGrid{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 9px;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:thin}
+.liveNewsCard{flex:0 0 clamp(230px,26vw,280px);min-width:0;padding:10px;border-radius:14px;scroll-snap-align:start}
+.liveNewsCardTop{font-size:8px;letter-spacing:.35px}
+.liveNewsCard h3{margin:5px 0 2px;font-size:14px}
+.liveNewsCard>p{margin:0 0 7px;font-size:9px;line-height:1.35}
+.liveNewsPlayer{aspect-ratio:16/9;border-radius:9px}
+.liveNewsPlaceholder{gap:4px;font-size:12px}
+.liveNewsPlaceholder small{font-size:9px}
+.liveNewsCard>a{display:inline-block;margin-top:7px;font-size:9px}
+.liveNewsDisclaimer{margin:8px 0 0;font-size:9px;line-height:1.4}
+@media(max-width:620px){
+ .liveNewsPanel{margin:10px 0 20px;padding:13px 11px;border-radius:17px}
+ .liveNewsHead{align-items:flex-start;flex-direction:column;gap:7px;margin-bottom:8px}
+ .liveNewsHead h2{font-size:21px}
+ .liveNewsHead p{font-size:10px}
+ .liveNewsCard{flex-basis:min(78vw,270px);padding:9px}
+}
 </style>
 
 <style id="connect-social-preview-text-contrast-fix">
