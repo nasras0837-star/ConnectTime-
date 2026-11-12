@@ -670,3 +670,88 @@ body.connectAppTheme [class*="bg-white"],body.connectAppTheme [class*="bg-gray-"
 body.connectAppTheme [style*="background:#fff" i],body.connectAppTheme [style*="background: #fff" i],body.connectAppTheme [style*="background-color:#fff" i],body.connectAppTheme [style*="background-color: #fff" i],body.connectAppTheme [style*="background:white" i],body.connectAppTheme [style*="background: white" i],body.connectAppTheme [style*="background-color:white" i],body.connectAppTheme [style*="background-color: white" i],body.connectAppTheme [style*="rgb(255,255,255)" i],body.connectAppTheme [style*="rgb(255, 255, 255)" i]{background:#0b1d46!important;background-color:#0b1d46!important;color:#f5f8ff!important;border-color:#3765a6!important}
 body.connectAppTheme [class*="bg-white"] *,body.connectAppTheme [class*="bg-gray-"] *,body.connectAppTheme [class*="bg-slate-"] *,body.connectAppTheme [class*="bg-zinc-"] *,body.connectAppTheme [class*="bg-neutral-"] *,body.connectAppTheme [class*="bg-stone-"] *,body.connectAppTheme [class*="bg-light"] *{color:#f5f8ff!important;-webkit-text-fill-color:#f5f8ff!important}
 body.connectAppTheme input,body.connectAppTheme textarea,body.connectAppTheme select,body.connectAppTheme option{background:#061638!important;background-color:#061638!important;color:#fff!important;border-color:#5487d1!important}
+
+
+/* Account dashboard: replace the legacy light social-profile theme with the
+   same midnight-blue surfaces used throughout the Connect application. */
+body .connectProfileHome {
+  background: radial-gradient(ellipse at 12% 0%, #102b5c 0, transparent 38%),
+              radial-gradient(ellipse at 92% 10%, #103d50 0, transparent 34%),
+              #04143d !important;
+  color: #f5f8ff !important;
+}
+body .connectProfileHome :is(
+  .connectProfileSidebar,.connectProfileQuick,.connectProfileSpace,
+  .connectProfileStatus,.connectProfileBottom,.connectDashNotice,
+  .connectProfileMini,.connectProfileNav a:hover,.connectProfileNav a.active
+) {
+  background: linear-gradient(145deg, #10285a 0%, #0a1b42 100%) !important;
+  background-color: #0b1d46 !important;
+  color: #f5f8ff !important;
+  border: 1px solid #3765a6 !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.22) !important;
+}
+body .connectProfileHome :is(.connectProfileSidebar,.connectProfileQuick,.connectProfileSpace,.connectProfileStatus,.connectProfileBottom,.connectDashNotice) * {
+  color: #f5f8ff !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+body .connectProfileHome :is(
+  .connectProfileMini small,.connectProfileSidebarFoot a,
+  .connectProfileNavLabel,.connectProfileQuick small,
+  .connectProfileSpace small,.connectProfileWelcomeRow p,
+  .connectProfileSectionHead p,.connectProfileBottom p,
+  .connectProfileFeatureCount,.connectProfileFooter span
+) {
+  color: #c9dcf8 !important;
+  -webkit-text-fill-color: #c9dcf8 !important;
+}
+body .connectProfileHome :is(
+  .connectProfileWelcomeRow h2,.connectProfileSectionHead h2,
+  .connectProfileBottom h2,.connectProfileMini strong,
+  .connectProfileQuick strong,.connectProfileSpace strong
+) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+body .connectProfileHome :is(
+  .connectProfileMini,.connectProfileQuick,.connectProfileSpace,
+  .connectProfileBottom,.connectProfileStatus
+) {
+  border-color: #3765a6 !important;
+}
+body .connectProfileHome .connectProfileNav a {
+  color: #d8e8ff !important;
+}
+body .connectProfileHome .connectProfileNav a:hover,
+body .connectProfileHome .connectProfileNav a.active {
+  background: #17396d !important;
+  color: #ffffff !important;
+}
+body .connectProfileHome .connectProfileQuick>span:first-child,
+body .connectProfileHome .connectProfileSpaceIcon {
+  background: #17396d !important;
+  color: #8ddfff !important;
+}
+body .connectProfileHome .connectProfileHero {
+  background: linear-gradient(112deg,#123b68 0%,#12638e 56%,#087d70 100%) !important;
+}
+body .connectProfileHome .connectProfileHero :is(h1,p,small,b,span) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+body .connectProfileHome .connectProfileHero .connectProfilePrimary {
+  background: #d9f5eb !important;
+  color: #104f48 !important;
+  -webkit-text-fill-color: #104f48 !important;
+}
+body .connectProfileHome .connectProfileFooter a,
+body .connectProfileHome .connectProfileWelcomeRow>a {
+  color: #80dcff !important;
+  -webkit-text-fill-color: #80dcff !important;
+}
+body .connectProfileHome .connectProfileStatus {
+  background: #0d2b50 !important;
+}
+body .connectProfileHome .connectProfileStatus p {
+  color: #c9dcf8 !important;
+}
