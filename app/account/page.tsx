@@ -29,7 +29,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
   if (!user) redirect("/login");
   const decision = await checkMemberAccess();
   if (!decision.allowed) redirect("/verification");
-  const status = decision.allowed ? "Active · Verified adult" : decision.reason === "not_eligible" ? "Pending · Verification or activation required" : decision.reason === "not_configured" ? "Setup required · Access settings are not configured" : decision.reason === "access_unavailable" ? "Temporarily unavailable · Access could not be confirmed" : "Signed in";
+  const status = "Active · Verified adult";
   const displayName = user.name || "Connect member";
   const initial = (displayName || user.email || "C").trim().charAt(0).toUpperCase() || "C";
 
@@ -84,9 +84,8 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
           </section>
 
           <div className="connectProfileStatus">
-            <span className={decision.allowed ? "connectStatusDot good" : "connectStatusDot"} />
-            <div><strong>{status}</strong><p>{decision.allowed ? "Your member access is active. Individual features continue to apply their own safety checks." : decision.reason === "not_eligible" ? "Some member features remain locked until verification and activation are complete." : "Protected member features remain unavailable until access can be confirmed."}</p></div>
-            {!decision.allowed && <Link href="/verification">Review verification →</Link>}
+            <span className="connectStatusDot good" />
+            <div><strong>{status}</strong><p>Your member access is active. Individual features continue to apply their own safety checks.</p></div>
           </div>
 
           <div className="connectProfileWelcomeRow">
