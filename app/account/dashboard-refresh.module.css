@@ -1,0 +1,83 @@
+/* Scoped visual refresh for the signed-in member home and profile editor. */
+.dashboardRefresh :global(.connectProfileHome){background:radial-gradient(ellipse at 8% 0%,#e5f4ff 0,transparent 36%),radial-gradient(ellipse at 94% 8%,#e3f7ee 0,transparent 32%),#f4f8fb;color:#1d3548}
+.dashboardRefresh :global(.connectProfileLayout){width:min(1480px,calc(100% - 48px));grid-template-columns:248px minmax(0,1fr);gap:22px;margin:22px auto}
+.dashboardRefresh :global(.connectProfileSidebar){top:96px;border:1px solid #e3edf1;border-radius:22px;padding:16px;box-shadow:0 12px 34px #17465e0b}
+.dashboardRefresh :global(.connectProfileMiniCover){background:linear-gradient(120deg,#17466e,#1685b2 55%,#31b89a)}
+.dashboardRefresh :global(.connectProfileNav a){min-height:42px;border-radius:12px}
+.dashboardRefresh :global(.connectProfileNav a:hover),.dashboardRefresh :global(.connectProfileNav a.active){background:#e6f4f3;color:#116f78}
+.dashboardRefresh :global(.connectProfileSidebarFoot button){border:0;background:transparent;color:#748995;font:inherit;font-size:11px;text-align:left;cursor:pointer;padding:0}
+.dashboardRefresh :global(.connectProfileHero){min-height:276px;border-radius:27px;padding:clamp(26px,4vw,46px);background:linear-gradient(112deg,#143f62 0%,#1677a8 53%,#159b86 100%);box-shadow:0 20px 45px #176c8b24}
+.dashboardRefresh :global(.connectProfileHeroGlow){width:470px;height:470px;right:-115px;top:-245px;background:#ffffff13}
+.dashboardRefresh :global(.connectProfileHero h1){font-size:clamp(30px,3.6vw,44px);letter-spacing:-.055em}
+.dashboardRefresh :global(.connectProfileHeroIdentity p){font-size:14px}
+.dashboardRefresh :global(.connectProfileHeroAvatar){width:72px;height:72px;font-size:29px}
+.dashboardRefresh :global(.connectProfilePrimary){background:#e3f7ef;color:#145f55;transition:transform .18s,box-shadow .18s}
+.dashboardRefresh :global(.connectProfilePrimary:hover){transform:translateY(-2px);box-shadow:0 8px 20px #092f3a30}
+.dashboardRefresh :global(.connectProfileSecondary){transition:background .18s}
+.dashboardRefresh :global(.connectProfileSecondary:hover){background:#ffffff30}
+.dashboardRefresh :global(.connectProfileStatus){display:flex;align-items:center;gap:13px;margin-top:16px;padding:16px 18px;border:1px solid #e2edf0;border-radius:17px;background:#ffffffed;box-shadow:0 7px 22px #173c5108}
+.dashboardRefresh :global(.connectProfileStatus>div){flex:1;min-width:0}
+.dashboardRefresh :global(.connectProfileStatus strong){font-size:13px;color:#29485a}
+.dashboardRefresh :global(.connectProfileStatus p){font-size:11px;line-height:1.5;color:#7c909b;margin:4px 0 0}
+.dashboardRefresh :global(.connectProfileStatus>a){font-size:11px;font-weight:800;color:#147c8b;white-space:nowrap}
+.dashboardRefresh :global(.connectProfileWelcomeRow){margin:28px 0 15px}
+.dashboardRefresh :global(.connectProfileWelcomeRow h2),.dashboardRefresh :global(.connectProfileSectionHead h2){font-size:clamp(21px,2.3vw,27px);letter-spacing:-.045em;color:#203e52}
+.dashboardRefresh :global(.connectProfileWelcomeRow p),.dashboardRefresh :global(.connectProfileSectionHead p){font-size:12px;color:#7d919d;line-height:1.6}
+.dashboardRefresh :global(.connectProfileQuickGrid){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.dashboardRefresh :global(.connectProfileQuick){min-height:74px;padding:14px;border:1px solid #e4edf1;border-radius:16px;background:#fff;box-shadow:0 6px 20px #24445a08;transition:transform .18s,box-shadow .18s}
+.dashboardRefresh :global(.connectProfileQuick:hover){transform:translateY(-2px);box-shadow:0 12px 25px #24445a12}
+.dashboardRefresh :global(.connectProfileSectionHead){margin:30px 0 14px}
+.dashboardRefresh :global(.connectProfileSpaces){grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.dashboardRefresh :global(.connectProfileSpace){min-height:88px;padding:14px;border-radius:16px;border-color:#e3edf0;box-shadow:0 5px 18px #24445a07;transition:transform .18s,border-color .18s,box-shadow .18s}
+.dashboardRefresh :global(.connectProfileSpace:hover){transform:translateY(-3px);border-color:#b9dcd9;box-shadow:0 12px 26px #24445a12}
+.dashboardRefresh :global(.connectProfileSpaceIcon){width:42px;height:42px;border-radius:14px}
+.dashboardRefresh :global(.connectProfileSpaceCopy strong){font-size:12px}
+.dashboardRefresh :global(.connectProfileSpaceCopy small){font-size:10px;line-height:1.45}
+.dashboardRefresh :global(.connectProfileBottom){margin-top:25px;padding:22px 24px;border-radius:19px;background:linear-gradient(105deg,#e8f3fb,#e2f5ed)}
+.dashboardRefresh :global(.connectProfileBottom h2){font-size:20px;margin:5px 0}
+.dashboardRefresh :global(.connectProfileBottom p){font-size:12px;color:#718b98;line-height:1.5}
+.dashboardRefresh :global(.connectProfileBottom>a){transition:transform .18s,background .18s}
+.dashboardRefresh :global(.connectProfileBottom>a:hover){transform:translateY(-2px);background:#105f75}
+.dashboardRefresh :global(.connectProfileFooter){font-size:11px}
+.dashboardRefresh :global(.connectDashNotice){border-radius:14px}
+.profileRefresh :global(.authShell){min-height:100vh;background:radial-gradient(ellipse at 10% 0%,#e4f3fb 0,transparent 36%),radial-gradient(ellipse at 95% 8%,#e3f6ee 0,transparent 30%),#f4f8fb;padding:28px 16px 60px}
+.profileRefresh :global(.authCard){width:min(760px,100%);padding:clamp(22px,4vw,42px);border:1px solid #e1ebef;border-radius:24px;box-shadow:0 18px 55px #183f550e}
+.profileRefresh :global(.authCard h1){font-size:clamp(30px,5vw,42px);letter-spacing:-.055em;color:#1d4055;margin:8px 0}
+.profileRefresh :global(.authCard>p){color:#728894;line-height:1.65;font-size:13px}
+.profileRefresh :global(.authCard label){display:grid;gap:8px;margin:18px 0;color:#345366;font-size:12px;font-weight:750}
+.profileRefresh :global(.authCard label>span){display:inline;color:#80939d;font-weight:500}
+.profileRefresh :global(.authCard input:not([type=checkbox]),.authCard textarea,.authCard select){width:100%;min-height:46px;border:1px solid #dce8ed;border-radius:12px;background:#fbfdfe;padding:12px 14px;color:#203e50;font:500 14px 'DM Sans',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
+.profileRefresh :global(.authCard textarea){min-height:112px;resize:vertical}
+.profileRefresh :global(.authCard input:focus,.authCard textarea:focus,.authCard select:focus){border-color:#2994a2;box-shadow:0 0 0 3px #2994a21b}
+.profileRefresh :global(.authCard label small){font-size:11px;color:#81949e;font-weight:450;line-height:1.5}
+.profileRefresh :global(.authCard .eyebrow){margin-top:25px;color:#167b91}
+.profileRefresh :global(.authCard .button){min-height:46px;border:0;border-radius:12px;background:linear-gradient(105deg,#1677a8,#159b86);font-weight:800;cursor:pointer}
+.profileRefresh :global(.authCard .button:disabled){opacity:.55;cursor:not-allowed}
+.profileRefresh :global(.authCard .message){padding:12px 14px;border-radius:12px;background:#e8f5f0;color:#276c5d}
+@media(max-width:1100px){.dashboardRefresh :global(.connectProfileSpaces){grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:780px){
+ .dashboardRefresh :global(.connectProfileLayout){width:calc(100% - 24px);margin:12px auto}
+ .dashboardRefresh :global(.connectProfileSidebar){border-radius:17px}
+ .dashboardRefresh :global(.connectProfileHero){min-height:250px;border-radius:21px;padding:24px 19px}
+ .dashboardRefresh :global(.connectProfileHero h1){font-size:clamp(25px,7vw,34px)}
+ .dashboardRefresh :global(.connectProfileHeroIdentity){gap:11px}
+ .dashboardRefresh :global(.connectProfileHeroAvatar){width:50px;height:50px;font-size:21px}
+ .dashboardRefresh :global(.connectProfileHeroArt){right:-5%;opacity:.22}
+ .dashboardRefresh :global(.connectProfileStatus){align-items:flex-start;flex-wrap:wrap}
+ .dashboardRefresh :global(.connectProfileStatus>div){flex-basis:calc(100% - 28px)}
+ .dashboardRefresh :global(.connectProfileStatus>a){margin-left:23px}
+ .dashboardRefresh :global(.connectProfileQuickGrid){grid-template-columns:1fr}
+ .dashboardRefresh :global(.connectProfileQuick){min-height:65px}
+ .dashboardRefresh :global(.connectProfileSpaces){grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .dashboardRefresh :global(.connectProfileSpace){min-height:78px;padding:10px;gap:8px}
+ .dashboardRefresh :global(.connectProfileSpaceIcon){width:35px;height:35px;font-size:16px}
+ .dashboardRefresh :global(.connectProfileSpaceCopy strong){font-size:11px}
+ .dashboardRefresh :global(.connectProfileSpaceCopy small){font-size:9px}
+ .dashboardRefresh :global(.connectProfileBottom){align-items:flex-start;flex-direction:column}
+ .dashboardRefresh :global(.connectProfileBottom>a){width:100%;text-align:center}
+}
+@media(max-width:390px){.dashboardRefresh :global(.connectProfileSpaces){grid-template-columns:1fr}.dashboardRefresh :global(.connectProfileFeatureCount){font-size:9px}}
+@media(prefers-reduced-motion:reduce){.dashboardRefresh :global(.connectProfileSpace),.dashboardRefresh :global(.connectProfileQuick),.dashboardRefresh :global(.connectProfilePrimary){transition:none}}
+
+.dashboardRefresh :global(a:focus-visible),.profileRefresh :global(a:focus-visible),.profileRefresh :global(button:focus-visible){outline:3px solid #2a9ba2;outline-offset:3px;border-radius:8px}
+.dashboardRefresh :global(.connectProfileNav a:focus-visible),.dashboardRefresh :global(.connectProfileSpace:focus-visible),.dashboardRefresh :global(.connectProfileQuick:focus-visible){background:#eaf6f5;box-shadow:0 0 0 3px #2a9ba222}

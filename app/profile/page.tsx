@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
+import styles from "@/app/account/dashboard-refresh.module.css";
 
 type Profile = { handle?: string; display_name?: string; bio?: string; country?: string; region?: string; interests?: string; visibility?: string; age?: number; gender?: string; interested_in?: string; relationship_goal?: string };
 
@@ -41,7 +42,7 @@ export default function ProfilePage() {
     finally { setSaving(false); }
   }
 
-  return <main className="authShell"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.png" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><form className="authCard" onSubmit={submit}>
+  return <main className={`${styles.profileRefresh} authShell`}><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.png" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><form className="authCard" onSubmit={submit}>
     <div className="eyebrow">YOUR CONNECT IDENTITY</div><h1>Edit your profile</h1>
     <p>Choose what other members can see. Your precise location and verification documents are never displayed here.</p>
     {loading ? <p role="status">Loading your profile…</p> : error ? <div role="alert" className="message"><p>{error}</p><p>If you are not signed in, log in and return to profile setup. If profile storage is unavailable, try again after the service is configured.</p><p><Link href="/login">Log in</Link> · <Link href="/account">Account overview</Link></p></div> : <>
