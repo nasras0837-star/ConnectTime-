@@ -3,13 +3,13 @@ import { Client, Databases } from "node-appwrite";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 
 import type { AdultStatus, AccountStatus, MemberAccess } from "./access-policy";
-import { isEligible, isMissingAccessRecord } from "./access-policy";
+import { isActiveMember, isEligible, isMissingAccessRecord } from "./access-policy";
 
 type AccessDecision =
   | { allowed: true; access: MemberAccess }
   | { allowed: false; status: 401 | 403 | 503; reason: "unauthenticated" | "not_eligible" | "not_configured" | "access_unavailable" };
 
-export async function checkMemberAccess(): Promise<AccessDecision> {
+export async function checkMemberAccess(options: { requireAdultVerification?: boolean } = {}): Promise<AccessDecision> {
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
   const apiKey = process.env.APPWRITE_API_KEY;
@@ -27,7 +27,7 @@ export async function checkMemberAccess(): Promise<AccessDecision> {
     const databases = new Databases(client);
     const doc = await databases.getDocument(databaseId, collectionId, user.$id);
     const access = { adult_status: doc.adult_status as AdultStatus, account_status: doc.account_status as AccountStatus };
-    if (!isEligible(access)) return { allowed: false, status: 403, reason: "not_eligible" };
+    if (options.requireAdultVerification === false ? !isActiveMember(access) : !isEligible(access)) return { allowed: false, status: 403, reason: "not_eligible" };
     return { allowed: true, access };
   } catch (error) {
     // A first-time member may not have an access document until verification.

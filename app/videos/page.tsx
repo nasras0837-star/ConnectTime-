@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import ShortClips from "./short-clips";
 
 type Video = { id: string; title: string; creator: string; category: string; views: string; duration: string; description: string };
 type Signals = { likes: string[]; watched: string[]; hidden: string[]; categoryScores: Record<string, number> };
@@ -35,6 +36,14 @@ export default function VideosPage() {
         setInterests(JSON.parse(localStorage.getItem("ct-video-interests") || "[]"));
         setHistory(JSON.parse(localStorage.getItem("ct-video-searches") || "[]"));
         setSignals(readSignals());
+        fetch("/api/video-tube/interests", { cache: "no-store" }).then(async response => {
+          if (!response.ok) return null;
+          return response.json();
+        }).then(data => {
+          if (!data) return;
+          if (Array.isArray(data.searches)) { setHistory(data.searches); localStorage.setItem("ct-video-searches", JSON.stringify(data.searches)); }
+          if (Array.isArray(data.interests)) { setInterests(data.interests); localStorage.setItem("ct-video-interests", JSON.stringify(data.interests)); }
+        }).catch(() => { /* Device-local recommendations remain available. */ });
       } catch { /* Ignore malformed local preferences. */ }
       setReady(true);
     });
@@ -45,6 +54,16 @@ export default function VideosPage() {
     if (!clean) return;
     const nextHistory = [clean, ...history.filter((item) => item !== clean)].slice(0, 12);
     setHistory(nextHistory); localStorage.setItem("ct-video-searches", JSON.stringify(nextHistory));
+    fetch("/api/video-tube/interests", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: clean }) }).then(async response => {
+      if (!response.ok) return null;
+      return response.json();
+    }).then(data => {
+      if (data?.topic && data.topic !== "General") {
+        const nextInterests = [data.topic, ...interests.filter(item => item !== data.topic)].slice(0, 8);
+        setInterests(nextInterests);
+        localStorage.setItem("ct-video-interests", JSON.stringify(nextInterests));
+      }
+    }).catch(() => { /* Local search history remains available. */ });
     const matched = categories.slice(1).find((category) => clean.includes(category.toLowerCase()));
     if (matched) {
       const nextInterests = [matched, ...interests.filter((item) => item !== matched)].slice(0, 8);
@@ -77,6 +96,7 @@ export default function VideosPage() {
       <form className="videoSearch" onSubmit={(event) => {event.preventDefault(); submitSearch();}}><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search videos, creators, or interests…" aria-label="Search videos"/><button type="submit">Search</button></form>
       {history.length > 0 && <div className="searchHistory"><span>Recent searches</span>{history.slice(0,4).map((item) => <button key={item} onClick={() => {setQuery(item); submitSearch(item);}}>{item}</button>)}</div>}
     </section>
+    <ShortClips searchQuery={query} interests={interests} />
     <section className="videoFeed"><div className="videoFilters">{categories.map((category) => <button key={category} className={active === category ? "selected" : ""} onClick={() => setActive(category)}>{category}</button>)}</div>
       {ready && <p className="interestNote">Personalized using searches, likes and watch history · {signals.likes.length} liked · {signals.watched.length} watched</p>}
       <div className="videoGrid">{feed.map((video) => <article className="videoCard" key={video.id}><div className="videoFrame"><iframe src={`https://www.youtube-nocookie.com/embed/${video.id}`} title={video.title} loading="lazy" onLoad={() => markWatched(video)} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen/><span className="duration">{video.duration}</span></div><div className="videoMeta"><span className="videoCategory">{video.category}</span><h2>{video.title}</h2><p>{video.creator} · {video.views} views</p><small>{video.description}</small><div className="videoActions"><button className={signals.likes.includes(video.id) ? "liked" : ""} onClick={() => toggleLike(video)} aria-pressed={signals.likes.includes(video.id)}>{signals.likes.includes(video.id) ? "♥ Liked" : "♡ Like"}</button><button onClick={() => hideVideo(video)}>Not interested</button></div></div></article>)}</div>
