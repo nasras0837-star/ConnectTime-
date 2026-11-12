@@ -1906,3 +1906,38 @@ body :is(iframe,embed,object){background-color:#071b4b!important;border-color:va
 body :is(.search,.search input,.searchBox input,.search-box input,[role="search"] input){background:#071b4b!important;color:#f5f9ff!important}
 body :is(.search,.searchBox,.search-box,[role="search"]){border-color:var(--ct-control-border)!important}
 body :is(button,a,[role="button"],input,select,textarea):focus-visible{outline:2px solid #7df2ff!important;outline-offset:2px}
+
+
+/* Homepage readability refresh: white canvas, deep navy cards, crisp white copy */
+html,body{color-scheme:light!important}
+body{background:#fff!important;color:#17324a!important}
+.connectSocialHome{background:#fff!important;color:#17324a!important;min-height:100vh}
+.connectSocialHome .connectTopbar{background:#fff!important;border-color:#e6edf2!important}
+.connectSocialHome .connectWelcome{background:#102b50!important;color:#fff!important;border:1px solid #173b67!important;border-radius:22px;overflow:hidden}
+.connectSocialHome .connectWelcomeCopy h1,.connectSocialHome .connectWelcomeCopy p,.connectSocialHome .connectWelcomeProof{color:#fff!important}
+.connectSocialHome .connectWelcomeCopy p{color:#d8e7f7!important;line-height:1.7}
+.connectSocialHome .connectWelcomeEyebrow{color:#8ee7dc!important;letter-spacing:.12em}
+.connectSocialHome .connectWelcomePrimary{background:linear-gradient(110deg,#087cff,#079eae)!important;color:#fff!important}
+.connectSocialHome .connectWelcomeSecondary{color:#fff!important;border:1px solid #7898bd!important;background:#173a65!important}
+.connectSocialHome .connectRailCard,.connectSocialHome .connectRailSafety,.connectSocialHome .connectRightCard,.connectSocialHome .connectExploreCard,.connectSocialHome .connectDynamicPanel{background:linear-gradient(145deg,#102b50,#0b2142)!important;color:#f5f9ff!important;border:1px solid #24466c!important;border-radius:16px;box-shadow:0 8px 22px rgba(12,36,68,.09)}
+.connectSocialHome .connectRailCard a,.connectSocialHome .connectRightCard a,.connectSocialHome .connectExploreCard,.connectSocialHome .connectDynamicPanel a{color:#f4f8ff!important}
+.connectSocialHome .connectRailLabel,.connectSocialHome .connectRightCardHead,.connectSocialHome .connectRightTitle,.connectSocialHome .connectSectionHeading>div>span{color:#8fe4db!important}
+.connectSocialHome .connectRailNav a{color:#d5e5f5!important;border-radius:10px}
+.connectSocialHome .connectRailNav a:hover,.connectSocialHome .connectRailNav a.active{background:#1d4775!important;color:#fff!important}
+.connectSocialHome .connectRailSafety p,.connectSocialHome .connectRightCard p,.connectSocialHome .connectExploreText small,.connectSocialHome .connectSectionHeading p{color:#c2d3e7!important}
+.connectSocialHome .connectExploreCard{min-height:112px;padding:18px;gap:13px}
+.connectSocialHome .connectExploreText strong{display:block;color:#fff!important;font-size:15px;line-height:1.35}
+.connectSocialHome .connectExploreText small{display:block;margin-top:6px;font-size:12px;line-height:1.5}
+.connectSocialHome .connectExploreArrow{color:#83dcd4!important}
+.connectSocialHome .connectExploreIcon{box-shadow:inset 0 0 0 1px #ffffff20}
+.connectSocialHome .connectSectionHeading h2{color:#fff!important}
+.connectSocialHome .connectSectionHeading>a{color:#8fe4db!important}
+.connectSocialHome .connectQuickLink{background:#15365f!important;border:1px solid #2b4d75!important;border-radius:12px;padding:12px}
+.connectSocialHome .connectQuickLink>span{color:#9be8df!important}
+.connectSocialHome .connectQuickLink small{color:#c2d3e7!important}
+.connectSocialHome .connectRailFooter{color:#7a8fa5!important}
+.connectSocialHome .connectRailFooter a{color:#58738d!important}
+.connectSocialHome .connectTopLinks a,.connectSocialHome .connectLogin{color:#34536d!important}
+.connectSocialHome .connectSearch{background:#f3f7fa!important;border:1px solid #e0eaf0!important;color:#4a687e!important}
+.connectSocialHome .connectJoin{color:#fff!important}
+@media(max-width:780px){.connectSocialHome .connectTopbar{background:#fff!important}.connectSocialHome .connectExploreCard{min-height:98px;padding:14px}.connectSocialHome .connectExploreText strong{font-size:14px}.connectSocialHome .connectExploreText small{font-size:11px}}
