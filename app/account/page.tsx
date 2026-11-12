@@ -28,6 +28,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
   const user = await createNextServerHelpers({ endpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT, projectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID }).getLoggedInUser();
   if (!user) redirect("/login");
   const decision = await checkMemberAccess();
+  if (!decision.allowed) redirect("/verification");
   const status = decision.allowed ? "Active · Verified adult" : decision.reason === "not_eligible" ? "Pending · Verification or activation required" : decision.reason === "not_configured" ? "Setup required · Access settings are not configured" : decision.reason === "access_unavailable" ? "Temporarily unavailable · Access could not be confirmed" : "Signed in";
   const displayName = user.name || "Connect member";
   const initial = (displayName || user.email || "C").trim().charAt(0).toUpperCase() || "C";
