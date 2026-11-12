@@ -1,12 +1,14 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
-import { Client, Databases, Query, TablesDB } from "node-appwrite";
+import { Client, Query, TablesDB } from "node-appwrite";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Decision = { id?: string; vendorData?: string; status?: string; person?: { dateOfBirth?: string } };
 type Payload = { verification?: Decision };
+
+const MEMBER_ACCESS_TABLE_ID = "member_access";
 
 function ageOnDate(dateOfBirth: string, today = new Date()) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) return null;
@@ -43,42 +45,93 @@ export async function POST(request: Request) {
   const apiKey = process.env.APPWRITE_API_KEY;
   const databaseId = process.env.APPWRITE_DATABASE_ID;
   const recordsTableId = process.env.APPWRITE_VERIFICATION_RECORDS_TABLE_ID;
-  const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
-  const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
-  if (!endpoint || !projectId || !apiKey || !databaseId || !recordsTableId || !accessDatabaseId || !accessCollectionId) return NextResponse.json({ error: "storage_not_configured" }, { status: 503 });
+  if (!endpoint || !projectId || !apiKey || !databaseId || !recordsTableId) {
+    return NextResponse.json({ error: "storage_not_configured" }, { status: 503 });
+  }
 
   const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
   const tables = new TablesDB(client);
-  const databases = new Databases(client);
   try {
-    const found = await tables.listRows({ databaseId, tableId: recordsTableId, queries: [Query.equal("provider_session_id", sessionId), Query.equal("user_id", userId), Query.equal("provider", "veriff"), Query.limit(2)] });
+    const found = await tables.listRows({
+      databaseId,
+      tableId: recordsTableId,
+      queries: [
+        Query.equal("provider_session_id", sessionId),
+        Query.equal("user_id", userId),
+        Query.equal("provider", "veriff"),
+        Query.limit(2)
+      ]
+    });
     if (found.rows.length !== 1) return NextResponse.json({ error: "verification_session_not_found" }, { status: 404 });
     const record = found.rows[0];
-    if (["verified", "failed"].includes(String(record.status))) return NextResponse.json({ received: true, duplicate: true });
+    if (["verified", "failed"].includes(String(record.status))) {
+      return NextResponse.json({ received: true, duplicate: true }, { headers: { "Cache-Control": "no-store" } });
+    }
+
     let status = "review";
     let adultStatus: "pending" | "verified" | "rejected" | "review" = "review";
     let accountStatus: "pending" | "active" = "pending";
     let verifiedAt: string | null = null;
     if (decision === "approved") {
-      const age = typeof verification?.person?.dateOfBirth === "string" ? ageOnDate(verification.person.dateOfBirth) : null;
+      const age = typeof verification?.person?.dateOfBirth === "string"
+        ? ageOnDate(verification.person.dateOfBirth)
+        : null;
       if (age !== null && age >= 18) {
-        status = "verified"; adultStatus = "verified"; accountStatus = "active"; verifiedAt = new Date().toISOString();
+        status = "verified";
+        adultStatus = "verified";
+        accountStatus = "active";
+        verifiedAt = new Date().toISOString();
       } else if (age !== null && age < 18) {
-        status = "failed"; adultStatus = "rejected";
+        status = "failed";
+        adultStatus = "rejected";
       }
     } else if (["declined", "expired", "abandoned"].includes(decision)) {
-      status = "failed"; adultStatus = "rejected";
+      status = "failed";
+      adultStatus = "rejected";
     } else if (decision === "resubmission_requested" || decision === "review") {
-      status = "review"; adultStatus = "review";
+      status = "review";
+      adultStatus = "review";
     }
+
     const now = new Date().toISOString();
-    await tables.updateRow({ databaseId, tableId: recordsTableId, rowId: record.$id, data: { status, ...(verifiedAt ? { verified_at: verifiedAt } : {}), updated_at: now } });
-    const access = await databases.getDocument(accessDatabaseId, accessCollectionId, userId).catch(() => null);
-    if (!access) {
-      await databases.createDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus });
+
+    // Upsert the access row before marking the verification event terminal.
+    // If Appwrite fails, Veriff can retry the webhook without losing the access update.
+    const existingAccess = await tables.getRow({
+      databaseId,
+      tableId: MEMBER_ACCESS_TABLE_ID,
+      rowId: userId
+    }).catch((error: unknown) => {
+      const code = typeof error === "object" && error !== null && "code" in error
+        ? (error as { code?: unknown }).code
+        : undefined;
+      if (code === 404) return null;
+      throw error;
+    });
+
+    if (existingAccess) {
+      await tables.updateRow({
+        databaseId,
+        tableId: MEMBER_ACCESS_TABLE_ID,
+        rowId: userId,
+        data: { adult_status: adultStatus, account_status: accountStatus }
+      });
     } else {
-      await databases.updateDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus, updated_at: now });
+      await tables.createRow({
+        databaseId,
+        tableId: MEMBER_ACCESS_TABLE_ID,
+        rowId: userId,
+        data: { adult_status: adultStatus, account_status: accountStatus }
+      });
     }
+
+    await tables.updateRow({
+      databaseId,
+      tableId: recordsTableId,
+      rowId: record.$id,
+      data: { status, ...(verifiedAt ? { verified_at: verifiedAt } : {}), updated_at: now }
+    });
+
     return NextResponse.json({ received: true }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Veriff decision webhook failed", error instanceof Error ? error.message : "unknown");
