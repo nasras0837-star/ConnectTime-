@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       countryCode: String(s.countrycode || ""), language: String(s.language || ""), tags: String(s.tags || ""),
       codec: String(s.codec || ""), bitrate: Number(s.bitrate || 0), homepage: String(s.homepage || ""),
       streamUrl: String(s.url_resolved || ""), votes: Number(s.votes || 0),
-    })) : [];
+    }));
     return NextResponse.json({ stations, count: stations.length, source: "Radio Browser community directory" }, { headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" } });
   } catch {
     return NextResponse.json({ error: "Live radio directory is temporarily unavailable. Please retry." }, { status: 502 });
