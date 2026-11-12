@@ -863,6 +863,19 @@ html body .ctProHeroCopy .actions .ctHomeLoginButton:focus-visible{outline:3px s
  <p class="ctWeatherCredit">Weather data provided by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Your browser asks permission before sharing precise location; location is used only to retrieve this weather forecast.</p>
 </section>
 
+<section class="ctRadioFinder ctPublicHomeRadio" id="radio" aria-labelledby="ctRadioTitle">
+ <div class="ctRadioFinderIntro"><span class="ctRadioFinderIcon" aria-hidden="true">📻</span><div><h3 id="ctRadioTitle">World Radio</h3><p>Search and listen to public stations from anywhere.</p></div><a class="ctRadioBrowseLink" href="https://connect-web-7ypt.onrender.com/radio" target="_blank" rel="noopener noreferrer">All stations ↗</a></div>
+ <form class="ctRadioSearchForm" id="ctRadioSearchForm" role="search">
+  <label class="ctRadioSrOnly" for="ctRadioQuery">Search radio stations by name, country or genre</label>
+  <input id="ctRadioQuery" type="search" maxlength="100" placeholder="Station, country or genre (e.g. jazz, Brazil)" autocomplete="off">
+  <button class="ctRadioSearchButton" type="submit">Search worldwide</button>
+ </form>
+ <div class="ctRadioSearchStatus" id="ctRadioSearchStatus" role="status" aria-live="polite">Search thousands of public internet radio stations worldwide.</div>
+ <div class="ctRadioResults" id="ctRadioResults" aria-live="polite"></div>
+ <div class="ctRadioNowPlaying" id="ctRadioNowPlaying"><div><b>NOW PLAYING</b><span id="ctRadioNowPlayingName">Choose a station to listen</span></div><audio id="ctRadioAudio" controls preload="none" aria-label="World Radio audio player"></audio></div>
+ <p class="ctRadioFinderNote">Free public streams. Availability depends on each station and may vary by location.</p>
+</section>
+
 <section class="liveNewsPanel" id="live-video-news" aria-labelledby="liveNewsTitle">
  <div class="liveNewsHead"><div><div class="eyebrow">CONNECT · LIVE VIDEO NEWS</div><h2 id="liveNewsTitle">Watch the world as it happens.</h2><p>Choose an official broadcaster to try its live video stream. Playback depends on the broadcaster, regional availability, and whether a live stream is currently offered.</p></div><span class="liveNewsPill"><i></i> Official broadcaster channels</span></div>
  <div class="liveNewsGrid">
@@ -1141,14 +1154,22 @@ html body .ctProHeroCopy .actions .ctHomeLoginButton:focus-visible{outline:3px s
   if(query.length<2){status.textContent='Enter at least two characters to search.';return}
   searchButton.disabled=true;searchButton.textContent='Searching…';results.replaceChildren();status.textContent='Searching public radio stations…';
   try{
-   const url=new URL(endpoint);url.searchParams.set('name',query);url.searchParams.set('limit','12');url.searchParams.set('hidebroken','true');url.searchParams.set('order','clickcount');url.searchParams.set('reverse','true');
-   const response=await fetch(url.href,{headers:{'Accept':'application/json'}});
-   if(!response.ok)throw new Error('Radio directory unavailable');
-   const stations=await response.json();
-   if(!Array.isArray(stations))throw new Error('Unexpected radio directory response');
-   stations.forEach(renderStation);
+   const searchBy=async field=>{
+    const url=new URL(endpoint);url.searchParams.set(field,query);url.searchParams.set('limit','12');url.searchParams.set('hidebroken','true');url.searchParams.set('order','clickcount');url.searchParams.set('reverse','true');
+    const response=await fetch(url.href,{headers:{'Accept':'application/json'}});
+    if(!response.ok)throw new Error('Radio directory unavailable');
+    const stations=await response.json();
+    if(!Array.isArray(stations))throw new Error('Unexpected radio directory response');
+    return stations;
+   };
+   const batches=await Promise.allSettled(['name','country','tag'].map(searchBy));
+   const stations=batches.filter(item=>item.status==='fulfilled').flatMap(item=>item.value);
+   if(!stations.length)throw new Error('No radio search sources responded');
+   const unique=new Map();
+   stations.forEach(station=>{if(station.stationuuid&&!unique.has(station.stationuuid))unique.set(station.stationuuid,station)});
+   [...unique.values()].slice(0,18).forEach(renderStation);
    const count=results.children.length;
-   status.textContent=count?('Found '+count+' stations. Select Play to listen here.'):'No playable stations found. Try another station name.';
+   status.textContent=count?('Found '+count+' stations. Select Play to listen here.'):'No playable stations found. Try another station, country or genre.';
   }catch(error){status.textContent='Radio search is temporarily unavailable. Please try again shortly.'}
   finally{searchButton.disabled=false;searchButton.textContent='Search stations'}
  });
@@ -1435,6 +1456,30 @@ header{background:#080d1fe8;border-bottom:1px solid #33436c;backdrop-filter:blur
 .hero p,.proof,.head p,.tile p,.topic p,.community p,.post p,.notice{color:#b5c4e2}.heroArt{background:radial-gradient(circle at 52% 48%,#334d9b,#171d4d 60%,#10172f);box-shadow:0 25px 70px #152d7555}.heroArt:before{background:#759fff25}.heroArt:after{background:#24d9e833}.orb{border-color:#8dcfff88;box-shadow:0 0 0 20px #7e9cff18,0 0 0 42px #7e9cff12}.centerLogo,.float{background:#142449eF;border-color:#536da8;color:#f5f7ff;box-shadow:0 14px 35px #02081799}.float small{color:#b5c4e2}
 .metrics{background:linear-gradient(105deg,#101c45,#28317a 58%,#54266e);box-shadow:0 15px 34px #142d6855}.metrics b{color:#24d9e8}.tile,.post,.topic{background:#121b35eF;border-color:#35466f;box-shadow:0 12px 32px #02081755}.tile:hover,.topic:hover{box-shadow:0 18px 38px #2848a855}.ico,.tile:nth-child(4n+1) .ico,.tile:nth-child(4n+2) .ico,.tile:nth-child(4n+3) .ico,.tile:nth-child(4n) .ico{background:#1e315d;color:#a9eaff}.panel{background:linear-gradient(125deg,#111d42,#202454 55%,#3b2054);border-color:#3d4f80}.panelTop p{color:#b5c4e2}.postTop small,.stats{color:#aab9d9}.avatar{background:linear-gradient(140deg,#3478ff,#8157ff,#e65bff)}.join{background:linear-gradient(110deg,#101c45,#4a2b91 58%,#a52b91)}.join p{color:#e4eaff}.notice{background:#121b35;border-color:#35466f}footer{border-color:#33436c;color:#aebbd8}
 @media(max-width:620px){.nav{background:#0d1730f5;border-color:#35466f}.metrics{background:linear-gradient(105deg,#101c45,#28317a 58%,#54266e)}}
+</style>
+
+<style id="connect-compact-public-home-radio">
+.ctPublicHomeRadio{margin:12px 0 24px!important;padding:15px 17px!important;border:1px solid #294c85!important;border-radius:18px!important;background:linear-gradient(135deg,#0d1d43,#14295b 58%,#251e58)!important;box-shadow:0 14px 34px #06112c55!important;color:#f5f8ff!important}
+.ctPublicHomeRadio .ctRadioFinderIntro{margin-bottom:10px!important;gap:10px}
+.ctPublicHomeRadio .ctRadioFinderIcon{width:36px;height:36px;flex-basis:36px;border-radius:11px;font-size:18px;background:#1d3a70}
+.ctPublicHomeRadio .ctRadioFinderIntro h3{font-size:16px!important;margin:0 0 2px!important;color:#fff!important}
+.ctPublicHomeRadio .ctRadioFinderIntro p{font-size:10px!important;color:#c8d9f6!important}
+.ctPublicHomeRadio .ctRadioBrowseLink{margin-left:auto;white-space:nowrap;font-size:10px;font-weight:850;color:#75eaff!important}
+.ctPublicHomeRadio .ctRadioSearchForm{gap:7px}
+.ctPublicHomeRadio .ctRadioSearchForm input{padding:9px 11px;border-color:#45649b;background:#0b1736;color:#fff;font-size:11px}
+.ctPublicHomeRadio .ctRadioSearchButton{padding:9px 12px;font-size:10px;white-space:nowrap}
+.ctPublicHomeRadio .ctRadioSearchStatus{min-height:15px;margin:7px 0;color:#bfd2f0!important;font-size:10px}
+.ctPublicHomeRadio .ctRadioResults{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:1px 1px 7px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.ctPublicHomeRadio .ctRadioResult{flex:0 0 min(245px,76vw);padding:8px 9px;border-color:#365487;background:#10234b;scroll-snap-align:start}
+.ctPublicHomeRadio .ctRadioStationInfo b{color:#fff;font-size:10px}
+.ctPublicHomeRadio .ctRadioStationInfo small{color:#bfd2f0!important;font-size:9px}
+.ctPublicHomeRadio .ctRadioPlayButton{padding:7px 9px;font-size:10px}
+.ctPublicHomeRadio .ctRadioNowPlaying{grid-template-columns:minmax(0,1fr) minmax(170px,1.2fr);gap:10px;margin-top:7px;padding:9px 11px;border-color:#365487;background:#0b1736}
+.ctPublicHomeRadio .ctRadioNowPlaying b{color:#73eaff}
+.ctPublicHomeRadio .ctRadioNowPlaying span{color:#d1e0f8}
+.ctPublicHomeRadio .ctRadioNowPlaying audio{height:30px}
+.ctPublicHomeRadio .ctRadioFinderNote{margin:7px 0 0;color:#b7c9e8;font-size:9px}
+@media(max-width:620px){.ctPublicHomeRadio{padding:13px 11px!important}.ctPublicHomeRadio .ctRadioFinderIntro{flex-wrap:wrap}.ctPublicHomeRadio .ctRadioBrowseLink{margin-left:auto}.ctPublicHomeRadio .ctRadioSearchForm{flex-direction:row}.ctPublicHomeRadio .ctRadioSearchButton{width:auto}.ctPublicHomeRadio .ctRadioNowPlaying{grid-template-columns:1fr}.ctPublicHomeRadio .ctRadioNowPlaying audio{width:100%}}
 </style>
 
 <style id="connect-universe-text-visibility">
