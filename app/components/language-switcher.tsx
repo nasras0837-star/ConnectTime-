@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { languages } from "@/lib/i18n";
 import { regionCountries, useLanguage } from "./language-provider";
 
@@ -10,13 +10,29 @@ const action: React.CSSProperties = { display: "inline-flex", alignItems: "cente
 const picker: React.CSSProperties = { maxWidth: 150, minHeight: 38, padding: "7px 10px", border: "1px solid #4d82c2", borderRadius: 10, background: "#102b55", color: "#fff", fontWeight: 700, fontSize: 14 };
 export function LanguageSwitcher() {
   const { language, setLanguage, t, countryCode, setCountryCode } = useLanguage();
-  const [mode, setMode] = useState<WidgetMode>("expanded");
-  useEffect(() => {
-    try { const saved = localStorage.getItem(STORAGE_KEY); if (saved === "minimized" || saved === "hidden" || saved === "closed") setMode(saved); } catch {}
-  }, []);
+  const mode = useSyncExternalStore(
+    (notify) => {
+      window.addEventListener("storage", notify);
+      window.addEventListener("connect-region-widget-mode", notify);
+      return () => {
+        window.removeEventListener("storage", notify);
+        window.removeEventListener("connect-region-widget-mode", notify);
+      };
+    },
+    () => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved === "minimized" || saved === "hidden" || saved === "closed" ? saved : "expanded";
+      } catch { return "expanded"; }
+    },
+    () => "expanded",
+  );
   const changeMode = (next: WidgetMode) => {
-    setMode(next);
-    try { if (next === "expanded") localStorage.removeItem(STORAGE_KEY); else localStorage.setItem(STORAGE_KEY, next); } catch {}
+    try {
+      if (next === "expanded") localStorage.removeItem(STORAGE_KEY);
+      else localStorage.setItem(STORAGE_KEY, next);
+    } catch {}
+    window.dispatchEvent(new Event("connect-region-widget-mode"));
   };
   const reopenStyle: React.CSSProperties = { ...action, position: "fixed", left: 18, bottom: 18, zIndex: 2147483000, minHeight: 42, padding: "9px 14px", borderRadius: 13, background: "#061638", fontSize: 13 };
   if (mode === "closed") return <button type="button" style={{ ...reopenStyle, width: 44, height: 44, borderRadius: "50%", padding: 0 }} onClick={() => changeMode("expanded")} aria-label="Reopen region and language settings" title="Region and language settings">🌐</button>;
