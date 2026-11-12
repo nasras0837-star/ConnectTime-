@@ -29,5 +29,9 @@ describe("sitewide light-surface contrast", () => {
       expect(appContrast).toContain(selector);
     }
     expect(appContrast).toContain("-webkit-text-fill-color: #edf6ff !important");
+    const descendantGuard = homepage.slice(homepage.lastIndexOf(") :where(*:not(button)"));
+    expect(descendantGuard).toContain("[class*=\"card\" i]");
+    expect(descendantGuard).toContain("[class*=\"box\" i]");
+    expect(descendantGuard).toContain("color: #edf6ff !important");
   });
 });
