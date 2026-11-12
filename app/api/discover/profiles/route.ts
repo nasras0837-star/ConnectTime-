@@ -3,6 +3,7 @@ import { Client, Databases, Query } from "node-appwrite";
 import { checkMemberAccess } from "@/lib/member-access";
 import { communitySafetyStore, currentCommunityMember } from "@/lib/community-safety";
 import { isEligible } from "@/lib/access-policy";
+import { canViewProfile } from "@/lib/profile-visibility";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,29 +21,37 @@ export async function GET(request: Request) {
   try {
     const profileTableId = process.env.APPWRITE_PROFILES_TABLE_ID;
     const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
+    const requestsTableId = process.env.APPWRITE_FRIEND_REQUESTS_TABLE_ID;
     const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
     const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
     const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
     const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
     const apiKey = process.env.APPWRITE_API_KEY;
-    if (!profileTableId || !blocksTableId || !accessDatabaseId || !accessCollectionId || !endpoint || !projectId || !apiKey) {
+    if (!profileTableId || !blocksTableId || !requestsTableId || !accessDatabaseId || !accessCollectionId || !endpoint || !projectId || !apiKey) {
       throw new Error("Profile discovery storage is not fully configured.");
     }
     const { tablesDB, databaseId } = communitySafetyStore();
-    const [profiles, outgoingBlocks, incomingBlocks] = await Promise.all([
-      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("visibility", ["public", "members"]), Query.orderDesc("$updatedAt"), Query.limit(100)] }),
+    const [profiles, outgoingBlocks, incomingBlocks, sentConnections, receivedConnections] = await Promise.all([
+      tablesDB.listRows({ databaseId, tableId: profileTableId, queries: [Query.equal("visibility", ["public", "members", "friends"]), Query.orderDesc("$updatedAt"), Query.limit(100)] }),
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", viewer.$id), Query.limit(500)] }),
-      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] })
+      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocked_user_id", viewer.$id), Query.limit(500)] }),
+      tablesDB.listRows({ databaseId, tableId: requestsTableId, queries: [Query.equal("sender_user_id", viewer.$id), Query.equal("status", "accepted"), Query.limit(500)] }),
+      tablesDB.listRows({ databaseId, tableId: requestsTableId, queries: [Query.equal("recipient_user_id", viewer.$id), Query.equal("status", "accepted"), Query.limit(500)] })
     ]);
     const blocked = new Set<string>([
       ...outgoingBlocks.rows.map(row => String(row.blocked_user_id || "")),
       ...incomingBlocks.rows.map(row => String(row.blocker_user_id || ""))
+    ]);
+    const connected = new Set<string>([
+      ...sentConnections.rows.map(row => String(row.recipient_user_id || "")),
+      ...receivedConnections.rows.map(row => String(row.sender_user_id || ""))
     ]);
     const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
     const databases = new Databases(client);
     const candidates = profiles.rows.filter(row => row.user_id && row.user_id !== viewer.$id && !blocked.has(String(row.user_id)));
     const eligible = await Promise.all(candidates.map(async row => {
       try {
+        if (!canViewProfile(String(row.visibility || ""), false, connected.has(String(row.user_id)))) return null;
         const access = await databases.getDocument(accessDatabaseId, accessCollectionId, String(row.user_id));
         if (!isEligible({ adult_status: access.adult_status, account_status: access.account_status })) return null;
         const publicProfile = {
