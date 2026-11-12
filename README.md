@@ -46,10 +46,10 @@ See [Appwrite go-live checklist](docs/APPWRITE_GO_LIVE_CHECKLIST.md) and the set
 
 ## Local development
 
-1. Install Node.js 22.
+1. Install Node.js 24 (matching the Render Blueprint).
 2. Configure an Appwrite Web platform for `localhost`.
 3. Copy `.env.example` to `.env.local` and enter test values.
-4. Run `npm ci`, then `npm run dev`.
+4. Run `npm install`, then `npm run dev` (this repository does not commit a package lockfile).
 5. Open `http://localhost:3000`.
 
 Never commit real environment secrets.
