@@ -1,26 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1080" role="img" aria-labelledby="title desc">
-<title id="title">Connect</title><desc id="desc">A colorful global connection emblem with three people and the Connect wordmark.</desc>
-<defs>
- <radialGradient id="bg" cx="48%" cy="42%" r="72%"><stop stop-color="#123fbd"/><stop offset=".58" stop-color="#07165c"/><stop offset="1" stop-color="#08052e"/></radialGradient>
- <radialGradient id="globe" cx="40%" cy="25%" r="75%"><stop stop-color="#19c9ff"/><stop offset=".48" stop-color="#0875ed"/><stop offset="1" stop-color="#102c9c"/></radialGradient>
- <linearGradient id="c" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff79d1"/><stop offset=".34" stop-color="#a000ff"/><stop offset=".68" stop-color="#ff176f"/><stop offset="1" stop-color="#ff9d27"/></linearGradient>
- <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
- <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
- <clipPath id="globeClip"><circle cx="600" cy="300" r="258"/></clipPath>
-</defs>
-<rect width="1200" height="1080" fill="#48b9f2"/><rect x="155" y="88" width="890" height="810" rx="58" fill="#050b3e"/>
-<circle cx="600" cy="300" r="270" fill="#087aff" opacity=".28" filter="url(#shadow)"/>
-<circle cx="600" cy="300" r="258" fill="url(#globe)" stroke="#14caff" stroke-width="7"/>
-<g transform="translate(0 35)" clip-path="url(#globeClip)" fill="#50d6ff" opacity=".48">
-<path d="M402 130l44-33 45 13 20 35-22 26-4 38-31 20-18-26-42-7-14-29zM550 82l48-20 35 15 8 29-30 17-4 32-35 11-29-32-24-8zM685 115l39-24 45 15 18 34-32 28-44-9-30-22zM748 240l46-16 40 23-3 46-33 25-34-24-32-5zM420 330l37-27 42 16 13 39-28 27-40-8zM662 375l45-22 38 16 8 46-31 29-49-19zM560 470l40-22 35 19 2 39-36 24-40-22z"/>
-</g>
-<path d="M270 368C235 222 325 89 480 82c116-5 208 58 224 149 6 33-10 56-42 63l-99 19c-37 7-56-11-61-43-8-49-42-79-92-76-70 4-110 66-98 136 12 69 70 111 137 99 27-5 51-18 72-37 24-21 47-28 76-22l56 12c-37 99-134 160-247 153-105-7-189-71-216-167z" fill="url(#c)" stroke="#ffb4f0" stroke-width="7" filter="url(#glow)"/>
-
-<g transform="translate(360 282)">
- <circle cx="60" cy="72" r="34" fill="#20c8ff"/><path d="M9 170c4-42 24-68 51-68s47 26 51 68c-28 26-75 28-102 0z" fill="#009ef5"/>
- <circle cx="152" cy="47" r="39" fill="#fff"/><path d="M89 177c4-52 29-85 63-85s59 33 63 85c-34 33-92 34-126 0z" fill="#fff"/>
- <circle cx="250" cy="72" r="34" fill="#ff319f"/><path d="M199 170c4-42 24-68 51-68s47 26 51 68c-28 26-75 28-102 0z" fill="#f01894"/>
-</g>
-<text x="600" y="790" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="112" font-weight="800" letter-spacing="-5" fill="#fff">Connect</text>
-<path d="M310 815Q600 750 895 810" fill="none" stroke="#d61bfa" stroke-width="9" stroke-linecap="round"/>
-<text x="600" y="965" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="55" font-weight="500" fill="#fff">Meet people worldwide.</text><text x="600" y="1015" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="55" font-weight="500" fill="#fff">Discover. Share. Connect.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
+<title id="title">Connect</title><desc id="desc">Electric blue globe symbol and Connect wordmark.</desc>
+<defs><radialGradient id="sphere" cx="34%" cy="25%" r="78%"><stop stop-color="#69f1ff"/><stop offset=".32" stop-color="#168cff"/><stop offset=".72" stop-color="#0750c9"/><stop offset="1" stop-color="#07164d"/></radialGradient><linearGradient id="word" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#67eaff"/><stop offset=".48" stop-color="#338bff"/><stop offset="1" stop-color="#b58bff"/></linearGradient><clipPath id="globeClip"><circle cx="112" cy="110" r="83"/></clipPath><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+<circle cx="112" cy="110" r="97" fill="#168cff" opacity=".22" filter="url(#shadow)"/><circle cx="112" cy="110" r="83" fill="url(#sphere)" stroke="#70efff" stroke-width="3"/>
+<g clip-path="url(#globeClip)" fill="none" stroke="#a9f7ff" stroke-width="2.5" opacity=".68"><ellipse cx="112" cy="110" rx="67" ry="83"/><ellipse cx="112" cy="110" rx="34" ry="83"/><ellipse cx="112" cy="110" rx="83" ry="27"/><ellipse cx="112" cy="110" rx="83" ry="55"/><path d="M29 110h166"/></g>
+<g fill="#8df7ff"><circle cx="58" cy="68" r="4"/><circle cx="165" cy="78" r="4"/><circle cx="145" cy="163" r="3.5"/></g><path d="M58 125c14 17 32 25 54 25 23 0 43-10 57-28" fill="none" stroke="#ff75d4" stroke-width="5" stroke-linecap="round" opacity=".95"/>
+<text x="230" y="145" fill="url(#word)" font-family="Arial,Helvetica,sans-serif" font-size="112" font-weight="800" letter-spacing="-5">Connect</text></svg>

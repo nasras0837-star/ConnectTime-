@@ -6,7 +6,7 @@ export function ConnectSiteHeader() {
   return (
     <header className="connectSiteHeader">
       <Link href="/" className="connectSiteBrand" aria-label="Connect home">
-        <span className="ctBrandMark">CT</span><span className="ctWordmark">Connect</span>
+        <img src="/connect-logo.svg" alt="Connect" width="168" height="42" />
       </Link>
       <Link href="/discover" className="connectSiteSearch"><span aria-hidden="true">⌕</span> Search people and interests</Link>
       <nav aria-label="Main navigation">
