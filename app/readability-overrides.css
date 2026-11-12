@@ -662,3 +662,11 @@ body.connectAppTheme :is(thead,tbody,tr,th,td) {
   border-color: #294765 !important;
 }
 body.connectAppTheme ::placeholder { opacity: 1 !important; }
+
+
+/* Global hard override for legacy white/pale surfaces across every route. */
+html,body,body.connectAppTheme,#__next{background:#04143d!important;color:#f5f8ff!important;color-scheme:dark!important}
+body.connectAppTheme [class*="bg-white"],body.connectAppTheme [class*="bg-gray-"],body.connectAppTheme [class*="bg-slate-"],body.connectAppTheme [class*="bg-zinc-"],body.connectAppTheme [class*="bg-neutral-"],body.connectAppTheme [class*="bg-stone-"],body.connectAppTheme [class*="bg-light"],body.connectAppTheme [class*="white-bg"],body.connectAppTheme [class*="WhiteBg"],body.connectAppTheme [class*="light-bg"],body.connectAppTheme [class*="LightBg"]{background-color:#0b1d46!important;color:#f5f8ff!important;border-color:#3765a6!important}
+body.connectAppTheme [style*="background:#fff" i],body.connectAppTheme [style*="background: #fff" i],body.connectAppTheme [style*="background-color:#fff" i],body.connectAppTheme [style*="background-color: #fff" i],body.connectAppTheme [style*="background:white" i],body.connectAppTheme [style*="background: white" i],body.connectAppTheme [style*="background-color:white" i],body.connectAppTheme [style*="background-color: white" i],body.connectAppTheme [style*="rgb(255,255,255)" i],body.connectAppTheme [style*="rgb(255, 255, 255)" i]{background:#0b1d46!important;background-color:#0b1d46!important;color:#f5f8ff!important;border-color:#3765a6!important}
+body.connectAppTheme [class*="bg-white"] *,body.connectAppTheme [class*="bg-gray-"] *,body.connectAppTheme [class*="bg-slate-"] *,body.connectAppTheme [class*="bg-zinc-"] *,body.connectAppTheme [class*="bg-neutral-"] *,body.connectAppTheme [class*="bg-stone-"] *,body.connectAppTheme [class*="bg-light"] *{color:#f5f8ff!important;-webkit-text-fill-color:#f5f8ff!important}
+body.connectAppTheme input,body.connectAppTheme textarea,body.connectAppTheme select,body.connectAppTheme option{background:#061638!important;background-color:#061638!important;color:#fff!important;border-color:#5487d1!important}
