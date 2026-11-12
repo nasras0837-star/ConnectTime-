@@ -5,7 +5,6 @@ import SportsScores from "./components/sports-scores";
 import RegionalWeather from "./components/regional-weather";
 import HomeRadioSearch from "./components/home-radio-search";
 import { MemberCount } from "./components/member-count";
-import { LanguageSwitcher } from "./components/language-switcher";
 
 const primaryLinks = [
   { icon: "⌂", label: "Home", href: "/" },
@@ -140,11 +139,6 @@ export default function HomePage() {
             <Link className="connectQuickLink" href="/friends"><span>♧</span><div><strong>Friends</strong><small>Build your personal network</small></div></Link>
             <Link className="connectQuickLink" href="/messages"><span>✉</span><div><strong>Messages</strong><small>Keep up with your connections</small></div></Link>
             <Link className="connectQuickLink" href="/dating"><span>♡</span><div><strong>Dating</strong><small>Meet verified adult members</small></div></Link>
-          </section>
-          <section className="connectRightCard connectRegionCard">
-            <div className="connectRightTitle">Your regional edition</div>
-            <p>Choose your country and language to tailor regional information.</p>
-            <LanguageSwitcher />
           </section>
           <section className="connectRightCard connectCommunityStandards">
             <span className="connectStandardsIcon">✓</span><strong>A better community starts with respect.</strong>
