@@ -7,21 +7,21 @@ const homepage = readFileSync(resolve(process.cwd(), "docs/index.html"), "utf8")
 describe("GitHub Pages homepage navigation", () => {
   it("keeps every in-page link connected to an existing element", () => {
     const ids = new Set(
-      [...homepage.matchAll(/\\bid=["']([^"']+)["']/gi)].map((match) => match[1]),
+      [...homepage.matchAll(/\bid=["']([^"']+)["']/gi)].map((match) => match[1]),
     );
     const fragments = [
-      ...homepage.matchAll(/\\bhref=["']#([^"']+)["']/gi),
+      ...homepage.matchAll(/\bhref=["']#([^"']+)["']/gi),
     ].map((match) => match[1]);
 
     expect(fragments.length).toBeGreaterThan(0);
     for (const fragment of fragments) {
-      expect(ids.has(fragment), `Missing homepage target: #${fragment}`).toBe(true);
+      expect(ids.has(fragment), \`Missing homepage target: #\${fragment}\`).toBe(true);
     }
   });
 
   it("keeps every relative homepage link pointed at a published file or directory", () => {
     const links = [
-      ...homepage.matchAll(/\\bhref=["']([^"']+)["']/gi),
+      ...homepage.matchAll(/\bhref=["']([^"']+)["']/gi),
     ].map((match) => match[1]);
 
     for (const href of links) {
@@ -35,9 +35,9 @@ describe("GitHub Pages homepage navigation", () => {
         url = new URL(href, "https://connect-preview.invalid/");
       }
 
-      const relativePath = decodeURIComponent(url.pathname).replace(/^\\/+/, "");
+      const relativePath = decodeURIComponent(url.pathname).replace(/^\/+/, "");
       const target = resolve(process.cwd(), "docs", relativePath);
-      expect(existsSync(target), `Missing published homepage destination: ${href}`).toBe(true);
+      expect(existsSync(target), \`Missing published homepage destination: \${href}\`).toBe(true);
     }
   });
 });
