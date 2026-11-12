@@ -559,3 +559,33 @@ body.connectAppTheme :is(
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
+
+
+/* CONNECT GLOBAL DARK SURFACE SYSTEM — every route, not homepage-only.
+   Remove pale/white backgrounds from page chrome, cards, controls and overlays. */
+html,body,body.connectAppTheme,#__next{background:#071426!important;color:#eaf3ff!important}
+body.connectAppTheme :is(main,section,article,aside,nav,header,footer,form,fieldset,details,summary,dialog,[role="main"],[role="region"],[role="dialog"],[role="menu"],[role="listbox"]){
+  background-color:transparent;
+}
+body.connectAppTheme :is(.container,.content,.page,.layout,.wrapper,[class*="container" i],[class*="content" i],[class*="layout" i],[class*="wrapper" i],[class*="sidebar" i],[class*="rail" i]){
+  color:#eaf3ff!important;
+}
+body.connectAppTheme :is(input,textarea,select,option,[contenteditable="true"],.search,[class*="search" i],.filter,[class*="filter" i]){
+ background:#102746!important;background-color:#102746!important;color:#f3f8ff!important;
+ border-color:#365879!important;-webkit-text-fill-color:#f3f8ff!important;
+}
+body.connectAppTheme :is(input,textarea,select)::placeholder{color:#a9bfd8!important;opacity:1}
+body.connectAppTheme :is(button,[role="button"],.button,.btn,[class*="btn" i],.tab,[role="tab"]){
+ background-color:#12345a!important;color:#f5faff!important;border-color:#3c668f!important;-webkit-text-fill-color:#f5faff!important;
+}
+body.connectAppTheme :is(button,[role="button"],.button,.btn,[class*="btn" i],.tab,[role="tab"]):hover{
+ background-color:#1b4a78!important;border-color:#5ac9ff!important;
+}
+body.connectAppTheme :is([class~="bg-white"],[class*="bg-white/"],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgba(255,255,255" i],[style*="rgba(255, 255, 255" i]){
+ background:linear-gradient(145deg,#10295b,#071a43)!important;background-color:#0b1d46!important;color:#f5f9ff!important;border-color:#31547b!important;
+}
+body.connectAppTheme :is(table,thead,tbody,tr,th,td){background-color:#0b1d39!important;color:#eaf3ff!important;border-color:#294765!important}
+body.connectAppTheme :is([role="menu"],[role="listbox"],[role="dialog"],.popover,.dropdown,[class*="popover" i],[class*="dropdown" i],[class*="modal" i]){
+ background:#0b1d39!important;color:#f1f7ff!important;border-color:#31547b!important;
+}
+body.connectAppTheme :is(p,span,label,li,div){text-decoration-color:currentColor}
