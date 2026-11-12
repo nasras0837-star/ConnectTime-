@@ -1516,3 +1516,84 @@ html body .ctMainHeader{min-height:108px!important;height:auto!important}
 @media(max-width:900px){html body .ctMainHeader .brand img{width:72px!important;height:72px!important}html body .ctMainHeader{min-height:92px!important}}
 @media(max-width:620px){html body .ctMainHeader{min-height:76px!important;height:auto!important}html body .ctMainHeader .brand{min-height:72px!important;gap:9px!important}html body .ctMainHeader .brand img{width:58px!important;height:58px!important}}
 </style>
+
+
+<style id="connect-compact-homepage-sports-strip">
+/* Consolidate the homepage scoreboard into one compact, horizontally browsable strip.
+   Each league keeps its own scrollable game list so live scores and filters remain available. */
+.ctPublicSports{
+  margin:8px 0 22px!important;
+  padding:15px 18px!important;
+  border-radius:20px!important;
+}
+.ctPublicSportsHead{
+  align-items:center!important;
+  margin-bottom:7px!important;
+  gap:10px!important;
+}
+.ctPublicSportsHead h2{
+  margin:2px 0!important;
+  font-size:clamp(20px,2.2vw,27px)!important;
+  letter-spacing:-.7px!important;
+}
+.ctPublicSportsHead p{font-size:11px!important;line-height:1.4!important}
+.ctPublicSportsRefresh{font-size:10px!important}
+.ctPublicSportsFilters{
+  gap:5px!important;
+  flex-wrap:nowrap!important;
+  overflow-x:auto!important;
+  padding:2px 0 5px!important;
+  margin:7px 0 9px!important;
+  scrollbar-width:thin;
+}
+.ctPublicSportsFilters button{
+  flex:0 0 auto!important;
+  padding:5px 9px!important;
+  font-size:9px!important;
+}
+.ctPublicSportsGrid{
+  display:flex!important;
+  align-items:stretch!important;
+  gap:9px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  padding:1px 1px 8px!important;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+  scrollbar-color:#438dd0 #10264d;
+}
+.ctPublicSportsLeague{
+  flex:0 0 min(260px,78vw)!important;
+  width:min(260px,78vw)!important;
+  max-height:218px!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding:10px 12px!important;
+  border-radius:14px!important;
+  scroll-snap-align:start;
+  scrollbar-width:thin;
+  scrollbar-color:#438dd0 #10264d;
+}
+.ctPublicSportsLeagueHead{
+  position:sticky!important;
+  top:-10px!important;
+  z-index:2!important;
+  padding:3px 0 7px!important;
+  background:#0a2450!important;
+}
+.ctPublicSportsLeagueHead b{font-size:13px!important}
+.ctPublicSportsLeagueHead a{padding:4px 7px!important;font-size:10px!important}
+.ctPublicSportsGame{padding:7px 0!important}
+.ctPublicSportsGameStatus{font-size:10px!important;margin-bottom:4px!important}
+.ctPublicSportsTeam{font-size:13px!important;padding:2px 0!important}
+.ctPublicSportsTeam strong{font-size:20px!important}
+.ctPublicSportsNote{margin:6px 0 0!important;font-size:9px!important}
+@media(max-width:560px){
+  .ctPublicSports{padding:13px 12px!important;margin:7px 0 18px!important}
+  .ctPublicSportsHead{display:flex!important;align-items:flex-start!important;flex-direction:column!important}
+  .ctPublicSportsHead h2{font-size:22px!important}
+  .ctPublicSportsRefresh{margin-top:0!important}
+  .ctPublicSportsLeague{flex-basis:82vw!important;width:82vw!important;max-height:205px!important}
+}
+</style>
