@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAppwrite } from "@appwrite.io/react";
 
 function friendlyMessage(error: unknown, fallback: string) {
@@ -26,14 +26,11 @@ export default function ResetPasswordPage() {
   const [sent, setSent] = useState(false);
   const [complete, setComplete] = useState(false);
 
-  useState(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setUserId(params.get("userId") || "");
-      setSecret(params.get("secret") || "");
-    }
-    return null;
-  });
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setUserId(params.get("userId") || "");
+    setSecret(params.get("secret") || "");
+  }, []);
 
   async function requestReset(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError(""); setMessage("");
