@@ -1710,3 +1710,69 @@ html,body{background-color:var(--connect-night)!important;color:var(--connect-te
 @media(max-width:1100px){.connectProfileSpaces{grid-template-columns:repeat(2,minmax(0,1fr))}.connectProfileHeroArt{right:2%;opacity:.65}}
 @media(max-width:780px){.connectProfileLayout{width:calc(100% - 22px);display:block;margin:14px auto}.connectProfileSidebar{position:static;margin-bottom:13px;padding:10px}.connectProfileMini{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:3px 10px;text-align:left;align-items:center;padding:0 3px 10px;margin-bottom:9px}.connectProfileMiniCover{display:none}.connectProfileAvatar{grid-row:1/4;width:40px;height:40px;margin:0;font-size:16px}.connectProfileMini strong{font-size:12px}.connectProfileMini small{margin:0}.connectProfileMini>a{grid-column:3;grid-row:1/3;margin:0;font-size:10px}.connectProfileNav{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}.connectProfileNav a{flex:none;padding:9px 10px;font-size:11px}.connectProfileNav a span{font-size:15px}.connectProfileSidebarFoot{display:none}.connectProfileHero{min-height:250px;padding:23px 19px}.connectProfileHeroArt{right:-3%;opacity:.28}.connectProfileHeroIdentity{gap:11px;align-items:flex-start}.connectProfileHeroAvatar{width:49px;height:49px;font-size:20px}.connectProfileHero h1{font-size:27px}.connectProfileHeroIdentity p{font-size:11px}.connectProfileQuickGrid{grid-template-columns:1fr;gap:8px}.connectProfileQuick{padding:11px}.connectProfileWelcomeRow{align-items:flex-start;flex-direction:column;margin-top:23px}.connectProfileSpaces{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.connectProfileSpace{padding:10px;gap:8px;min-height:76px}.connectProfileSpaceIcon{width:34px;height:34px;font-size:16px}.connectProfileSpaceCopy strong{font-size:11px}.connectProfileSpaceCopy small{font-size:9px}.connectProfileBottom{align-items:flex-start;flex-direction:column;padding:17px}.connectProfileBottom>a{width:100%;text-align:center}.connectProfileFooter span{margin-left:0}}
 @media(max-width:430px){.connectProfileSpaces{grid-template-columns:1fr}.connectProfileHero{min-height:245px}.connectProfileHero h1{font-size:24px}.connectProfileFeatureCount{font-size:9px}.connectProfileSectionHead h2{font-size:21px}}
+
+
+/* Connect member dashboard — dedicated mobile-first interaction pass */
+@media(max-width:780px){
+  .connectProfileLayout{width:min(100% - 24px,680px);margin:12px auto 0;padding-bottom:92px}
+  .connectProfileSidebar{border-radius:17px;padding:12px;background:rgba(255,255,255,.96)}
+  .connectProfileMini{grid-template-columns:44px minmax(0,1fr) auto;gap:2px 10px;padding:0 2px 11px}
+  .connectProfileMini strong{font-size:13px;line-height:1.3}
+  .connectProfileMini small{font-size:11px}
+  .connectProfileMini>a{padding:8px 9px;border-radius:9px;background:#eaf5f5;white-space:nowrap}
+  .connectProfileNav{position:fixed;z-index:60;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;padding:7px 5px calc(7px + env(safe-area-inset-bottom));overflow:visible;border:1px solid rgba(92,159,180,.28);border-radius:18px;background:rgba(7,28,57,.96);box-shadow:0 12px 36px rgba(0,10,35,.32);backdrop-filter:blur(18px)}
+  .connectProfileNav a{min-width:0;min-height:52px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;padding:5px 2px;border-radius:11px;color:#c5d9ec;font-size:10px;line-height:1.15;text-align:center;white-space:nowrap}
+  .connectProfileNav a span{width:auto;font-size:18px;line-height:1.15}
+  .connectProfileNav a.active,.connectProfileNav a:hover{background:linear-gradient(145deg,rgba(32,126,190,.5),rgba(26,158,145,.35));color:#fff}
+  .connectProfileHero{min-height:220px;padding:22px 20px;border-radius:21px}
+  .connectProfileHeroContent{width:100%}
+  .connectProfileHeroIdentity{gap:12px;margin-top:14px}
+  .connectProfileHeroActions{gap:8px;margin-top:18px}
+  .connectProfilePrimary,.connectProfileSecondary{min-height:42px;justify-content:center;padding:10px 12px;font-size:11px}
+  .connectProfileQuickGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .connectProfileQuick{min-height:94px;align-items:flex-start;flex-wrap:wrap;gap:7px;padding:11px;border-radius:13px}
+  .connectProfileQuick>span:first-child{width:32px;height:32px;border-radius:10px;font-size:16px}
+  .connectProfileQuick div{flex-basis:100%}
+  .connectProfileQuick strong{font-size:11px;line-height:1.25}
+  .connectProfileQuick small{font-size:9px}
+  .connectProfileQuick>b{display:none}
+  .connectProfileWelcomeRow{gap:8px;margin:23px 0 13px}
+  .connectProfileWelcomeRow h2,.connectProfileSectionHead h2{font-size:22px;line-height:1.2}
+  .connectProfileSectionHead{align-items:center;margin:24px 0 12px}
+  .connectProfileSpaces{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .connectProfileSpace{min-height:88px;align-items:center;padding:11px 10px;border-radius:14px}
+  .connectProfileSpaceIcon{width:38px;height:38px;font-size:17px}
+  .connectProfileSpaceCopy strong{font-size:12px;line-height:1.25}
+  .connectProfileSpaceCopy small{font-size:10px;line-height:1.35}
+  .connectProfileSpaceArrow{font-size:14px}
+  .connectProfileBottom{margin-top:18px}
+}
+@media(max-width:480px){
+  .connectProfileLayout{width:calc(100% - 20px)}
+  .connectProfileHero{min-height:0;padding:20px 16px}
+  .connectProfileHeroIdentity{align-items:flex-start}
+  .connectProfileHeroAvatar{width:43px;height:43px;font-size:18px}
+  .connectProfileHero h1{font-size:23px;line-height:1.12}
+  .connectProfileHeroIdentity p{font-size:11px;line-height:1.45}
+  .connectProfileHeroIdentity small{font-size:10px;overflow-wrap:anywhere}
+  .connectProfileHeroActions{display:grid;grid-template-columns:1fr 1fr}
+  .connectProfilePrimary,.connectProfileSecondary{font-size:10px;padding:9px 7px}
+  .connectProfileHeroArt{right:-10%;opacity:.18}
+  .connectProfileQuick{min-height:88px;padding:9px}
+  .connectProfileQuick strong{font-size:10px}
+  .connectProfileQuick small{font-size:9px}
+  .connectProfileSpaces{gap:8px}
+  .connectProfileSpace{min-height:82px;padding:9px 8px;gap:7px}
+  .connectProfileSpaceIcon{width:33px;height:33px;font-size:15px;border-radius:10px}
+  .connectProfileSpaceCopy strong{font-size:11px}
+  .connectProfileSpaceCopy small{font-size:9px}
+  .connectProfileSpaceArrow{font-size:12px}
+  .connectProfileFeatureCount{padding:6px 8px}
+  .connectProfileFooter{gap:11px;font-size:10px}
+}
+@media(max-width:360px){
+  .connectProfileNav{left:7px;right:7px;grid-template-columns:repeat(6,minmax(0,1fr));padding-inline:3px}
+  .connectProfileNav a{font-size:9px}
+  .connectProfileHeroActions{grid-template-columns:1fr}
+  .connectProfileSpaces{grid-template-columns:1fr}
+}
