@@ -69,3 +69,16 @@ body{background-image:radial-gradient(ellipse at 50% -8%,rgba(22,77,203,.42),tra
 :where(.topbar,.top,.topbar,.header,.videoHeader,.vHeader,.connectHeader,.siteHeader,.shell>header){background:rgba(3,13,48,.94)!important;color:#f5f9ff!important;border-color:var(--connect-border)!important;backdrop-filter:blur(16px)}
 :where(.menuToggle,.mobileMenuToggle,.close,.viewer-close){background:linear-gradient(110deg,#087cff,#00bddd)!important;color:#fff!important}
 img,video,canvas,svg{background-color:transparent}
+
+
+/* Connect unified surfaces — match the blue/teal homepage instead of stark white UI */
+:root{--connect-surface-a:#eaf4fb;--connect-surface-b:#e5f6ef;--connect-surface-border:#cfe3ec;--connect-brand-blue:#1677a8;--connect-brand-teal:#159b86}
+/* Cards, scoreboards, embeds and panels */
+:is([class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],[class*="score"],[class*="Score"],[class*="embed"],[class*="Embed"],[class*="widget"],[class*="Widget"],[class*="tile"],[class*="Tile"]):not(img):not(video){background-color:transparent}
+:is([class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],[class*="score"],[class*="Score"],[class*="embed"],[class*="Embed"],[class*="widget"],[class*="Widget"],[class*="tile"],[class*="Tile"]):is(div,section,article,aside,li,header,footer){background-image:linear-gradient(145deg,rgba(234,244,251,.96),rgba(229,246,239,.96));border-color:var(--connect-surface-border)}
+/* White button treatments become the homepage blue/teal action style */
+button:not([class*="primary"]):not([class*="Primary"]):not([class*="danger"]):not([class*="Danger"]):not([class*="ghost"]):not([class*="Ghost"]),input[type="button"],input[type="submit"],input[type="reset"]{background-image:linear-gradient(110deg,var(--connect-brand-blue),var(--connect-brand-teal));background-color:var(--connect-brand-blue);color:#fff;border-color:transparent}
+/* White embed frames / score containers */
+iframe,embed,object{background:linear-gradient(145deg,#eaf4fb,#e5f6ef);border-color:#cfe3ec}
+:is(table,[role="table"]){background:linear-gradient(145deg,#eaf4fb,#e5f6ef);border-color:#cfe3ec}
+:is(th,[role="columnheader"]){background:linear-gradient(110deg,#dceefa,#d9f2e8);color:#24485b}
