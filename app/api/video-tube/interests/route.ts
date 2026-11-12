@@ -9,7 +9,7 @@ function store(){const tableId=process.env.APPWRITE_VIDEO_TUBE_TABLE_ID?.trim();
 function inferTopic(q:string){const text=q.toLowerCase();return Object.entries(topicKeywords).map(([topic,words])=>({topic,score:words.reduce((n,w)=>n+(text.includes(w)?(w.includes(" ")?2:1):0),0)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score)[0]?.topic||"General";}
 export async function GET(){
  const user=await currentCommunityMember();if(!user)return NextResponse.json({error:"Sign in to sync your video interests."},{status:401});
- const access=await checkMemberAccess();if(!access.allowed)return NextResponse.json({error:"Verified adult member access is required."},{status:access.status});
+ const access=await checkMemberAccess({requireAdultVerification:false});if(!access.allowed)return NextResponse.json({error:"An active member account is required to personalize video discovery."},{status:access.status});
  try{const s=store(),result=await s.tablesDB.listRows({databaseId:s.databaseId,tableId:s.tableId,queries:[Query.equal("record_type","search"),Query.equal("user_id",user.$id),Query.orderDesc("created_at"),Query.limit(80)]});
  const searches=result.rows.map(row=>String(row.query_text||"")).filter(Boolean),scores:Record<string,number>={};
  result.rows.forEach((row,index)=>{const topic=String(row.category||"General");if(topic!=="General")scores[topic]=(scores[topic]||0)+Math.max(1,10-Math.floor(index/8));});
@@ -20,7 +20,7 @@ export async function GET(){
 export async function POST(request:Request){
  if(!sameOrigin(request))return NextResponse.json({error:"Request origin could not be verified."},{status:403});
  const user=await currentCommunityMember();if(!user)return NextResponse.json({error:"Sign in before syncing search interests."},{status:401});
- const access=await checkMemberAccess();if(!access.allowed)return NextResponse.json({error:"Verified adult member access is required."},{status:access.status});
+ const access=await checkMemberAccess({requireAdultVerification:false});if(!access.allowed)return NextResponse.json({error:"An active member account is required to personalize video discovery."},{status:access.status});
  let body:Record<string,unknown>;try{body=await request.json() as Record<string,unknown>;}catch{return NextResponse.json({error:"Invalid search activity."},{status:400});}
  const query=typeof body.query==="string"?body.query.trim().replace(/\s+/g," ").slice(0,120):"";
  if(query.length<2)return NextResponse.json({error:"Search must contain at least two characters."},{status:400});
