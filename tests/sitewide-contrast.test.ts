@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const homepage = readFileSync(resolve(process.cwd(), "docs/index.html"), "utf8");
 const appLayout = readFileSync(resolve(process.cwd(), "app/layout.tsx"), "utf8");
+const appStyles = readFileSync(resolve(process.cwd(), "app/globals.css"), "utf8");
 const appContrast = readFileSync(resolve(process.cwd(), "app/readability-overrides.css"), "utf8");
 
 describe("sitewide light-surface contrast", () => {
@@ -33,5 +34,13 @@ describe("sitewide light-surface contrast", () => {
     expect(descendantGuard).toContain("[class*=\"card\" i]");
     expect(descendantGuard).toContain("[class*=\"box\" i]");
     expect(descendantGuard).toContain("color: #edf6ff !important");
+  });
+  it("keeps homepage and app layouts usable on narrow mobile screens", () => {
+    expect(homepage).toContain("@media(max-width:390px)");
+    expect(homepage).toContain("env(safe-area-inset-bottom)");
+    expect(appStyles).toContain("@media(max-width:350px)");
+    expect(appStyles).toContain(".connectProfileHome .connectProfileNav");
+    expect(appStyles).toContain("overflow-x:clip");
+    expect(appStyles).toContain("grid-template-columns:minmax(0,1fr)");
   });
 });
