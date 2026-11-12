@@ -3,6 +3,7 @@ import LiveInterestFeed from "./components/live-interest-feed";
 import LiveNewsArticles from "./components/live-news-articles";
 import SportsScores from "./components/sports-scores";
 import RegionalWeather from "./components/regional-weather";
+import HomeRadioSearch from "./components/home-radio-search";
 import { MemberCount } from "./components/member-count";
 import { LanguageSwitcher } from "./components/language-switcher";
 
@@ -126,6 +127,7 @@ export default function HomePage() {
         </section>
 
         <aside className="connectRightRail" aria-label="Connect information">
+          <HomeRadioSearch />
           <section className="connectRightCard connectMemberCard">
             <div className="connectRightCardHead"><span>THE CONNECT COMMUNITY</span><b>◉</b></div>
             <MemberCount />
