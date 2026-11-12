@@ -13,3 +13,22 @@
 .ctCampaignTitle span,.ctCampaignMetrics small,.ctCampaignMeta span{color:#b8d4fa!important}
 .ctCampaignTitle>b{background:#123b79!important;color:#dcecff!important}
 
+
+
+/* Accessible controls for the fixed region/language widget. */
+.ctLanguageControl{padding-right:42px!important;position:fixed!important;max-width:calc(100vw - 20px);flex-wrap:wrap}
+.ctLanguageWidgetActions{position:absolute;right:7px;top:6px;display:flex;gap:2px}
+.ctLanguageWidgetActions button,.ctLanguageWidgetAction{display:grid;place-items:center;width:25px;height:25px;padding:0;border:1px solid #426da8;border-radius:7px;background:#0b2455;color:#fff;font-size:17px;line-height:1;cursor:pointer}
+.ctLanguageWidgetActions button:hover,.ctLanguageWidgetAction:hover,.ctLanguageReopen:hover{background:#17417d}
+.ctLanguageMinimized{padding:7px 9px!important;gap:7px!important;flex-wrap:nowrap}
+.ctLanguageExpand{display:flex;align-items:center;gap:7px;padding:5px 7px;border:0;background:transparent;color:#fff;font:700 12px 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap}
+.ctLanguageExpand span{color:#79dfff}
+.ctLanguageReopen{position:fixed;left:18px;bottom:18px;z-index:81;padding:10px 14px;border:1px solid #3970bd;border-radius:12px;background:rgba(3,18,58,.97);color:#f5f8ff;font:700 12px 'DM Sans',sans-serif;box-shadow:0 8px 28px #0005;cursor:pointer}
+.ctLanguageReopenClosed{width:42px;height:42px;padding:0;border-radius:50%;font-size:18px}
+@media(max-width:600px){
+ .ctLanguageControl{left:10px!important;bottom:10px!important;right:10px;max-width:calc(100vw - 20px);gap:6px!important;padding:8px 38px 8px 9px!important}
+ .ctLanguageControl label{font-size:10px}
+ .ctLanguageControl select{max-width:105px!important;min-width:0;font-size:10px!important;padding:7px 5px!important}
+ .ctLanguageWidgetActions{right:5px;top:5px}
+ .ctLanguageReopen{left:10px;bottom:10px}
+}
