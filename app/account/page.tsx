@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { checkMemberAccess } from "@/lib/member-access";
 import { SignOutButton } from "./signout-button";
+import styles from "./dashboard-refresh.module.css";
 
 const spaces = [
   { icon: "♧", title: "Friends", detail: "Your circle, requests and connections", href: "/friends", tone: "mint" },
@@ -33,7 +34,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
   const initial = (displayName || user.email || "C").trim().charAt(0).toUpperCase() || "C";
 
   return (
-    <main className="connectMemberDashboard connectProfileHome">
+    <main className={`${styles.dashboardRefresh} connectMemberDashboard connectProfileHome`}>
       <ConnectSiteHeader />
       <div className="connectProfileLayout">
         <aside className="connectProfileSidebar">
