@@ -41,17 +41,16 @@ async function verificationProviderReady() {
 }
 
 export async function GET() {
-  const providerReady = await verificationProviderReady();
   const result = await checkMemberAccess();
+  if (!result.allowed && result.reason === "unauthenticated") {
+    return NextResponse.json(
+      { status: "unauthenticated", providerReady: false },
+      { status: 401, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+  const providerReady = await verificationProviderReady();
 
   if (!result.allowed) {
-    if (result.reason === "unauthenticated") {
-      return NextResponse.json(
-        { status: "unauthenticated", providerReady },
-        { status: 401, headers: { "Cache-Control": "no-store" } },
-      );
-    }
-
     if (result.reason === "not_eligible") {
       return NextResponse.json(
         { adultStatus: "pending", accountStatus: "pending", providerReady },
