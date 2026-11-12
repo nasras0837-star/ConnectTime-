@@ -1906,3 +1906,36 @@ body :is(iframe,embed,object){background-color:#071b4b!important;border-color:va
 body :is(.search,.search input,.searchBox input,.search-box input,[role="search"] input){background:#071b4b!important;color:#f5f9ff!important}
 body :is(.search,.searchBox,.search-box,[role="search"]){border-color:var(--ct-control-border)!important}
 body :is(button,a,[role="button"],input,select,textarea):focus-visible{outline:2px solid #7df2ff!important;outline-offset:2px}
+
+/* Final readable-text guard for intentionally light card surfaces.
+   Keep these cards light, but force every textual descendant to a dark,
+   accessible color so legacy theme rules cannot leave pale text on white. */
+:where(.vInterest,.vShortcut,.feature,.videoCard,.recommendationInfo,
+  .connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,
+  .connectDynamicPanel,.connectQuickLink,.connectCommunityStandards) {
+  color: #102b59 !important;
+}
+:where(.vInterest,.vShortcut,.feature,.videoCard,.recommendationInfo,
+  .connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,
+  .connectDynamicPanel,.connectQuickLink,.connectCommunityStandards)
+:where(p,small,span,li,label,figcaption,.muted,.description,.meta) {
+  color: #355879 !important;
+  -webkit-text-fill-color: #355879 !important;
+}
+:where(.vInterest,.vShortcut,.feature,.videoCard,.recommendationInfo,
+  .connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,
+  .connectDynamicPanel,.connectQuickLink,.connectCommunityStandards)
+:where(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary) {
+  color: #092b68 !important;
+  -webkit-text-fill-color: #092b68 !important;
+  text-shadow: none !important;
+}
+:where(.vInterest,.vShortcut,.feature,.videoCard,.recommendationInfo,
+  .connectRailCard,.connectRightCard,.connectComposerPrompt,.connectExploreCard,
+  .connectDynamicPanel,.connectQuickLink,.connectCommunityStandards)
+a:not(.button):not(.btn):not([class*="btn" i]) {
+  color: #064fa8 !important;
+  -webkit-text-fill-color: #064fa8 !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
