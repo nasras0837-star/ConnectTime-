@@ -18,7 +18,6 @@ async function syncMemberAccess(
   collectionId: string,
   userId: string,
   adultStatus: "verified" | "rejected" | "review",
-  now: string,
 ) {
   let existing: Record<string, unknown> | null = null;
   try {
@@ -32,7 +31,6 @@ async function syncMemberAccess(
       await databases.createDocument(databaseId, collectionId, userId, {
         adult_status: adultStatus,
         account_status: adultStatus === "verified" ? "active" : "pending",
-        updated_at: now,
       });
       return;
     } catch (error) {
@@ -43,13 +41,13 @@ async function syncMemberAccess(
     }
   }
 
-  const accountStatus = typeof existing.account_status === "string"
-    ? existing.account_status
-    : adultStatus === "verified" ? "active" : "pending";
+  const storedAccountStatus = typeof existing.account_status === "string" ? existing.account_status : "pending";
+  const accountStatus = storedAccountStatus === "suspended" || storedAccountStatus === "banned"
+    ? storedAccountStatus
+    : adultStatus === "verified" ? "active" : storedAccountStatus;
   await databases.updateDocument(databaseId, collectionId, userId, {
     adult_status: adultStatus,
     account_status: accountStatus,
-    updated_at: now,
   });
 }
 
@@ -114,7 +112,7 @@ export async function POST(request: Request) {
 
     // Write access first. If this fails, leave the verification row pending so
     // Veriff can retry; if the later row update fails, the retry is safe.
-    await syncMemberAccess(databases, accessDatabaseId, accessCollectionId, userId, resolved.adultStatus, now);
+    await syncMemberAccess(databases, accessDatabaseId, accessCollectionId, userId, resolved.adultStatus);
 
     if (!terminal) {
       await tables.updateRow({
