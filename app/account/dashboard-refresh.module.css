@@ -78,3 +78,6 @@
 }
 @media(max-width:390px){.dashboardRefresh :global(.connectProfileSpaces){grid-template-columns:1fr}.dashboardRefresh :global(.connectProfileFeatureCount){font-size:9px}}
 @media(prefers-reduced-motion:reduce){.dashboardRefresh :global(.connectProfileSpace),.dashboardRefresh :global(.connectProfileQuick),.dashboardRefresh :global(.connectProfilePrimary){transition:none}}
+
+.dashboardRefresh :global(a:focus-visible),.profileRefresh :global(a:focus-visible),.profileRefresh :global(button:focus-visible){outline:3px solid #2a9ba2;outline-offset:3px;border-radius:8px}
+.dashboardRefresh :global(.connectProfileNav a:focus-visible),.dashboardRefresh :global(.connectProfileSpace:focus-visible),.dashboardRefresh :global(.connectProfileQuick:focus-visible){background:#eaf6f5;box-shadow:0 0 0 3px #2a9ba222}
