@@ -19,6 +19,7 @@ export default function HomeRadioSearch() {
   const [selected, setSelected] = useState<Station | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [playbackError, setPlaybackError] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -53,6 +54,7 @@ export default function HomeRadioSearch() {
   }, [query]);
 
   return (
+    <>
     <section className="homeRadioCard" aria-label="World radio station search">
       <div className="homeRadioHeading">
         <span className="homeRadioIcon" aria-hidden="true">📻</span>
@@ -78,7 +80,7 @@ export default function HomeRadioSearch() {
             type="button"
             className={"homeRadioStation" + (selected?.id === station.id ? " selected" : "")}
             key={station.id}
-            onClick={() => setSelected(station)}
+            onClick={() => { setSelected(station); setPlaybackError(""); }}
             title={"Play " + station.name}
           >
             <span className="homeRadioPlay" aria-hidden="true">{selected?.id === station.id ? "♫" : "▶"}</span>
@@ -89,9 +91,10 @@ export default function HomeRadioSearch() {
       {selected && (
         <div className="homeRadioPlayer">
           <div className="homeRadioNow"><span>NOW PLAYING</span><strong>{selected.name}</strong></div>
-          <audio key={selected.id} controls preload="none" src={selected.streamUrl} aria-label={"Listen to " + selected.name}>
+          <audio key={selected.id} controls preload="none" src={selected.streamUrl} aria-label={"Listen to " + selected.name} onError={() => setPlaybackError("This station stream is unavailable. Please choose another station.")}>
             Your browser does not support audio playback.
           </audio>
+          {playbackError && <small className="homeRadioError" role="status">{playbackError}</small>}
         </div>
       )}
       <div className="homeRadioFooter">
@@ -127,4 +130,5 @@ export default function HomeRadioSearch() {
       .homeRadioFooter a{color:#087fae;font-size:10px;font-weight:800;white-space:nowrap}
       @media(max-width:760px){.homeRadioCard{padding:12px}.homeRadioStation{padding:8px 5px}}
     `}</style>
+    </>
   );
