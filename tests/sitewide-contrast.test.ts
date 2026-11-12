@@ -33,5 +33,10 @@ describe("sitewide light-surface contrast", () => {
     expect(descendantGuard).toContain("[class*=\"card\" i]");
     expect(descendantGuard).toContain("[class*=\"box\" i]");
     expect(descendantGuard).toContain("color: #edf6ff !important");
+    const globalCss = readFileSync(resolve(process.cwd(), "app/globals.css"), "utf8");
+    expect(globalCss).toContain("Final readable-text guard for intentionally light card surfaces");
+    expect(globalCss).toContain(":where(.vInterest,.vShortcut,.feature,.videoCard,.recommendationInfo)");
+    expect(globalCss).toContain("color: #355879 !important");
+    expect(globalCss).toContain("color: #092b68 !important");
   });
 });
