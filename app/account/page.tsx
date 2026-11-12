@@ -14,12 +14,12 @@ const spaces = [
   { icon: "◉", title: "Community", detail: "Share ideas and join discussions", href: "/community", tone: "sky" },
   { icon: "▦", title: "Groups", detail: "Find your people around every interest", href: "/groups", tone: "gold" },
   { icon: "🛍", title: "Marketplace", detail: "Explore the community marketplace", href: "/marketplace", tone: "mint" },
-  { icon: "🎙", title: "Podcasts", detail: "Discover shows and episodes", href: "/podcasts", tone: "violet" },
+  { icon: "🎙", title: "Podcasts", detail: "Discover shows and episodes", href: "/coming-soon/podcasts", tone: "violet" },
   { icon: "📰", title: "News", detail: "Catch up with stories that matter", href: "/news", tone: "blue" },
   { icon: "📺", title: "ConnectTime TV", detail: "Explore video and official channels", href: "/free-tv", tone: "rose" },
   { icon: "🎵", title: "Music & Radio", detail: "Listen across genres and regions", href: "/radio", tone: "gold" },
   { icon: "🎉", title: "Events", detail: "Find activities and gatherings", href: "/events", tone: "sky" },
-  { icon: "🔴", title: "Live", detail: "Explore live community experiences", href: "/live", tone: "rose" },
+  { icon: "🔴", title: "Live", detail: "Explore live community experiences", href: "/coming-soon/live", tone: "rose" },
 ];
 
 export default async function AccountPage({ searchParams }: { searchParams: Promise<{ welcome?: string; country?: string }> }) {
