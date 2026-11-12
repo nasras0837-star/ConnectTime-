@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import { Client, Query, TablesDB } from "node-appwrite";
 import { checkMemberAccess } from "@/lib/member-access";
 
 export const dynamic = "force-dynamic";
 
-function verificationProviderReady() {
+async function verificationProviderReady() {
   const required = [
     process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
     process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID,
@@ -22,16 +23,25 @@ function verificationProviderReady() {
   try {
     const base = new URL(process.env.VERIFF_BASE_URL!);
     const callback = new URL(process.env.VERIFF_CALLBACK_URL!);
-    return base.protocol === "https:" &&
-      callback.protocol === "https:" &&
-      callback.pathname.endsWith("/api/verification/webhook");
+    if (base.protocol !== "https:" || callback.protocol !== "https:" ||
+      !callback.pathname.endsWith("/api/verification/webhook")) return false;
+    const client = new Client()
+      .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
+      .setKey(process.env.APPWRITE_API_KEY!);
+    await new TablesDB(client).listRows({
+      databaseId: process.env.APPWRITE_DATABASE_ID!,
+      tableId: process.env.APPWRITE_VERIFICATION_RECORDS_TABLE_ID!,
+      queries: [Query.limit(1)],
+    });
+    return true;
   } catch {
     return false;
   }
 }
 
 export async function GET() {
-  const providerReady = verificationProviderReady();
+  const providerReady = await verificationProviderReady();
   const result = await checkMemberAccess();
 
   if (!result.allowed) {
