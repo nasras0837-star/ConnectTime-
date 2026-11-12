@@ -56,9 +56,9 @@ Use the exact column IDs, types, sizes, required flags, and indexes in each guid
 Use the Render Blueprint in the repository root (`render.yaml`):
 - Repository: `nasras0837-star/ConnectTime-`
 - Branch: `main`
-- Build command: `npm ci && npm run build`
+- Build command: `npm install && npm run build`
 - Start command: `npm run start`
-- Node.js: 22
+- Node.js: 24
 - Health check: `/api/auth/status`
 
 The existing Render service is `connect-web-7ypt` at `https://connect-web-7ypt.onrender.com`. Follow `docs/RENDER_DEPLOYMENT.md` to configure environment values and allow the exact hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
