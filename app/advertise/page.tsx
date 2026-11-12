@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const regions = [
+  { name: "Worldwide", countries: ["All countries"] },
   { name: "North America", countries: ["United States", "Canada", "Mexico"] },
   { name: "Central America & Caribbean", countries: ["Costa Rica", "Panama", "Guatemala", "Jamaica", "Dominican Republic", "Trinidad and Tobago"] },
   { name: "South America", countries: ["Brazil", "Argentina", "Colombia", "Chile", "Peru", "Ecuador", "Uruguay", "Venezuela", "Bolivia", "Paraguay"] },
@@ -70,7 +71,8 @@ export default function AdvertisePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             adSubmissionId: result.adSubmissionId, company, campaignName: campaign, objective: goal,
-            placement: format, region: selectedRegion, country: selectedCountry, geoTargets: locations, audienceInterests: selectedInterests,
+            placement: format, region: selectedRegion, country: selectedCountry.trim(),
+            geoTargets: [locations.trim() ? `Locations: ${locations.trim()}` : "", radius === "all" ? "Radius: entire selected country" : `Radius: ${radius} miles`].filter(Boolean).join(" | "), audienceInterests: selectedInterests,
             dailyBudgetMinor: Math.round(Number(dailyBudget) * 100),
             lifetimeCapMinor: Math.round(Number(campaignBudget) * 100), bidStrategy,
             refundPolicyAccepted: true,
@@ -94,7 +96,6 @@ export default function AdvertisePage() {
       setReviewing(false);
     }
   };
-  const countries = useMemo(() => regions.find((region) => region.name === selectedRegion)?.countries ?? [], [selectedRegion]);
   const dailyBudgetValue = Number(dailyBudget);
   const campaignBudgetValue = Number(campaignBudget);
   const budgetValid = Number.isFinite(dailyBudgetValue) && Number.isFinite(campaignBudgetValue) && dailyBudgetValue >= 1 && campaignBudgetValue >= dailyBudgetValue;
@@ -125,11 +126,12 @@ export default function AdvertisePage() {
           </section>
           <section className="adFormSection"><div className="adStep"><span>03</span><div><h3>Choose your ad audience region</h3><p>Your ad is randomly delivered to users in the selected region and country.</p></div></div>
             <label>World region<select value={selectedRegion} onChange={(e) => { setSelectedRegion(e.target.value); setSelectedCountry(regions.find((r) => r.name === e.target.value)?.countries[0] ?? ""); }}>{regions.map((region) => <option key={region.name}>{region.name}</option>)}</select></label>
-            <label>Country<select value={selectedCountry} onChange={(e) => { setSelectedCountry(e.target.value); }}>{countries.map((country) => <option key={country}>{country}</option>)}</select></label>
+            <label>Country or territory<input list="connect-ad-country-options" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} placeholder="Type any country or territory" /><datalist id="connect-ad-country-options">{Array.from(new Set(regions.flatMap((region) => region.countries))).filter((country) => country !== "All countries").sort().map((country) => <option key={country} value={country} />)}</datalist><small className="adOptional">Type any country or territory; suggestions are provided for convenience.</small></label>
             <label>Specific cities, states, postal codes or neighborhoods <span className="adOptional">Optional</span><textarea value={locations} onChange={(e) => { setLocations(e.target.value); }} placeholder={"Example: New York, NY; Newark, NJ; 10001\nEnter multiple locations separated by commas."} rows={3} /></label>
             <div className="adLocationHint">🎯 Ads are randomly shown to eligible Connect users in your selected region and country. Optional city/radius settings can narrow the eligible audience where supported</div>
             <fieldset className="ctAdInterestField"><legend>Audience interests <span className="adOptional">Optional</span></legend><p>Choose broad topics to help guide campaign planning. This preview stores your selections; interest-based ad delivery is not active.</p><div>{audienceInterests.map(interest => <label key={interest}><input type="checkbox" checked={selectedInterests.includes(interest)} onChange={event => setSelectedInterests(current => event.target.checked ? [...current, interest] : current.filter(item => item !== interest))} />{interest}</label>)}</div></fieldset>
             <label>Target radius<select value={radius} onChange={(e) => setRadius(e.target.value)}><option value="5">5 miles / 8 km</option><option value="10">10 miles / 16 km</option><option value="25">25 miles / 40 km</option><option value="50">50 miles / 80 km</option><option value="100">100 miles / 160 km</option><option value="all">Entire selected country</option></select></label>
+            <p className="adBudgetNote">Your city, state, postal-code, and radius choices are saved with the campaign targeting summary. Actual location-based ad delivery remains disabled until the location service is implemented and reviewed.</p>
           </section>
           <section className="adFormSection"><div className="adStep"><span>04</span><div><h3>Set your budget and dates</h3><p>Choose what you can afford. Your campaign cannot exceed your total budget cap.</p></div></div>
             <div className="adBudgetControls"><label>Daily budget (USD)<input type="number" min="1" step="0.01" value={dailyBudget} onChange={(e) => { setDailyBudget(e.target.value); }} /></label><label>Total campaign budget cap (USD)<input type="number" min="1" step="0.01" value={campaignBudget} onChange={(e) => { setCampaignBudget(e.target.value); }} /></label><label>Delivery bidding strategy<select value={bidStrategy} onChange={(e) => setBidStrategy(e.target.value)}><option value="lowest-cost">Automatic — get the most results within my budget</option><option value="cost-cap">Cost goal — aim for an average result cost</option><option value="bid-cap">Bid cap — set a maximum auction bid</option></select></label><p className="adBudgetNote">Minimum starting daily budget: $1 USD. Your total campaign cap must be at least your daily budget. Auction prices vary with competition, objective, geography, placement, and ad quality. Results are not guaranteed.</p></div>
