@@ -99,5 +99,32 @@ export default function HomeRadioSearch() {
         <Link href="/radio">Explore all stations ↗</Link>
       </div>
     </section>
+    <style jsx>{`
+      .homeRadioCard{background:#fff;border:1px solid #e3eaf2;border-radius:16px;padding:14px;box-shadow:0 8px 22px #1d42610b;min-width:0}
+      .homeRadioHeading{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+      .homeRadioIcon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#e7f6fb;font-size:19px}
+      .homeRadioHeading strong{display:block;font-size:14px;color:#18364b}
+      .homeRadioHeading small{display:block;color:#8292a0;font-size:10px;margin-top:2px}
+      .homeRadioLive{margin-left:auto;border-radius:20px;padding:4px 7px;background:#e8f8f1;color:#178b67;font-size:9px;font-weight:900;letter-spacing:.6px}
+      .homeRadioSearch{display:flex;align-items:center;gap:7px;border:1px solid #dce7ef;background:#f8fbfd;border-radius:10px;padding:0 10px;height:38px;color:#77909f}
+      .homeRadioSearch input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#234458;font:inherit;font-size:11px}
+      .homeRadioSearch input::placeholder{color:#92a2ae}
+      .homeRadioResults{display:grid;gap:4px;margin-top:8px}
+      .homeRadioStation{display:flex;align-items:center;gap:9px;text-align:left;border:0;border-radius:9px;background:transparent;padding:7px 6px;cursor:pointer;min-width:0;color:#254357;width:100%}
+      .homeRadioStation:hover,.homeRadioStation.selected{background:#eef8fb}
+      .homeRadioPlay{flex:0 0 25px;width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#e6f3fa;color:#087eae;font-size:10px}
+      .homeRadioStationText{min-width:0}
+      .homeRadioStationText strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+      .homeRadioStationText small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#8797a3;font-size:9px;margin-top:2px}
+      .homeRadioHint,.homeRadioError{display:block;padding:8px 4px;color:#8797a3;font-size:10px}
+      .homeRadioError{color:#b54747}
+      .homeRadioPlayer{margin-top:9px;padding:9px;border-radius:10px;background:#f1f8fb}
+      .homeRadioNow span{display:block;color:#168b82;font-size:8px;font-weight:900;letter-spacing:.8px}
+      .homeRadioNow strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#24475b;font-size:10px;margin:3px 0 6px}
+      .homeRadioPlayer audio{display:block;width:100%;height:30px}
+      .homeRadioFooter{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #edf1f4}
+      .homeRadioFooter span{color:#91a0aa;font-size:9px}
+      .homeRadioFooter a{color:#087fae;font-size:10px;font-weight:800;white-space:nowrap}
+      @media(max-width:760px){.homeRadioCard{padding:12px}.homeRadioStation{padding:8px 5px}}
+    `}</style>
   );
-}
