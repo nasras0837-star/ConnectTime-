@@ -15,7 +15,7 @@ describe("GitHub Pages homepage navigation", () => {
 
     expect(fragments.length).toBeGreaterThan(0);
     for (const fragment of fragments) {
-      expect(ids.has(fragment), \`Missing homepage target: #\${fragment}\`).toBe(true);
+      expect(ids.has(fragment), "Missing homepage target: #" + fragment).toBe(true);
     }
   });
 
@@ -37,7 +37,7 @@ describe("GitHub Pages homepage navigation", () => {
 
       const relativePath = decodeURIComponent(url.pathname).replace(/^\/+/, "");
       const target = resolve(process.cwd(), "docs", relativePath);
-      expect(existsSync(target), \`Missing published homepage destination: \${href}\`).toBe(true);
+      expect(existsSync(target), "Missing published homepage destination: " + href).toBe(true);
     }
   });
 });
