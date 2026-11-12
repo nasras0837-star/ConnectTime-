@@ -1776,3 +1776,75 @@ html,body{background-color:var(--connect-night)!important;color:var(--connect-te
   .connectProfileHeroActions{grid-template-columns:1fr}
   .connectProfileSpaces{grid-template-columns:1fr}
 }
+
+
+/* Mobile member dashboard polish — clearer hierarchy, brighter feature cards, and app-like touch targets */
+.connectProfileHome .connectProfileMain{min-width:0}
+@media(max-width:780px){
+  .connectProfileHome{min-height:100svh;background:
+    radial-gradient(ellipse at 0% 8%,rgba(100,210,255,.18),transparent 34%),
+    radial-gradient(ellipse at 100% 34%,rgba(104,232,190,.15),transparent 34%),
+    linear-gradient(180deg,#f4f9ff 0%,#f7fbfa 58%,#f5f8ff 100%)}
+  .connectProfileHome .connectProfileLayout{width:min(100% - 20px,680px);gap:0}
+  .connectProfileHome .connectProfileSidebar{border:1px solid rgba(74,145,177,.18);box-shadow:0 8px 24px rgba(22,74,106,.08)}
+  .connectProfileHome .connectProfileMini{grid-template-columns:46px minmax(0,1fr) auto;min-height:48px}
+  .connectProfileHome .connectProfileMini>a{background:linear-gradient(110deg,#e4f5ff,#e5fbf1);color:#126e8a;border:1px solid #cce9ed}
+  .connectProfileHome .connectProfileNav{scrollbar-width:none}
+  .connectProfileHome .connectProfileNav::-webkit-scrollbar{display:none}
+  .connectProfileHome .connectProfileHero{
+    min-height:0;isolation:isolate;padding:24px 19px 22px;border:1px solid rgba(255,255,255,.24);
+    background:linear-gradient(125deg,#123f78 0%,#087eaa 48%,#08a58e 100%);
+    box-shadow:0 15px 32px rgba(13,103,142,.2)}
+  .connectProfileHome .connectProfileHero:before{content:"";position:absolute;z-index:-1;width:190px;height:190px;right:-62px;bottom:-108px;border-radius:50%;background:linear-gradient(140deg,rgba(255,255,255,.24),rgba(118,239,208,.08));border:1px solid rgba(255,255,255,.28)}
+  .connectProfileHome .connectProfileHeroGlow{width:245px;height:245px;right:-105px;top:-160px}
+  .connectProfileHome .connectProfileHeroArt{opacity:.13;right:-9%;pointer-events:none}
+  .connectProfileHome .connectProfileEyebrow{font-size:9px;letter-spacing:.16em}
+  .connectProfileHome .connectProfileHeroIdentity{align-items:center}
+  .connectProfileHome .connectProfileHeroAvatar{box-shadow:0 7px 18px rgba(0,25,55,.18)}
+  .connectProfileHome .connectProfileHeroActions{display:grid;grid-template-columns:1.15fr 1fr}
+  .connectProfileHome .connectProfilePrimary,.connectProfileHome .connectProfileSecondary{min-height:44px;text-align:center}
+  .connectProfileHome .connectProfileStatus{display:grid;grid-template-columns:10px minmax(0,1fr);gap:10px;margin-top:12px;padding:13px;border-radius:15px;background:rgba(255,255,255,.94);border:1px solid #deebf0;box-shadow:0 6px 18px rgba(23,72,100,.05)}
+  .connectProfileHome .connectProfileStatus>div{min-width:0}
+  .connectProfileHome .connectProfileStatus strong{font-size:12px;line-height:1.35;color:#29485a}
+  .connectProfileHome .connectProfileStatus p{font-size:10px;line-height:1.5;margin:4px 0 0;color:#758c99}
+  .connectProfileHome .connectProfileStatus>a{grid-column:2;justify-self:start;font-size:10px;font-weight:800}
+  .connectProfileHome .connectProfileWelcomeRow{padding:0 2px}
+  .connectProfileHome .connectProfileWelcomeRow h2{font-size:22px;max-width:330px}
+  .connectProfileHome .connectProfileWelcomeRow p{max-width:390px;font-size:11px}
+  .connectProfileHome .connectProfileWelcomeRow>a{padding:8px 11px;border-radius:20px;background:#e5f5f5;border:1px solid #d2ebea}
+  .connectProfileHome .connectProfileQuickGrid{gap:8px}
+  .connectProfileHome .connectProfileQuick{
+    min-height:104px;align-content:start;background:linear-gradient(155deg,#fff 0%,#f6fbff 100%);
+    border:1px solid #deebf1;box-shadow:0 7px 17px rgba(24,77,107,.06);
+    transition:transform .16s ease,box-shadow .16s ease}
+  .connectProfileHome .connectProfileQuick:active,.connectProfileHome .connectProfileSpace:active{transform:scale(.975)}
+  .connectProfileHome .connectProfileQuick>span:first-child{box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+  .connectProfileHome .connectProfileSectionHead{align-items:flex-start}
+  .connectProfileHome .connectProfileSectionHead h2{font-size:23px;margin-top:5px}
+  .connectProfileHome .connectProfileSectionHead p{font-size:11px}
+  .connectProfileHome .connectProfileFeatureCount{background:#e5f3f5;border:1px solid #d4e9ec;color:#397789}
+  .connectProfileHome .connectProfileSpaces{gap:9px}
+  .connectProfileHome .connectProfileSpace{
+    min-height:92px;position:relative;overflow:hidden;align-items:center;
+    background:linear-gradient(145deg,#fff 0%,#f8fbff 100%);
+    border:1px solid #e0ebf1;box-shadow:0 6px 17px rgba(25,77,105,.055)}
+  .connectProfileHome .connectProfileSpace:after{content:"";position:absolute;width:54px;height:54px;right:-25px;top:-27px;border-radius:50%;background:rgba(76,183,190,.08)}
+  .connectProfileHome .connectProfileSpaceIcon{width:39px;height:39px;border-radius:13px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.75)}
+  .connectProfileHome .connectProfileSpaceCopy{align-self:center}
+  .connectProfileHome .connectProfileSpaceCopy strong{font-size:11px;line-height:1.3}
+  .connectProfileHome .connectProfileSpaceCopy small{font-size:9px;line-height:1.35}
+  .connectProfileHome .connectProfileBottom{background:linear-gradient(115deg,#e5f3ff,#e1f8ef);border-color:#d6e9e8;box-shadow:0 8px 20px rgba(28,93,109,.06)}
+  .connectProfileHome .connectProfileFooter{padding-bottom:12px}
+}
+@media(max-width:390px){
+  .connectProfileHome .connectProfileLayout{width:calc(100% - 16px)}
+  .connectProfileHome .connectProfileHero{padding:20px 15px}
+  .connectProfileHome .connectProfileHeroActions{grid-template-columns:1fr}
+  .connectProfileHome .connectProfileQuick{min-height:96px;padding:8px}
+  .connectProfileHome .connectProfileQuick strong{font-size:10px}
+  .connectProfileHome .connectProfileSpace{min-height:88px;padding:9px 8px}
+  .connectProfileHome .connectProfileSpaceIcon{width:34px;height:34px}
+}
+@media(prefers-reduced-motion:reduce){
+  .connectProfileHome .connectProfileQuick,.connectProfileHome .connectProfileSpace{transition:none}
+}
