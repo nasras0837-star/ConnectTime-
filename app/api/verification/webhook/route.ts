@@ -1,6 +1,10 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { Client, Databases, Query, TablesDB } from "node-appwrite";
+import {
+  resolveStoredVerificationStatus,
+  resolveVerificationDecision,
+} from "@/lib/verification-policy";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -8,15 +12,43 @@ export const dynamic = "force-dynamic";
 type Decision = { id?: string; vendorData?: string; status?: string; person?: { dateOfBirth?: string } };
 type Payload = { verification?: Decision };
 
-function ageOnDate(dateOfBirth: string, today = new Date()) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) return null;
-  const [year, month, day] = dateOfBirth.split("-").map(Number);
-  const date = new Date(Date.UTC(year, month - 1, day));
-  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
-  let age = today.getUTCFullYear() - year;
-  const birthdayPassed = today.getUTCMonth() + 1 > month || (today.getUTCMonth() + 1 === month && today.getUTCDate() >= day);
-  if (!birthdayPassed) age--;
-  return age;
+async function syncMemberAccess(
+  databases: Databases,
+  databaseId: string,
+  collectionId: string,
+  userId: string,
+  adultStatus: "verified" | "rejected" | "review",
+) {
+  let existing: Record<string, unknown> | null = null;
+  try {
+    existing = await databases.getDocument(databaseId, collectionId, userId);
+  } catch (error) {
+    if (!(typeof error === "object" && error !== null && "code" in error && error.code === 404)) throw error;
+  }
+
+  if (!existing) {
+    try {
+      await databases.createDocument(databaseId, collectionId, userId, {
+        adult_status: adultStatus,
+        account_status: adultStatus === "verified" ? "active" : "pending",
+      });
+      return;
+    } catch (error) {
+      // A concurrent webhook may have created the access record. Re-read it
+      // and preserve its moderation/account state rather than overwriting it.
+      if (!(typeof error === "object" && error !== null && "code" in error && error.code === 409)) throw error;
+      existing = await databases.getDocument(databaseId, collectionId, userId);
+    }
+  }
+
+  const storedAccountStatus = typeof existing.account_status === "string" ? existing.account_status : "pending";
+  const accountStatus = storedAccountStatus === "suspended" || storedAccountStatus === "banned"
+    ? storedAccountStatus
+    : adultStatus === "verified" ? "active" : storedAccountStatus;
+  await databases.updateDocument(databaseId, collectionId, userId, {
+    adult_status: adultStatus,
+    account_status: accountStatus,
+  });
 }
 
 export async function POST(request: Request) {
@@ -45,41 +77,60 @@ export async function POST(request: Request) {
   const recordsTableId = process.env.APPWRITE_VERIFICATION_RECORDS_TABLE_ID;
   const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
   const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
-  if (!endpoint || !projectId || !apiKey || !databaseId || !recordsTableId || !accessDatabaseId || !accessCollectionId) return NextResponse.json({ error: "storage_not_configured" }, { status: 503 });
+  if (!endpoint || !projectId || !apiKey || !databaseId || !recordsTableId || !accessDatabaseId || !accessCollectionId) {
+    return NextResponse.json({ error: "storage_not_configured" }, { status: 503 });
+  }
 
   const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
   const tables = new TablesDB(client);
   const databases = new Databases(client);
   try {
-    const found = await tables.listRows({ databaseId, tableId: recordsTableId, queries: [Query.equal("provider_session_id", sessionId), Query.equal("user_id", userId), Query.equal("provider", "veriff"), Query.limit(2)] });
+    const found = await tables.listRows({
+      databaseId,
+      tableId: recordsTableId,
+      queries: [
+        Query.equal("provider_session_id", sessionId),
+        Query.equal("user_id", userId),
+        Query.equal("provider", "veriff"),
+        Query.limit(2),
+      ],
+    });
     if (found.rows.length !== 1) return NextResponse.json({ error: "verification_session_not_found" }, { status: 404 });
     const record = found.rows[0];
-    if (["verified", "failed"].includes(String(record.status))) return NextResponse.json({ received: true, duplicate: true });
-    let status = "review";
-    let adultStatus: "pending" | "verified" | "rejected" | "review" = "review";
-    let accountStatus: "pending" | "active" = "pending";
-    let verifiedAt: string | null = null;
-    if (decision === "approved") {
-      const age = typeof verification?.person?.dateOfBirth === "string" ? ageOnDate(verification.person.dateOfBirth) : null;
-      if (age !== null && age >= 18) {
-        status = "verified"; adultStatus = "verified"; accountStatus = "active"; verifiedAt = new Date().toISOString();
-      } else if (age !== null && age < 18) {
-        status = "failed"; adultStatus = "rejected";
-      }
-    } else if (["declined", "expired", "abandoned"].includes(decision)) {
-      status = "failed"; adultStatus = "rejected";
-    } else if (decision === "resubmission_requested" || decision === "review") {
-      status = "review"; adultStatus = "review";
-    }
+    const recordStatus = String(record.status || "pending");
+    const terminal = recordStatus === "verified" || recordStatus === "failed";
+
+    // Terminal callbacks are idempotently reconciled against member access.
+    // This repairs the old failure mode where the verification row was marked
+    // complete before the access write succeeded and retries were discarded.
+    const storedDecision = terminal ? resolveStoredVerificationStatus(recordStatus) : null;
+    const resolved = storedDecision || resolveVerificationDecision(
+      decision,
+      typeof verification?.person?.dateOfBirth === "string" ? verification.person.dateOfBirth : null,
+    );
     const now = new Date().toISOString();
-    await tables.updateRow({ databaseId, tableId: recordsTableId, rowId: record.$id, data: { status, ...(verifiedAt ? { verified_at: verifiedAt } : {}), updated_at: now } });
-    const access = await databases.getDocument(accessDatabaseId, accessCollectionId, userId).catch(() => null);
-    if (!access) {
-      await databases.createDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus });
-    } else {
-      await databases.updateDocument(accessDatabaseId, accessCollectionId, userId, { adult_status: adultStatus, account_status: accountStatus, updated_at: now });
+
+    // Write access first. If this fails, leave the verification row pending so
+    // Veriff can retry; if the later row update fails, the retry is safe.
+    await syncMemberAccess(databases, accessDatabaseId, accessCollectionId, userId, resolved.adultStatus);
+
+    if (!terminal) {
+      await tables.updateRow({
+        databaseId,
+        tableId: recordsTableId,
+        rowId: record.$id,
+        data: {
+          status: resolved.recordStatus,
+          ...(resolved.recordStatus === "verified" ? { verified_at: now } : {}),
+          updated_at: now,
+        },
+      });
     }
-    return NextResponse.json({ received: true }, { headers: { "Cache-Control": "no-store" } });
+
+    return NextResponse.json(
+      { received: true, ...(terminal ? { duplicate: true, accessReconciled: true } : {}) },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (error) {
     console.error("Veriff decision webhook failed", error instanceof Error ? error.message : "unknown");
     return NextResponse.json({ error: "webhook_processing_failed" }, { status: 503 });
