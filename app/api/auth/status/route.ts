@@ -37,8 +37,9 @@ export async function GET() {
     }
   }
 
+  const configured = missing.length === 0 && apiKeyUsable;
   return NextResponse.json(
-    { configured: missing.length === 0 && apiKeyUsable, missing },
-    { headers: { "Cache-Control": "no-store, max-age=0" } },
+    { configured, missing },
+    { status: configured ? 200 : 503, headers: { "Cache-Control": "no-store, max-age=0" } },
   );
 }

@@ -59,9 +59,9 @@ Use the Render Blueprint in the repository root (`render.yaml`):
 - Build command: `npm install && npm run build`
 - Start command: `npm run start`
 - Node.js: 24
-- Health check: `/api/auth/status`
+- Health check: `/api/health` (process readiness only; Appwrite readiness is checked separately by `/api/auth/status`)
 
-The existing Render service is `connect-web-7ypt` at `https://connect-web-7ypt.onrender.com`. Follow `docs/RENDER_DEPLOYMENT.md` to configure environment values and allow the exact hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
+The `/api/health` endpoint confirms the Next.js process is responsive without making a transient Appwrite outage restart the web service. `/api/auth/status` separately validates the Appwrite endpoint, project ID, and server key and returns HTTP 503 until authentication is ready. The existing Render service is `connect-web-7ypt` at `https://connect-web-7ypt.onrender.com`. Follow `docs/RENDER_DEPLOYMENT.md` to configure environment values and allow the exact hostname in Appwrite. GitHub Pages remains the static public preview only; it cannot host Next.js authentication or server APIs.
 
 ## Step 5 — Verify one feature at a time
 

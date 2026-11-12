@@ -7,7 +7,7 @@ services:
     branch: main
     buildCommand: npm install && npm run build
     startCommand: npm run start
-    healthCheckPath: /api/auth/status
+    healthCheckPath: /api/health
     autoDeploy: true
     envVars:
       - key: NODE_VERSION

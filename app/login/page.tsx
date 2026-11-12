@@ -38,8 +38,9 @@ export default function LoginPage() {
     let active = true;
     fetch("/api/auth/status", { cache: "no-store" })
       .then(async response => {
-        if (!response.ok) throw new Error("Authentication status could not be checked.");
-        return response.json() as Promise<{ configured: boolean; missing?: string[] }>;
+        const status = await response.json() as { configured?: boolean; missing?: string[] };
+        if (typeof status.configured !== "boolean") throw new Error("Authentication status could not be checked.");
+        return status as { configured: boolean; missing?: string[] };
       })
       .then(status => { if (active) { setAuthConfigured(status.configured); setMissingConfig(status.missing || []); } })
       .catch(() => { if (active) setStatusUnavailable(true); });
