@@ -12,7 +12,8 @@ describe("Connect Short Clips safety and discovery", () => {
     expect(clipsApi).toContain('Query.equal("status","approved")');
     expect(clipsApi).toContain('Query.equal("user_id",user.$id)');
     expect(clipsApi).toContain('status:"draft"');
-    expect(clipsApi).toContain("checkMemberAccess()");
+    expect(clipsApi).toContain("checkMemberAccess({requireAdultVerification:false})");
+    expect(clipsApi).toContain("An active member account is required to watch clips.");
     expect(clipsApi).toContain("sameOrigin(request)");
   });
 
@@ -23,11 +24,19 @@ describe("Connect Short Clips safety and discovery", () => {
     expect(clipsApi).not.toContain('status:"approved"');
   });
 
-  it("stores search signals per verified member and integrates the clips feed", () => {
+  it("stores search signals per active member without an age-verification gate and integrates the clips feed", () => {
     expect(interestsApi).toContain('Query.equal("user_id",user.$id)');
-    expect(interestsApi).toContain("checkMemberAccess()");
+    expect(interestsApi).toContain("checkMemberAccess({requireAdultVerification:false})");
     expect(interestsApi).toContain("inferTopic(query)");
     expect(videoTube).toContain("<ShortClips searchQuery={query} interests={interests} />");
     expect(videoTube).toContain("/api/video-tube/interests");
+  });
+
+  it("keeps creator draft creation age-verified and states the content policy", () => {
+    expect(clipsApi).toContain("const access=await checkMemberAccess();");
+    expect(studio).toContain("No nudity or sexually explicit content.");
+    expect(studio).toContain("permission or a valid license");
+    expect(studio).toContain("Profanity and strong language are allowed");
+    expect(studio).toContain('type="file" accept="video/*" disabled');
   });
 });
