@@ -5,13 +5,20 @@ import { createNextServerHelpers } from "@appwrite.io/react/server/next";
 import { checkMemberAccess } from "@/lib/member-access";
 import { SignOutButton } from "./signout-button";
 
-const dashboardItems = [
-  { icon: "♧", title: "Friends", detail: "Grow your circle and manage requests.", href: "/friends", tone: "mint" },
-  { icon: "✉", title: "Messages", detail: "Continue private conversations.", href: "/messages", tone: "blue" },
-  { icon: "⌕", title: "Discover", detail: "Find people and shared interests.", href: "/discover", tone: "violet" },
-  { icon: "♡", title: "Dating", detail: "Explore adult dating connections.", href: "/dating", tone: "rose" },
-  { icon: "♧", title: "Groups", detail: "Join communities around your interests.", href: "/groups", tone: "gold" },
-  { icon: "◉", title: "Community", detail: "Share ideas and join discussions.", href: "/community", tone: "sky" },
+const spaces = [
+  { icon: "♧", title: "Friends", detail: "Your circle, requests and connections", href: "/friends", tone: "mint" },
+  { icon: "✉", title: "Messages", detail: "Pick up your conversations", href: "/messages", tone: "blue" },
+  { icon: "⌕", title: "Discover", detail: "Meet people and find shared interests", href: "/discover", tone: "violet" },
+  { icon: "♡", title: "Match Maker", detail: "Explore dating likes and matches", href: "/dating", tone: "rose" },
+  { icon: "◉", title: "Community", detail: "Share ideas and join discussions", href: "/community", tone: "sky" },
+  { icon: "▦", title: "Groups", detail: "Find your people around every interest", href: "/groups", tone: "gold" },
+  { icon: "🛍", title: "Marketplace", detail: "Explore the community marketplace", href: "/marketplace", tone: "mint" },
+  { icon: "🎙", title: "Podcasts", detail: "Discover shows and episodes", href: "/podcasts", tone: "violet" },
+  { icon: "📰", title: "News", detail: "Catch up with stories that matter", href: "/news", tone: "blue" },
+  { icon: "📺", title: "ConnectTime TV", detail: "Explore video and official channels", href: "/free-tv", tone: "rose" },
+  { icon: "🎵", title: "Music & Radio", detail: "Listen across genres and regions", href: "/radio", tone: "gold" },
+  { icon: "🎉", title: "Events", detail: "Find activities and gatherings", href: "/events", tone: "sky" },
+  { icon: "🔴", title: "Live", detail: "Explore live community experiences", href: "/live", tone: "rose" },
 ];
 
 export default async function AccountPage({ searchParams }: { searchParams: Promise<{ welcome?: string; country?: string }> }) {
@@ -22,30 +29,94 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
   if (!user) redirect("/login");
   const decision = await checkMemberAccess();
   const status = decision.allowed ? "Active · Verified adult" : decision.reason === "not_eligible" ? "Pending · Verification or activation required" : decision.reason === "not_configured" ? "Setup required · Access settings are not configured" : decision.reason === "access_unavailable" ? "Temporarily unavailable · Access could not be confirmed" : "Signed in";
-  return <main className="connectMemberDashboard">
-    <ConnectSiteHeader />
-    <div className="connectDashboardLayout">
-      <aside className="connectDashboardSide">
-        <div className="connectDashboardIdentity"><span className="connectDashboardAvatar">{(user.name || user.email || "C").slice(0,1).toUpperCase()}</span><div><strong>{user.name || "Connect member"}</strong><small>{user.email || "Your Connect account"}</small></div></div>
-        <div className="connectDashboardNavLabel">YOUR SPACE</div>
-        <Link className="connectDashNav active" href="/account">▦ <span>Overview</span></Link>
-        <Link className="connectDashNav" href="/profile">◎ <span>My profile</span></Link>
-        <Link className="connectDashNav" href="/friends">♧ <span>Friends</span></Link>
-        <Link className="connectDashNav" href="/messages">✉ <span>Messages</span></Link>
-        <Link className="connectDashNav" href="/notifications">♢ <span>Notifications</span></Link>
-        <Link className="connectDashNav" href="/account/settings">⚙ <span>Settings</span></Link>
-        <div className="connectDashboardSideFoot"><Link href="/safety">Safety Center</Link><Link href="/feedback">Help & feedback</Link><SignOutButton /></div>
-      </aside>
-      <section className="connectDashboardMain">
-        <div className="connectDashboardGreeting"><div><span className="connectDashEyebrow">MEMBER HOME</span><h1>Welcome back{user.name ? `, ${user.name.split(" ")[0]}` : ""}.</h1><p>Your people, conversations and communities—one place to connect.</p></div><Link className="connectDashboardProfileButton" href={profileHref}>Edit profile ↗</Link></div>
-        {params.welcome === "1" && <div className="connectDashNotice" role="status">Welcome to Connect! Your account was created successfully. Start by setting up your profile.</div>}
-        <div className="connectDashboardStatus"><span className={decision.allowed ? "connectStatusDot good" : "connectStatusDot"} /> <div><strong>{status}</strong><p>{decision.allowed ? "Your member access is active. Individual features continue to apply their own safety checks." : decision.reason === "not_eligible" ? "Some member features remain locked until verification and activation are complete." : "Protected member features remain unavailable until access can be confirmed."}</p></div>{!decision.allowed && <Link href="/verification">Review verification →</Link>}</div>
-        <div className="connectDashboardSectionHead"><div><span>QUICK ACCESS</span><h2>Your Connect spaces</h2></div><Link href="/discover">Explore all →</Link></div>
-        <div className="connectDashboardTiles">{dashboardItems.map(item => <Link href={item.href} key={item.title} className="connectDashboardTile"><span className={`connectDashTileIcon ${item.tone}`}>{item.icon}</span><strong>{item.title}</strong><p>{item.detail}</p><span className="connectDashTileArrow">Open space →</span></Link>)}</div>
-        <div className="connectDashboardSectionHead"><div><span>GET STARTED</span><h2>Make Connect yours</h2></div></div>
-        <div className="connectDashboardNextSteps"><Link href={profileHref}><span>01</span><div><strong>Build your profile</strong><p>Add your interests and introduce yourself.</p></div><b>→</b></Link><Link href="/discover"><span>02</span><div><strong>Find your people</strong><p>Discover members with common interests.</p></div><b>→</b></Link><Link href="/community"><span>03</span><div><strong>Join the conversation</strong><p>Explore discussions and community spaces.</p></div><b>→</b></Link></div>
-        <div className="connectDashboardExplore"><div><span>BEYOND YOUR NETWORK</span><h2>Explore more of Connect</h2><p>News, podcasts, video, music and regional updates.</p></div><div className="connectDashboardExploreLinks"><Link href="/news">News ↗</Link><Link href="/podcasts">Podcasts ↗</Link><Link href="/free-tv">TV & video ↗</Link><Link href="/radio">Music & radio ↗</Link></div></div>
-      </section>
-    </div>
-  </main>;
+  const displayName = user.name || "Connect member";
+  const initial = (displayName || user.email || "C").trim().charAt(0).toUpperCase() || "C";
+
+  return (
+    <main className="connectMemberDashboard connectProfileHome">
+      <ConnectSiteHeader />
+      <div className="connectProfileLayout">
+        <aside className="connectProfileSidebar">
+          <div className="connectProfileMini">
+            <div className="connectProfileMiniCover" />
+            <span className="connectProfileAvatar">{initial}</span>
+            <strong>{displayName}</strong>
+            <small>{user.email || "Your Connect account"}</small>
+            <Link href={profileHref}>View & edit profile <span>↗</span></Link>
+          </div>
+          <div className="connectProfileNavLabel">YOUR SPACE</div>
+          <nav className="connectProfileNav" aria-label="Your Connect navigation">
+            <Link className="active" href="/account"><span>⌂</span> Overview</Link>
+            <Link href={profileHref}><span>◎</span> My profile</Link>
+            <Link href="/friends"><span>♧</span> Friends</Link>
+            <Link href="/messages"><span>✉</span> Messages</Link>
+            <Link href="/notifications"><span>♢</span> Notifications</Link>
+            <Link href="/account/settings"><span>⚙</span> Settings</Link>
+          </nav>
+          <div className="connectProfileSidebarFoot">
+            <Link href="/safety">Safety Center</Link>
+            <Link href="/feedback">Help & feedback</Link>
+            <SignOutButton />
+          </div>
+        </aside>
+
+        <section className="connectProfileMain">
+          {params.welcome === "1" && <div className="connectDashNotice" role="status">You’re in! Welcome to Connect. Add a few profile details and start exploring.</div>}
+          <section className="connectProfileHero">
+            <div className="connectProfileHeroGlow" aria-hidden="true" />
+            <div className="connectProfileHeroContent">
+              <span className="connectProfileEyebrow">YOUR CONNECT WORLD</span>
+              <div className="connectProfileHeroIdentity">
+                <span className="connectProfileHeroAvatar">{initial}</span>
+                <div>
+                  <h1>Welcome back, {displayName.split(" ")[0]}!</h1>
+                  <p>Your people, your passions, your space. Make it yours.</p>
+                  <small>{user.email || "Your personal Connect space"}</small>
+                </div>
+              </div>
+              <div className="connectProfileHeroActions">
+                <Link href={profileHref} className="connectProfilePrimary">Personalize your profile <span>→</span></Link>
+                <Link href="/community" className="connectProfileSecondary">Explore community</Link>
+              </div>
+            </div>
+            <div className="connectProfileHeroArt" aria-hidden="true"><span>✦</span><b>Connect<br/>with your world</b><i>✧</i></div>
+          </section>
+
+          <div className="connectProfileStatus">
+            <span className={decision.allowed ? "connectStatusDot good" : "connectStatusDot"} />
+            <div><strong>{status}</strong><p>{decision.allowed ? "Your member access is active. Individual features continue to apply their own safety checks." : decision.reason === "not_eligible" ? "Some member features remain locked until verification and activation are complete." : "Protected member features remain unavailable until access can be confirmed."}</p></div>
+            {!decision.allowed && <Link href="/verification">Review verification →</Link>}
+          </div>
+
+          <div className="connectProfileWelcomeRow">
+            <div><span className="connectProfileEyebrow">MADE FOR YOU</span><h2>Everything you love, all in one place.</h2><p>Jump into a space, find your people and keep the good conversations going.</p></div>
+            <Link href="/discover">Find something new ↗</Link>
+          </div>
+
+          <section className="connectProfileQuickGrid" aria-label="Quick actions">
+            <Link href="/community" className="connectProfileQuick"><span className="mint">✎</span><div><strong>Share something</strong><small>Start a community post</small></div><b>→</b></Link>
+            <Link href="/discover" className="connectProfileQuick"><span className="blue">⌕</span><div><strong>Meet people</strong><small>Discover new connections</small></div><b>→</b></Link>
+            <Link href="/messages" className="connectProfileQuick"><span className="violet">✉</span><div><strong>Say hello</strong><small>Open your messages</small></div><b>→</b></Link>
+          </section>
+
+          <div className="connectProfileSectionHead"><div><span className="connectProfileEyebrow">EXPLORE YOUR CONNECT</span><h2>Your spaces</h2><p>All your favorite Connect features, right at your fingertips.</p></div><span className="connectProfileFeatureCount">13 spaces to explore</span></div>
+          <section className="connectProfileSpaces">
+            {spaces.map(space => (
+              <Link href={space.href} key={space.title} className="connectProfileSpace">
+                <span className={`connectProfileSpaceIcon ${space.tone}`}>{space.icon}</span>
+                <span className="connectProfileSpaceCopy"><strong>{space.title}</strong><small>{space.detail}</small></span>
+                <span className="connectProfileSpaceArrow">↗</span>
+              </Link>
+            ))}
+          </section>
+
+          <section className="connectProfileBottom">
+            <div><span className="connectProfileEyebrow">A SPACE THAT FEELS LIKE YOU</span><h2>Make your profile shine.</h2><p>Add a photo, share your interests and let the community get to know you.</p></div>
+            <Link href={profileHref}>Edit my profile →</Link>
+          </section>
+          <footer className="connectProfileFooter"><Link href="/legal/terms">Terms</Link><Link href="/legal/privacy">Privacy</Link><Link href="/community-guidelines">Community guidelines</Link><span>© {new Date().getFullYear()} Techcyber LLC</span></footer>
+        </section>
+      </div>
+    </main>
+  );
 }
