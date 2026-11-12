@@ -413,3 +413,66 @@ body :is(
   color: #f5f8ff !important;
   -webkit-text-fill-color: #f5f8ff !important;
 }
+
+
+/* Contrast safety net for light utility surfaces and light-mode embedded widgets.
+   The main theme keeps its midnight panels; genuinely light panels get saturated
+   ink, strong links, and readable secondary copy. */
+:root {
+  --connect-light-copy: #24365f;
+  --connect-light-title: #1747c8;
+  --connect-light-anchor: #075ed8;
+  --connect-light-secondary: #435779;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-slate-100,.bg-gray-50,.bg-gray-100,
+  .bg-zinc-50,.bg-zinc-100,.bg-neutral-50,.bg-neutral-100,
+  .bg-stone-50,.bg-stone-100,.bg-light,.surface-light,.light-card,
+  .white-card,.card-white,[class*="whiteCard"],[class*="WhiteCard"],
+  [class*="lightCard"],[class*="LightCard"],[class*="white-card"],
+  [class*="light-card"],[class*="surface-light"]
+) :where(p,span,div,li,dd,dt,label,small,em,td,th,figcaption,blockquote) {
+  color: var(--connect-light-copy) !important;
+  -webkit-text-fill-color: var(--connect-light-copy) !important;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-slate-100,.bg-gray-50,.bg-gray-100,
+  .bg-zinc-50,.bg-zinc-100,.bg-neutral-50,.bg-neutral-100,
+  .bg-stone-50,.bg-stone-100,.bg-light,.surface-light,.light-card,
+  .white-card,.card-white,[class*="whiteCard"],[class*="WhiteCard"],
+  [class*="lightCard"],[class*="LightCard"],[class*="white-card"],
+  [class*="light-card"],[class*="surface-light"]
+) :where(h1,h2,h3,h4,h5,h6,strong,b,legend,summary) {
+  color: var(--connect-light-title) !important;
+  -webkit-text-fill-color: var(--connect-light-title) !important;
+}
+body :is(
+  .bg-white,.bg-slate-50,.bg-slate-100,.bg-gray-50,.bg-gray-100,
+  .bg-zinc-50,.bg-zinc-100,.bg-neutral-50,.bg-neutral-100,
+  .bg-stone-50,.bg-stone-100,.bg-light,.surface-light,.light-card,
+  .white-card,.card-white,[class*="whiteCard"],[class*="WhiteCard"],
+  [class*="lightCard"],[class*="LightCard"],[class*="white-card"],
+  [class*="light-card"],[class*="surface-light"]
+) a:not([class*="button"]):not([class*="btn"]) {
+  color: var(--connect-light-anchor) !important;
+  -webkit-text-fill-color: var(--connect-light-anchor) !important;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+body :is(input,textarea,select)::placeholder {
+  color: #a9c7ed !important;
+  opacity: 1 !important;
+}
+body :is(input,textarea,select):focus-visible {
+  border-color: #73ddff !important;
+  box-shadow: 0 0 0 3px rgba(115,221,255,.24) !important;
+}
+
+
+/* Final loaded guard for Tailwind arbitrary-value and inline light surfaces. */
+:root{--ct-final-light-ink:#14265f;--ct-final-light-heading:#123fc4;--ct-final-light-link:#064fce}
+body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]){color:var(--ct-final-light-ink)!important;-webkit-text-fill-color:var(--ct-final-light-ink)!important}
+body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) :where(*:not(button):not([role="button"]):not(.button):not(.btn):not([class*="btn" i])){color:var(--ct-final-light-ink)!important;-webkit-text-fill-color:var(--ct-final-light-ink)!important}
+body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary){color:var(--ct-final-light-heading)!important;-webkit-text-fill-color:var(--ct-final-light-heading)!important}
+body :is([class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) a:not([class*="button" i]):not([class*="btn" i]){color:var(--ct-final-light-link)!important;-webkit-text-fill-color:var(--ct-final-light-link)!important;text-decoration:underline;text-underline-offset:2px}

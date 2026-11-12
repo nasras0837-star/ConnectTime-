@@ -476,8 +476,35 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline-color:#5df0ff}
 .centerLogo{background:#f4fbffed}
 .float{color:#10356a}.float small{color:#496b91}
 
+
+/* Sitewide homepage readability pass: keep light cards airy while strengthening
+   body copy, metadata, navigation, and footer contrast. */
+:root{--muted:#435c78}
+body{color:#1d2d52}
+.nav{color:#344b70}
+.hero p,.head p,.community p{color:#405878}
+.proof{color:#3e5875}
+.proof b{color:#075fb7}
+.tile p,.topic p{color:#405878}
+.panelTop p{color:#405878}
+.post p{color:#344e6d}
+.postTop small{color:#405878}
+.stats{color:#405878}
+.float small{color:#405878}
+.notice{color:#344e6d;background:#fff;border-color:#cbd8ec}
+footer{color:#405878}
+.nav a:hover{color:#9a267e}
+
 </style>
 <link rel="stylesheet" href="./connect-design-system.css?v=5">
+<style id="connect-final-light-surface-contrast">
+/* Last-loaded contrast guard: light cards and boxes always use vivid ink. */
+:root{--ct-light-ink:#14265f;--ct-light-heading:#123fc4;--ct-light-link:#064fce;--ct-light-muted:#3d5278}
+body :is([class~="bg-white"],[class*="bg-white/" i],[class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[class*="whiteCard" i],[class*="lightCard" i],[class*="white-card" i],[class*="light-card" i],[class*="surface-light" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]){color:var(--ct-light-ink)!important;-webkit-text-fill-color:var(--ct-light-ink)!important}
+body :is([class~="bg-white"],[class*="bg-white/" i],[class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[class*="whiteCard" i],[class*="lightCard" i],[class*="white-card" i],[class*="light-card" i],[class*="surface-light" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) :where(*:not(button):not([role="button"]):not(.button):not(.btn):not([class*="btn" i])){color:var(--ct-light-ink)!important;-webkit-text-fill-color:var(--ct-light-ink)!important}
+body :is([class~="bg-white"],[class*="bg-white/" i],[class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[class*="whiteCard" i],[class*="lightCard" i],[class*="white-card" i],[class*="light-card" i],[class*="surface-light" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) :is(h1,h2,h3,h4,h5,h6,strong,b,th,legend,summary){color:var(--ct-light-heading)!important;-webkit-text-fill-color:var(--ct-light-heading)!important}
+body :is([class~="bg-white"],[class*="bg-white/" i],[class*="bg-[#fff" i],[class*="bg-[#f5f" i],[class*="bg-[#f6f" i],[class*="bg-[#f7f" i],[class*="bg-[#f8f" i],[class*="bg-[#f9f" i],[class*="bg-[white" i],[class~="bg-slate-50"],[class~="bg-slate-100"],[class~="bg-gray-50"],[class~="bg-gray-100"],[class~="bg-zinc-50"],[class~="bg-zinc-100"],[class~="bg-neutral-50"],[class~="bg-neutral-100"],[class~="bg-stone-50"],[class~="bg-stone-100"],[class*="whiteCard" i],[class*="lightCard" i],[class*="white-card" i],[class*="light-card" i],[class*="surface-light" i],[style*="background:white" i],[style*="background: white" i],[style*="background-color:white" i],[style*="background-color: white" i],[style*="background:#fff" i],[style*="background: #fff" i],[style*="background-color:#fff" i],[style*="background-color: #fff" i],[style*="background:#ffffff" i],[style*="background: #ffffff" i],[style*="background-color:#ffffff" i],[style*="background-color: #ffffff" i],[style*="rgb(255,255,255)" i],[style*="rgb(255, 255, 255)" i],[style*="rgb(248, 249, 250)" i],[style*="rgb(249, 250, 251)" i],[style*="rgb(248, 250, 252)" i],[style*="rgb(245, 247, 250)" i]) a:not([class*="button" i]):not([class*="btn" i]){color:var(--ct-light-link)!important;-webkit-text-fill-color:var(--ct-light-link)!important;text-decoration:underline;text-underline-offset:2px}
+</style>
 
 <style id="connect-hero-people-background">
 .hero{position:relative;isolation:isolate;overflow:hidden;border-radius:30px;padding-left:clamp(18px,3vw,38px);padding-right:clamp(18px,3vw,38px)}
