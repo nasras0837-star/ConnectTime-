@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { AccessToken } from "livekit-server-sdk";
+import { AccessToken, type VideoGrant } from "livekit-server-sdk";
 import { checkMemberAccess } from "@/lib/member-access";
 import { Client, Databases, Query } from "node-appwrite";
 import { isEligible } from "@/lib/access-policy";
@@ -52,9 +52,17 @@ export async function POST(request: Request) {
     }
     const roomName = String(row.room_name || "");
     if (!/^ct-[0-9a-f-]{36}$/i.test(roomName)) return NextResponse.json({ error: "Call room is invalid." }, { status: 409 });
-    const identity = user.$id;
+    const identity = `${user.$id}:${callId}`;
     const token = new AccessToken(apiKey, apiSecret, { identity, name: identity, ttl: "10m" });
-    token.addGrant({ roomJoin: true, room: roomName, canPublish: true, canSubscribe: true, canPublishData: false });
+    const grant: VideoGrant = {
+      roomJoin: true,
+      room: roomName,
+      canPublish: true,
+      canSubscribe: true,
+      canPublishData: false,
+      canPublishSources: row.call_type === "video" ? ["microphone", "camera"] : ["microphone"],
+    };
+    token.addGrant(grant);
     const jwt = await token.toJwt();
     return NextResponse.json({ token: jwt, serverUrl: livekitUrl, type: row.call_type === "video" ? "video" : "voice" }, { headers: { "Cache-Control": "no-store, max-age=0" } });
   } catch (error) {
