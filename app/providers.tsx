@@ -2,6 +2,7 @@
 import { AppwriteProvider } from "@appwrite.io/react";
 import { LanguageProvider } from "./components/language-provider";
 import { LanguageSwitcher } from "./components/language-switcher";
+import { IncomingCallNotifier } from "./components/incoming-call-notifier";
 
 function getValidEndpoint(value: string | undefined): string {
   if (!value) return "https://cloud.appwrite.io/v1";
@@ -18,5 +19,5 @@ export function Providers({ session, children }: { session?: string | null; chil
   // Never pass a misplaced private API key into the SDK's endpoint option.
   const endpoint = getValidEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT);
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "connect-preview-not-configured";
-  return <LanguageProvider><AppwriteProvider endpoint={endpoint} projectId={projectId} ssr={{ session: session ?? null, basePath: "/api/appwrite" }}>{children}<LanguageSwitcher /></AppwriteProvider></LanguageProvider>;
+  return <LanguageProvider><AppwriteProvider endpoint={endpoint} projectId={projectId} ssr={{ session: session ?? null, basePath: "/api/appwrite" }}>{children}<LanguageSwitcher /><IncomingCallNotifier /></AppwriteProvider></LanguageProvider>;
 }

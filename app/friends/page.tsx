@@ -50,7 +50,7 @@ export default function FriendsPage() {
     <div className="friendEntryCopy"><strong>{entry.profile.displayName}</strong><span>@{entry.profile.handle}{entry.profile.country ? " · " + entry.profile.country : ""}</span></div>
     {kind === "incoming" && <div className="friendEntryActions"><button disabled={busy === entry.id} onClick={() => void action(entry.id, "PATCH", "accept")}>Accept</button><button className="secondary" disabled={busy === entry.id} onClick={() => void action(entry.id, "PATCH", "decline")}>Decline</button></div>}
     {kind === "outgoing" && <div className="friendEntryActions"><span>Pending</span><button className="secondary" disabled={busy === entry.id} onClick={() => void action(entry.id, "DELETE")}>Cancel</button></div>}
-    {kind === "connection" && <div className="friendEntryActions"><span className="friendConnected">Connected</span><Link className="friendMessageLink" href={"/messages?with=" + encodeURIComponent(entry.profile.handle)}>Message</Link></div> }
+    {kind === "connection" && <div className="friendEntryActions"><span className="friendConnected">Connected</span><Link className="friendMessageLink" href={"/messages?with=" + encodeURIComponent(entry.profile.handle)}>Message</Link><Link className="friendMessageLink" href={"/calls?with=" + encodeURIComponent(entry.profile.handle)}>Call</Link></div> }
   </article>;
 
   return <main className="authShell"><header className="plannedFeatureHeader"><Link className="logo ctAuthLogo" href="/"><img src="/connect-logo.svg" alt="Connect" width={180} height={117} className="ctLogoImage"/></Link><nav><Link href="/">Home</Link><Link href="/discover">Discover</Link><Link href="/profile">My profile</Link></nav></header>
