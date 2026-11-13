@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { AccessToken } from "livekit-server-sdk";
 import { checkMemberAccess } from "@/lib/member-access";
+import { Client, Databases, Query } from "node-appwrite";
+import { isEligible } from "@/lib/access-policy";
 import { communitySafetyStore, currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 
 export const runtime = "nodejs";
@@ -29,6 +31,25 @@ export async function POST(request: Request) {
     const callerId = String(row.caller_user_id || "");
     const recipientId = String(row.recipient_user_id || "");
     if ((user.$id !== callerId && user.$id !== recipientId) || row.status !== "accepted") return NextResponse.json({ error: "This call is not available to join." }, { status: 403 });
+    const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
+    const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
+    const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
+    const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
+    const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
+    const apiKey = process.env.APPWRITE_API_KEY;
+    if (!blocksTableId || !accessDatabaseId || !accessCollectionId || !endpoint || !projectId || !apiKey) throw new Error("Call authorization dependencies are not configured.");
+    const [blockedForward, blockedReverse] = await Promise.all([
+      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", callerId), Query.equal("blocked_user_id", recipientId), Query.limit(1)] }),
+      tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", recipientId), Query.equal("blocked_user_id", callerId), Query.limit(1)] }),
+    ]);
+    if (blockedForward.rows.length || blockedReverse.rows.length) return NextResponse.json({ error: "This call is no longer available." }, { status: 403 });
+    const databases = new Databases(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
+    try {
+      const peerAccess = await databases.getDocument(accessDatabaseId, accessCollectionId, user.$id === callerId ? recipientId : callerId);
+      if (!isEligible({ adult_status: peerAccess.adult_status, account_status: peerAccess.account_status })) return NextResponse.json({ error: "The other participant is no longer eligible to call." }, { status: 403 });
+    } catch {
+      return NextResponse.json({ error: "The other participant is no longer eligible to call." }, { status: 403 });
+    }
     const roomName = String(row.room_name || "");
     if (!/^ct-[0-9a-f-]{36}$/i.test(roomName)) return NextResponse.json({ error: "Call room is invalid." }, { status: 409 });
     const identity = user.$id;
