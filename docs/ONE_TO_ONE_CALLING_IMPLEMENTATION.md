@@ -57,6 +57,6 @@ Keep the table private; browser clients must never access it directly. The serve
 
 ## Known rollout notes
 
-- The Calls page uses short-interval polling while open; a push notification service is not part of this phase.
-- The caller and recipient need to keep the Calls page open to see the in-app ringing UI.
+- A global in-app banner polls while ConnectTime is open in a visible browser tab; the recipient does not need to remain on the Calls page.
+- This phase does not include OS-level push notifications when the browser is closed or the site is not open.
 - LiveKit Cloud credentials and the Appwrite table are external setup requirements; this PR does not create cloud resources or turn on production calling.
