@@ -24,6 +24,11 @@ Create a private Appwrite TablesDB table with these columns:
 - event_type — string
 - created_at — ISO date-time string
 - updated_at — ISO date-time string
+- mux_upload_id — string (unique Mux Direct Upload ID)
+- mux_asset_id — string (Mux asset ID, initially blank)
+- mux_playback_id — string (signed-policy playback ID, initially blank)
+- mux_processing_status — string (e.g. waiting_for_upload, processing, ready_pending_moderation, errored)
+- mux_last_event_id — string (last processed Mux webhook event ID)
 
 Recommended indexes: record_type + status + created_at, record_type + user_id + status, and record_type + user_id + created_at. The table must remain private; only the server API key accesses it.
 
@@ -59,3 +64,20 @@ Before any upload or publish feature is activated, the moderation workflow must 
 - Only content that passes the applicable safety and rights checks may transition to approved.
 
 Automated scanning alone cannot reliably establish copyright ownership or guarantee that a clip is free of nudity. Keep uploads and publishing disabled until the quarantine pipeline, human review/escalation, and rights-complaint handling are implemented and tested.
+
+
+## Mux Direct Upload foundation
+
+The gated server route at `POST /api/video-tube/uploads` creates a Mux Direct Upload session only when both independent release flags are explicitly set to true. It requires an authenticated, active, verified-adult member, a same-origin request, a valid title/category, and a creator rights attestation. Mux API credentials remain server-only. The requested asset playback policy is signed and its passthrough metadata starts at `pending_review`.
+
+**Keep these settings false in every environment for now:**
+
+- `VIDEO_UPLOADS_ENABLED=false`
+- `VIDEO_MODERATION_PIPELINE_READY=false`
+
+Required server secrets when the integration is eventually tested in an isolated staging environment:
+
+- `MUX_TOKEN_ID`
+- `MUX_TOKEN_SECRET`
+
+This foundation includes a signature-verified Mux webhook receiver at `POST /api/webhooks/mux` and persists upload/asset lifecycle metadata in the private Appwrite Video Tube table. The webhook rejects missing/invalid/expired signatures, correlates events by upload/asset IDs, treats duplicate last-seen event IDs idempotently, and never transitions an asset to approved. It does not yet include moderation queue processing, signed-playback token authorization, or approved publishing. A successful upload session is not approval. Do not enable either flag or expose media in the public feed until those remaining pieces and the staging quarantine acceptance tests are complete, followed by separate production approval.
