@@ -29,6 +29,8 @@ describe("ConnectTime one-to-one calling safeguards", () => {
     expect(tokenApi).toContain('row.status !== "accepted"');
     expect(tokenApi).toContain('ttl: "10m"');
     expect(tokenApi).toContain("roomJoin: true");
+    expect(tokenApi).toContain("TrackSource.MICROPHONE");
+    expect(tokenApi).toContain("TrackSource.CAMERA");
     expect(tokenApi).toContain("LIVEKIT_API_SECRET");
     expect(tokenApi).toContain("blockedForward.rows.length || blockedReverse.rows.length");
   });
