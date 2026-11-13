@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { ID } from "node-appwrite";
+import { communitySafetyStore } from "@/lib/community-safety";
 import { checkMemberAccess } from "@/lib/member-access";
 import { currentCommunityMember, sameOrigin } from "@/lib/community-safety";
 
@@ -65,6 +67,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Video uploads are not configured by Connect yet." }, { status: 503 });
   }
 
+  const tableId = process.env.APPWRITE_VIDEO_TUBE_TABLE_ID?.trim();
+  if (!tableId) return NextResponse.json({ error: "Video Tube storage is not configured." }, { status: 503 });
+
   const origin = request.headers.get("origin");
   if (!origin) return NextResponse.json({ error: "A verified browser origin is required." }, { status: 403 });
 
@@ -107,6 +112,42 @@ export async function POST(request: Request) {
       { error: "The video service could not create an upload session." },
       { status: 502 },
     );
+  }
+
+  try {
+    const store = communitySafetyStore();
+    await store.tablesDB.createRow({
+      databaseId: store.databaseId,
+      tableId,
+      rowId: ID.unique(),
+      data: {
+        record_type: "clip",
+        user_id: member.$id,
+        title,
+        caption,
+        category,
+        creator_name: typeof member.name === "string" ? member.name.slice(0, 80) : "Connect creator",
+        media_url: "",
+        thumbnail_url: "",
+        view_count: 0,
+        status: "pending_review",
+        mux_upload_id: muxData.data.id,
+        mux_asset_id: "",
+        mux_playback_id: "",
+        mux_processing_status: "waiting_for_upload",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    });
+  } catch (error) {
+    // Avoid leaving an untracked upload session behind if Appwrite persistence fails.
+    await fetch("https://api.mux.com/video/v1/uploads/" + encodeURIComponent(muxData.data.id), {
+      method: "DELETE",
+      headers: { Authorization: "Basic " + authorization },
+      signal: AbortSignal.timeout(8_000),
+    }).catch(() => undefined);
+    console.error("Video upload registration failed", error instanceof Error ? error.message : "unknown");
+    return NextResponse.json({ error: "The upload could not be safely registered. No upload session was issued." }, { status: 503 });
   }
 
   return NextResponse.json(
