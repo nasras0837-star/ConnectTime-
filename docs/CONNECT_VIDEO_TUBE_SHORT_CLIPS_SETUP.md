@@ -59,3 +59,20 @@ Before any upload or publish feature is activated, the moderation workflow must 
 - Only content that passes the applicable safety and rights checks may transition to approved.
 
 Automated scanning alone cannot reliably establish copyright ownership or guarantee that a clip is free of nudity. Keep uploads and publishing disabled until the quarantine pipeline, human review/escalation, and rights-complaint handling are implemented and tested.
+
+
+## Mux Direct Upload foundation
+
+The gated server route at `POST /api/video-tube/uploads` creates a Mux Direct Upload session only when both independent release flags are explicitly set to true. It requires an authenticated, active, verified-adult member, a same-origin request, a valid title/category, and a creator rights attestation. Mux API credentials remain server-only. The requested asset playback policy is signed and its passthrough metadata starts at `pending_review`.
+
+**Keep these settings false in every environment for now:**
+
+- `VIDEO_UPLOADS_ENABLED=false`
+- `VIDEO_MODERATION_PIPELINE_READY=false`
+
+Required server secrets when the integration is eventually tested in an isolated staging environment:
+
+- `MUX_TOKEN_ID`
+- `MUX_TOKEN_SECRET`
+
+This foundation does not yet include the signed Mux webhook receiver, Appwrite lifecycle persistence, moderation queue processing, signed-playback token authorization, or approved publishing. A successful upload session is not approval. Do not enable either flag or expose media in the public feed until those remaining pieces and the staging quarantine acceptance tests are complete, followed by separate production approval.
