@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { AccessToken, type VideoGrant } from "livekit-server-sdk";
+import { AccessToken, TrackSource, type VideoGrant } from "livekit-server-sdk";
 import { checkMemberAccess } from "@/lib/member-access";
 import { Client, Databases, Query } from "node-appwrite";
 import { isEligible } from "@/lib/access-policy";
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
       canPublish: true,
       canSubscribe: true,
       canPublishData: false,
-      canPublishSources: row.call_type === "video" ? ["microphone", "camera"] : ["microphone"],
+      canPublishSources: row.call_type === "video" ? [TrackSource.MICROPHONE, TrackSource.CAMERA] : [TrackSource.MICROPHONE],
     };
     token.addGrant(grant);
     const jwt = await token.toJwt();
