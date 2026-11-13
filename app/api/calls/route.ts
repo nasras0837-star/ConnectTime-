@@ -188,7 +188,7 @@ export async function PATCH(request: Request) {
     const status = String(row.status || "");
     if (action === "accept") {
       if (user.$id !== recipientId || status !== "ringing" || Date.parse(String(row.expires_at || "")) <= Date.now()) return NextResponse.json({ error: "This call is no longer available to accept." }, { status: 409 });
-      if (await blocked(s, callerId, recipientId) || !await eligible(s, callerId)) return NextResponse.json({ error: "This call is no longer authorized." }, { status: 403 });
+      if (await blocked(s, callerId, recipientId) || !await eligible(s, callerId) || !await connected(s, callerId, recipientId)) return NextResponse.json({ error: "This call is no longer authorized." }, { status: 403 });
       await s.tablesDB.updateRow({ databaseId: s.databaseId, tableId: s.callsTableId, rowId: callId, data: { status: "accepted", accepted_at: new Date().toISOString(), updated_at: new Date().toISOString() } });
     } else if (action === "decline") {
       if (user.$id !== recipientId || status !== "ringing") return NextResponse.json({ error: "This call cannot be declined." }, { status: 409 });
