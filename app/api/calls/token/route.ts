@@ -32,17 +32,20 @@ export async function POST(request: Request) {
     const recipientId = String(row.recipient_user_id || "");
     if ((user.$id !== callerId && user.$id !== recipientId) || row.status !== "accepted") return NextResponse.json({ error: "This call is not available to join." }, { status: 403 });
     const blocksTableId = process.env.APPWRITE_COMMUNITY_BLOCKS_TABLE_ID;
+    const friendsTableId = process.env.APPWRITE_FRIEND_REQUESTS_TABLE_ID;
     const accessDatabaseId = process.env.APPWRITE_ACCESS_DATABASE_ID;
     const accessCollectionId = process.env.APPWRITE_MEMBER_ACCESS_COLLECTION_ID;
     const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT;
     const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
     const apiKey = process.env.APPWRITE_API_KEY;
-    if (!blocksTableId || !accessDatabaseId || !accessCollectionId || !endpoint || !projectId || !apiKey) throw new Error("Call authorization dependencies are not configured.");
-    const [blockedForward, blockedReverse] = await Promise.all([
+    if (!blocksTableId || !friendsTableId || !accessDatabaseId || !accessCollectionId || !endpoint || !projectId || !apiKey) throw new Error("Call authorization dependencies are not configured.");
+    const [blockedForward, blockedReverse, connectedForward, connectedReverse] = await Promise.all([
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", callerId), Query.equal("blocked_user_id", recipientId), Query.limit(1)] }),
       tablesDB.listRows({ databaseId, tableId: blocksTableId, queries: [Query.equal("blocker_user_id", recipientId), Query.equal("blocked_user_id", callerId), Query.limit(1)] }),
+      tablesDB.listRows({ databaseId, tableId: friendsTableId, queries: [Query.equal("sender_user_id", callerId), Query.equal("recipient_user_id", recipientId), Query.equal("status", "accepted"), Query.limit(1)] }),
+      tablesDB.listRows({ databaseId, tableId: friendsTableId, queries: [Query.equal("sender_user_id", recipientId), Query.equal("recipient_user_id", callerId), Query.equal("status", "accepted"), Query.limit(1)] }),
     ]);
-    if (blockedForward.rows.length || blockedReverse.rows.length) return NextResponse.json({ error: "This call is no longer available." }, { status: 403 });
+    if (blockedForward.rows.length || blockedReverse.rows.length || (!connectedForward.rows.length && !connectedReverse.rows.length)) return NextResponse.json({ error: "This call is no longer available." }, { status: 403 });
     const databases = new Databases(new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey));
     try {
       const peerAccess = await databases.getDocument(accessDatabaseId, accessCollectionId, user.$id === callerId ? recipientId : callerId);
