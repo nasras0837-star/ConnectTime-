@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ConnectSiteHeader } from "@/app/components/connect-site-header";
 import { OneToOneCallRoom } from "@/app/components/one-to-one-call-room";
+import "./calls.css";
 
 type Call = { id: string; type: "voice" | "video"; status: string; outgoing: boolean; peerHandle: string; peerName: string; expiresAt: string };
 type CallData = { incomingCalls: Call[]; outgoingCalls: Call[] };
@@ -32,6 +33,8 @@ export default function CallsPage() {
   }, []);
 
   useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("with");
+    if (requested && /^[a-z0-9_]{3,24}$/i.test(requested)) setHandle(requested.toLowerCase());
     void refresh();
     const timer = window.setInterval(() => { if (document.visibilityState === "visible") void refresh(); }, 2500);
     return () => window.clearInterval(timer);
