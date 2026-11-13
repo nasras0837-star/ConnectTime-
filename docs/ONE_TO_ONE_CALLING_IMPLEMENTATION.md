@@ -17,6 +17,7 @@ This feature is a separate private 1:1 voice/video call flow. It does not replac
 Configure only in the server environment (Netlify/Render); never use NEXT_PUBLIC_ prefixes for LiveKit secrets:
 
 - `ONE_TO_ONE_CALLS_ENABLED=false` until staging checks pass.
+- `NEXT_PUBLIC_ONE_TO_ONE_CALLS_ENABLED=false` (set to `true` only alongside the server flag in staging to show the global in-app call banner).
 - `LIVEKIT_URL`
 - `LIVEKIT_API_KEY`
 - `LIVEKIT_API_SECRET`
@@ -45,7 +46,7 @@ Create a private table and set `APPWRITE_CALLS_TABLE_ID`. Required columns:
 | created_at | datetime/string | Creation time |
 | updated_at | datetime/string | Last update |
 
-Keep the table private; browser clients must never access it directly. The server uses the Appwrite API key.
+Keep the table private; browser clients must never access it directly. The server uses the Appwrite API key. Create indexes for the query patterns used by the API: `(caller_user_id, status, created_at)`, `(recipient_user_id, status, created_at)`, and `(caller_user_id, created_at)`. The existing profile, friend-request, and block tables must also have indexes on the queried user IDs, handles, and status columns.
 
 ## Rollout gates
 
