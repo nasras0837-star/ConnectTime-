@@ -75,7 +75,9 @@ export async function POST() {
     const response = await fetch(config.baseUrl + "/v1/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-AUTH-CLIENT": config.veriffApiKey },
-      body: JSON.stringify({ verification: { callback: config.callbackUrl, vendorData: user.$id, endUserId: user.$id } }),
+      // Appwrite user IDs are not guaranteed to be UUIDs; use the opaque internal ID
+      // only as vendorData, which Veriff returns unchanged in its decision webhook.
+      body: JSON.stringify({ verification: { callback: config.callbackUrl, vendorData: user.$id } }),
       signal: AbortSignal.timeout(15000),
       cache: "no-store"
     });
