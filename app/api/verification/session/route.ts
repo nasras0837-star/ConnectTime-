@@ -32,8 +32,18 @@ function configuration() {
     console.error("[age-verification] Missing required environment variable names:", missing.join(", "));
     return null;
   }
+  // The required-variable check above is runtime validation; capture narrowed values
+  // explicitly so TypeScript does not retain the optional process.env types.
+  const appwriteEndpoint = endpoint!;
+  const appwriteProjectId = projectId!;
+  const appwriteApiKey = apiKey!;
+  const appwriteDatabaseId = databaseId!;
+  const verificationRecordsTableId = recordsTableId!;
+  const veriffBaseUrl = baseUrl!;
+  const veriffApiKey = apiKeyVeriff!;
+  const veriffCallbackUrl = callbackUrl!;
   let base: URL; let callback: URL;
-  try { base = new URL(baseUrl!); callback = new URL(callbackUrl!); } catch {
+  try { base = new URL(veriffBaseUrl); callback = new URL(veriffCallbackUrl); } catch {
     console.error("[age-verification] VERIFF_BASE_URL or VERIFF_CALLBACK_URL is not a valid URL.");
     return null;
   }
@@ -41,8 +51,8 @@ function configuration() {
     console.error("[age-verification] URL validation failed. Both URLs must use HTTPS and callback path must end in /api/verification/webhook.");
     return null;
   }
-  const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
-  return { tables: new TablesDB(client), databaseId, recordsTableId, baseUrl: base.toString().replace(/\/$/, ""), veriffApiKey: apiKeyVeriff, callbackUrl: callback.toString() };
+  const client = new Client().setEndpoint(appwriteEndpoint).setProject(appwriteProjectId).setKey(appwriteApiKey);
+  return { tables: new TablesDB(client), databaseId: appwriteDatabaseId, recordsTableId: verificationRecordsTableId, baseUrl: base.toString().replace(/\/$/, ""), veriffApiKey, callbackUrl: callback.toString() };
 }
 
 export async function POST() {
