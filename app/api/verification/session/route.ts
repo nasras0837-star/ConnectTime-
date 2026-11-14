@@ -16,10 +16,31 @@ function configuration() {
   const apiKeyVeriff = process.env.VERIFF_API_KEY;
   const sharedSecret = process.env.VERIFF_SHARED_SECRET;
   const callbackUrl = process.env.VERIFF_CALLBACK_URL;
-  if (!endpoint || !projectId || !apiKey || !databaseId || !recordsTableId || !baseUrl || !apiKeyVeriff || !sharedSecret || !callbackUrl) return null;
+  const required: Record<string, string | undefined> = {
+    NEXT_PUBLIC_APPWRITE_ENDPOINT: endpoint,
+    NEXT_PUBLIC_APPWRITE_PROJECT_ID: projectId,
+    APPWRITE_API_KEY: apiKey,
+    APPWRITE_DATABASE_ID: databaseId,
+    APPWRITE_VERIFICATION_RECORDS_TABLE_ID: recordsTableId,
+    VERIFF_BASE_URL: baseUrl,
+    VERIFF_API_KEY: apiKeyVeriff,
+    VERIFF_SHARED_SECRET: sharedSecret,
+    VERIFF_CALLBACK_URL: callbackUrl,
+  };
+  const missing = Object.entries(required).filter(([, value]) => !value?.trim()).map(([name]) => name);
+  if (missing.length) {
+    console.error("[age-verification] Missing required environment variable names:", missing.join(", "));
+    return null;
+  }
   let base: URL; let callback: URL;
-  try { base = new URL(baseUrl); callback = new URL(callbackUrl); } catch { return null; }
-  if (base.protocol !== "https:" || callback.protocol !== "https:" || !callback.pathname.endsWith("/api/verification/webhook")) return null;
+  try { base = new URL(baseUrl!); callback = new URL(callbackUrl!); } catch {
+    console.error("[age-verification] VERIFF_BASE_URL or VERIFF_CALLBACK_URL is not a valid URL.");
+    return null;
+  }
+  if (base.protocol !== "https:" || callback.protocol !== "https:" || !callback.pathname.endsWith("/api/verification/webhook")) {
+    console.error("[age-verification] URL validation failed. Both URLs must use HTTPS and callback path must end in /api/verification/webhook.");
+    return null;
+  }
   const client = new Client().setEndpoint(endpoint).setProject(projectId).setKey(apiKey);
   return { tables: new TablesDB(client), databaseId, recordsTableId, baseUrl: base.toString().replace(/\/$/, ""), veriffApiKey: apiKeyVeriff, callbackUrl: callback.toString() };
 }
