@@ -1977,3 +1977,14 @@ html:has(.connectSocialHome), body:has(.connectSocialHome){background:#fff!impor
 .connectSocialHome .connectWelcomeSecondary{color:#fff!important;border-color:#7192bd!important}
 .connectSocialHome .connectExploreIcon{background:#173e72!important;color:#fff!important}
 .connectSocialHome input,.connectSocialHome select,.connectSocialHome textarea{background:#071733!important;color:#fff!important;border-color:#42658e!important}
+
+/* Official Connect logo — one consistent mark across all application surfaces. */
+.ctBrandMark{display:inline-block!important;width:170px!important;height:71px!important;flex:0 0 170px!important;border:0!important;border-radius:0!important;background:transparent url('/connect-logo.svg') center/contain no-repeat!important;color:transparent!important;font-size:0!important;box-shadow:none!important;text-shadow:none!important}
+.ctBrandMark:before{display:none!important}
+.ctWordmark,.connectSiteBrand .ctWordmark{display:none!important}
+.connectSiteBrand .ctBrandMark{width:170px!important;height:71px!important;flex-basis:170px!important}
+.connectBrandLogo{display:block;width:190px;height:auto;max-height:80px;object-fit:contain}
+.ctLogoImage,.ctVideoLogo,.eventsBrand .ctLogoImage,.createBrand .ctLogoImage{width:210px!important;height:auto!important;max-height:90px;object-fit:contain}
+.vHeader .ctLogoImage{width:190px!important}
+.ctMainHeader .brand>span,.ctAppMiniBrand>span{display:none!important}
+@media(max-width:700px){.ctBrandMark,.connectSiteBrand .ctBrandMark{width:142px!important;height:59px!important;flex-basis:142px!important}.connectBrandLogo{width:150px}.ctLogoImage,.ctVideoLogo{width:165px!important}}
